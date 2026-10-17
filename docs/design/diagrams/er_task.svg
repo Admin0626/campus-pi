@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1480" viewBox="0 0 1600 1480">
+<rect width="100%" height="100%" fill="white"/>
+<text x="646.0" y="64" font-family="Microsoft YaHei" font-size="44" fill="#1c2738">悬赏与奖励关系</text>
+<polyline points="875,255 798,255 798,255 745,255" fill="none" stroke="#7b8fb2" stroke-width="2"/>
+<polygon points="745,255 757.8948539160403,249.5481432076789 757.8948539160403,260.4518567923211" fill="#7b8fb2"/>
+<polyline points="65,580 47,580 47,255 65,255" fill="none" stroke="#7b8fb2" stroke-width="2"/>
+<polygon points="65,255 52.10514608395961,260.4518567923211 52.10514608395961,249.5481432076789" fill="#7b8fb2"/>
+<polyline points="875,580 824,580 824,255 745,255" fill="none" stroke="#7b8fb2" stroke-width="2"/>
+<polygon points="745,255 757.8948539160403,249.5481432076789 757.8948539160403,260.4518567923211" fill="#7b8fb2"/>
+<polyline points="875,905 798,905 798,255 745,255" fill="none" stroke="#7b8fb2" stroke-width="2"/>
+<polygon points="745,255 757.8948539160403,249.5481432076789 757.8948539160403,260.4518567923211" fill="#7b8fb2"/>
+<polyline points="875,905 798,905 798,905 745,905" fill="none" stroke="#7b8fb2" stroke-width="2"/>
+<polygon points="745,905 757.8948539160403,899.5481432076789 757.8948539160403,910.4518567923211" fill="#7b8fb2"/>
+<polyline points="65,1230 25,1230 25,255 65,255" fill="none" stroke="#7b8fb2" stroke-width="2"/>
+<polygon points="65,255 52.10514608395961,260.4518567923211 52.10514608395961,249.5481432076789" fill="#7b8fb2"/>
+<polyline points="65,1230 25,1230 25,580 65,580" fill="none" stroke="#7b8fb2" stroke-width="2"/>
+<polygon points="65,580 52.10514608395961,585.4518567923211 52.10514608395961,574.5481432076789" fill="#7b8fb2"/>
+<polyline points="65,1230 25,1230 25,905 65,905" fill="none" stroke="#7b8fb2" stroke-width="2"/>
+<polygon points="65,905 52.10514608395961,910.4518567923211 52.10514608395961,899.5481432076789" fill="#7b8fb2"/>
+<polyline points="65,1230 25,1230 25,905 65,905" fill="none" stroke="#7b8fb2" stroke-width="2"/>
+<polygon points="65,905 52.10514608395961,910.4518567923211 52.10514608395961,899.5481432076789" fill="#7b8fb2"/>
+<rect x="65" y="120" width="680" height="270" fill="#f7f9fc" stroke="#aab4c2" stroke-width="2"/>
+<rect x="65" y="120" width="680" height="58" fill="#e3e9f3" stroke="#aab4c2" stroke-width="2"/>
+<text x="82" y="153" font-family="Microsoft YaHei" font-size="26" fill="#1c2738">RewardTasks  悬赏任务</text>
+<text x="82" y="214" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">reward_task_id BIGINT PRIMARY KEY AUTO_INCREM</text>
+<text x="82" y="251" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">publisher_id BIGINT NOT NULL</text>
+<text x="82" y="288" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">taker_id BIGINT</text>
+<text x="82" y="331" font-family="Microsoft YaHei" font-size="21" fill="#42577a">publisher_id → users</text>
+<text x="82" y="361" font-family="Microsoft YaHei" font-size="21" fill="#42577a">taker_id → users</text>
+<rect x="875" y="120" width="680" height="270" fill="#f7f9fc" stroke="#aab4c2" stroke-width="2"/>
+<rect x="875" y="120" width="680" height="58" fill="#e3e9f3" stroke="#aab4c2" stroke-width="2"/>
+<text x="892" y="153" font-family="Microsoft YaHei" font-size="26" fill="#1c2738">task_applications  任务接取申请</text>
+<text x="892" y="214" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">application_id BIGINT PRIMARY KEY AUTO_INCREM</text>
+<text x="892" y="251" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">reward_task_id BIGINT NOT NULL</text>
+<text x="892" y="288" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">applicant_id BIGINT NOT NULL</text>
+<text x="892" y="331" font-family="Microsoft YaHei" font-size="21" fill="#42577a">reward_task_id → RewardTasks</text>
+<text x="892" y="361" font-family="Microsoft YaHei" font-size="21" fill="#42577a">applicant_id → users</text>
+<text x="892" y="387" font-family="Microsoft YaHei" font-size="19" fill="#42577a">其余外键见本节 SQL 定义</text>
+<rect x="65" y="445" width="680" height="270" fill="#f7f9fc" stroke="#aab4c2" stroke-width="2"/>
+<rect x="65" y="445" width="680" height="58" fill="#e3e9f3" stroke="#aab4c2" stroke-width="2"/>
+<text x="82" y="478" font-family="Microsoft YaHei" font-size="26" fill="#1c2738">task_proofs  任务完成凭证</text>
+<text x="82" y="539" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">proof_id BIGINT PRIMARY KEY AUTO_INCREMENT</text>
+<text x="82" y="576" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">reward_task_id BIGINT NOT NULL</text>
+<text x="82" y="613" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">submitter_id BIGINT NOT NULL</text>
+<text x="82" y="656" font-family="Microsoft YaHei" font-size="21" fill="#42577a">reward_task_id → RewardTasks</text>
+<text x="82" y="686" font-family="Microsoft YaHei" font-size="21" fill="#42577a">submitter_id → users</text>
+<text x="82" y="712" font-family="Microsoft YaHei" font-size="19" fill="#42577a">其余外键见本节 SQL 定义</text>
+<rect x="875" y="445" width="680" height="270" fill="#f7f9fc" stroke="#aab4c2" stroke-width="2"/>
+<rect x="875" y="445" width="680" height="58" fill="#e3e9f3" stroke="#aab4c2" stroke-width="2"/>
+<text x="892" y="478" font-family="Microsoft YaHei" font-size="26" fill="#1c2738">task_audit_log  任务状态与审核日志</text>
+<text x="892" y="539" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">log_id BIGINT PRIMARY KEY AUTO_INCREMENT</text>
+<text x="892" y="576" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">reward_task_id BIGINT NOT NULL</text>
+<text x="892" y="613" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">operator_id BIGINT NOT NULL</text>
+<text x="892" y="656" font-family="Microsoft YaHei" font-size="21" fill="#42577a">reward_task_id → RewardTasks</text>
+<text x="892" y="686" font-family="Microsoft YaHei" font-size="21" fill="#42577a">operator_id → users</text>
+<rect x="65" y="770" width="680" height="270" fill="#f7f9fc" stroke="#aab4c2" stroke-width="2"/>
+<rect x="65" y="770" width="680" height="58" fill="#e3e9f3" stroke="#aab4c2" stroke-width="2"/>
+<text x="82" y="803" font-family="Microsoft YaHei" font-size="26" fill="#1c2738">reward_accounts  奖励账户</text>
+<text x="82" y="864" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">user_id BIGINT NOT NULL</text>
+<text x="82" y="901" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">reward_type VARCHAR(10) NOT NULL</text>
+<text x="82" y="938" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">PRIMARY KEY (user_id,reward_type)</text>
+<text x="82" y="981" font-family="Microsoft YaHei" font-size="21" fill="#42577a">user_id → users</text>
+<rect x="875" y="770" width="680" height="270" fill="#f7f9fc" stroke="#aab4c2" stroke-width="2"/>
+<rect x="875" y="770" width="680" height="58" fill="#e3e9f3" stroke="#aab4c2" stroke-width="2"/>
+<text x="892" y="803" font-family="Microsoft YaHei" font-size="26" fill="#1c2738">reward_ledger  奖励流水</text>
+<text x="892" y="864" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">ledger_id BIGINT PRIMARY KEY AUTO_INCREMENT</text>
+<text x="892" y="901" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">reward_task_id BIGINT NOT NULL</text>
+<text x="892" y="938" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">user_id BIGINT NOT NULL</text>
+<text x="892" y="981" font-family="Microsoft YaHei" font-size="21" fill="#42577a">reward_task_id → RewardTasks</text>
+<text x="892" y="1011" font-family="Microsoft YaHei" font-size="21" fill="#42577a">user_id,reward_type → reward_accounts</text>
+<rect x="65" y="1095" width="680" height="270" fill="#f7f9fc" stroke="#aab4c2" stroke-width="2"/>
+<rect x="65" y="1095" width="680" height="58" fill="#e3e9f3" stroke="#aab4c2" stroke-width="2"/>
+<text x="82" y="1128" font-family="Microsoft YaHei" font-size="26" fill="#1c2738">task_settlement  任务结算</text>
+<text x="82" y="1189" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">settlement_id BIGINT PRIMARY KEY AUTO_INCREME</text>
+<text x="82" y="1226" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">reward_task_id BIGINT NOT NULL UNIQUE</text>
+<text x="82" y="1263" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">proof_id BIGINT NOT NULL UNIQUE</text>
+<text x="82" y="1306" font-family="Microsoft YaHei" font-size="21" fill="#42577a">reward_task_id → RewardTasks</text>
+<text x="82" y="1336" font-family="Microsoft YaHei" font-size="21" fill="#42577a">proof_id → task_proofs</text>
+<text x="82" y="1362" font-family="Microsoft YaHei" font-size="19" fill="#42577a">其余外键见本节 SQL 定义</text>
+<text x="395.0" y="1463" font-family="Microsoft YaHei" font-size="23" fill="#1c2738">父表 1 对子表多条  UNIQUE 外键将关联收紧为至多一条  完整字段以 SQL 为准</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1050" viewBox="0 0 1600 1050">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="0" y="0" width="250" height="1050" fill="#202c40" stroke="#202c40" stroke-width="2"/>
+<text x="20" y="61" font-family="Microsoft YaHei" font-size="31" fill="white">校园Π管理端</text>
+<text x="30" y="183" font-family="Microsoft YaHei" font-size="28" fill="#e3e9f3">控制台</text>
+<text x="30" y="260" font-family="Microsoft YaHei" font-size="28" fill="#e3e9f3">内容审核</text>
+<text x="30" y="337" font-family="Microsoft YaHei" font-size="28" fill="#e3e9f3">用户管理</text>
+<text x="30" y="414" font-family="Microsoft YaHei" font-size="28" fill="#e3e9f3">商品管理</text>
+<text x="30" y="491" font-family="Microsoft YaHei" font-size="28" fill="#e3e9f3">悬赏任务</text>
+<text x="30" y="568" font-family="Microsoft YaHei" font-size="28" fill="#e3e9f3">订单管理</text>
+<text x="30" y="645" font-family="Microsoft YaHei" font-size="28" fill="#e3e9f3">通知管理</text>
+<text x="30" y="722" font-family="Microsoft YaHei" font-size="28" fill="#e3e9f3">数据分析</text>
+<text x="300" y="90" font-family="Microsoft YaHei" font-size="45" fill="#1c2738">商品审核与上下架</text>
+<text x="300" y="156" font-family="Microsoft YaHei" font-size="26" fill="#59677b">审核状态与上架状态分开保存  未审核商品不可在售</text>
+<rect x="300" y="210" width="1240" height="70" fill="#eef2fa" stroke="#aab4c2" stroke-width="2"/>
+<text x="325" y="255" font-family="Microsoft YaHei" font-size="28" fill="#1c2738">关键词  校区  状态  时间范围                 搜索   重置</text>
+<rect x="300" y="345" width="1240" height="70" fill="#dfe7f4" stroke="#aab4c2" stroke-width="2"/>
+<text x="314" y="392" font-family="Microsoft YaHei" font-size="27" fill="#1c2738">商品ID</text>
+<text x="464" y="392" font-family="Microsoft YaHei" font-size="27" fill="#1c2738">商品名称</text>
+<text x="814" y="392" font-family="Microsoft YaHei" font-size="27" fill="#1c2738">审核状态</text>
+<text x="1064" y="392" font-family="Microsoft YaHei" font-size="27" fill="#1c2738">上架状态</text>
+<text x="1314" y="392" font-family="Microsoft YaHei" font-size="27" fill="#1c2738">库存</text>
+<rect x="300" y="415" width="1240" height="100" fill="white" stroke="#d9dfe9" stroke-width="1"/>
+<text x="314" y="474" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">101</text>
+<text x="464" y="474" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">测试教材</text>
+<text x="814" y="474" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">待审核</text>
+<text x="1064" y="474" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">已下架</text>
+<text x="1314" y="474" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">2</text>
+<rect x="300" y="515" width="1240" height="100" fill="#f7f9fc" stroke="#d9dfe9" stroke-width="1"/>
+<text x="314" y="574" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">102</text>
+<text x="464" y="574" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">闲置台灯</text>
+<text x="814" y="574" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">已通过</text>
+<text x="1064" y="574" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">在售</text>
+<text x="1314" y="574" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">1</text>
+<rect x="300" y="615" width="1240" height="100" fill="white" stroke="#d9dfe9" stroke-width="1"/>
+<text x="314" y="674" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">103</text>
+<text x="464" y="674" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">校园自行车</text>
+<text x="814" y="674" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">已通过</text>
+<text x="1064" y="674" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">已售出</text>
+<text x="1314" y="674" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">0</text>
+<text x="300" y="966" font-family="Microsoft YaHei" font-size="26" fill="#59677b">静态交互原型  示例数据  操作须经服务端鉴权并记录原因</text>
+</svg>

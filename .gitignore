@@ -1,0 +1,41 @@
+# Dependencies and build results
+**/node_modules/
+**/dist/
+**/target/
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+!**/.env.example
+**/application-local.yml
+**/application-local.yaml
+**/application-local.properties
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.cnf
+*.cnf.*
+
+# Runtime files
+*.log
+logs/
+uploads/
+runtime/
+.local/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Independent SQL verifier generates these next to its own script
+database/verification/03_合成测试数据.sql
+database/verification/验证记录.json
+database/verification/验证记录.txt
+database/verification/test-statements.sql

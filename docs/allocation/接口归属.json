@@ -1,0 +1,1466 @@
+{
+  "version": "1.1",
+  "date": "2026-10-17",
+  "project": "校园Π",
+  "scope": "112 existing API operations",
+  "member_mode": "FULL_STACK：每人负责本人模块的用户端页面、管理端页面、后端、数据库增量变更、测试及真实接口联调",
+  "implementation_status": "NOT_IMPLEMENTED",
+  "packages": [
+    {
+      "code": "A",
+      "name": "账号登录与用户权限",
+      "ids": [
+        "API001",
+        "API002",
+        "API003",
+        "API004",
+        "API005",
+        "API006",
+        "API007",
+        "API008",
+        "API009",
+        "API072",
+        "API073",
+        "API074",
+        "API075"
+      ],
+      "count": 13,
+      "p0": 11,
+      "p1": 2,
+      "reason": "13个接口含注册登录、会话撤销、管理权限；承担统一基础接入。适合熟悉后端鉴权、安全和工程配置的成员。",
+      "pages": [
+        "注册、登录、个人资料、修改密码",
+        "用户管理、启用禁用、角色管理；找回密码页面随P1启用"
+      ],
+      "foundation": [
+        "服务端工程骨架、统一响应与错误处理、鉴权及职责权限中间件、请求追踪、自动检查入口",
+        "会话持久化与撤销；向其他成员提供当前用户和权限校验函数",
+        "前端统一请求客户端、登录状态、失效退出、路由权限接入；D负责页面布局与导航整合"
+      ],
+      "dependencies": [
+        "B提供认证资格与文件引用校验；F提供注册奖励账户初始化约定",
+        "所有模块调用A的鉴权，不另写一套令牌；C至I接入统一错误和追踪约定"
+      ],
+      "tests": [
+        "并发注册唯一约束；密码不进入日志或响应",
+        "登录失败限流、绝对/闲置超时、注销失效",
+        "用户禁用和角色变更后现有会话立即失效；普通ADMIN无敏感职责时拒绝",
+        "越权资料不可见；资料修改不能写角色或认证状态",
+        "P1挑战存储、联系方式验证和通道就绪前不开放找回密码"
+      ],
+      "first": [
+        "先建立可运行工程、统一错误和会话校验接口，给其他成员稳定的接入样例",
+        "先实现注册登录和资料P0，再做用户管理；找回密码列入P1"
+      ],
+      "owner": "",
+      "implementation_status": "NOT_IMPLEMENTED",
+      "directory": "A_账号登录与用户权限",
+      "delivery_mode": "FULL_STACK",
+      "frontend_handoffs": [
+        "向各模块提供统一请求客户端、登录状态读取、登录失效处理与路由权限接入；页面隐藏按钮不能代替服务端鉴权。",
+        "公开用户摘要组件由A实现，C/D/H等页面按隐私规则复用；认证提交和证据预览入口跳转B页面。"
+      ],
+      "frontend_acceptance": [
+        "本人独立交付本模块用户端与管理端页面、后端接口、数据库增量变更和联调记录；页面范围按本任务书逐项核对。",
+        "页面接入D提供的公共布局和导航，复用A的统一请求与登录状态；成功、加载、空数据、失败、无权限和未启用状态均有明确反馈。",
+        "表单按既定契约检查必填、长度、类型和枚举；列表分页和详情刷新正确；编号和金额按字符串处理，时间按界面时区展示。",
+        "标记幂等键的操作在同一动作重试时复用原键；提交期间避免重复点击，失败恢复后前后端状态一致，不能只靠按钮禁用保证唯一处理。",
+        "从真实浏览器经真实HTTP请求完成本人模块正常与失败流程，保留前后端联调证据；替身响应、页面截图或文档样例不算完整开发验收。"
+      ]
+    },
+    {
+      "code": "B",
+      "name": "认证审核与文件审计",
+      "ids": [
+        "API010",
+        "API011",
+        "API013",
+        "API014",
+        "API076",
+        "API077",
+        "API078",
+        "API112"
+      ],
+      "count": 8,
+      "p0": 8,
+      "p1": 0,
+      "reason": "8个接口包含私密文件访问、身份与校园认证、敏感审计。接口少，但权限、文件生命周期和隐私测试较重。适合细致且熟悉权限校验的成员。",
+      "pages": [
+        "本人认证状态、实名/校园认证提交",
+        "认证审核队列与详情、认证审核、操作日志查询",
+        "公共文件上传控件与凭证预览组件"
+      ],
+      "foundation": [
+        "文件元数据、用途与归属校验、内容探测、扫描状态、短期访问地址、过期未绑定文件清理",
+        "统一审计追加入口及字段规范；只负责API112查询，业务操作日志由各业务方调用入口写入"
+      ],
+      "dependencies": [
+        "A提供会话和职责权限；C/E/F/G/H按文件用途接入上传及访问",
+        "认证状态由B受控更新；A的资料更新不得覆盖认证字段",
+        "各模块提供审计事件；私密证据读取必须按案件/对象重新鉴权"
+      ],
+      "tests": [
+        "用户不能读取他人的认证、任务、售后凭证",
+        "实际文件类型/尺寸校验；拒绝HTML/SVG及伪装文件",
+        "短期地址过期、no-store、未绑定文件回收和已绑定凭证保留",
+        "同类型待审唯一；改校区使旧资格失效；审核并发只生效一次",
+        "敏感管理详情职责授权与访问审计；日志查询仅授权管理员可见"
+      ],
+      "first": [
+        "先发布file_ref、用途、绑定与访问校验的公共调用约定",
+        "实现认证P0和私密预览；提供他人模块可使用的合成文件样例"
+      ],
+      "owner": "",
+      "implementation_status": "NOT_IMPLEMENTED",
+      "directory": "B_认证审核与文件审计",
+      "delivery_mode": "FULL_STACK",
+      "frontend_handoffs": [
+        "向C/E/F/G/H提供文件上传与私密预览组件，各模块传入规定用途和引用对象，由后端再次校验访问资格。",
+        "认证页面由B实现，A个人中心只挂入口；认证成功或校区变更后刷新用户资格状态。"
+      ],
+      "frontend_acceptance": [
+        "本人独立交付本模块用户端与管理端页面、后端接口、数据库增量变更和联调记录；页面范围按本任务书逐项核对。",
+        "页面接入D提供的公共布局和导航，复用A的统一请求与登录状态；成功、加载、空数据、失败、无权限和未启用状态均有明确反馈。",
+        "表单按既定契约检查必填、长度、类型和枚举；列表分页和详情刷新正确；编号和金额按字符串处理，时间按界面时区展示。",
+        "标记幂等键的操作在同一动作重试时复用原键；提交期间避免重复点击，失败恢复后前后端状态一致，不能只靠按钮禁用保证唯一处理。",
+        "从真实浏览器经真实HTTP请求完成本人模块正常与失败流程，保留前后端联调证据；替身响应、页面截图或文档样例不算完整开发验收。"
+      ]
+    },
+    {
+      "code": "C",
+      "name": "商品发布收藏与分类",
+      "ids": [
+        "API012",
+        "API015",
+        "API016",
+        "API017",
+        "API018",
+        "API019",
+        "API020",
+        "API021",
+        "API022",
+        "API023",
+        "API079",
+        "API080",
+        "API081",
+        "API082",
+        "API083",
+        "API084"
+      ],
+      "count": 16,
+      "p0": 16,
+      "p1": 0,
+      "reason": "16个接口主要是商品、收藏和分类的标准业务操作，因此数量略多。适合擅长列表表单、CRUD和前后端联调的成员。库存与订单交界必须和G联测。",
+      "pages": [
+        "商品列表、详情、发布编辑、我的商品、商品收藏",
+        "商品审核及上下架、分类管理"
+      ],
+      "foundation": [
+        "商品和分类数据访问、商品卡片与表单组件；商品可售规则",
+        "分类读取供D帖子使用；分类删除必须检查商品及帖子引用"
+      ],
+      "dependencies": [
+        "A/B提供登录、实名校园资格及商品图片上传；G维护订单和库存占用/释放过程",
+        "G调用既有商品下单/取消过程后，C读取实时可售库存；双方不得再额外扣减库存",
+        "D维护帖子分类引用，C删除分类前统一检查两个模块引用"
+      ],
+      "tests": [
+        "非本人编辑、未认证发布购买资格与跨校区请求被阻止",
+        "发布/修改后重新待审；未通过或已下架商品不进入公开在售列表",
+        "未完结订单期间禁止改库存和关键内容",
+        "收藏重复提交不产生重复记录；分类被商品/帖子引用时禁止删除",
+        "与G并发下单/取消后库存正确，商品审核重复操作结果一致"
+      ],
+      "first": [
+        "先完成分类查询和公开商品列表，供页面和下单模块并行联调",
+        "再实现商品发布编辑审核及收藏，与G完成库存边界联测"
+      ],
+      "owner": "",
+      "implementation_status": "NOT_IMPLEMENTED",
+      "directory": "C_商品发布收藏与分类",
+      "delivery_mode": "FULL_STACK",
+      "frontend_handoffs": [
+        "商品列表、详情、发布、管理审核页面由C实现；详情中的下单入口使用G提供的下单表单或跳转G页面。",
+        "私信卖家入口调用H的会话发起组件；分类由C提供，D的帖子表单复用分类选项。"
+      ],
+      "frontend_acceptance": [
+        "本人独立交付本模块用户端与管理端页面、后端接口、数据库增量变更和联调记录；页面范围按本任务书逐项核对。",
+        "页面接入D提供的公共布局和导航，复用A的统一请求与登录状态；成功、加载、空数据、失败、无权限和未启用状态均有明确反馈。",
+        "表单按既定契约检查必填、长度、类型和枚举；列表分页和详情刷新正确；编号和金额按字符串处理，时间按界面时区展示。",
+        "标记幂等键的操作在同一动作重试时复用原键；提交期间避免重复点击，失败恢复后前后端状态一致，不能只靠按钮禁用保证唯一处理。",
+        "从真实浏览器经真实HTTP请求完成本人模块正常与失败流程，保留前后端联调证据；替身响应、页面截图或文档样例不算完整开发验收。"
+      ]
+    },
+    {
+      "code": "D",
+      "name": "校园帖子与管理概览",
+      "ids": [
+        "API024",
+        "API025",
+        "API026",
+        "API027",
+        "API028",
+        "API029",
+        "API030",
+        "API031",
+        "API032",
+        "API085",
+        "API086",
+        "API087",
+        "API111"
+      ],
+      "count": 13,
+      "p0": 13,
+      "p1": 0,
+      "reason": "13个接口以帖子和收藏为主，另负责只读统计及页面入口整合。适合擅长前端页面组织、内容展示和聚合查询的成员。",
+      "pages": [
+        "帖子列表、详情、发布编辑、我的帖子、帖子收藏",
+        "帖子审核、违规下架、管理概览",
+        "用户端/管理端公共布局、导航、路由入口与页面样式接入"
+      ],
+      "foundation": [
+        "公共页面布局及导航规范；负责各成员页面接入与演示入口汇总",
+        "API111只读统计聚合；取各模块正式数据，不维护第二套业务状态"
+      ],
+      "dependencies": [
+        "A提供登录和管理菜单权限；C提供分类；G提供订单成交口径",
+        "匿名帖子在公开、本人及管理列表均使用匿名展示对象",
+        "各模块各自交付页面和测试，D负责组装入口，不代替其他成员开发全部页面"
+      ],
+      "tests": [
+        "匿名帖子不泄露publisher_id、作者头像或含身份的资源地址",
+        "本人编辑/删除权限、待审/下架内容的可见范围正确",
+        "收藏重复请求与删除后的关联清理正确",
+        "分类筛选正确；不增加数据模型中不存在的帖子校区筛选",
+        "概览统计与各业务列表数量一致；所有已交付页面入口可达"
+      ],
+      "first": [
+        "先提供公共页面壳、导航接入说明和帖子列表/表单",
+        "后台统计先按既定字段对合成数据开发，最后核对全模块统计口径"
+      ],
+      "owner": "",
+      "implementation_status": "NOT_IMPLEMENTED",
+      "directory": "D_校园帖子与管理概览",
+      "delivery_mode": "FULL_STACK",
+      "frontend_handoffs": [
+        "D实现用户端和管理端公共布局、导航、公共样式与页面入口登记；其余成员自行开发自己的页面并提交路由与菜单元信息。",
+        "D的统计页只读各模块约定数据；通知未读组件由I、私信未读入口由H提供，D将其接入公共导航。"
+      ],
+      "frontend_acceptance": [
+        "本人独立交付本模块用户端与管理端页面、后端接口、数据库增量变更和联调记录；页面范围按本任务书逐项核对。",
+        "页面接入D提供的公共布局和导航，复用A的统一请求与登录状态；成功、加载、空数据、失败、无权限和未启用状态均有明确反馈。",
+        "表单按既定契约检查必填、长度、类型和枚举；列表分页和详情刷新正确；编号和金额按字符串处理，时间按界面时区展示。",
+        "标记幂等键的操作在同一动作重试时复用原键；提交期间避免重复点击，失败恢复后前后端状态一致，不能只靠按钮禁用保证唯一处理。",
+        "从真实浏览器经真实HTTP请求完成本人模块正常与失败流程，保留前后端联调证据；替身响应、页面截图或文档样例不算完整开发验收。"
+      ]
+    },
+    {
+      "code": "E",
+      "name": "任务发布接取与分配",
+      "ids": [
+        "API033",
+        "API034",
+        "API035",
+        "API036",
+        "API037",
+        "API038",
+        "API039",
+        "API040",
+        "API088",
+        "API089",
+        "API090",
+        "API091"
+      ],
+      "count": 12,
+      "p0": 12,
+      "p1": 0,
+      "reason": "12个接口涉及任务发布、冻结奖励、接取竞争和管理员分配，状态转换较复杂。适合熟悉数据库事务和业务流程的成员。",
+      "pages": [
+        "任务列表、详情、发布、我的任务、接取申请和撤回",
+        "任务发布审核、申请队列、接取审批与分配"
+      ],
+      "foundation": [
+        "任务状态转换总表和任务公共查询；与F共同评审后冻结",
+        "发布/取消/申请/分配调用现有存储过程；申请驳回、撤回等补齐服务事务"
+      ],
+      "dependencies": [
+        "A/B提供身份校园资格；F提供余额、冻结与释放规则；G提供任务订单映射口径",
+        "E使用的发布、取消、发布审核及接取审批过程包含资金/订单写入，必须保留其原子范围",
+        "F拥有凭证和最终结算；E不能另写任务验收、发奖或直接改已分配任务状态"
+      ],
+      "tests": [
+        "余额不足发布失败；成功发布冻结且仅冻结一次",
+        "申请待审核时任务仍待接取；撤回后同人同任务不重申",
+        "多人同时申请/审批仅分配一人，任务订单仅创建一条",
+        "发布驳回、未接取取消正确释放冻结；审批驳回分支事务完整",
+        "与F/G联测：任务→申请→分配→凭证→验收→订单和流水一致"
+      ],
+      "first": [
+        "先与F/G确认任务状态、订单创建和资金唯一写入入口",
+        "实现任务公开查询及发布申请，再实现审核分配和竞争测试"
+      ],
+      "owner": "",
+      "implementation_status": "NOT_IMPLEMENTED",
+      "directory": "E_任务发布接取与分配",
+      "delivery_mode": "FULL_STACK",
+      "frontend_handoffs": [
+        "任务列表、发布、我的任务和任务详情主页面由E实现；F提供履约区组件，E在详情主页面中接入。",
+        "任务详情的凭证提交、版本记录、验收结果和结算展示由F实现；E/F使用统一任务状态与刷新约定，避免各写一套详情页。"
+      ],
+      "frontend_acceptance": [
+        "本人独立交付本模块用户端与管理端页面、后端接口、数据库增量变更和联调记录；页面范围按本任务书逐项核对。",
+        "页面接入D提供的公共布局和导航，复用A的统一请求与登录状态；成功、加载、空数据、失败、无权限和未启用状态均有明确反馈。",
+        "表单按既定契约检查必填、长度、类型和枚举；列表分页和详情刷新正确；编号和金额按字符串处理，时间按界面时区展示。",
+        "标记幂等键的操作在同一动作重试时复用原键；提交期间避免重复点击，失败恢复后前后端状态一致，不能只靠按钮禁用保证唯一处理。",
+        "从真实浏览器经真实HTTP请求完成本人模块正常与失败流程，保留前后端联调证据；替身响应、页面截图或文档样例不算完整开发验收。"
+      ]
+    },
+    {
+      "code": "F",
+      "name": "任务履约验收与奖励结算",
+      "ids": [
+        "API041",
+        "API042",
+        "API043",
+        "API044",
+        "API045",
+        "API092",
+        "API093",
+        "API094"
+      ],
+      "count": 8,
+      "p0": 8,
+      "p1": 0,
+      "reason": "8个接口集中在任务凭证版本、验收、账户流水与唯一结算，承担资金一致性和恢复机制，复杂度较高。适合事务、幂等和并发能力较强的成员。",
+      "pages": [
+        "任务完成凭证上传、版本记录、任务状态记录",
+        "奖励余额与流水、凭证审核、任务关闭"
+      ],
+      "foundation": [
+        "奖励账户/流水/结算规则与合成账户初始化约定",
+        "共用幂等记录、请求摘要、结果恢复调用规范及测试夹具；各成员接入自己的写接口",
+        "资金和任务跨表回归测试清单；遵守既有过程自身提交边界"
+      ],
+      "dependencies": [
+        "E提供任务状态与分配结果；B提供凭证文件校验；G维护订单读取视图",
+        "A负责鉴权，F不能提供绕过权限的公共加积分接口",
+        "存储过程内部已提交：不得用外层事务包裹；幂等恢复通过目标ID/业务唯一键核对结果后恢复，不能超时盲目重放"
+      ],
+      "tests": [
+        "仅被分配的执行人能提交凭证；版本增加且只验收当前待审版本",
+        "补充凭证、未通过、验收通过和关闭各分支符合统一状态表",
+        "并发/重复验收最多一次结算、一次奖励流水，余额不出现负数",
+        "过程提交后响应丢失/幂等记录未更新可恢复原结果，不重发奖励",
+        "与E/G核对冻结释放、奖励入账、任务订单及审计记录一致"
+      ],
+      "first": [
+        "先向A/E提供账户初始化、资金查询、幂等接入和状态约定",
+        "优先实现凭证与验收，通过并发、重复提交和响应丢失场景后联调"
+      ],
+      "owner": "",
+      "implementation_status": "NOT_IMPLEMENTED",
+      "directory": "F_任务履约验收与奖励结算",
+      "delivery_mode": "FULL_STACK",
+      "frontend_handoffs": [
+        "F实现任务详情中的履约区组件，包括凭证上传、版本记录、状态记录及验收结果；E负责主页面和组件接入。",
+        "F实现奖励余额流水页面、管理凭证验收及关闭操作界面；成功提交或验收后刷新任务、订单和余额视图。"
+      ],
+      "frontend_acceptance": [
+        "本人独立交付本模块用户端与管理端页面、后端接口、数据库增量变更和联调记录；页面范围按本任务书逐项核对。",
+        "页面接入D提供的公共布局和导航，复用A的统一请求与登录状态；成功、加载、空数据、失败、无权限和未启用状态均有明确反馈。",
+        "表单按既定契约检查必填、长度、类型和枚举；列表分页和详情刷新正确；编号和金额按字符串处理，时间按界面时区展示。",
+        "标记幂等键的操作在同一动作重试时复用原键；提交期间避免重复点击，失败恢复后前后端状态一致，不能只靠按钮禁用保证唯一处理。",
+        "从真实浏览器经真实HTTP请求完成本人模块正常与失败流程，保留前后端联调证据；替身响应、页面截图或文档样例不算完整开发验收。"
+      ]
+    },
+    {
+      "code": "G",
+      "name": "商品订单售后与支付",
+      "ids": [
+        "API046",
+        "API047",
+        "API048",
+        "API049",
+        "API050",
+        "API051",
+        "API052",
+        "API053",
+        "API054",
+        "API055",
+        "API056",
+        "API095",
+        "API096",
+        "API097",
+        "API098",
+        "API099"
+      ],
+      "count": 16,
+      "p0": 10,
+      "p1": 6,
+      "reason": "16个接口，其中6个是P1。P0先做下单、取消、订单与售后查询；P1含外部支付和退款，不能按普通CRUD估算。适合交易流程、数据库迁移和外部集成能力较强的成员。",
+      "pages": [
+        "下单、我的订单、订单详情与取消、售后查询",
+        "管理订单列表详情及取消、售后审核队列",
+        "P1：支付、交付、收货、售后申请/撤回/审核"
+      ],
+      "foundation": [
+        "订单公共读取与类型映射；商品库存预占/释放的既有过程接入",
+        "数据库增量迁移登记及执行顺序汇总：业务迁移仍由各模块本人编写与测试",
+        "P1支付供应商选定后的适配契约、回调验签及退款方案；本包不虚构通用支付回调接口"
+      ],
+      "dependencies": [
+        "C提供商品可售规则；A/B提供买方资格；E/F通过既有任务过程写任务订单",
+        "P0真实支付未接入时只验收待支付订单和取消释放，不能伪造支付成功",
+        "P1需额外持久模型、供应商/凭证与沙箱条件；当前8个P1接口全局中本模块占6个"
+      ],
+      "tests": [
+        "并发下单不超卖，价格来自服务端商品快照；不能购买自己的商品",
+        "取消仅针对待支付商品订单，重复取消不重复释放库存",
+        "订单详情仅参与者及有职责管理员可读；任务订单禁止走商品取消",
+        "任务订单与商品订单在查询中类型、金额和状态正确区分",
+        "P1通道未就绪返回501；就绪后另验收回调验签、重复支付及退款原状态恢复"
+      ],
+      "first": [
+        "先登记数据库迁移序号、发布订单读取与任务订单映射约定",
+        "完成商品下单/取消和查询P0，再按就绪条件开展P1，不将模拟付款当真实付款"
+      ],
+      "owner": "",
+      "implementation_status": "NOT_IMPLEMENTED",
+      "directory": "G_商品订单售后与支付",
+      "delivery_mode": "FULL_STACK",
+      "frontend_handoffs": [
+        "G实现商品下单表单/页面、两类订单的列表详情、售后查询与管理订单页面；C商品详情只接入下单入口。",
+        "任务订单详情由G展示订单信息并链接E任务详情或F履约入口；不得在商品操作区处理任务取消。P1页面须显示未启用状态，不能假造支付成功。"
+      ],
+      "frontend_acceptance": [
+        "本人独立交付本模块用户端与管理端页面、后端接口、数据库增量变更和联调记录；页面范围按本任务书逐项核对。",
+        "页面接入D提供的公共布局和导航，复用A的统一请求与登录状态；成功、加载、空数据、失败、无权限和未启用状态均有明确反馈。",
+        "表单按既定契约检查必填、长度、类型和枚举；列表分页和详情刷新正确；编号和金额按字符串处理，时间按界面时区展示。",
+        "标记幂等键的操作在同一动作重试时复用原键；提交期间避免重复点击，失败恢复后前后端状态一致，不能只靠按钮禁用保证唯一处理。",
+        "从真实浏览器经真实HTTP请求完成本人模块正常与失败流程，保留前后端联调证据；替身响应、页面截图或文档样例不算完整开发验收。"
+      ]
+    },
+    {
+      "code": "H",
+      "name": "私信会话与举报处理",
+      "ids": [
+        "API057",
+        "API058",
+        "API059",
+        "API060",
+        "API061",
+        "API062",
+        "API063",
+        "API064",
+        "API100",
+        "API101",
+        "API102"
+      ],
+      "count": 11,
+      "p0": 11,
+      "p1": 0,
+      "reason": "11个接口包含会话复用、增量消息、未读和案件证据访问。适合消息交互、分页游标、前后端状态同步能力较强的成员。",
+      "pages": [
+        "会话列表、聊天窗口、已读状态、单方删除和举报",
+        "我的举报、举报管理队列、案件证据和处置"
+      ],
+      "foundation": [
+        "首期HTTP消息增量拉取、去重、分页及未读同步组件",
+        "案件关联消息取证与审计接入；不擅自扩大为管理员浏览全部私信"
+      ],
+      "dependencies": [
+        "A提供会话鉴权与禁用状态；B提供证据访问审计及适用文件能力",
+        "用户必须是会话参与人；发送者/接收者从会话推导",
+        "与I对齐私信未读和系统通知的展示入口，但数据与已读状态分别维护"
+      ],
+      "tests": [
+        "同两人并发建会话只复用一条，不能向自己建会话",
+        "非会话参与人无法读取/发送；发送后增量拉取不重不漏",
+        "只有接收者能标已读；单方删除不影响另一方历史",
+        "重复发送的幂等结果一致，不产生重复消息",
+        "管理员仅按授权案件取关联证据，处置留审计记录"
+      ],
+      "first": [
+        "先明确会话复用、游标方向与未读刷新，再做列表和聊天窗口",
+        "接入现有发送/已读过程，最后完成举报隐私和管理流程联测"
+      ],
+      "owner": "",
+      "implementation_status": "NOT_IMPLEMENTED",
+      "directory": "H_私信会话与举报处理",
+      "delivery_mode": "FULL_STACK",
+      "frontend_handoffs": [
+        "H实现会话列表、聊天、举报及管理处置页面，并提供发起会话组件，供C等模块的私信入口复用。",
+        "H提供私信未读入口与刷新逻辑供D接入公共导航；与I的系统通知未读计数分开维护。"
+      ],
+      "frontend_acceptance": [
+        "本人独立交付本模块用户端与管理端页面、后端接口、数据库增量变更和联调记录；页面范围按本任务书逐项核对。",
+        "页面接入D提供的公共布局和导航，复用A的统一请求与登录状态；成功、加载、空数据、失败、无权限和未启用状态均有明确反馈。",
+        "表单按既定契约检查必填、长度、类型和枚举；列表分页和详情刷新正确；编号和金额按字符串处理，时间按界面时区展示。",
+        "标记幂等键的操作在同一动作重试时复用原键；提交期间避免重复点击，失败恢复后前后端状态一致，不能只靠按钮禁用保证唯一处理。",
+        "从真实浏览器经真实HTTP请求完成本人模块正常与失败流程，保留前后端联调证据；替身响应、页面截图或文档样例不算完整开发验收。"
+      ]
+    },
+    {
+      "code": "I",
+      "name": "通知偏好与发布投递",
+      "ids": [
+        "API065",
+        "API066",
+        "API067",
+        "API068",
+        "API069",
+        "API070",
+        "API071",
+        "API103",
+        "API104",
+        "API105",
+        "API106",
+        "API107",
+        "API108",
+        "API109",
+        "API110"
+      ],
+      "count": 15,
+      "p0": 15,
+      "p1": 0,
+      "reason": "15个接口涉及通知生命周期、接收者快照和投递重试。适合状态流程、异步任务、管理表单和运行配置能力较强的成员。",
+      "pages": [
+        "站内通知列表详情、已读点击删除、通知偏好",
+        "通知草稿、编辑发布撤回、投递记录和失败重试"
+      ],
+      "foundation": [
+        "通知异步作业、接收者快照、投递去重与失败恢复",
+        "运行配置样例、启动顺序、作业启动/停止与部署说明汇总；A提供服务启动和权限配置，G提供数据库迁移顺序"
+      ],
+      "dependencies": [
+        "A提供管理职责权限与接收用户查询，B提供必要审计",
+        "其他模块调用通知事件入口时仅传业务事件，由I决定通知接收与去重规则；不得擅自新增HTTP路由",
+        "首期只交付站内通知；邮件短信等未配置渠道按原契约返回501"
+      ],
+      "tests": [
+        "草稿编辑、发布和撤回状态合法；不能重复建立同一收件记录",
+        "接收者快照建完才已发送；用户只见自己的通知",
+        "读取详情不隐式已读，read与click分别记录且重复调用一致",
+        "单次失败重试与后台并发作业不重复投递；渠道成功不等于已读",
+        "未接入渠道返回501；作业中断重启后可继续且不重复建立收件记录"
+      ],
+      "first": [
+        "先做站内通知查询与草稿管理，发布前确定快照和去重键",
+        "实现站内发布/重试，最后汇总运行配置与作业启动说明"
+      ],
+      "owner": "",
+      "implementation_status": "NOT_IMPLEMENTED",
+      "directory": "I_通知偏好与发布投递",
+      "delivery_mode": "FULL_STACK",
+      "frontend_handoffs": [
+        "I实现通知列表详情、偏好与管理发布投递页面，并提供通知未读入口组件供D接入公共导航。",
+        "I负责通知read/click/delete的交互与刷新，详情查看不能自动冒充已读或点击；邮件短信等未接渠道不能做成成功状态。"
+      ],
+      "frontend_acceptance": [
+        "本人独立交付本模块用户端与管理端页面、后端接口、数据库增量变更和联调记录；页面范围按本任务书逐项核对。",
+        "页面接入D提供的公共布局和导航，复用A的统一请求与登录状态；成功、加载、空数据、失败、无权限和未启用状态均有明确反馈。",
+        "表单按既定契约检查必填、长度、类型和枚举；列表分页和详情刷新正确；编号和金额按字符串处理，时间按界面时区展示。",
+        "标记幂等键的操作在同一动作重试时复用原键；提交期间避免重复点击，失败恢复后前后端状态一致，不能只靠按钮禁用保证唯一处理。",
+        "从真实浏览器经真实HTTP请求完成本人模块正常与失败流程，保留前后端联调证据；替身响应、页面截图或文档样例不算完整开发验收。"
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "id": "API001",
+      "option": "A",
+      "method": "POST",
+      "path": "/auth/register",
+      "title": "注册账号",
+      "phase": "P0"
+    },
+    {
+      "id": "API002",
+      "option": "A",
+      "method": "POST",
+      "path": "/auth/login",
+      "title": "账号密码登录",
+      "phase": "P0"
+    },
+    {
+      "id": "API003",
+      "option": "A",
+      "method": "POST",
+      "path": "/auth/logout",
+      "title": "注销当前会话",
+      "phase": "P0"
+    },
+    {
+      "id": "API004",
+      "option": "A",
+      "method": "POST",
+      "path": "/auth/recovery-challenges",
+      "title": "申请密码找回验证码",
+      "phase": "P1"
+    },
+    {
+      "id": "API005",
+      "option": "A",
+      "method": "POST",
+      "path": "/auth/password-reset",
+      "title": "凭验证码重置密码",
+      "phase": "P1"
+    },
+    {
+      "id": "API006",
+      "option": "A",
+      "method": "GET",
+      "path": "/me",
+      "title": "获取本人资料",
+      "phase": "P0"
+    },
+    {
+      "id": "API007",
+      "option": "A",
+      "method": "PATCH",
+      "path": "/me",
+      "title": "修改个人资料",
+      "phase": "P0"
+    },
+    {
+      "id": "API008",
+      "option": "A",
+      "method": "POST",
+      "path": "/me/password",
+      "title": "修改本人密码",
+      "phase": "P0"
+    },
+    {
+      "id": "API009",
+      "option": "A",
+      "method": "GET",
+      "path": "/users/{user_id}/profile",
+      "title": "获取公开用户摘要",
+      "phase": "P0"
+    },
+    {
+      "id": "API010",
+      "option": "B",
+      "method": "GET",
+      "path": "/me/verifications",
+      "title": "查询本人的认证申请",
+      "phase": "P0"
+    },
+    {
+      "id": "API011",
+      "option": "B",
+      "method": "POST",
+      "path": "/me/verifications",
+      "title": "提交实名或校园认证",
+      "phase": "P0"
+    },
+    {
+      "id": "API012",
+      "option": "C",
+      "method": "GET",
+      "path": "/categories",
+      "title": "获取分类列表",
+      "phase": "P0"
+    },
+    {
+      "id": "API013",
+      "option": "B",
+      "method": "POST",
+      "path": "/files",
+      "title": "上传一个业务文件",
+      "phase": "P0"
+    },
+    {
+      "id": "API014",
+      "option": "B",
+      "method": "GET",
+      "path": "/files/{file_id}/access",
+      "title": "获取文件临时访问地址",
+      "phase": "P0"
+    },
+    {
+      "id": "API015",
+      "option": "C",
+      "method": "GET",
+      "path": "/products",
+      "title": "查询公开在售商品",
+      "phase": "P0"
+    },
+    {
+      "id": "API016",
+      "option": "C",
+      "method": "GET",
+      "path": "/products/{product_id}",
+      "title": "获取商品详情",
+      "phase": "P0"
+    },
+    {
+      "id": "API017",
+      "option": "C",
+      "method": "GET",
+      "path": "/me/products",
+      "title": "查询本人发布商品",
+      "phase": "P0"
+    },
+    {
+      "id": "API018",
+      "option": "C",
+      "method": "POST",
+      "path": "/products",
+      "title": "发布商品",
+      "phase": "P0"
+    },
+    {
+      "id": "API019",
+      "option": "C",
+      "method": "PUT",
+      "path": "/products/{product_id}",
+      "title": "替换本人商品资料",
+      "phase": "P0"
+    },
+    {
+      "id": "API020",
+      "option": "C",
+      "method": "POST",
+      "path": "/products/{product_id}/shelf",
+      "title": "本人商品上架或下架",
+      "phase": "P0"
+    },
+    {
+      "id": "API021",
+      "option": "C",
+      "method": "PUT",
+      "path": "/products/{product_id}/favorite",
+      "title": "收藏商品",
+      "phase": "P0"
+    },
+    {
+      "id": "API022",
+      "option": "C",
+      "method": "DELETE",
+      "path": "/products/{product_id}/favorite",
+      "title": "取消商品收藏",
+      "phase": "P0"
+    },
+    {
+      "id": "API023",
+      "option": "C",
+      "method": "GET",
+      "path": "/me/product-favorites",
+      "title": "查询本人商品收藏",
+      "phase": "P0"
+    },
+    {
+      "id": "API024",
+      "option": "D",
+      "method": "GET",
+      "path": "/posts",
+      "title": "查询公开帖子",
+      "phase": "P0"
+    },
+    {
+      "id": "API025",
+      "option": "D",
+      "method": "GET",
+      "path": "/posts/{post_id}",
+      "title": "查看帖子详情",
+      "phase": "P0"
+    },
+    {
+      "id": "API026",
+      "option": "D",
+      "method": "GET",
+      "path": "/me/posts",
+      "title": "查询本人发布帖子",
+      "phase": "P0"
+    },
+    {
+      "id": "API027",
+      "option": "D",
+      "method": "POST",
+      "path": "/posts",
+      "title": "发布帖子",
+      "phase": "P0"
+    },
+    {
+      "id": "API028",
+      "option": "D",
+      "method": "PUT",
+      "path": "/posts/{post_id}",
+      "title": "替换本人帖子内容",
+      "phase": "P0"
+    },
+    {
+      "id": "API029",
+      "option": "D",
+      "method": "DELETE",
+      "path": "/posts/{post_id}",
+      "title": "删除本人帖子",
+      "phase": "P0"
+    },
+    {
+      "id": "API030",
+      "option": "D",
+      "method": "PUT",
+      "path": "/posts/{post_id}/collection",
+      "title": "收藏帖子",
+      "phase": "P0"
+    },
+    {
+      "id": "API031",
+      "option": "D",
+      "method": "DELETE",
+      "path": "/posts/{post_id}/collection",
+      "title": "取消帖子收藏",
+      "phase": "P0"
+    },
+    {
+      "id": "API032",
+      "option": "D",
+      "method": "GET",
+      "path": "/me/post-collections",
+      "title": "查询本人帖子收藏",
+      "phase": "P0"
+    },
+    {
+      "id": "API033",
+      "option": "E",
+      "method": "GET",
+      "path": "/tasks",
+      "title": "查询公开任务",
+      "phase": "P0"
+    },
+    {
+      "id": "API034",
+      "option": "E",
+      "method": "GET",
+      "path": "/tasks/{reward_task_id}",
+      "title": "获取任务详情",
+      "phase": "P0"
+    },
+    {
+      "id": "API035",
+      "option": "E",
+      "method": "GET",
+      "path": "/me/tasks",
+      "title": "查询本人发布或接取任务",
+      "phase": "P0"
+    },
+    {
+      "id": "API036",
+      "option": "E",
+      "method": "POST",
+      "path": "/tasks",
+      "title": "发布悬赏任务",
+      "phase": "P0"
+    },
+    {
+      "id": "API037",
+      "option": "E",
+      "method": "POST",
+      "path": "/tasks/{reward_task_id}/cancel",
+      "title": "取消本人未接取任务",
+      "phase": "P0"
+    },
+    {
+      "id": "API038",
+      "option": "E",
+      "method": "POST",
+      "path": "/tasks/{reward_task_id}/applications",
+      "title": "申请接取任务",
+      "phase": "P0"
+    },
+    {
+      "id": "API039",
+      "option": "E",
+      "method": "GET",
+      "path": "/me/task-applications",
+      "title": "查询本人接取申请",
+      "phase": "P0"
+    },
+    {
+      "id": "API040",
+      "option": "E",
+      "method": "POST",
+      "path": "/task-applications/{application_id}/cancel",
+      "title": "撤回本人待审核申请",
+      "phase": "P0"
+    },
+    {
+      "id": "API041",
+      "option": "F",
+      "method": "POST",
+      "path": "/tasks/{reward_task_id}/proofs",
+      "title": "提交任务完成凭证",
+      "phase": "P0"
+    },
+    {
+      "id": "API042",
+      "option": "F",
+      "method": "GET",
+      "path": "/tasks/{reward_task_id}/proofs",
+      "title": "查询任务凭证版本",
+      "phase": "P0"
+    },
+    {
+      "id": "API043",
+      "option": "F",
+      "method": "GET",
+      "path": "/tasks/{reward_task_id}/logs",
+      "title": "查询任务审核及状态记录",
+      "phase": "P0"
+    },
+    {
+      "id": "API044",
+      "option": "F",
+      "method": "GET",
+      "path": "/me/reward-accounts",
+      "title": "查询本人奖励余额",
+      "phase": "P0"
+    },
+    {
+      "id": "API045",
+      "option": "F",
+      "method": "GET",
+      "path": "/me/reward-ledger",
+      "title": "查询本人奖励流水",
+      "phase": "P0"
+    },
+    {
+      "id": "API046",
+      "option": "G",
+      "method": "POST",
+      "path": "/orders/product",
+      "title": "创建商品订单",
+      "phase": "P0"
+    },
+    {
+      "id": "API047",
+      "option": "G",
+      "method": "GET",
+      "path": "/me/orders",
+      "title": "查询本人订单",
+      "phase": "P0"
+    },
+    {
+      "id": "API048",
+      "option": "G",
+      "method": "GET",
+      "path": "/orders/{order_id}",
+      "title": "获取本人订单详情",
+      "phase": "P0"
+    },
+    {
+      "id": "API049",
+      "option": "G",
+      "method": "POST",
+      "path": "/orders/{order_id}/cancel",
+      "title": "取消待支付商品订单",
+      "phase": "P0"
+    },
+    {
+      "id": "API050",
+      "option": "G",
+      "method": "POST",
+      "path": "/orders/{order_id}/shipping",
+      "title": "确认商品交付或发货",
+      "phase": "P1"
+    },
+    {
+      "id": "API051",
+      "option": "G",
+      "method": "POST",
+      "path": "/orders/{order_id}/receipt",
+      "title": "买方确认收货",
+      "phase": "P1"
+    },
+    {
+      "id": "API052",
+      "option": "G",
+      "method": "POST",
+      "path": "/orders/{order_id}/payment-intents",
+      "title": "申请商品支付",
+      "phase": "P1"
+    },
+    {
+      "id": "API053",
+      "option": "G",
+      "method": "POST",
+      "path": "/aftersales",
+      "title": "申请订单售后",
+      "phase": "P1"
+    },
+    {
+      "id": "API054",
+      "option": "G",
+      "method": "GET",
+      "path": "/me/aftersales",
+      "title": "查询本人发起售后",
+      "phase": "P0"
+    },
+    {
+      "id": "API055",
+      "option": "G",
+      "method": "GET",
+      "path": "/aftersales/{aftersale_id}",
+      "title": "查询售后详情",
+      "phase": "P0"
+    },
+    {
+      "id": "API056",
+      "option": "G",
+      "method": "POST",
+      "path": "/aftersales/{aftersale_id}/cancel",
+      "title": "撤回本人待审核售后",
+      "phase": "P1"
+    },
+    {
+      "id": "API057",
+      "option": "H",
+      "method": "POST",
+      "path": "/chat-sessions",
+      "title": "发起或复用私信会话",
+      "phase": "P0"
+    },
+    {
+      "id": "API058",
+      "option": "H",
+      "method": "GET",
+      "path": "/chat-sessions",
+      "title": "查询本人会话列表",
+      "phase": "P0"
+    },
+    {
+      "id": "API059",
+      "option": "H",
+      "method": "GET",
+      "path": "/chat-sessions/{session_id}/messages",
+      "title": "查询会话消息",
+      "phase": "P0"
+    },
+    {
+      "id": "API060",
+      "option": "H",
+      "method": "POST",
+      "path": "/chat-sessions/{session_id}/messages",
+      "title": "发送私信",
+      "phase": "P0"
+    },
+    {
+      "id": "API061",
+      "option": "H",
+      "method": "PUT",
+      "path": "/messages/{msg_id}/read",
+      "title": "标记收到的私信已读",
+      "phase": "P0"
+    },
+    {
+      "id": "API062",
+      "option": "H",
+      "method": "DELETE",
+      "path": "/messages/{msg_id}",
+      "title": "单方删除私信",
+      "phase": "P0"
+    },
+    {
+      "id": "API063",
+      "option": "H",
+      "method": "POST",
+      "path": "/messages/{msg_id}/reports",
+      "title": "举报一条私信",
+      "phase": "P0"
+    },
+    {
+      "id": "API064",
+      "option": "H",
+      "method": "GET",
+      "path": "/me/message-reports",
+      "title": "查询本人私信举报",
+      "phase": "P0"
+    },
+    {
+      "id": "API065",
+      "option": "I",
+      "method": "GET",
+      "path": "/me/notifications",
+      "title": "查询本人通知",
+      "phase": "P0"
+    },
+    {
+      "id": "API066",
+      "option": "I",
+      "method": "GET",
+      "path": "/me/notifications/{notification_id}",
+      "title": "获取通知详情",
+      "phase": "P0"
+    },
+    {
+      "id": "API067",
+      "option": "I",
+      "method": "PUT",
+      "path": "/me/notifications/{notification_id}/read",
+      "title": "标记通知已读",
+      "phase": "P0"
+    },
+    {
+      "id": "API068",
+      "option": "I",
+      "method": "PUT",
+      "path": "/me/notifications/{notification_id}/click",
+      "title": "记录通知点击",
+      "phase": "P0"
+    },
+    {
+      "id": "API069",
+      "option": "I",
+      "method": "DELETE",
+      "path": "/me/notifications/{notification_id}",
+      "title": "删除本人通知",
+      "phase": "P0"
+    },
+    {
+      "id": "API070",
+      "option": "I",
+      "method": "GET",
+      "path": "/me/notification-preferences",
+      "title": "获取通知偏好",
+      "phase": "P0"
+    },
+    {
+      "id": "API071",
+      "option": "I",
+      "method": "PUT",
+      "path": "/me/notification-preferences",
+      "title": "替换通知偏好",
+      "phase": "P0"
+    },
+    {
+      "id": "API072",
+      "option": "A",
+      "method": "GET",
+      "path": "/admin/users",
+      "title": "查询用户列表",
+      "phase": "P0"
+    },
+    {
+      "id": "API073",
+      "option": "A",
+      "method": "GET",
+      "path": "/admin/users/{user_id}",
+      "title": "获取管理用户详情",
+      "phase": "P0"
+    },
+    {
+      "id": "API074",
+      "option": "A",
+      "method": "POST",
+      "path": "/admin/users/{user_id}/status",
+      "title": "启用或禁用用户",
+      "phase": "P0"
+    },
+    {
+      "id": "API075",
+      "option": "A",
+      "method": "POST",
+      "path": "/admin/users/{user_id}/role",
+      "title": "调整用户角色",
+      "phase": "P0"
+    },
+    {
+      "id": "API076",
+      "option": "B",
+      "method": "GET",
+      "path": "/admin/verifications",
+      "title": "查询认证审核队列",
+      "phase": "P0"
+    },
+    {
+      "id": "API077",
+      "option": "B",
+      "method": "GET",
+      "path": "/admin/verifications/{verification_id}",
+      "title": "获取认证审核详情",
+      "phase": "P0"
+    },
+    {
+      "id": "API078",
+      "option": "B",
+      "method": "POST",
+      "path": "/admin/verifications/{verification_id}/review",
+      "title": "审核认证申请",
+      "phase": "P0"
+    },
+    {
+      "id": "API079",
+      "option": "C",
+      "method": "GET",
+      "path": "/admin/products",
+      "title": "查询全部商品及审核队列",
+      "phase": "P0"
+    },
+    {
+      "id": "API080",
+      "option": "C",
+      "method": "POST",
+      "path": "/admin/products/{product_id}/review",
+      "title": "审核商品",
+      "phase": "P0"
+    },
+    {
+      "id": "API081",
+      "option": "C",
+      "method": "POST",
+      "path": "/admin/products/{product_id}/shelf",
+      "title": "管理商品上下架",
+      "phase": "P0"
+    },
+    {
+      "id": "API082",
+      "option": "C",
+      "method": "POST",
+      "path": "/admin/categories",
+      "title": "创建分类",
+      "phase": "P0"
+    },
+    {
+      "id": "API083",
+      "option": "C",
+      "method": "PUT",
+      "path": "/admin/categories/{category_id}",
+      "title": "替换分类名称与描述",
+      "phase": "P0"
+    },
+    {
+      "id": "API084",
+      "option": "C",
+      "method": "DELETE",
+      "path": "/admin/categories/{category_id}",
+      "title": "删除无引用分类",
+      "phase": "P0"
+    },
+    {
+      "id": "API085",
+      "option": "D",
+      "method": "GET",
+      "path": "/admin/posts",
+      "title": "查询帖子审核队列",
+      "phase": "P0"
+    },
+    {
+      "id": "API086",
+      "option": "D",
+      "method": "POST",
+      "path": "/admin/posts/{post_id}/review",
+      "title": "审核帖子",
+      "phase": "P0"
+    },
+    {
+      "id": "API087",
+      "option": "D",
+      "method": "POST",
+      "path": "/admin/posts/{post_id}/withdraw",
+      "title": "下架违规帖子",
+      "phase": "P0"
+    },
+    {
+      "id": "API088",
+      "option": "E",
+      "method": "GET",
+      "path": "/admin/tasks",
+      "title": "查询全部任务",
+      "phase": "P0"
+    },
+    {
+      "id": "API089",
+      "option": "E",
+      "method": "POST",
+      "path": "/admin/tasks/{reward_task_id}/publication-review",
+      "title": "审核任务发布",
+      "phase": "P0"
+    },
+    {
+      "id": "API090",
+      "option": "E",
+      "method": "GET",
+      "path": "/admin/task-applications",
+      "title": "查询待分配接取申请",
+      "phase": "P0"
+    },
+    {
+      "id": "API091",
+      "option": "E",
+      "method": "POST",
+      "path": "/admin/task-applications/{application_id}/review",
+      "title": "审批任务接取申请",
+      "phase": "P0"
+    },
+    {
+      "id": "API092",
+      "option": "F",
+      "method": "GET",
+      "path": "/admin/task-proofs",
+      "title": "查询任务凭证审核队列",
+      "phase": "P0"
+    },
+    {
+      "id": "API093",
+      "option": "F",
+      "method": "POST",
+      "path": "/admin/task-proofs/{proof_id}/review",
+      "title": "验收任务完成凭证",
+      "phase": "P0"
+    },
+    {
+      "id": "API094",
+      "option": "F",
+      "method": "POST",
+      "path": "/admin/tasks/{reward_task_id}/close",
+      "title": "管理关闭任务",
+      "phase": "P0"
+    },
+    {
+      "id": "API095",
+      "option": "G",
+      "method": "GET",
+      "path": "/admin/orders",
+      "title": "查询全部订单",
+      "phase": "P0"
+    },
+    {
+      "id": "API096",
+      "option": "G",
+      "method": "GET",
+      "path": "/admin/orders/{order_id}",
+      "title": "获取管理订单详情",
+      "phase": "P0"
+    },
+    {
+      "id": "API097",
+      "option": "G",
+      "method": "POST",
+      "path": "/admin/orders/{order_id}/cancel",
+      "title": "管理取消待支付商品订单",
+      "phase": "P0"
+    },
+    {
+      "id": "API098",
+      "option": "G",
+      "method": "GET",
+      "path": "/admin/aftersales",
+      "title": "查询售后审核队列",
+      "phase": "P0"
+    },
+    {
+      "id": "API099",
+      "option": "G",
+      "method": "POST",
+      "path": "/admin/aftersales/{aftersale_id}/review",
+      "title": "审核售后申请",
+      "phase": "P1"
+    },
+    {
+      "id": "API100",
+      "option": "H",
+      "method": "GET",
+      "path": "/admin/message-reports",
+      "title": "查询举报队列",
+      "phase": "P0"
+    },
+    {
+      "id": "API101",
+      "option": "H",
+      "method": "GET",
+      "path": "/admin/message-reports/{report_id}",
+      "title": "查看举报及关联消息证据",
+      "phase": "P0"
+    },
+    {
+      "id": "API102",
+      "option": "H",
+      "method": "POST",
+      "path": "/admin/message-reports/{report_id}/review",
+      "title": "处理私信举报",
+      "phase": "P0"
+    },
+    {
+      "id": "API103",
+      "option": "I",
+      "method": "GET",
+      "path": "/admin/notifications",
+      "title": "查询管理通知",
+      "phase": "P0"
+    },
+    {
+      "id": "API104",
+      "option": "I",
+      "method": "POST",
+      "path": "/admin/notifications",
+      "title": "创建通知草稿",
+      "phase": "P0"
+    },
+    {
+      "id": "API105",
+      "option": "I",
+      "method": "GET",
+      "path": "/admin/notifications/{notification_id}",
+      "title": "获取管理通知详情",
+      "phase": "P0"
+    },
+    {
+      "id": "API106",
+      "option": "I",
+      "method": "PUT",
+      "path": "/admin/notifications/{notification_id}",
+      "title": "替换通知草稿",
+      "phase": "P0"
+    },
+    {
+      "id": "API107",
+      "option": "I",
+      "method": "POST",
+      "path": "/admin/notifications/{notification_id}/publish",
+      "title": "审核并发布通知",
+      "phase": "P0"
+    },
+    {
+      "id": "API108",
+      "option": "I",
+      "method": "POST",
+      "path": "/admin/notifications/{notification_id}/withdraw",
+      "title": "撤回通知",
+      "phase": "P0"
+    },
+    {
+      "id": "API109",
+      "option": "I",
+      "method": "GET",
+      "path": "/admin/notifications/{notification_id}/deliveries",
+      "title": "查询通知投递尝试",
+      "phase": "P0"
+    },
+    {
+      "id": "API110",
+      "option": "I",
+      "method": "POST",
+      "path": "/admin/notification-deliveries/{delivery_id}/retry",
+      "title": "重试一次失败投递",
+      "phase": "P0"
+    },
+    {
+      "id": "API111",
+      "option": "D",
+      "method": "GET",
+      "path": "/admin/dashboard",
+      "title": "查询基础数量与成交汇总",
+      "phase": "P0"
+    },
+    {
+      "id": "API112",
+      "option": "B",
+      "method": "GET",
+      "path": "/admin/audit-logs",
+      "title": "查询管理操作日志",
+      "phase": "P0"
+    }
+  ]
+}

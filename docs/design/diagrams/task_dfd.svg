@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="850" viewBox="0 0 1500 850">
+<rect width="100%" height="100%" fill="white"/>
+<text x="513.0" y="58" font-family="Microsoft YaHei" font-size="38" fill="#1c2738">P6 悬赏任务第二层数据流图</text>
+<rect x="35" y="330" width="205" height="150" fill="#f4f6fa" stroke="#aab4c2" stroke-width="2"/>
+<text x="104.0" y="416" font-family="Microsoft YaHei" font-size="33" fill="#1c2738">用户</text>
+<rect x="570" y="140" width="420" height="140" fill="#eef2fa" stroke="#aab4c2" stroke-width="2"/>
+<text x="692.0" y="216" font-family="Microsoft YaHei" font-size="28" fill="#1c2738">P6.1 发布任务</text>
+<polyline points="240,370 360,370 360,205 570,205" fill="none" stroke="#72829b" stroke-width="3"/>
+<polygon points="570,205 557.1051460839597,210.4518567923211 557.1051460839597,199.5481432076789" fill="#72829b"/>
+<text x="270" y="179" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">任务内容与奖励</text>
+<rect x="1110" y="140" width="370" height="140" fill="white" stroke="#aab4c2" stroke-width="2"/>
+<polyline points="1133,140 1133,280" fill="none" stroke="#72829b" stroke-width="3"/>
+<text x="1216.0" y="180" font-family="Microsoft YaHei" font-size="26" fill="#1c2738">D 任务及奖励</text>
+<text x="1150" y="212" font-family="Microsoft YaHei" font-size="20" fill="#1c2738">RewardTasks</text>
+<text x="1150" y="238" font-family="Microsoft YaHei" font-size="20" fill="#1c2738">reward_accounts</text>
+<text x="1150" y="264" font-family="Microsoft YaHei" font-size="20" fill="#1c2738">reward_ledger</text>
+<polyline points="990,210 1110,210" fill="none" stroke="#72829b" stroke-width="3"/>
+<polygon points="1110,210 1097.1051460839597,215.4518567923211 1097.1051460839597,204.5481432076789" fill="#72829b"/>
+<rect x="570" y="365" width="420" height="140" fill="#eef2fa" stroke="#aab4c2" stroke-width="2"/>
+<text x="692.0" y="441" font-family="Microsoft YaHei" font-size="28" fill="#1c2738">P6.2 申请接取</text>
+<polyline points="240,392 405,392 405,430 570,430" fill="none" stroke="#72829b" stroke-width="3"/>
+<polygon points="570,430 557.1051460839597,435.4518567923211 557.1051460839597,424.5481432076789" fill="#72829b"/>
+<text x="270" y="404" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">任务编号与申请</text>
+<rect x="1110" y="365" width="370" height="140" fill="white" stroke="#aab4c2" stroke-width="2"/>
+<polyline points="1133,365 1133,505" fill="none" stroke="#72829b" stroke-width="3"/>
+<text x="1229.0" y="405" font-family="Microsoft YaHei" font-size="26" fill="#1c2738">D 接取申请</text>
+<text x="1150" y="437" font-family="Microsoft YaHei" font-size="20" fill="#1c2738">task_applications</text>
+<text x="1150" y="463" font-family="Microsoft YaHei" font-size="20" fill="#1c2738">RewardTasks</text>
+<polyline points="990,435 1110,435" fill="none" stroke="#72829b" stroke-width="3"/>
+<polygon points="1110,435 1097.1051460839597,440.4518567923211 1097.1051460839597,429.5481432076789" fill="#72829b"/>
+<rect x="570" y="590" width="420" height="140" fill="#eef2fa" stroke="#aab4c2" stroke-width="2"/>
+<text x="664.0" y="666" font-family="Microsoft YaHei" font-size="28" fill="#1c2738">P6.3 提交完成凭证</text>
+<polyline points="240,414 450,414 450,655 570,655" fill="none" stroke="#72829b" stroke-width="3"/>
+<polygon points="570,655 557.1051460839597,660.4518567923211 557.1051460839597,649.5481432076789" fill="#72829b"/>
+<text x="270" y="629" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">任务说明与附件</text>
+<rect x="1110" y="590" width="370" height="140" fill="white" stroke="#aab4c2" stroke-width="2"/>
+<polyline points="1133,590 1133,730" fill="none" stroke="#72829b" stroke-width="3"/>
+<text x="1216.0" y="630" font-family="Microsoft YaHei" font-size="26" fill="#1c2738">D 凭证及订单</text>
+<text x="1150" y="662" font-family="Microsoft YaHei" font-size="20" fill="#1c2738">task_proofs</text>
+<text x="1150" y="688" font-family="Microsoft YaHei" font-size="20" fill="#1c2738">RewardTasks</text>
+<text x="1150" y="714" font-family="Microsoft YaHei" font-size="20" fill="#1c2738">user_orders</text>
+<polyline points="990,660 1110,660" fill="none" stroke="#72829b" stroke-width="3"/>
+<polygon points="1110,660 1097.1051460839597,665.4518567923211 1097.1051460839597,654.5481432076789" fill="#72829b"/>
+<text x="352.0" y="834" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">箭头表示业务数据流  数据库存储按本版表名映射  返回结果由对应处理产生</text>
+</svg>

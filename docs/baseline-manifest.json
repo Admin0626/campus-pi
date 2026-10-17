@@ -1,0 +1,276 @@
+{
+  "version": "1.0",
+  "assets": [
+    {
+      "path": "docs/design/校园Π软件工程设计报告修订版.docx",
+      "origin": "校园Π软件工程设计报告修订版.docx",
+      "mode": "raw-bytes",
+      "sha256": "7a7718bed3fb8f824115077b1de4339c646b7642852e9c2be3dede02466a4dcc"
+    },
+    {
+      "path": "docs/design/diagrams/accept.svg",
+      "origin": "accept.svg",
+      "mode": "utf8-lf",
+      "sha256": "5679e082f21e6c3ee7e7f8da1b045db4de60728297f12efc1edda3c78901c9c6"
+    },
+    {
+      "path": "docs/design/diagrams/admin_task.svg",
+      "origin": "admin_task.svg",
+      "mode": "utf8-lf",
+      "sha256": "ab8529631fbb759672426856397ebff1aa595aa5355cedc8b600a8be251a99dd"
+    },
+    {
+      "path": "docs/design/diagrams/admin_task_dfd.svg",
+      "origin": "admin_task_dfd.svg",
+      "mode": "utf8-lf",
+      "sha256": "75ee367e059c03044bba4cd26eb72f4914f9e4b22221b87777d97dea4aea5aa2"
+    },
+    {
+      "path": "docs/design/diagrams/checkout_ui.svg",
+      "origin": "checkout_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "7d5803bde8a6fb55a8d5a79db7487aba638ae5878d4efafb0710bc6c63a5792d"
+    },
+    {
+      "path": "docs/design/diagrams/er_identity.svg",
+      "origin": "er_identity.svg",
+      "mode": "utf8-lf",
+      "sha256": "dfd52a6b23751e20583a567ca4dcc69160c990b80970198ea17282b2cab3b104"
+    },
+    {
+      "path": "docs/design/diagrams/er_message.svg",
+      "origin": "er_message.svg",
+      "mode": "utf8-lf",
+      "sha256": "8bb524221a5b6b579848b700b236cb66248916cedbdb51f5e333dde0a97a1f5d"
+    },
+    {
+      "path": "docs/design/diagrams/er_order.svg",
+      "origin": "er_order.svg",
+      "mode": "utf8-lf",
+      "sha256": "1819588762d8c8e4632766ceda7a674687431a089254199506b3357f8194ac17"
+    },
+    {
+      "path": "docs/design/diagrams/er_task.svg",
+      "origin": "er_task.svg",
+      "mode": "utf8-lf",
+      "sha256": "a3796e2d2e78a82789e18753d806bb32710f4f01266b918b4162d204ab37ef34"
+    },
+    {
+      "path": "docs/design/diagrams/login.svg",
+      "origin": "login.svg",
+      "mode": "utf8-lf",
+      "sha256": "8ba4d5efbe2b93f704d895027758523f785000f1b7b8c25b29f739c36fdd9698"
+    },
+    {
+      "path": "docs/design/diagrams/login_ui.svg",
+      "origin": "login_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "76cda827f218d451eb82e981ddd88d19cfd23f350855038b15438ad0e85a4ab9"
+    },
+    {
+      "path": "docs/design/diagrams/order.svg",
+      "origin": "order.svg",
+      "mode": "utf8-lf",
+      "sha256": "5fb4452422c4e6253cfa9469c6e1c33e0cb2f5a92a644118eb568f0203cbc3df"
+    },
+    {
+      "path": "docs/design/diagrams/order_admin_ui.svg",
+      "origin": "order_admin_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "85f9d09033fba4cbe78b469713750bf6aebc30edeae45649fd86e6023fca936b"
+    },
+    {
+      "path": "docs/design/diagrams/order_detail_ui.svg",
+      "origin": "order_detail_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "4b8cca0bccc748232de132b27446f0699b1e802dc91efbc249000e6ef329bc0b"
+    },
+    {
+      "path": "docs/design/diagrams/order_list_ui.svg",
+      "origin": "order_list_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "0d99e1891b25f7140c166aceb85ae24284037822aa9a8df5381bbbab5016f8ee"
+    },
+    {
+      "path": "docs/design/diagrams/post_collect.svg",
+      "origin": "post_collect.svg",
+      "mode": "utf8-lf",
+      "sha256": "515bd814a0556677a40f819e858404b43219cd24fbf0efe171ae6eb19cdbdcd1"
+    },
+    {
+      "path": "docs/design/diagrams/post_delete.svg",
+      "origin": "post_delete.svg",
+      "mode": "utf8-lf",
+      "sha256": "5f665fbc35f0a13e1c3fc1df2f6af619017c41d9089165352e18020530ccbf7c"
+    },
+    {
+      "path": "docs/design/diagrams/post_publish.svg",
+      "origin": "post_publish.svg",
+      "mode": "utf8-lf",
+      "sha256": "97fe435bbc317cbcc6b777d4eac1903676705492d757b7acaa9f051127b44fbb"
+    },
+    {
+      "path": "docs/design/diagrams/product_admin_ui.svg",
+      "origin": "product_admin_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "077d8c763b3a58946997691f08840634227c3801a3d1c9f45303499283ec520f"
+    },
+    {
+      "path": "docs/design/diagrams/profile.svg",
+      "origin": "profile.svg",
+      "mode": "utf8-lf",
+      "sha256": "9824bf9183a30981be1407eddb9ca0d07d1dbb657ec68a095546d964a4117c58"
+    },
+    {
+      "path": "docs/design/diagrams/proof.svg",
+      "origin": "proof.svg",
+      "mode": "utf8-lf",
+      "sha256": "50c1533c524d56e95aa777eda640d4313336d76cbb5f8bf2442d3f5d8ad121f2"
+    },
+    {
+      "path": "docs/design/diagrams/publish.svg",
+      "origin": "publish.svg",
+      "mode": "utf8-lf",
+      "sha256": "b8f5529a7bba6d3b91d9bc1934f8d615effc094bce2a2aa4c664627a12c0591a"
+    },
+    {
+      "path": "docs/design/diagrams/register.svg",
+      "origin": "register.svg",
+      "mode": "utf8-lf",
+      "sha256": "1da1cdeee45f0f844bf5574d74c3ddd2699579f90562d6617dbc439bb58360c3"
+    },
+    {
+      "path": "docs/design/diagrams/register_ui.svg",
+      "origin": "register_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "42762efd5b8ac06621f9161099b5a2167d36207b5a04b9efa49613bc80977b72"
+    },
+    {
+      "path": "docs/design/diagrams/task_active_ui.svg",
+      "origin": "task_active_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "236627343351614c84705e1e969ad53f231031ffdadbe0d8dfc9af547474f08f"
+    },
+    {
+      "path": "docs/design/diagrams/task_admin_ui.svg",
+      "origin": "task_admin_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "3815a2411aab23631d079ce4ccd8fc8fe881e91904709a5ec0e6481e1600362f"
+    },
+    {
+      "path": "docs/design/diagrams/task_audit_ui.svg",
+      "origin": "task_audit_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "2ad807d019f487621c53997d6a752ff5d0505d32d59f50dc68ce87ace9d4a76b"
+    },
+    {
+      "path": "docs/design/diagrams/task_detail_ui.svg",
+      "origin": "task_detail_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "e251b241173a33709e505b4f966fa54c6244ca321bfecd4ba74a7ed8f4899cfd"
+    },
+    {
+      "path": "docs/design/diagrams/task_dfd.svg",
+      "origin": "task_dfd.svg",
+      "mode": "utf8-lf",
+      "sha256": "d51593f06d1137a60959009419f75a23d6af61db48afc013cb6b4435e6e6c1b5"
+    },
+    {
+      "path": "docs/design/diagrams/task_list_ui.svg",
+      "origin": "task_list_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "e9d0097c75663e957e84180836405d87151d419a9ffa25a24f405f820ac584e9"
+    },
+    {
+      "path": "docs/design/diagrams/task_review_ui.svg",
+      "origin": "task_review_ui.svg",
+      "mode": "utf8-lf",
+      "sha256": "eab3db022d2bfeecc2ce2c6f88899a3a412537996c08c29c2bdcd9771eeae479"
+    },
+    {
+      "path": "docs/api/校园Π接口开发规范.docx",
+      "origin": "校园Π接口开发规范.docx",
+      "mode": "raw-bytes",
+      "sha256": "3710277d69a6f5e3bda60c75f852af46380dfb744cd8976ed60919f3bfca50ee"
+    },
+    {
+      "path": "docs/api/校园Π接口开发规范.md",
+      "origin": "校园Π接口开发规范.md",
+      "mode": "utf8-lf",
+      "sha256": "e0eae42bb728d8fe15b21a174020de6e2d60ee331c1a985b198f3db1de47821d"
+    },
+    {
+      "path": "docs/api/campus-pi-openapi.json",
+      "origin": "campus-pi-openapi.json",
+      "mode": "utf8-lf",
+      "sha256": "36a52578f7a5307a73f61acdf0b957c5df15876e90e2eb9a99af2d8889d5f416"
+    },
+    {
+      "path": "docs/api/接口设计决定与落地清单.md",
+      "origin": "接口设计决定与落地清单.md",
+      "mode": "utf8-lf",
+      "sha256": "60696a9106edf1017ebe33b00951a6c93b698eec1358cb8ddf078692319df30e"
+    },
+    {
+      "path": "database/schema/01_数据库结构.sql",
+      "origin": "01_数据库结构.sql",
+      "mode": "utf8-lf",
+      "sha256": "c8d940351bf491f613a1bd82d9ec9ae2d0f0ca4b015a76c73bc9fe4be0392c7f"
+    },
+    {
+      "path": "database/transactions/02_核心业务事务.sql",
+      "origin": "02_核心业务事务.sql",
+      "mode": "utf8-lf",
+      "sha256": "e89fa3e1807956ecfd3c53f996f0b95ec05f8379c698fc83c714a2c3c2169017"
+    },
+    {
+      "path": "database/seeds/03_合成测试数据.sql",
+      "origin": "03_合成测试数据.sql",
+      "mode": "utf8-lf",
+      "sha256": "e8125dcf4b0359fc63dc66fba74672cf81e12f9228fc1b5bac8690a9bfdc06eb"
+    },
+    {
+      "path": "database/verification/04_自动验收.py",
+      "origin": "04_自动验收.py",
+      "mode": "utf8-lf",
+      "sha256": "dd438b8e4c617f6e906904c34e603012116fe16e97352153a425cdbf77914a24"
+    },
+    {
+      "path": "database/verification/mysql_driver.py",
+      "origin": "mysql_driver.py",
+      "mode": "utf8-lf",
+      "sha256": "797096f25e0d0aada115ebfdf760041b124595f55c88ddb3c2f5c7e1b54589fa"
+    },
+    {
+      "path": "database/verification/requirements.txt",
+      "origin": "requirements.txt",
+      "mode": "utf8-lf",
+      "sha256": "c67e46e02fbf360e3b2717a25e623bac2ad99d14d9b8def50b9e767ec39e6446"
+    },
+    {
+      "path": "docs/verification/database/校园Π问题修复过程与验证记录.docx",
+      "origin": "校园Π问题修复过程与验证记录.docx",
+      "mode": "raw-bytes",
+      "sha256": "93d7cf1a630a0ecf8ac024c384ac104f4bdcfab70c522848dcf2dcff4c77158a"
+    },
+    {
+      "path": "docs/verification/database/修复过程与使用说明.md",
+      "origin": "修复过程与使用说明.md",
+      "mode": "utf8-lf",
+      "sha256": "0db0a02915192f0e9137e940be7c033c48965b75f85dc484b76007b58f42e9ee"
+    },
+    {
+      "path": "docs/verification/database/验证记录.json",
+      "origin": "验证记录.json",
+      "mode": "utf8-lf",
+      "sha256": "6937be19381e17a47c2597972ade05ee3e051202c8a9a01e06ad1a7ab47b60f4"
+    },
+    {
+      "path": "docs/verification/database/验证记录.txt",
+      "origin": "验证记录.txt",
+      "mode": "utf8-lf",
+      "sha256": "354bf42d21e0541ffd104204a7b2478c6521ec44aae277387ff43998b546f35f"
+    }
+  ],
+  "notes": "导入原始设计/API/SQL及历史证据；文本按UTF-8和LF校验，DOCX按原始字节。更新基线需复核并显式更新清单。"
+}
