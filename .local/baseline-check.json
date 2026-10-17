@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "baseline_assets": 45,
+  "api_operations": 112,
+  "api_paths": 94,
+  "options": 9,
+  "P0": 104,
+  "P1": 8,
+  "ownership": "UNIQUE_AND_COMPLETE",
+  "schema_references": "RESOLVED",
+  "markdown_links": "PASS",
+  "sql_objects": {
+    "tables": 25,
+    "procedures": 12,
+    "triggers": 4
+  },
+  "sql_executed": false,
+  "business_http_tests_run": false,
+  "note": "Static consistency checks only; not full OpenAPI schema validation or application acceptance."
+}

@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "vue_app_rendered": true,
+  "module_labels": 9,
+  "mobile_width": 320,
+  "horizontal_overflow": false,
+  "development_proxy_to_spring_boot": true,
+  "unimplemented_route_http_status": 404,
+  "error_contract": "PASS",
+  "browser_errors": [],
+  "business_apis_implemented": 0,
+  "database_connected": false
+}
