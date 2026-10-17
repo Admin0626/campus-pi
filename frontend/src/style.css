@@ -1,0 +1,13 @@
+:root { font-family: "Microsoft YaHei", system-ui, sans-serif; color: #18332c; background: #f4f7f5; line-height: 1.7; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 850px; margin: 55px auto; padding: 0 24px; }
+h1 { font-size: clamp(25px, 5vw, 36px); line-height: 1.35; }
+h2 { font-size: 20px; margin-top: 35px; }
+.eyebrow { font-size: 13px; letter-spacing: 2px; color: #216c54; }
+.status { color: #52675e; }
+ul { padding: 0; list-style: none; }
+li { display: flex; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid #d4ded7; }
+li strong { width: 20px; flex-shrink: 0; }
+.pending { margin-left: auto; color: #68776f; font-size: 13px; white-space: nowrap; }
+@media (max-width: 450px) { main { margin: 28px auto; padding: 0 18px; } li { gap: 10px; } }

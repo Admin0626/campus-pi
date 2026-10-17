@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1280" viewBox="0 0 640 1280">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="12" y="12" width="616" height="1256" fill="white" stroke="#202735" stroke-width="9"/>
+<text x="50" y="60" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">9:41</text>
+<text x="231.0" y="209" font-family="Microsoft YaHei" font-size="64" fill="#3b55c6">校园Π</text>
+<text x="244.0" y="295" font-family="Microsoft YaHei" font-size="38" fill="#1c2738">任务详情</text>
+<text x="229.0" y="344" font-family="Microsoft YaHei" font-size="24" fill="#1c2738">代取快递  东校区</text>
+<text x="52" y="430" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">任务状态</text>
+<rect x="50" y="448" width="540" height="74" fill="white" stroke="#b5bdc9" stroke-width="2"/>
+<text x="70" y="492" font-family="Microsoft YaHei" font-size="23" fill="#667085">待接取</text>
+<text x="52" y="585" font-family="Microsoft YaHei" font-size="25" fill="#1c2738">奖励与要求</text>
+<rect x="50" y="603" width="540" height="74" fill="white" stroke="#b5bdc9" stroke-width="2"/>
+<text x="70" y="647" font-family="Microsoft YaHei" font-size="23" fill="#667085">20积分  交付后提交凭证</text>
+<rect x="50" y="820" width="540" height="85" fill="#3b55c6" stroke="#3b55c6" stroke-width="2"/>
+<text x="260.0" y="871" font-family="Microsoft YaHei" font-size="30" fill="white">申请接取</text>
+<text x="170.5" y="983" font-family="Microsoft YaHei" font-size="23" fill="#536078">申请审核通过后才进入进行中</text>
+<text x="182.0" y="1029" font-family="Microsoft YaHei" font-size="23" fill="#536078">发布者不能申请自己的任务</text>
+</svg>
