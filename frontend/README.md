@@ -19,3 +19,5 @@ npm run build
 ```
 
 原图归属、对应页面及尚未实现的原图控件见 [Word界面对照](../docs/verification/Word界面对照.md)。后台独立登录入口为 `/admin/login`。
+
+数据分析页面已按原Word图5-36提供JSON模拟版本，入口 `/admin/modules/analytics`。模拟数据位于 `public/mock/analytics.json`；加载、周期切换、图表交互、明细和CSV导出说明见 [数据可视化页面](../docs/development/数据可视化页面.md)。真实统计后端尚未接入。

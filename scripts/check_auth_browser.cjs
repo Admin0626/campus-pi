@@ -136,6 +136,8 @@ const local = JSON.parse(
   await page.getByLabel("操作原因", { exact: true }).fill("浏览器联调停用");
   await page.getByRole("button", { name: "确认操作", exact: true }).click();
   await page.getByRole("dialog").waitFor({ state: "hidden" });
+  // Closing the dialog precedes the shared list/detail loading state settling.
+  await page.getByRole("button", { name: "启用账号", exact: true }).waitFor();
   ok(
     await page
       .getByRole("button", { name: "启用账号", exact: true })

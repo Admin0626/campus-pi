@@ -11,6 +11,7 @@
 |5-18|[我的原图](../../frontend/public/word-reference/me.png)|`/me`；小程序me|紫色个人区、三项统计、服务及设置卡片、底部导航；真实本人数据，未提供数据用—|
 |5-23|[后台登录原图](../../frontend/public/word-reference/admin-login.png)|`/admin/login`|原城市横幅、原电脑插图、橙色卡片、真实账号密码表单|
 |5-28|[用户管理原图](../../frontend/public/word-reference/admin-users.png)|`/admin/users`|深色侧栏、紫色选中态、工具栏、筛选、表格列、查看/编辑/禁用/日志与分页|
+|5-36|[数据分析原图](../../frontend/public/word-reference/analytics.png)|`/admin/modules/analytics`|四个指标卡、用户增长趋势、交易类型饼图、月度交易柱状图、内容分类环形图；按用户要求使用JSON模拟数据|
 
 原图PNG直接复制自原Word的嵌入图片，文件SHA256及对应关系保存在 [资产清单](word-reference-manifest.json)。建筑Logo、第三方图标、输入图标及后台装饰以CSS裁切原图指定区域显示；输入框、按钮、列表均为真实组件，没有把整张截图当成可操作页面。
 
@@ -36,3 +37,5 @@
 |微信运行|独立编译与Node宿主适配器不是微信渲染器；真实AppID、request域名、认证IDE及真机显示仍待验收|
 
 界面对照不代表全部业务完成，也不改变原112项API契约、25表和九人分工。验证记录见 [账号功能验证记录](账号功能验证记录.md)。
+
+后续数据可视化页面按图5-36制作，详细口径与验证范围见 [数据可视化页面说明](../development/数据可视化页面.md)。统计展示当前为合成JSON，未接真实统计接口。

@@ -78,11 +78,18 @@ const local = JSON.parse(
   for (const [name, code] of adminEntries) {
     await page.getByRole("button", { name, exact: true }).click();
     await page
-      .getByRole("heading", { name: name + "还在开发", exact: true })
+      .getByRole("heading", {
+        name: code === "analytics" ? "用户增长趋势" : name + "还在开发",
+        exact: true,
+      })
       .waitFor();
     ok(
       page.url().endsWith("/admin/modules/" + code),
-      "admin " + name + " placeholder reachable",
+      "admin " +
+        name +
+        (code === "analytics"
+          ? " mock page reachable"
+          : " placeholder reachable"),
     );
   }
   await page.getByRole("button", { name: "用户端", exact: true }).click();

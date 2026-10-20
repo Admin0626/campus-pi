@@ -39,6 +39,12 @@
       "extracted_name": "image93.png",
       "asset": "frontend/public/word-reference/admin-users.png",
       "sha256": "32cc2b1a2141fcf2844751079180e0020629b03f44ab71ed853e8b2d2d648f89"
+    },
+    {
+      "figure": "5-36",
+      "extracted_name": "image101.png",
+      "asset": "frontend/public/word-reference/analytics.png",
+      "sha256": "91969340a87e4c134ca60e4c3e222759157d15e51ece986c8701328c5f3761fd"
     }
   ]
 }

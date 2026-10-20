@@ -1,0 +1,6854 @@
+{
+  "schemaVersion": 1,
+  "source": "MOCK",
+  "description": "全部为固定JSON合成数据，不代表实际校园用户、交易或运营统计。",
+  "asOf": "2026-10-21",
+  "timeZone": "Asia/Shanghai",
+  "currency": "CNY",
+  "amountUnit": "fen",
+  "openingUsers": 10320,
+  "tradeCategories": [
+    {
+      "id": "electronics",
+      "name": "电子产品",
+      "color": "#5141ed"
+    },
+    {
+      "id": "books",
+      "name": "图书教材",
+      "color": "#009b72"
+    },
+    {
+      "id": "clothing",
+      "name": "服饰鞋包",
+      "color": "#ff7815"
+    },
+    {
+      "id": "daily",
+      "name": "生活用品",
+      "color": "#8c58f5"
+    },
+    {
+      "id": "other",
+      "name": "其他",
+      "color": "#6b7280"
+    }
+  ],
+  "contentCategories": [
+    {
+      "id": "market",
+      "name": "二手交易",
+      "color": "#5141ed"
+    },
+    {
+      "id": "tasks",
+      "name": "悬赏任务",
+      "color": "#009b72"
+    },
+    {
+      "id": "study",
+      "name": "学习交流",
+      "color": "#ff7815"
+    },
+    {
+      "id": "campus",
+      "name": "校园资讯",
+      "color": "#8c58f5"
+    },
+    {
+      "id": "other",
+      "name": "其他",
+      "color": "#93d7c2"
+    }
+  ],
+  "periods": {
+    "week": {
+      "label": "本周",
+      "start": "2026-10-19",
+      "end": "2026-10-21",
+      "comparisonStart": "2026-10-12",
+      "comparisonEnd": "2026-10-14",
+      "activeUsers": 4272,
+      "comparisonActiveUsers": 4245
+    },
+    "month": {
+      "label": "本月",
+      "start": "2026-10-01",
+      "end": "2026-10-21",
+      "comparisonStart": "2026-09-01",
+      "comparisonEnd": "2026-09-21",
+      "activeUsers": 11764,
+      "comparisonActiveUsers": 11721
+    },
+    "quarter": {
+      "label": "本季度",
+      "start": "2026-10-01",
+      "end": "2026-10-21",
+      "comparisonStart": "2026-07-01",
+      "comparisonEnd": "2026-07-21",
+      "activeUsers": 11764,
+      "comparisonActiveUsers": 10854
+    }
+  },
+  "monthlyActiveUsers": {
+    "2025-11": 10839,
+    "2025-12": 11117,
+    "2026-01": 11565,
+    "2026-02": 11311,
+    "2026-03": 12255,
+    "2026-04": 12239,
+    "2026-05": 12325,
+    "2026-06": 11766,
+    "2026-07": 11906,
+    "2026-08": 11992,
+    "2026-09": 12471,
+    "2026-10": 11764
+  },
+  "daily": [
+    {
+      "date": "2025-11-01",
+      "newUsers": 35,
+      "activeUsers": 1387,
+      "tradeAmountFen": {
+        "electronics": 770717,
+        "books": 491518,
+        "clothing": 318958,
+        "daily": 361912,
+        "other": 144495
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 19,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2025-11-02",
+      "newUsers": 27,
+      "activeUsers": 1438,
+      "tradeAmountFen": {
+        "electronics": 725308,
+        "books": 514993,
+        "clothing": 320569,
+        "daily": 344625,
+        "other": 155105
+      },
+      "contentCounts": {
+        "market": 51,
+        "tasks": 31,
+        "study": 18,
+        "campus": 20,
+        "other": 8
+      }
+    },
+    {
+      "date": "2025-11-03",
+      "newUsers": 21,
+      "activeUsers": 1300,
+      "tradeAmountFen": {
+        "electronics": 580468,
+        "books": 378650,
+        "clothing": 240354,
+        "daily": 243175,
+        "other": 120653
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-04",
+      "newUsers": 29,
+      "activeUsers": 1207,
+      "tradeAmountFen": {
+        "electronics": 623976,
+        "books": 452101,
+        "clothing": 283407,
+        "daily": 287547,
+        "other": 126369
+      },
+      "contentCounts": {
+        "market": 50,
+        "tasks": 30,
+        "study": 18,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-05",
+      "newUsers": 34,
+      "activeUsers": 1120,
+      "tradeAmountFen": {
+        "electronics": 647230,
+        "books": 428921,
+        "clothing": 286410,
+        "daily": 283729,
+        "other": 119510
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-11-06",
+      "newUsers": 28,
+      "activeUsers": 1106,
+      "tradeAmountFen": {
+        "electronics": 566658,
+        "books": 393505,
+        "clothing": 239300,
+        "daily": 258126,
+        "other": 119711
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-07",
+      "newUsers": 27,
+      "activeUsers": 1252,
+      "tradeAmountFen": {
+        "electronics": 668468,
+        "books": 475058,
+        "clothing": 295281,
+        "daily": 291754,
+        "other": 126039
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-08",
+      "newUsers": 24,
+      "activeUsers": 1448,
+      "tradeAmountFen": {
+        "electronics": 715285,
+        "books": 514357,
+        "clothing": 316078,
+        "daily": 319053,
+        "other": 133627
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-09",
+      "newUsers": 33,
+      "activeUsers": 1190,
+      "tradeAmountFen": {
+        "electronics": 750247,
+        "books": 556544,
+        "clothing": 340218,
+        "daily": 370106,
+        "other": 135885
+      },
+      "contentCounts": {
+        "market": 37,
+        "tasks": 22,
+        "study": 13,
+        "campus": 15,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-11-10",
+      "newUsers": 34,
+      "activeUsers": 1371,
+      "tradeAmountFen": {
+        "electronics": 638448,
+        "books": 459720,
+        "clothing": 269265,
+        "daily": 302091,
+        "other": 130876
+      },
+      "contentCounts": {
+        "market": 55,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2025-11-11",
+      "newUsers": 40,
+      "activeUsers": 1164,
+      "tradeAmountFen": {
+        "electronics": 721565,
+        "books": 471263,
+        "clothing": 291247,
+        "daily": 318225,
+        "other": 131900
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-12",
+      "newUsers": 35,
+      "activeUsers": 1394,
+      "tradeAmountFen": {
+        "electronics": 553824,
+        "books": 361068,
+        "clothing": 238187,
+        "daily": 252381,
+        "other": 86640
+      },
+      "contentCounts": {
+        "market": 51,
+        "tasks": 30,
+        "study": 18,
+        "campus": 20,
+        "other": 8
+      }
+    },
+    {
+      "date": "2025-11-13",
+      "newUsers": 44,
+      "activeUsers": 1404,
+      "tradeAmountFen": {
+        "electronics": 689653,
+        "books": 512445,
+        "clothing": 290233,
+        "daily": 312966,
+        "other": 114903
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2025-11-14",
+      "newUsers": 34,
+      "activeUsers": 1367,
+      "tradeAmountFen": {
+        "electronics": 621638,
+        "books": 396460,
+        "clothing": 252136,
+        "daily": 269995,
+        "other": 105171
+      },
+      "contentCounts": {
+        "market": 50,
+        "tasks": 30,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-15",
+      "newUsers": 40,
+      "activeUsers": 1266,
+      "tradeAmountFen": {
+        "electronics": 660078,
+        "books": 447417,
+        "clothing": 297011,
+        "daily": 322469,
+        "other": 127425
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-16",
+      "newUsers": 27,
+      "activeUsers": 1555,
+      "tradeAmountFen": {
+        "electronics": 801339,
+        "books": 564499,
+        "clothing": 343024,
+        "daily": 372472,
+        "other": 147666
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 9
+      }
+    },
+    {
+      "date": "2025-11-17",
+      "newUsers": 27,
+      "activeUsers": 1183,
+      "tradeAmountFen": {
+        "electronics": 568944,
+        "books": 410129,
+        "clothing": 240137,
+        "daily": 266919,
+        "other": 105471
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 8
+      }
+    },
+    {
+      "date": "2025-11-18",
+      "newUsers": 41,
+      "activeUsers": 1404,
+      "tradeAmountFen": {
+        "electronics": 552747,
+        "books": 364330,
+        "clothing": 232075,
+        "daily": 252563,
+        "other": 121185
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-11-19",
+      "newUsers": 21,
+      "activeUsers": 1185,
+      "tradeAmountFen": {
+        "electronics": 556036,
+        "books": 392329,
+        "clothing": 232794,
+        "daily": 261458,
+        "other": 95483
+      },
+      "contentCounts": {
+        "market": 57,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2025-11-20",
+      "newUsers": 39,
+      "activeUsers": 1259,
+      "tradeAmountFen": {
+        "electronics": 594172,
+        "books": 422085,
+        "clothing": 250727,
+        "daily": 270257,
+        "other": 121859
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-11-21",
+      "newUsers": 32,
+      "activeUsers": 1229,
+      "tradeAmountFen": {
+        "electronics": 619665,
+        "books": 456437,
+        "clothing": 277195,
+        "daily": 276040,
+        "other": 123863
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-22",
+      "newUsers": 39,
+      "activeUsers": 1577,
+      "tradeAmountFen": {
+        "electronics": 707972,
+        "books": 503897,
+        "clothing": 296223,
+        "daily": 330445,
+        "other": 126963
+      },
+      "contentCounts": {
+        "market": 57,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 9
+      }
+    },
+    {
+      "date": "2025-11-23",
+      "newUsers": 38,
+      "activeUsers": 1448,
+      "tradeAmountFen": {
+        "electronics": 786451,
+        "books": 546877,
+        "clothing": 320449,
+        "daily": 358650,
+        "other": 125373
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-11-24",
+      "newUsers": 23,
+      "activeUsers": 1165,
+      "tradeAmountFen": {
+        "electronics": 661552,
+        "books": 449447,
+        "clothing": 275940,
+        "daily": 307961,
+        "other": 134300
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2025-11-25",
+      "newUsers": 37,
+      "activeUsers": 1318,
+      "tradeAmountFen": {
+        "electronics": 640530,
+        "books": 431951,
+        "clothing": 256908,
+        "daily": 282964,
+        "other": 110647
+      },
+      "contentCounts": {
+        "market": 38,
+        "tasks": 23,
+        "study": 13,
+        "campus": 15,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-26",
+      "newUsers": 34,
+      "activeUsers": 1136,
+      "tradeAmountFen": {
+        "electronics": 583774,
+        "books": 419831,
+        "clothing": 243125,
+        "daily": 269103,
+        "other": 102967
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-27",
+      "newUsers": 34,
+      "activeUsers": 1269,
+      "tradeAmountFen": {
+        "electronics": 684522,
+        "books": 480674,
+        "clothing": 277931,
+        "daily": 286980,
+        "other": 109393
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-11-28",
+      "newUsers": 36,
+      "activeUsers": 1166,
+      "tradeAmountFen": {
+        "electronics": 586626,
+        "books": 407104,
+        "clothing": 239494,
+        "daily": 253459,
+        "other": 98517
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-11-29",
+      "newUsers": 29,
+      "activeUsers": 1418,
+      "tradeAmountFen": {
+        "electronics": 886624,
+        "books": 556969,
+        "clothing": 363951,
+        "daily": 403327,
+        "other": 161329
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-11-30",
+      "newUsers": 20,
+      "activeUsers": 1242,
+      "tradeAmountFen": {
+        "electronics": 677768,
+        "books": 481391,
+        "clothing": 315216,
+        "daily": 328107,
+        "other": 127618
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-12-01",
+      "newUsers": 28,
+      "activeUsers": 948,
+      "tradeAmountFen": {
+        "electronics": 467488,
+        "books": 330399,
+        "clothing": 189477,
+        "daily": 205565,
+        "other": 85171
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-12-02",
+      "newUsers": 24,
+      "activeUsers": 1078,
+      "tradeAmountFen": {
+        "electronics": 514221,
+        "books": 357180,
+        "clothing": 206165,
+        "daily": 239137,
+        "other": 103097
+      },
+      "contentCounts": {
+        "market": 31,
+        "tasks": 19,
+        "study": 11,
+        "campus": 12,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-03",
+      "newUsers": 26,
+      "activeUsers": 1100,
+      "tradeAmountFen": {
+        "electronics": 500459,
+        "books": 324290,
+        "clothing": 204182,
+        "daily": 208926,
+        "other": 80043
+      },
+      "contentCounts": {
+        "market": 33,
+        "tasks": 20,
+        "study": 12,
+        "campus": 13,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-04",
+      "newUsers": 26,
+      "activeUsers": 976,
+      "tradeAmountFen": {
+        "electronics": 509045,
+        "books": 339196,
+        "clothing": 201390,
+        "daily": 234790,
+        "other": 87279
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-12-05",
+      "newUsers": 35,
+      "activeUsers": 844,
+      "tradeAmountFen": {
+        "electronics": 479915,
+        "books": 345480,
+        "clothing": 218420,
+        "daily": 226727,
+        "other": 104858
+      },
+      "contentCounts": {
+        "market": 34,
+        "tasks": 20,
+        "study": 12,
+        "campus": 14,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-06",
+      "newUsers": 23,
+      "activeUsers": 1174,
+      "tradeAmountFen": {
+        "electronics": 533496,
+        "books": 362813,
+        "clothing": 213402,
+        "daily": 246371,
+        "other": 104518
+      },
+      "contentCounts": {
+        "market": 36,
+        "tasks": 22,
+        "study": 13,
+        "campus": 15,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-07",
+      "newUsers": 24,
+      "activeUsers": 1154,
+      "tradeAmountFen": {
+        "electronics": 693788,
+        "books": 455666,
+        "clothing": 294936,
+        "daily": 291277,
+        "other": 120633
+      },
+      "contentCounts": {
+        "market": 39,
+        "tasks": 23,
+        "study": 14,
+        "campus": 16,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-08",
+      "newUsers": 28,
+      "activeUsers": 1081,
+      "tradeAmountFen": {
+        "electronics": 458382,
+        "books": 323302,
+        "clothing": 198567,
+        "daily": 195339,
+        "other": 88910
+      },
+      "contentCounts": {
+        "market": 35,
+        "tasks": 21,
+        "study": 12,
+        "campus": 14,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-09",
+      "newUsers": 28,
+      "activeUsers": 1106,
+      "tradeAmountFen": {
+        "electronics": 519802,
+        "books": 365044,
+        "clothing": 234157,
+        "daily": 240080,
+        "other": 93217
+      },
+      "contentCounts": {
+        "market": 34,
+        "tasks": 20,
+        "study": 12,
+        "campus": 14,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-10",
+      "newUsers": 33,
+      "activeUsers": 974,
+      "tradeAmountFen": {
+        "electronics": 478728,
+        "books": 311003,
+        "clothing": 201293,
+        "daily": 207925,
+        "other": 92751
+      },
+      "contentCounts": {
+        "market": 43,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-12-11",
+      "newUsers": 20,
+      "activeUsers": 982,
+      "tradeAmountFen": {
+        "electronics": 476072,
+        "books": 318217,
+        "clothing": 206075,
+        "daily": 214490,
+        "other": 83646
+      },
+      "contentCounts": {
+        "market": 31,
+        "tasks": 19,
+        "study": 11,
+        "campus": 12,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-12",
+      "newUsers": 24,
+      "activeUsers": 977,
+      "tradeAmountFen": {
+        "electronics": 446301,
+        "books": 315088,
+        "clothing": 183096,
+        "daily": 192136,
+        "other": 78679
+      },
+      "contentCounts": {
+        "market": 34,
+        "tasks": 20,
+        "study": 12,
+        "campus": 13,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-13",
+      "newUsers": 24,
+      "activeUsers": 1074,
+      "tradeAmountFen": {
+        "electronics": 649278,
+        "books": 464213,
+        "clothing": 270557,
+        "daily": 305644,
+        "other": 138008
+      },
+      "contentCounts": {
+        "market": 31,
+        "tasks": 19,
+        "study": 11,
+        "campus": 12,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-14",
+      "newUsers": 29,
+      "activeUsers": 1139,
+      "tradeAmountFen": {
+        "electronics": 555681,
+        "books": 367509,
+        "clothing": 220154,
+        "daily": 251021,
+        "other": 115835
+      },
+      "contentCounts": {
+        "market": 33,
+        "tasks": 20,
+        "study": 12,
+        "campus": 13,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-15",
+      "newUsers": 26,
+      "activeUsers": 969,
+      "tradeAmountFen": {
+        "electronics": 507044,
+        "books": 355773,
+        "clothing": 219313,
+        "daily": 230415,
+        "other": 93455
+      },
+      "contentCounts": {
+        "market": 41,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-12-16",
+      "newUsers": 20,
+      "activeUsers": 1119,
+      "tradeAmountFen": {
+        "electronics": 516702,
+        "books": 346548,
+        "clothing": 224527,
+        "daily": 225422,
+        "other": 98601
+      },
+      "contentCounts": {
+        "market": 36,
+        "tasks": 22,
+        "study": 13,
+        "campus": 14,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-17",
+      "newUsers": 24,
+      "activeUsers": 871,
+      "tradeAmountFen": {
+        "electronics": 501399,
+        "books": 352268,
+        "clothing": 208208,
+        "daily": 247011,
+        "other": 84814
+      },
+      "contentCounts": {
+        "market": 41,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-12-18",
+      "newUsers": 36,
+      "activeUsers": 931,
+      "tradeAmountFen": {
+        "electronics": 477042,
+        "books": 336445,
+        "clothing": 208675,
+        "daily": 229512,
+        "other": 98126
+      },
+      "contentCounts": {
+        "market": 38,
+        "tasks": 23,
+        "study": 13,
+        "campus": 15,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-19",
+      "newUsers": 20,
+      "activeUsers": 958,
+      "tradeAmountFen": {
+        "electronics": 453970,
+        "books": 308198,
+        "clothing": 192528,
+        "daily": 213882,
+        "other": 95922
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-20",
+      "newUsers": 19,
+      "activeUsers": 951,
+      "tradeAmountFen": {
+        "electronics": 628399,
+        "books": 415065,
+        "clothing": 276383,
+        "daily": 289209,
+        "other": 110444
+      },
+      "contentCounts": {
+        "market": 43,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-12-21",
+      "newUsers": 30,
+      "activeUsers": 1034,
+      "tradeAmountFen": {
+        "electronics": 652300,
+        "books": 448179,
+        "clothing": 283295,
+        "daily": 320144,
+        "other": 113882
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-12-22",
+      "newUsers": 28,
+      "activeUsers": 898,
+      "tradeAmountFen": {
+        "electronics": 529086,
+        "books": 370129,
+        "clothing": 216017,
+        "daily": 235286,
+        "other": 99382
+      },
+      "contentCounts": {
+        "market": 38,
+        "tasks": 23,
+        "study": 13,
+        "campus": 15,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-12-23",
+      "newUsers": 19,
+      "activeUsers": 1051,
+      "tradeAmountFen": {
+        "electronics": 553420,
+        "books": 394894,
+        "clothing": 223236,
+        "daily": 246597,
+        "other": 100953
+      },
+      "contentCounts": {
+        "market": 32,
+        "tasks": 19,
+        "study": 11,
+        "campus": 13,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-24",
+      "newUsers": 20,
+      "activeUsers": 1065,
+      "tradeAmountFen": {
+        "electronics": 549090,
+        "books": 368366,
+        "clothing": 221517,
+        "daily": 238578,
+        "other": 100049
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-25",
+      "newUsers": 20,
+      "activeUsers": 946,
+      "tradeAmountFen": {
+        "electronics": 536190,
+        "books": 367569,
+        "clothing": 220469,
+        "daily": 243490,
+        "other": 96882
+      },
+      "contentCounts": {
+        "market": 41,
+        "tasks": 25,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-12-26",
+      "newUsers": 23,
+      "activeUsers": 1033,
+      "tradeAmountFen": {
+        "electronics": 551069,
+        "books": 370714,
+        "clothing": 228816,
+        "daily": 257041,
+        "other": 115760
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-12-27",
+      "newUsers": 29,
+      "activeUsers": 1022,
+      "tradeAmountFen": {
+        "electronics": 585646,
+        "books": 399104,
+        "clothing": 267575,
+        "daily": 273789,
+        "other": 124186
+      },
+      "contentCounts": {
+        "market": 36,
+        "tasks": 21,
+        "study": 12,
+        "campus": 14,
+        "other": 6
+      }
+    },
+    {
+      "date": "2025-12-28",
+      "newUsers": 25,
+      "activeUsers": 956,
+      "tradeAmountFen": {
+        "electronics": 626878,
+        "books": 450234,
+        "clothing": 274439,
+        "daily": 306804,
+        "other": 107145
+      },
+      "contentCounts": {
+        "market": 38,
+        "tasks": 23,
+        "study": 13,
+        "campus": 15,
+        "other": 7
+      }
+    },
+    {
+      "date": "2025-12-29",
+      "newUsers": 34,
+      "activeUsers": 896,
+      "tradeAmountFen": {
+        "electronics": 601011,
+        "books": 394118,
+        "clothing": 254096,
+        "daily": 258176,
+        "other": 103599
+      },
+      "contentCounts": {
+        "market": 33,
+        "tasks": 20,
+        "study": 12,
+        "campus": 13,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-30",
+      "newUsers": 26,
+      "activeUsers": 1063,
+      "tradeAmountFen": {
+        "electronics": 519216,
+        "books": 350417,
+        "clothing": 221836,
+        "daily": 238105,
+        "other": 87426
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 5
+      }
+    },
+    {
+      "date": "2025-12-31",
+      "newUsers": 22,
+      "activeUsers": 939,
+      "tradeAmountFen": {
+        "electronics": 477521,
+        "books": 324122,
+        "clothing": 200843,
+        "daily": 228173,
+        "other": 98241
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-01",
+      "newUsers": 28,
+      "activeUsers": 1043,
+      "tradeAmountFen": {
+        "electronics": 561858,
+        "books": 401458,
+        "clothing": 254746,
+        "daily": 255889,
+        "other": 120449
+      },
+      "contentCounts": {
+        "market": 39,
+        "tasks": 23,
+        "study": 14,
+        "campus": 16,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-02",
+      "newUsers": 19,
+      "activeUsers": 1123,
+      "tradeAmountFen": {
+        "electronics": 506133,
+        "books": 367293,
+        "clothing": 227268,
+        "daily": 244557,
+        "other": 90149
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-03",
+      "newUsers": 29,
+      "activeUsers": 1100,
+      "tradeAmountFen": {
+        "electronics": 546171,
+        "books": 387752,
+        "clothing": 221392,
+        "daily": 245747,
+        "other": 114838
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-04",
+      "newUsers": 29,
+      "activeUsers": 1157,
+      "tradeAmountFen": {
+        "electronics": 557674,
+        "books": 359447,
+        "clothing": 224849,
+        "daily": 252461,
+        "other": 95969
+      },
+      "contentCounts": {
+        "market": 32,
+        "tasks": 19,
+        "study": 11,
+        "campus": 13,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-05",
+      "newUsers": 20,
+      "activeUsers": 982,
+      "tradeAmountFen": {
+        "electronics": 529414,
+        "books": 379043,
+        "clothing": 219899,
+        "daily": 227123,
+        "other": 91121
+      },
+      "contentCounts": {
+        "market": 36,
+        "tasks": 22,
+        "study": 13,
+        "campus": 14,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-06",
+      "newUsers": 30,
+      "activeUsers": 1053,
+      "tradeAmountFen": {
+        "electronics": 459545,
+        "books": 291827,
+        "clothing": 199066,
+        "daily": 202371,
+        "other": 84091
+      },
+      "contentCounts": {
+        "market": 36,
+        "tasks": 22,
+        "study": 13,
+        "campus": 14,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-07",
+      "newUsers": 25,
+      "activeUsers": 1092,
+      "tradeAmountFen": {
+        "electronics": 434295,
+        "books": 314787,
+        "clothing": 182977,
+        "daily": 205804,
+        "other": 91037
+      },
+      "contentCounts": {
+        "market": 43,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-08",
+      "newUsers": 33,
+      "activeUsers": 1047,
+      "tradeAmountFen": {
+        "electronics": 467338,
+        "books": 312304,
+        "clothing": 218486,
+        "daily": 221665,
+        "other": 98707
+      },
+      "contentCounts": {
+        "market": 39,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-09",
+      "newUsers": 20,
+      "activeUsers": 956,
+      "tradeAmountFen": {
+        "electronics": 552425,
+        "books": 377961,
+        "clothing": 231512,
+        "daily": 244897,
+        "other": 115305
+      },
+      "contentCounts": {
+        "market": 43,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-01-10",
+      "newUsers": 32,
+      "activeUsers": 1095,
+      "tradeAmountFen": {
+        "electronics": 634702,
+        "books": 457726,
+        "clothing": 274115,
+        "daily": 309181,
+        "other": 122376
+      },
+      "contentCounts": {
+        "market": 36,
+        "tasks": 21,
+        "study": 12,
+        "campus": 14,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-01-11",
+      "newUsers": 27,
+      "activeUsers": 1075,
+      "tradeAmountFen": {
+        "electronics": 706218,
+        "books": 456882,
+        "clothing": 301510,
+        "daily": 325192,
+        "other": 131798
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-12",
+      "newUsers": 38,
+      "activeUsers": 877,
+      "tradeAmountFen": {
+        "electronics": 495096,
+        "books": 343764,
+        "clothing": 224858,
+        "daily": 221979,
+        "other": 88903
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-13",
+      "newUsers": 20,
+      "activeUsers": 996,
+      "tradeAmountFen": {
+        "electronics": 491333,
+        "books": 340733,
+        "clothing": 211052,
+        "daily": 213294,
+        "other": 102488
+      },
+      "contentCounts": {
+        "market": 38,
+        "tasks": 23,
+        "study": 13,
+        "campus": 15,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-01-14",
+      "newUsers": 30,
+      "activeUsers": 1047,
+      "tradeAmountFen": {
+        "electronics": 582689,
+        "books": 390361,
+        "clothing": 255286,
+        "daily": 253873,
+        "other": 107291
+      },
+      "contentCounts": {
+        "market": 35,
+        "tasks": 21,
+        "study": 12,
+        "campus": 14,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-01-15",
+      "newUsers": 38,
+      "activeUsers": 1085,
+      "tradeAmountFen": {
+        "electronics": 487390,
+        "books": 342944,
+        "clothing": 212082,
+        "daily": 236203,
+        "other": 95281
+      },
+      "contentCounts": {
+        "market": 34,
+        "tasks": 20,
+        "study": 12,
+        "campus": 14,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-16",
+      "newUsers": 23,
+      "activeUsers": 1028,
+      "tradeAmountFen": {
+        "electronics": 528710,
+        "books": 346114,
+        "clothing": 225139,
+        "daily": 237727,
+        "other": 94910
+      },
+      "contentCounts": {
+        "market": 34,
+        "tasks": 21,
+        "study": 12,
+        "campus": 14,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-17",
+      "newUsers": 27,
+      "activeUsers": 1282,
+      "tradeAmountFen": {
+        "electronics": 676707,
+        "books": 453337,
+        "clothing": 314525,
+        "daily": 326718,
+        "other": 141513
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-18",
+      "newUsers": 33,
+      "activeUsers": 1095,
+      "tradeAmountFen": {
+        "electronics": 581021,
+        "books": 408895,
+        "clothing": 241791,
+        "daily": 261736,
+        "other": 104757
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-19",
+      "newUsers": 29,
+      "activeUsers": 1154,
+      "tradeAmountFen": {
+        "electronics": 470808,
+        "books": 343974,
+        "clothing": 207205,
+        "daily": 214060,
+        "other": 91253
+      },
+      "contentCounts": {
+        "market": 33,
+        "tasks": 20,
+        "study": 11,
+        "campus": 13,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-20",
+      "newUsers": 28,
+      "activeUsers": 990,
+      "tradeAmountFen": {
+        "electronics": 462331,
+        "books": 303323,
+        "clothing": 191974,
+        "daily": 223135,
+        "other": 98037
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 17,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-21",
+      "newUsers": 20,
+      "activeUsers": 1158,
+      "tradeAmountFen": {
+        "electronics": 517003,
+        "books": 361911,
+        "clothing": 208388,
+        "daily": 223681,
+        "other": 98717
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-22",
+      "newUsers": 36,
+      "activeUsers": 906,
+      "tradeAmountFen": {
+        "electronics": 562338,
+        "books": 380284,
+        "clothing": 253098,
+        "daily": 258127,
+        "other": 108053
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 17,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-23",
+      "newUsers": 29,
+      "activeUsers": 1010,
+      "tradeAmountFen": {
+        "electronics": 579428,
+        "books": 407166,
+        "clothing": 264794,
+        "daily": 285438,
+        "other": 109074
+      },
+      "contentCounts": {
+        "market": 39,
+        "tasks": 23,
+        "study": 14,
+        "campus": 16,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-24",
+      "newUsers": 18,
+      "activeUsers": 985,
+      "tradeAmountFen": {
+        "electronics": 623960,
+        "books": 406691,
+        "clothing": 251418,
+        "daily": 290178,
+        "other": 112753
+      },
+      "contentCounts": {
+        "market": 43,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-25",
+      "newUsers": 21,
+      "activeUsers": 1144,
+      "tradeAmountFen": {
+        "electronics": 547126,
+        "books": 393672,
+        "clothing": 227076,
+        "daily": 264733,
+        "other": 108693
+      },
+      "contentCounts": {
+        "market": 39,
+        "tasks": 23,
+        "study": 14,
+        "campus": 16,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-01-26",
+      "newUsers": 32,
+      "activeUsers": 1156,
+      "tradeAmountFen": {
+        "electronics": 457506,
+        "books": 306677,
+        "clothing": 204570,
+        "daily": 217401,
+        "other": 96246
+      },
+      "contentCounts": {
+        "market": 41,
+        "tasks": 25,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-27",
+      "newUsers": 23,
+      "activeUsers": 947,
+      "tradeAmountFen": {
+        "electronics": 510487,
+        "books": 357799,
+        "clothing": 229315,
+        "daily": 230764,
+        "other": 106235
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-28",
+      "newUsers": 24,
+      "activeUsers": 1030,
+      "tradeAmountFen": {
+        "electronics": 532724,
+        "books": 383564,
+        "clothing": 234180,
+        "daily": 235234,
+        "other": 110098
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-29",
+      "newUsers": 26,
+      "activeUsers": 1111,
+      "tradeAmountFen": {
+        "electronics": 477413,
+        "books": 306416,
+        "clothing": 205202,
+        "daily": 206977,
+        "other": 88492
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 17,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-30",
+      "newUsers": 28,
+      "activeUsers": 1098,
+      "tradeAmountFen": {
+        "electronics": 529311,
+        "books": 381283,
+        "clothing": 222723,
+        "daily": 246564,
+        "other": 108419
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-01-31",
+      "newUsers": 21,
+      "activeUsers": 986,
+      "tradeAmountFen": {
+        "electronics": 689643,
+        "books": 460164,
+        "clothing": 314137,
+        "daily": 313535,
+        "other": 116521
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-01",
+      "newUsers": 25,
+      "activeUsers": 1079,
+      "tradeAmountFen": {
+        "electronics": 578767,
+        "books": 417284,
+        "clothing": 243720,
+        "daily": 262887,
+        "other": 101342
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-02",
+      "newUsers": 25,
+      "activeUsers": 1121,
+      "tradeAmountFen": {
+        "electronics": 559914,
+        "books": 367575,
+        "clothing": 224259,
+        "daily": 251793,
+        "other": 88459
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-03",
+      "newUsers": 32,
+      "activeUsers": 941,
+      "tradeAmountFen": {
+        "electronics": 571087,
+        "books": 395961,
+        "clothing": 261216,
+        "daily": 266932,
+        "other": 116804
+      },
+      "contentCounts": {
+        "market": 36,
+        "tasks": 22,
+        "study": 13,
+        "campus": 15,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-02-04",
+      "newUsers": 38,
+      "activeUsers": 912,
+      "tradeAmountFen": {
+        "electronics": 477797,
+        "books": 341836,
+        "clothing": 203911,
+        "daily": 220078,
+        "other": 95178
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-05",
+      "newUsers": 27,
+      "activeUsers": 1155,
+      "tradeAmountFen": {
+        "electronics": 496247,
+        "books": 346140,
+        "clothing": 225422,
+        "daily": 217806,
+        "other": 81485
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-06",
+      "newUsers": 31,
+      "activeUsers": 1087,
+      "tradeAmountFen": {
+        "electronics": 486313,
+        "books": 322570,
+        "clothing": 205342,
+        "daily": 212598,
+        "other": 78377
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-02-07",
+      "newUsers": 22,
+      "activeUsers": 1027,
+      "tradeAmountFen": {
+        "electronics": 620786,
+        "books": 405316,
+        "clothing": 247519,
+        "daily": 278074,
+        "other": 127705
+      },
+      "contentCounts": {
+        "market": 34,
+        "tasks": 21,
+        "study": 12,
+        "campus": 14,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-02-08",
+      "newUsers": 27,
+      "activeUsers": 1285,
+      "tradeAmountFen": {
+        "electronics": 635038,
+        "books": 405979,
+        "clothing": 255765,
+        "daily": 300382,
+        "other": 120936
+      },
+      "contentCounts": {
+        "market": 35,
+        "tasks": 21,
+        "study": 12,
+        "campus": 14,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-02-09",
+      "newUsers": 33,
+      "activeUsers": 1064,
+      "tradeAmountFen": {
+        "electronics": 603406,
+        "books": 393145,
+        "clothing": 261738,
+        "daily": 266972,
+        "other": 106039
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-02-10",
+      "newUsers": 27,
+      "activeUsers": 1062,
+      "tradeAmountFen": {
+        "electronics": 486349,
+        "books": 355116,
+        "clothing": 221640,
+        "daily": 229001,
+        "other": 98694
+      },
+      "contentCounts": {
+        "market": 37,
+        "tasks": 22,
+        "study": 13,
+        "campus": 15,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-02-11",
+      "newUsers": 39,
+      "activeUsers": 951,
+      "tradeAmountFen": {
+        "electronics": 542004,
+        "books": 380985,
+        "clothing": 237563,
+        "daily": 255070,
+        "other": 115678
+      },
+      "contentCounts": {
+        "market": 37,
+        "tasks": 22,
+        "study": 13,
+        "campus": 15,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-02-12",
+      "newUsers": 39,
+      "activeUsers": 1023,
+      "tradeAmountFen": {
+        "electronics": 535113,
+        "books": 359991,
+        "clothing": 243443,
+        "daily": 240551,
+        "other": 95302
+      },
+      "contentCounts": {
+        "market": 34,
+        "tasks": 20,
+        "study": 12,
+        "campus": 13,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-02-13",
+      "newUsers": 26,
+      "activeUsers": 903,
+      "tradeAmountFen": {
+        "electronics": 507742,
+        "books": 369087,
+        "clothing": 210492,
+        "daily": 229285,
+        "other": 86794
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-02-14",
+      "newUsers": 25,
+      "activeUsers": 1231,
+      "tradeAmountFen": {
+        "electronics": 659842,
+        "books": 426962,
+        "clothing": 274853,
+        "daily": 278398,
+        "other": 104045
+      },
+      "contentCounts": {
+        "market": 39,
+        "tasks": 23,
+        "study": 14,
+        "campus": 16,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-02-15",
+      "newUsers": 18,
+      "activeUsers": 1236,
+      "tradeAmountFen": {
+        "electronics": 669228,
+        "books": 431959,
+        "clothing": 278292,
+        "daily": 292239,
+        "other": 120582
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-16",
+      "newUsers": 38,
+      "activeUsers": 889,
+      "tradeAmountFen": {
+        "electronics": 460998,
+        "books": 323283,
+        "clothing": 207617,
+        "daily": 208837,
+        "other": 95565
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-17",
+      "newUsers": 27,
+      "activeUsers": 891,
+      "tradeAmountFen": {
+        "electronics": 488985,
+        "books": 336782,
+        "clothing": 217791,
+        "daily": 236428,
+        "other": 92614
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-02-18",
+      "newUsers": 27,
+      "activeUsers": 1001,
+      "tradeAmountFen": {
+        "electronics": 503325,
+        "books": 358030,
+        "clothing": 229194,
+        "daily": 223016,
+        "other": 101635
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-19",
+      "newUsers": 37,
+      "activeUsers": 932,
+      "tradeAmountFen": {
+        "electronics": 565683,
+        "books": 379746,
+        "clothing": 230937,
+        "daily": 245704,
+        "other": 95830
+      },
+      "contentCounts": {
+        "market": 41,
+        "tasks": 25,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-20",
+      "newUsers": 23,
+      "activeUsers": 1147,
+      "tradeAmountFen": {
+        "electronics": 486365,
+        "books": 322328,
+        "clothing": 207507,
+        "daily": 229973,
+        "other": 85927
+      },
+      "contentCounts": {
+        "market": 38,
+        "tasks": 23,
+        "study": 13,
+        "campus": 15,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-21",
+      "newUsers": 28,
+      "activeUsers": 1225,
+      "tradeAmountFen": {
+        "electronics": 592721,
+        "books": 397253,
+        "clothing": 250273,
+        "daily": 268093,
+        "other": 119560
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-02-22",
+      "newUsers": 18,
+      "activeUsers": 1233,
+      "tradeAmountFen": {
+        "electronics": 601751,
+        "books": 398702,
+        "clothing": 248218,
+        "daily": 286278,
+        "other": 103051
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-23",
+      "newUsers": 27,
+      "activeUsers": 1077,
+      "tradeAmountFen": {
+        "electronics": 561401,
+        "books": 371241,
+        "clothing": 242786,
+        "daily": 252001,
+        "other": 110471
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-24",
+      "newUsers": 21,
+      "activeUsers": 963,
+      "tradeAmountFen": {
+        "electronics": 539690,
+        "books": 358565,
+        "clothing": 233031,
+        "daily": 238008,
+        "other": 93406
+      },
+      "contentCounts": {
+        "market": 36,
+        "tasks": 22,
+        "study": 13,
+        "campus": 15,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-02-25",
+      "newUsers": 31,
+      "activeUsers": 957,
+      "tradeAmountFen": {
+        "electronics": 480340,
+        "books": 328669,
+        "clothing": 189846,
+        "daily": 217448,
+        "other": 84097
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-02-26",
+      "newUsers": 37,
+      "activeUsers": 1081,
+      "tradeAmountFen": {
+        "electronics": 501073,
+        "books": 328518,
+        "clothing": 218466,
+        "daily": 235993,
+        "other": 92850
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-02-27",
+      "newUsers": 27,
+      "activeUsers": 1101,
+      "tradeAmountFen": {
+        "electronics": 540346,
+        "books": 381052,
+        "clothing": 230217,
+        "daily": 241728,
+        "other": 112657
+      },
+      "contentCounts": {
+        "market": 36,
+        "tasks": 22,
+        "study": 13,
+        "campus": 15,
+        "other": 5
+      }
+    },
+    {
+      "date": "2026-02-28",
+      "newUsers": 20,
+      "activeUsers": 1113,
+      "tradeAmountFen": {
+        "electronics": 685978,
+        "books": 457070,
+        "clothing": 295790,
+        "daily": 303387,
+        "other": 130675
+      },
+      "contentCounts": {
+        "market": 43,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-03-01",
+      "newUsers": 29,
+      "activeUsers": 1569,
+      "tradeAmountFen": {
+        "electronics": 754345,
+        "books": 526748,
+        "clothing": 307534,
+        "daily": 327427,
+        "other": 137846
+      },
+      "contentCounts": {
+        "market": 51,
+        "tasks": 31,
+        "study": 18,
+        "campus": 20,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-02",
+      "newUsers": 32,
+      "activeUsers": 1195,
+      "tradeAmountFen": {
+        "electronics": 671388,
+        "books": 479633,
+        "clothing": 304546,
+        "daily": 295911,
+        "other": 128722
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-03",
+      "newUsers": 39,
+      "activeUsers": 1345,
+      "tradeAmountFen": {
+        "electronics": 727906,
+        "books": 520732,
+        "clothing": 300761,
+        "daily": 338179,
+        "other": 134422
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-03-04",
+      "newUsers": 37,
+      "activeUsers": 1167,
+      "tradeAmountFen": {
+        "electronics": 633282,
+        "books": 421547,
+        "clothing": 280695,
+        "daily": 281907,
+        "other": 112269
+      },
+      "contentCounts": {
+        "market": 59,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-05",
+      "newUsers": 27,
+      "activeUsers": 1217,
+      "tradeAmountFen": {
+        "electronics": 623136,
+        "books": 421310,
+        "clothing": 260096,
+        "daily": 285954,
+        "other": 121104
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-06",
+      "newUsers": 44,
+      "activeUsers": 1187,
+      "tradeAmountFen": {
+        "electronics": 609676,
+        "books": 411056,
+        "clothing": 278243,
+        "daily": 304176,
+        "other": 123049
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 34,
+        "study": 20,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-07",
+      "newUsers": 41,
+      "activeUsers": 1458,
+      "tradeAmountFen": {
+        "electronics": 847603,
+        "books": 611955,
+        "clothing": 384359,
+        "daily": 394435,
+        "other": 169048
+      },
+      "contentCounts": {
+        "market": 61,
+        "tasks": 37,
+        "study": 21,
+        "campus": 24,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-03-08",
+      "newUsers": 25,
+      "activeUsers": 1464,
+      "tradeAmountFen": {
+        "electronics": 913519,
+        "books": 601011,
+        "clothing": 382985,
+        "daily": 408438,
+        "other": 175747
+      },
+      "contentCounts": {
+        "market": 62,
+        "tasks": 37,
+        "study": 22,
+        "campus": 25,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-03-09",
+      "newUsers": 48,
+      "activeUsers": 1313,
+      "tradeAmountFen": {
+        "electronics": 596550,
+        "books": 413806,
+        "clothing": 261669,
+        "daily": 291034,
+        "other": 119641
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-10",
+      "newUsers": 38,
+      "activeUsers": 1501,
+      "tradeAmountFen": {
+        "electronics": 648271,
+        "books": 418099,
+        "clothing": 271469,
+        "daily": 275592,
+        "other": 127769
+      },
+      "contentCounts": {
+        "market": 62,
+        "tasks": 37,
+        "study": 22,
+        "campus": 25,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-11",
+      "newUsers": 43,
+      "activeUsers": 1419,
+      "tradeAmountFen": {
+        "electronics": 685875,
+        "books": 430610,
+        "clothing": 276729,
+        "daily": 305286,
+        "other": 119600
+      },
+      "contentCounts": {
+        "market": 62,
+        "tasks": 37,
+        "study": 22,
+        "campus": 25,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-12",
+      "newUsers": 30,
+      "activeUsers": 1172,
+      "tradeAmountFen": {
+        "electronics": 635125,
+        "books": 439291,
+        "clothing": 277886,
+        "daily": 289310,
+        "other": 132888
+      },
+      "contentCounts": {
+        "market": 57,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-03-13",
+      "newUsers": 43,
+      "activeUsers": 1404,
+      "tradeAmountFen": {
+        "electronics": 789328,
+        "books": 538486,
+        "clothing": 322697,
+        "daily": 346563,
+        "other": 135126
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-14",
+      "newUsers": 26,
+      "activeUsers": 1641,
+      "tradeAmountFen": {
+        "electronics": 979224,
+        "books": 642136,
+        "clothing": 391650,
+        "daily": 421440,
+        "other": 189450
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-15",
+      "newUsers": 44,
+      "activeUsers": 1405,
+      "tradeAmountFen": {
+        "electronics": 738725,
+        "books": 496603,
+        "clothing": 298937,
+        "daily": 341389,
+        "other": 145446
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-03-16",
+      "newUsers": 50,
+      "activeUsers": 1207,
+      "tradeAmountFen": {
+        "electronics": 792717,
+        "books": 544241,
+        "clothing": 334250,
+        "daily": 353514,
+        "other": 138578
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 34,
+        "study": 20,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-17",
+      "newUsers": 33,
+      "activeUsers": 1240,
+      "tradeAmountFen": {
+        "electronics": 782313,
+        "books": 509726,
+        "clothing": 317847,
+        "daily": 355891,
+        "other": 133523
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-18",
+      "newUsers": 50,
+      "activeUsers": 1304,
+      "tradeAmountFen": {
+        "electronics": 781698,
+        "books": 551082,
+        "clothing": 332952,
+        "daily": 348284,
+        "other": 141784
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-03-19",
+      "newUsers": 33,
+      "activeUsers": 1457,
+      "tradeAmountFen": {
+        "electronics": 710080,
+        "books": 483951,
+        "clothing": 307618,
+        "daily": 306127,
+        "other": 111824
+      },
+      "contentCounts": {
+        "market": 55,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-03-20",
+      "newUsers": 47,
+      "activeUsers": 1372,
+      "tradeAmountFen": {
+        "electronics": 768086,
+        "books": 505443,
+        "clothing": 340232,
+        "daily": 346617,
+        "other": 157922
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-21",
+      "newUsers": 36,
+      "activeUsers": 1425,
+      "tradeAmountFen": {
+        "electronics": 750488,
+        "books": 524975,
+        "clothing": 321064,
+        "daily": 366431,
+        "other": 149242
+      },
+      "contentCounts": {
+        "market": 62,
+        "tasks": 37,
+        "study": 22,
+        "campus": 25,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-03-22",
+      "newUsers": 37,
+      "activeUsers": 1696,
+      "tradeAmountFen": {
+        "electronics": 909665,
+        "books": 610209,
+        "clothing": 389937,
+        "daily": 418002,
+        "other": 143287
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-03-23",
+      "newUsers": 33,
+      "activeUsers": 1255,
+      "tradeAmountFen": {
+        "electronics": 715335,
+        "books": 473254,
+        "clothing": 318636,
+        "daily": 323187,
+        "other": 123188
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-03-24",
+      "newUsers": 42,
+      "activeUsers": 1279,
+      "tradeAmountFen": {
+        "electronics": 624212,
+        "books": 433284,
+        "clothing": 275886,
+        "daily": 280269,
+        "other": 129549
+      },
+      "contentCounts": {
+        "market": 49,
+        "tasks": 29,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-03-25",
+      "newUsers": 39,
+      "activeUsers": 1330,
+      "tradeAmountFen": {
+        "electronics": 648840,
+        "books": 433713,
+        "clothing": 279618,
+        "daily": 300140,
+        "other": 109689
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 19,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-26",
+      "newUsers": 43,
+      "activeUsers": 1460,
+      "tradeAmountFen": {
+        "electronics": 798675,
+        "books": 550281,
+        "clothing": 333620,
+        "daily": 354573,
+        "other": 153051
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-03-27",
+      "newUsers": 48,
+      "activeUsers": 1508,
+      "tradeAmountFen": {
+        "electronics": 732710,
+        "books": 500454,
+        "clothing": 294531,
+        "daily": 337132,
+        "other": 127673
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-03-28",
+      "newUsers": 39,
+      "activeUsers": 1660,
+      "tradeAmountFen": {
+        "electronics": 763995,
+        "books": 493311,
+        "clothing": 321233,
+        "daily": 358317,
+        "other": 135944
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-03-29",
+      "newUsers": 46,
+      "activeUsers": 1490,
+      "tradeAmountFen": {
+        "electronics": 810369,
+        "books": 601304,
+        "clothing": 369621,
+        "daily": 391087,
+        "other": 177919
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 19,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-30",
+      "newUsers": 37,
+      "activeUsers": 1523,
+      "tradeAmountFen": {
+        "electronics": 789317,
+        "books": 553061,
+        "clothing": 315999,
+        "daily": 352870,
+        "other": 126553
+      },
+      "contentCounts": {
+        "market": 51,
+        "tasks": 31,
+        "study": 18,
+        "campus": 20,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-03-31",
+      "newUsers": 45,
+      "activeUsers": 1227,
+      "tradeAmountFen": {
+        "electronics": 735130,
+        "books": 513542,
+        "clothing": 323806,
+        "daily": 330438,
+        "other": 128384
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-04-01",
+      "newUsers": 35,
+      "activeUsers": 1420,
+      "tradeAmountFen": {
+        "electronics": 691901,
+        "books": 463987,
+        "clothing": 296090,
+        "daily": 327487,
+        "other": 132735
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-04-02",
+      "newUsers": 31,
+      "activeUsers": 1244,
+      "tradeAmountFen": {
+        "electronics": 665468,
+        "books": 450440,
+        "clothing": 289894,
+        "daily": 291997,
+        "other": 112201
+      },
+      "contentCounts": {
+        "market": 59,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-04-03",
+      "newUsers": 38,
+      "activeUsers": 1433,
+      "tradeAmountFen": {
+        "electronics": 743396,
+        "books": 517097,
+        "clothing": 300396,
+        "daily": 329663,
+        "other": 136848
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-04",
+      "newUsers": 26,
+      "activeUsers": 1452,
+      "tradeAmountFen": {
+        "electronics": 970216,
+        "books": 616557,
+        "clothing": 427901,
+        "daily": 457178,
+        "other": 157348
+      },
+      "contentCounts": {
+        "market": 65,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-05",
+      "newUsers": 35,
+      "activeUsers": 1676,
+      "tradeAmountFen": {
+        "electronics": 939830,
+        "books": 656561,
+        "clothing": 399016,
+        "daily": 420681,
+        "other": 194212
+      },
+      "contentCounts": {
+        "market": 55,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-04-06",
+      "newUsers": 34,
+      "activeUsers": 1441,
+      "tradeAmountFen": {
+        "electronics": 629805,
+        "books": 458878,
+        "clothing": 285299,
+        "daily": 280694,
+        "other": 111224
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-04-07",
+      "newUsers": 44,
+      "activeUsers": 1527,
+      "tradeAmountFen": {
+        "electronics": 655072,
+        "books": 457772,
+        "clothing": 295971,
+        "daily": 298203,
+        "other": 125182
+      },
+      "contentCounts": {
+        "market": 59,
+        "tasks": 35,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-04-08",
+      "newUsers": 51,
+      "activeUsers": 1533,
+      "tradeAmountFen": {
+        "electronics": 745656,
+        "books": 535924,
+        "clothing": 319929,
+        "daily": 331723,
+        "other": 155268
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-04-09",
+      "newUsers": 52,
+      "activeUsers": 1453,
+      "tradeAmountFen": {
+        "electronics": 738207,
+        "books": 486548,
+        "clothing": 329896,
+        "daily": 356692,
+        "other": 135857
+      },
+      "contentCounts": {
+        "market": 49,
+        "tasks": 29,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-04-10",
+      "newUsers": 33,
+      "activeUsers": 1329,
+      "tradeAmountFen": {
+        "electronics": 711536,
+        "books": 461187,
+        "clothing": 285406,
+        "daily": 325217,
+        "other": 143254
+      },
+      "contentCounts": {
+        "market": 63,
+        "tasks": 38,
+        "study": 22,
+        "campus": 25,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-11",
+      "newUsers": 29,
+      "activeUsers": 1731,
+      "tradeAmountFen": {
+        "electronics": 931876,
+        "books": 593470,
+        "clothing": 371505,
+        "daily": 414124,
+        "other": 149325
+      },
+      "contentCounts": {
+        "market": 62,
+        "tasks": 37,
+        "study": 22,
+        "campus": 25,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-12",
+      "newUsers": 37,
+      "activeUsers": 1611,
+      "tradeAmountFen": {
+        "electronics": 910833,
+        "books": 598052,
+        "clothing": 375989,
+        "daily": 407579,
+        "other": 156347
+      },
+      "contentCounts": {
+        "market": 63,
+        "tasks": 38,
+        "study": 22,
+        "campus": 25,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-04-13",
+      "newUsers": 36,
+      "activeUsers": 1242,
+      "tradeAmountFen": {
+        "electronics": 816192,
+        "books": 536306,
+        "clothing": 350177,
+        "daily": 366720,
+        "other": 142405
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-14",
+      "newUsers": 40,
+      "activeUsers": 1217,
+      "tradeAmountFen": {
+        "electronics": 789542,
+        "books": 526249,
+        "clothing": 346596,
+        "daily": 367852,
+        "other": 127361
+      },
+      "contentCounts": {
+        "market": 65,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-15",
+      "newUsers": 44,
+      "activeUsers": 1415,
+      "tradeAmountFen": {
+        "electronics": 721616,
+        "books": 502524,
+        "clothing": 318504,
+        "daily": 327375,
+        "other": 118781
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-04-16",
+      "newUsers": 52,
+      "activeUsers": 1290,
+      "tradeAmountFen": {
+        "electronics": 792093,
+        "books": 565341,
+        "clothing": 331391,
+        "daily": 371076,
+        "other": 131599
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-17",
+      "newUsers": 33,
+      "activeUsers": 1384,
+      "tradeAmountFen": {
+        "electronics": 652600,
+        "books": 450065,
+        "clothing": 262134,
+        "daily": 286576,
+        "other": 106725
+      },
+      "contentCounts": {
+        "market": 62,
+        "tasks": 37,
+        "study": 22,
+        "campus": 25,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-18",
+      "newUsers": 42,
+      "activeUsers": 1407,
+      "tradeAmountFen": {
+        "electronics": 958598,
+        "books": 613731,
+        "clothing": 380022,
+        "daily": 428869,
+        "other": 154380
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-19",
+      "newUsers": 30,
+      "activeUsers": 1686,
+      "tradeAmountFen": {
+        "electronics": 845319,
+        "books": 581930,
+        "clothing": 371230,
+        "daily": 403528,
+        "other": 182793
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-20",
+      "newUsers": 39,
+      "activeUsers": 1476,
+      "tradeAmountFen": {
+        "electronics": 723325,
+        "books": 465882,
+        "clothing": 285078,
+        "daily": 325030,
+        "other": 131785
+      },
+      "contentCounts": {
+        "market": 55,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-21",
+      "newUsers": 34,
+      "activeUsers": 1460,
+      "tradeAmountFen": {
+        "electronics": 808380,
+        "books": 548356,
+        "clothing": 336106,
+        "daily": 369502,
+        "other": 166356
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-04-22",
+      "newUsers": 33,
+      "activeUsers": 1267,
+      "tradeAmountFen": {
+        "electronics": 707199,
+        "books": 463448,
+        "clothing": 303414,
+        "daily": 316239,
+        "other": 121800
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-04-23",
+      "newUsers": 43,
+      "activeUsers": 1511,
+      "tradeAmountFen": {
+        "electronics": 670250,
+        "books": 450605,
+        "clothing": 282476,
+        "daily": 285673,
+        "other": 136196
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-04-24",
+      "newUsers": 49,
+      "activeUsers": 1407,
+      "tradeAmountFen": {
+        "electronics": 722652,
+        "books": 490580,
+        "clothing": 303451,
+        "daily": 336929,
+        "other": 152988
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-04-25",
+      "newUsers": 41,
+      "activeUsers": 1479,
+      "tradeAmountFen": {
+        "electronics": 922707,
+        "books": 626445,
+        "clothing": 402286,
+        "daily": 403149,
+        "other": 162213
+      },
+      "contentCounts": {
+        "market": 64,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-04-26",
+      "newUsers": 29,
+      "activeUsers": 1671,
+      "tradeAmountFen": {
+        "electronics": 782977,
+        "books": 534905,
+        "clothing": 363715,
+        "daily": 352894,
+        "other": 158909
+      },
+      "contentCounts": {
+        "market": 62,
+        "tasks": 37,
+        "study": 22,
+        "campus": 25,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-04-27",
+      "newUsers": 53,
+      "activeUsers": 1524,
+      "tradeAmountFen": {
+        "electronics": 736636,
+        "books": 533925,
+        "clothing": 328513,
+        "daily": 325587,
+        "other": 127039
+      },
+      "contentCounts": {
+        "market": 66,
+        "tasks": 40,
+        "study": 23,
+        "campus": 26,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-04-28",
+      "newUsers": 29,
+      "activeUsers": 1445,
+      "tradeAmountFen": {
+        "electronics": 789067,
+        "books": 576212,
+        "clothing": 353213,
+        "daily": 363418,
+        "other": 171190
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-04-29",
+      "newUsers": 38,
+      "activeUsers": 1241,
+      "tradeAmountFen": {
+        "electronics": 822414,
+        "books": 541354,
+        "clothing": 352256,
+        "daily": 374003,
+        "other": 166673
+      },
+      "contentCounts": {
+        "market": 66,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-04-30",
+      "newUsers": 48,
+      "activeUsers": 1467,
+      "tradeAmountFen": {
+        "electronics": 668077,
+        "books": 441518,
+        "clothing": 269689,
+        "daily": 314397,
+        "other": 141919
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-01",
+      "newUsers": 53,
+      "activeUsers": 1220,
+      "tradeAmountFen": {
+        "electronics": 651391,
+        "books": 438094,
+        "clothing": 287344,
+        "daily": 323862,
+        "other": 134909
+      },
+      "contentCounts": {
+        "market": 57,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-05-02",
+      "newUsers": 37,
+      "activeUsers": 1373,
+      "tradeAmountFen": {
+        "electronics": 975959,
+        "books": 653648,
+        "clothing": 383420,
+        "daily": 449470,
+        "other": 183803
+      },
+      "contentCounts": {
+        "market": 62,
+        "tasks": 37,
+        "study": 22,
+        "campus": 25,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-05-03",
+      "newUsers": 30,
+      "activeUsers": 1658,
+      "tradeAmountFen": {
+        "electronics": 848065,
+        "books": 581263,
+        "clothing": 368195,
+        "daily": 374122,
+        "other": 145055
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-04",
+      "newUsers": 44,
+      "activeUsers": 1302,
+      "tradeAmountFen": {
+        "electronics": 769653,
+        "books": 537431,
+        "clothing": 347206,
+        "daily": 342840,
+        "other": 138970
+      },
+      "contentCounts": {
+        "market": 63,
+        "tasks": 38,
+        "study": 22,
+        "campus": 25,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-05-05",
+      "newUsers": 51,
+      "activeUsers": 1505,
+      "tradeAmountFen": {
+        "electronics": 801022,
+        "books": 502438,
+        "clothing": 310103,
+        "daily": 349623,
+        "other": 130814
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-06",
+      "newUsers": 30,
+      "activeUsers": 1246,
+      "tradeAmountFen": {
+        "electronics": 652959,
+        "books": 461230,
+        "clothing": 272501,
+        "daily": 293057,
+        "other": 121953
+      },
+      "contentCounts": {
+        "market": 49,
+        "tasks": 29,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-05-07",
+      "newUsers": 49,
+      "activeUsers": 1415,
+      "tradeAmountFen": {
+        "electronics": 831974,
+        "books": 570402,
+        "clothing": 348645,
+        "daily": 378043,
+        "other": 148536
+      },
+      "contentCounts": {
+        "market": 49,
+        "tasks": 29,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-05-08",
+      "newUsers": 50,
+      "activeUsers": 1468,
+      "tradeAmountFen": {
+        "electronics": 794714,
+        "books": 527886,
+        "clothing": 345966,
+        "daily": 342148,
+        "other": 142686
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-09",
+      "newUsers": 35,
+      "activeUsers": 1398,
+      "tradeAmountFen": {
+        "electronics": 839761,
+        "books": 537394,
+        "clothing": 340492,
+        "daily": 387467,
+        "other": 172086
+      },
+      "contentCounts": {
+        "market": 59,
+        "tasks": 35,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-10",
+      "newUsers": 32,
+      "activeUsers": 1758,
+      "tradeAmountFen": {
+        "electronics": 919984,
+        "books": 635088,
+        "clothing": 388656,
+        "daily": 435957,
+        "other": 186815
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-11",
+      "newUsers": 42,
+      "activeUsers": 1402,
+      "tradeAmountFen": {
+        "electronics": 779037,
+        "books": 564481,
+        "clothing": 353761,
+        "daily": 353446,
+        "other": 155975
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-12",
+      "newUsers": 40,
+      "activeUsers": 1328,
+      "tradeAmountFen": {
+        "electronics": 648244,
+        "books": 448009,
+        "clothing": 276466,
+        "daily": 299618,
+        "other": 125363
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-13",
+      "newUsers": 30,
+      "activeUsers": 1394,
+      "tradeAmountFen": {
+        "electronics": 809265,
+        "books": 529061,
+        "clothing": 347317,
+        "daily": 376522,
+        "other": 134635
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-14",
+      "newUsers": 41,
+      "activeUsers": 1580,
+      "tradeAmountFen": {
+        "electronics": 684535,
+        "books": 497440,
+        "clothing": 290100,
+        "daily": 334782,
+        "other": 125843
+      },
+      "contentCounts": {
+        "market": 55,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-15",
+      "newUsers": 30,
+      "activeUsers": 1398,
+      "tradeAmountFen": {
+        "electronics": 671052,
+        "books": 447612,
+        "clothing": 275524,
+        "daily": 312029,
+        "other": 109783
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-16",
+      "newUsers": 31,
+      "activeUsers": 1712,
+      "tradeAmountFen": {
+        "electronics": 869098,
+        "books": 594949,
+        "clothing": 374209,
+        "daily": 400831,
+        "other": 142813
+      },
+      "contentCounts": {
+        "market": 64,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-05-17",
+      "newUsers": 41,
+      "activeUsers": 1685,
+      "tradeAmountFen": {
+        "electronics": 806637,
+        "books": 536115,
+        "clothing": 363624,
+        "daily": 365663,
+        "other": 159061
+      },
+      "contentCounts": {
+        "market": 50,
+        "tasks": 30,
+        "study": 18,
+        "campus": 20,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-18",
+      "newUsers": 33,
+      "activeUsers": 1398,
+      "tradeAmountFen": {
+        "electronics": 873718,
+        "books": 558758,
+        "clothing": 343347,
+        "daily": 386910,
+        "other": 136467
+      },
+      "contentCounts": {
+        "market": 61,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-05-19",
+      "newUsers": 38,
+      "activeUsers": 1337,
+      "tradeAmountFen": {
+        "electronics": 707465,
+        "books": 474297,
+        "clothing": 310217,
+        "daily": 310193,
+        "other": 139928
+      },
+      "contentCounts": {
+        "market": 67,
+        "tasks": 40,
+        "study": 24,
+        "campus": 27,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-05-20",
+      "newUsers": 45,
+      "activeUsers": 1431,
+      "tradeAmountFen": {
+        "electronics": 785773,
+        "books": 558915,
+        "clothing": 328901,
+        "daily": 358056,
+        "other": 157155
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-21",
+      "newUsers": 32,
+      "activeUsers": 1348,
+      "tradeAmountFen": {
+        "electronics": 830820,
+        "books": 558362,
+        "clothing": 348588,
+        "daily": 374010,
+        "other": 150520
+      },
+      "contentCounts": {
+        "market": 61,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-05-22",
+      "newUsers": 42,
+      "activeUsers": 1394,
+      "tradeAmountFen": {
+        "electronics": 717328,
+        "books": 479375,
+        "clothing": 314838,
+        "daily": 318489,
+        "other": 119470
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-23",
+      "newUsers": 33,
+      "activeUsers": 1687,
+      "tradeAmountFen": {
+        "electronics": 908051,
+        "books": 628379,
+        "clothing": 356318,
+        "daily": 390842,
+        "other": 141210
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-24",
+      "newUsers": 35,
+      "activeUsers": 1548,
+      "tradeAmountFen": {
+        "electronics": 839453,
+        "books": 597457,
+        "clothing": 358560,
+        "daily": 396689,
+        "other": 170741
+      },
+      "contentCounts": {
+        "market": 55,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-05-25",
+      "newUsers": 30,
+      "activeUsers": 1248,
+      "tradeAmountFen": {
+        "electronics": 728623,
+        "books": 472841,
+        "clothing": 315627,
+        "daily": 324405,
+        "other": 130704
+      },
+      "contentCounts": {
+        "market": 67,
+        "tasks": 40,
+        "study": 24,
+        "campus": 27,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-05-26",
+      "newUsers": 46,
+      "activeUsers": 1458,
+      "tradeAmountFen": {
+        "electronics": 682599,
+        "books": 459610,
+        "clothing": 295867,
+        "daily": 302800,
+        "other": 150024
+      },
+      "contentCounts": {
+        "market": 65,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-05-27",
+      "newUsers": 54,
+      "activeUsers": 1425,
+      "tradeAmountFen": {
+        "electronics": 801543,
+        "books": 520916,
+        "clothing": 351039,
+        "daily": 344829,
+        "other": 149273
+      },
+      "contentCounts": {
+        "market": 51,
+        "tasks": 31,
+        "study": 18,
+        "campus": 20,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-05-28",
+      "newUsers": 37,
+      "activeUsers": 1237,
+      "tradeAmountFen": {
+        "electronics": 766908,
+        "books": 527524,
+        "clothing": 301070,
+        "daily": 341781,
+        "other": 151217
+      },
+      "contentCounts": {
+        "market": 61,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-05-29",
+      "newUsers": 33,
+      "activeUsers": 1523,
+      "tradeAmountFen": {
+        "electronics": 762060,
+        "books": 524541,
+        "clothing": 333442,
+        "daily": 342383,
+        "other": 126274
+      },
+      "contentCounts": {
+        "market": 66,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-05-30",
+      "newUsers": 41,
+      "activeUsers": 1779,
+      "tradeAmountFen": {
+        "electronics": 828437,
+        "books": 565132,
+        "clothing": 345665,
+        "daily": 391535,
+        "other": 151731
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-05-31",
+      "newUsers": 40,
+      "activeUsers": 1684,
+      "tradeAmountFen": {
+        "electronics": 1003227,
+        "books": 668345,
+        "clothing": 400572,
+        "daily": 423591,
+        "other": 174765
+      },
+      "contentCounts": {
+        "market": 57,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-06-01",
+      "newUsers": 29,
+      "activeUsers": 1084,
+      "tradeAmountFen": {
+        "electronics": 528323,
+        "books": 381884,
+        "clothing": 219947,
+        "daily": 254182,
+        "other": 92564
+      },
+      "contentCounts": {
+        "market": 51,
+        "tasks": 30,
+        "study": 18,
+        "campus": 20,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-06-02",
+      "newUsers": 39,
+      "activeUsers": 1066,
+      "tradeAmountFen": {
+        "electronics": 563724,
+        "books": 373443,
+        "clothing": 242966,
+        "daily": 264179,
+        "other": 109588
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-03",
+      "newUsers": 38,
+      "activeUsers": 1249,
+      "tradeAmountFen": {
+        "electronics": 636472,
+        "books": 461558,
+        "clothing": 268000,
+        "daily": 284545,
+        "other": 125025
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-06-04",
+      "newUsers": 27,
+      "activeUsers": 1202,
+      "tradeAmountFen": {
+        "electronics": 625632,
+        "books": 427067,
+        "clothing": 263244,
+        "daily": 282099,
+        "other": 99358
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-06-05",
+      "newUsers": 30,
+      "activeUsers": 1074,
+      "tradeAmountFen": {
+        "electronics": 575521,
+        "books": 369574,
+        "clothing": 239270,
+        "daily": 259471,
+        "other": 99164
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-06-06",
+      "newUsers": 36,
+      "activeUsers": 1138,
+      "tradeAmountFen": {
+        "electronics": 713875,
+        "books": 491608,
+        "clothing": 310889,
+        "daily": 325121,
+        "other": 129707
+      },
+      "contentCounts": {
+        "market": 49,
+        "tasks": 29,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-07",
+      "newUsers": 24,
+      "activeUsers": 1222,
+      "tradeAmountFen": {
+        "electronics": 746383,
+        "books": 547632,
+        "clothing": 338135,
+        "daily": 361793,
+        "other": 131157
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-06-08",
+      "newUsers": 26,
+      "activeUsers": 1233,
+      "tradeAmountFen": {
+        "electronics": 661679,
+        "books": 451292,
+        "clothing": 306464,
+        "daily": 313932,
+        "other": 110333
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-06-09",
+      "newUsers": 41,
+      "activeUsers": 1087,
+      "tradeAmountFen": {
+        "electronics": 585657,
+        "books": 372786,
+        "clothing": 252408,
+        "daily": 241052,
+        "other": 97197
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-10",
+      "newUsers": 29,
+      "activeUsers": 1054,
+      "tradeAmountFen": {
+        "electronics": 550719,
+        "books": 350442,
+        "clothing": 227229,
+        "daily": 237054,
+        "other": 112056
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-11",
+      "newUsers": 29,
+      "activeUsers": 1154,
+      "tradeAmountFen": {
+        "electronics": 624692,
+        "books": 445293,
+        "clothing": 258513,
+        "daily": 267312,
+        "other": 122990
+      },
+      "contentCounts": {
+        "market": 49,
+        "tasks": 29,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-12",
+      "newUsers": 37,
+      "activeUsers": 1191,
+      "tradeAmountFen": {
+        "electronics": 556035,
+        "books": 382390,
+        "clothing": 235774,
+        "daily": 249630,
+        "other": 111571
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-06-13",
+      "newUsers": 31,
+      "activeUsers": 1358,
+      "tradeAmountFen": {
+        "electronics": 802611,
+        "books": 531762,
+        "clothing": 358497,
+        "daily": 349183,
+        "other": 158847
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-06-14",
+      "newUsers": 32,
+      "activeUsers": 1255,
+      "tradeAmountFen": {
+        "electronics": 677069,
+        "books": 472335,
+        "clothing": 265022,
+        "daily": 291897,
+        "other": 123577
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-06-15",
+      "newUsers": 25,
+      "activeUsers": 1085,
+      "tradeAmountFen": {
+        "electronics": 560992,
+        "books": 387528,
+        "clothing": 252772,
+        "daily": 256236,
+        "other": 98672
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-16",
+      "newUsers": 27,
+      "activeUsers": 1248,
+      "tradeAmountFen": {
+        "electronics": 611461,
+        "books": 409278,
+        "clothing": 280917,
+        "daily": 275896,
+        "other": 118248
+      },
+      "contentCounts": {
+        "market": 40,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-06-17",
+      "newUsers": 36,
+      "activeUsers": 1147,
+      "tradeAmountFen": {
+        "electronics": 551195,
+        "books": 374256,
+        "clothing": 230401,
+        "daily": 249463,
+        "other": 111485
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-18",
+      "newUsers": 40,
+      "activeUsers": 1006,
+      "tradeAmountFen": {
+        "electronics": 620655,
+        "books": 415556,
+        "clothing": 262845,
+        "daily": 281779,
+        "other": 126765
+      },
+      "contentCounts": {
+        "market": 41,
+        "tasks": 25,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-19",
+      "newUsers": 39,
+      "activeUsers": 1094,
+      "tradeAmountFen": {
+        "electronics": 587543,
+        "books": 428496,
+        "clothing": 260971,
+        "daily": 282874,
+        "other": 114916
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-06-20",
+      "newUsers": 24,
+      "activeUsers": 1274,
+      "tradeAmountFen": {
+        "electronics": 710392,
+        "books": 477620,
+        "clothing": 280957,
+        "daily": 321825,
+        "other": 115806
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-21",
+      "newUsers": 26,
+      "activeUsers": 1283,
+      "tradeAmountFen": {
+        "electronics": 774029,
+        "books": 526728,
+        "clothing": 348301,
+        "daily": 369959,
+        "other": 150683
+      },
+      "contentCounts": {
+        "market": 51,
+        "tasks": 31,
+        "study": 18,
+        "campus": 20,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-06-22",
+      "newUsers": 42,
+      "activeUsers": 1156,
+      "tradeAmountFen": {
+        "electronics": 536677,
+        "books": 369711,
+        "clothing": 220801,
+        "daily": 252846,
+        "other": 109665
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-06-23",
+      "newUsers": 42,
+      "activeUsers": 1218,
+      "tradeAmountFen": {
+        "electronics": 577325,
+        "books": 418472,
+        "clothing": 248044,
+        "daily": 256575,
+        "other": 112084
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-06-24",
+      "newUsers": 26,
+      "activeUsers": 1145,
+      "tradeAmountFen": {
+        "electronics": 629035,
+        "books": 409506,
+        "clothing": 287480,
+        "daily": 279422,
+        "other": 115257
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-06-25",
+      "newUsers": 35,
+      "activeUsers": 1180,
+      "tradeAmountFen": {
+        "electronics": 582497,
+        "books": 430989,
+        "clothing": 270966,
+        "daily": 284914,
+        "other": 127234
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-06-26",
+      "newUsers": 33,
+      "activeUsers": 1263,
+      "tradeAmountFen": {
+        "electronics": 668288,
+        "books": 466436,
+        "clothing": 303243,
+        "daily": 292685,
+        "other": 125348
+      },
+      "contentCounts": {
+        "market": 41,
+        "tasks": 25,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-27",
+      "newUsers": 38,
+      "activeUsers": 1200,
+      "tradeAmountFen": {
+        "electronics": 713303,
+        "books": 512057,
+        "clothing": 330214,
+        "daily": 324218,
+        "other": 139108
+      },
+      "contentCounts": {
+        "market": 43,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-28",
+      "newUsers": 28,
+      "activeUsers": 1301,
+      "tradeAmountFen": {
+        "electronics": 703904,
+        "books": 508908,
+        "clothing": 308163,
+        "daily": 306116,
+        "other": 149909
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-06-29",
+      "newUsers": 40,
+      "activeUsers": 1268,
+      "tradeAmountFen": {
+        "electronics": 660261,
+        "books": 440375,
+        "clothing": 267339,
+        "daily": 282311,
+        "other": 129414
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-06-30",
+      "newUsers": 42,
+      "activeUsers": 1081,
+      "tradeAmountFen": {
+        "electronics": 658824,
+        "books": 429364,
+        "clothing": 255100,
+        "daily": 287445,
+        "other": 133967
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-07-01",
+      "newUsers": 33,
+      "activeUsers": 1202,
+      "tradeAmountFen": {
+        "electronics": 657906,
+        "books": 465970,
+        "clothing": 286624,
+        "daily": 293870,
+        "other": 121030
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-07-02",
+      "newUsers": 25,
+      "activeUsers": 1091,
+      "tradeAmountFen": {
+        "electronics": 650016,
+        "books": 409854,
+        "clothing": 276746,
+        "daily": 294697,
+        "other": 134587
+      },
+      "contentCounts": {
+        "market": 49,
+        "tasks": 29,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-03",
+      "newUsers": 31,
+      "activeUsers": 1230,
+      "tradeAmountFen": {
+        "electronics": 653909,
+        "books": 441145,
+        "clothing": 264430,
+        "daily": 286237,
+        "other": 118679
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-07-04",
+      "newUsers": 38,
+      "activeUsers": 1233,
+      "tradeAmountFen": {
+        "electronics": 787368,
+        "books": 538062,
+        "clothing": 341622,
+        "daily": 349239,
+        "other": 164609
+      },
+      "contentCounts": {
+        "market": 50,
+        "tasks": 30,
+        "study": 18,
+        "campus": 20,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-07-05",
+      "newUsers": 31,
+      "activeUsers": 1262,
+      "tradeAmountFen": {
+        "electronics": 679665,
+        "books": 465384,
+        "clothing": 295571,
+        "daily": 284323,
+        "other": 112757
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-06",
+      "newUsers": 42,
+      "activeUsers": 1084,
+      "tradeAmountFen": {
+        "electronics": 678849,
+        "books": 451275,
+        "clothing": 307961,
+        "daily": 299000,
+        "other": 120615
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-07",
+      "newUsers": 43,
+      "activeUsers": 1259,
+      "tradeAmountFen": {
+        "electronics": 686385,
+        "books": 479850,
+        "clothing": 273646,
+        "daily": 304673,
+        "other": 109846
+      },
+      "contentCounts": {
+        "market": 51,
+        "tasks": 30,
+        "study": 18,
+        "campus": 20,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-07-08",
+      "newUsers": 28,
+      "activeUsers": 1192,
+      "tradeAmountFen": {
+        "electronics": 678557,
+        "books": 468220,
+        "clothing": 299377,
+        "daily": 287594,
+        "other": 115452
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-09",
+      "newUsers": 27,
+      "activeUsers": 1073,
+      "tradeAmountFen": {
+        "electronics": 659228,
+        "books": 422496,
+        "clothing": 258509,
+        "daily": 273250,
+        "other": 120317
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-10",
+      "newUsers": 31,
+      "activeUsers": 1058,
+      "tradeAmountFen": {
+        "electronics": 640066,
+        "books": 415656,
+        "clothing": 274368,
+        "daily": 284613,
+        "other": 122997
+      },
+      "contentCounts": {
+        "market": 41,
+        "tasks": 25,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-11",
+      "newUsers": 35,
+      "activeUsers": 1254,
+      "tradeAmountFen": {
+        "electronics": 784903,
+        "books": 565347,
+        "clothing": 351943,
+        "daily": 359158,
+        "other": 155549
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-12",
+      "newUsers": 26,
+      "activeUsers": 1148,
+      "tradeAmountFen": {
+        "electronics": 716349,
+        "books": 505192,
+        "clothing": 295537,
+        "daily": 324404,
+        "other": 131418
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 19,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-07-13",
+      "newUsers": 34,
+      "activeUsers": 1288,
+      "tradeAmountFen": {
+        "electronics": 603562,
+        "books": 406861,
+        "clothing": 244100,
+        "daily": 265807,
+        "other": 121870
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-07-14",
+      "newUsers": 40,
+      "activeUsers": 1224,
+      "tradeAmountFen": {
+        "electronics": 642773,
+        "books": 439037,
+        "clothing": 251012,
+        "daily": 274299,
+        "other": 120879
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-15",
+      "newUsers": 45,
+      "activeUsers": 1240,
+      "tradeAmountFen": {
+        "electronics": 613023,
+        "books": 409164,
+        "clothing": 240266,
+        "daily": 266461,
+        "other": 126586
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-16",
+      "newUsers": 33,
+      "activeUsers": 1238,
+      "tradeAmountFen": {
+        "electronics": 569759,
+        "books": 369977,
+        "clothing": 256632,
+        "daily": 257502,
+        "other": 105430
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-17",
+      "newUsers": 45,
+      "activeUsers": 1098,
+      "tradeAmountFen": {
+        "electronics": 566578,
+        "books": 365210,
+        "clothing": 236412,
+        "daily": 249138,
+        "other": 117462
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-07-18",
+      "newUsers": 31,
+      "activeUsers": 1281,
+      "tradeAmountFen": {
+        "electronics": 779805,
+        "books": 535661,
+        "clothing": 351846,
+        "daily": 342145,
+        "other": 132143
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-19",
+      "newUsers": 32,
+      "activeUsers": 1359,
+      "tradeAmountFen": {
+        "electronics": 662514,
+        "books": 457448,
+        "clothing": 297911,
+        "daily": 312917,
+        "other": 115210
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-07-20",
+      "newUsers": 36,
+      "activeUsers": 1264,
+      "tradeAmountFen": {
+        "electronics": 616111,
+        "books": 423179,
+        "clothing": 240277,
+        "daily": 281494,
+        "other": 112539
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-21",
+      "newUsers": 32,
+      "activeUsers": 1084,
+      "tradeAmountFen": {
+        "electronics": 635345,
+        "books": 414945,
+        "clothing": 262993,
+        "daily": 288962,
+        "other": 122855
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-22",
+      "newUsers": 33,
+      "activeUsers": 1259,
+      "tradeAmountFen": {
+        "electronics": 653681,
+        "books": 441528,
+        "clothing": 260625,
+        "daily": 298424,
+        "other": 113242
+      },
+      "contentCounts": {
+        "market": 55,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-07-23",
+      "newUsers": 45,
+      "activeUsers": 1102,
+      "tradeAmountFen": {
+        "electronics": 646760,
+        "books": 443840,
+        "clothing": 303195,
+        "daily": 306148,
+        "other": 136357
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-07-24",
+      "newUsers": 42,
+      "activeUsers": 1022,
+      "tradeAmountFen": {
+        "electronics": 560753,
+        "books": 404881,
+        "clothing": 258117,
+        "daily": 269907,
+        "other": 106142
+      },
+      "contentCounts": {
+        "market": 43,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-25",
+      "newUsers": 30,
+      "activeUsers": 1262,
+      "tradeAmountFen": {
+        "electronics": 780286,
+        "books": 498740,
+        "clothing": 343555,
+        "daily": 367600,
+        "other": 144319
+      },
+      "contentCounts": {
+        "market": 55,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-07-26",
+      "newUsers": 31,
+      "activeUsers": 1246,
+      "tradeAmountFen": {
+        "electronics": 806090,
+        "books": 591992,
+        "clothing": 334526,
+        "daily": 381886,
+        "other": 148106
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-27",
+      "newUsers": 39,
+      "activeUsers": 1187,
+      "tradeAmountFen": {
+        "electronics": 625182,
+        "books": 408443,
+        "clothing": 262713,
+        "daily": 278362,
+        "other": 116500
+      },
+      "contentCounts": {
+        "market": 41,
+        "tasks": 24,
+        "study": 14,
+        "campus": 16,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-07-28",
+      "newUsers": 31,
+      "activeUsers": 1127,
+      "tradeAmountFen": {
+        "electronics": 642531,
+        "books": 449098,
+        "clothing": 269925,
+        "daily": 289930,
+        "other": 138416
+      },
+      "contentCounts": {
+        "market": 48,
+        "tasks": 29,
+        "study": 17,
+        "campus": 19,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-07-29",
+      "newUsers": 35,
+      "activeUsers": 1109,
+      "tradeAmountFen": {
+        "electronics": 646647,
+        "books": 424975,
+        "clothing": 275028,
+        "daily": 289278,
+        "other": 110872
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 34,
+        "study": 20,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-07-30",
+      "newUsers": 36,
+      "activeUsers": 1192,
+      "tradeAmountFen": {
+        "electronics": 577653,
+        "books": 397178,
+        "clothing": 245199,
+        "daily": 258059,
+        "other": 125111
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 19,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-07-31",
+      "newUsers": 44,
+      "activeUsers": 1115,
+      "tradeAmountFen": {
+        "electronics": 620269,
+        "books": 408266,
+        "clothing": 262168,
+        "daily": 272849,
+        "other": 114448
+      },
+      "contentCounts": {
+        "market": 50,
+        "tasks": 30,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-01",
+      "newUsers": 25,
+      "activeUsers": 1448,
+      "tradeAmountFen": {
+        "electronics": 781987,
+        "books": 540404,
+        "clothing": 320467,
+        "daily": 350296,
+        "other": 137746
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-08-02",
+      "newUsers": 35,
+      "activeUsers": 1321,
+      "tradeAmountFen": {
+        "electronics": 803358,
+        "books": 563092,
+        "clothing": 336571,
+        "daily": 367954,
+        "other": 160625
+      },
+      "contentCounts": {
+        "market": 50,
+        "tasks": 30,
+        "study": 18,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-03",
+      "newUsers": 39,
+      "activeUsers": 1105,
+      "tradeAmountFen": {
+        "electronics": 577243,
+        "books": 383964,
+        "clothing": 246614,
+        "daily": 265935,
+        "other": 114544
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-04",
+      "newUsers": 28,
+      "activeUsers": 1032,
+      "tradeAmountFen": {
+        "electronics": 578585,
+        "books": 394952,
+        "clothing": 238514,
+        "daily": 262054,
+        "other": 93895
+      },
+      "contentCounts": {
+        "market": 50,
+        "tasks": 30,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-05",
+      "newUsers": 45,
+      "activeUsers": 1064,
+      "tradeAmountFen": {
+        "electronics": 672193,
+        "books": 452310,
+        "clothing": 269189,
+        "daily": 310711,
+        "other": 117097
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-06",
+      "newUsers": 37,
+      "activeUsers": 1132,
+      "tradeAmountFen": {
+        "electronics": 631726,
+        "books": 436064,
+        "clothing": 261943,
+        "daily": 297202,
+        "other": 114965
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 16,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-07",
+      "newUsers": 34,
+      "activeUsers": 1152,
+      "tradeAmountFen": {
+        "electronics": 591843,
+        "books": 409247,
+        "clothing": 268040,
+        "daily": 281500,
+        "other": 112770
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-08-08",
+      "newUsers": 32,
+      "activeUsers": 1148,
+      "tradeAmountFen": {
+        "electronics": 731333,
+        "books": 501144,
+        "clothing": 317014,
+        "daily": 340967,
+        "other": 121942
+      },
+      "contentCounts": {
+        "market": 55,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-08-09",
+      "newUsers": 33,
+      "activeUsers": 1357,
+      "tradeAmountFen": {
+        "electronics": 818811,
+        "books": 534100,
+        "clothing": 349835,
+        "daily": 369850,
+        "other": 142704
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-10",
+      "newUsers": 43,
+      "activeUsers": 1135,
+      "tradeAmountFen": {
+        "electronics": 667342,
+        "books": 466815,
+        "clothing": 279101,
+        "daily": 311275,
+        "other": 139267
+      },
+      "contentCounts": {
+        "market": 49,
+        "tasks": 30,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-11",
+      "newUsers": 32,
+      "activeUsers": 1266,
+      "tradeAmountFen": {
+        "electronics": 708188,
+        "books": 473834,
+        "clothing": 300103,
+        "daily": 301157,
+        "other": 115718
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 32,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-08-12",
+      "newUsers": 42,
+      "activeUsers": 1163,
+      "tradeAmountFen": {
+        "electronics": 725716,
+        "books": 473827,
+        "clothing": 294223,
+        "daily": 305207,
+        "other": 137027
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-13",
+      "newUsers": 31,
+      "activeUsers": 1279,
+      "tradeAmountFen": {
+        "electronics": 660588,
+        "books": 460838,
+        "clothing": 270332,
+        "daily": 285740,
+        "other": 138902
+      },
+      "contentCounts": {
+        "market": 44,
+        "tasks": 26,
+        "study": 15,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-14",
+      "newUsers": 41,
+      "activeUsers": 1076,
+      "tradeAmountFen": {
+        "electronics": 653787,
+        "books": 457239,
+        "clothing": 278952,
+        "daily": 281031,
+        "other": 136691
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-15",
+      "newUsers": 24,
+      "activeUsers": 1460,
+      "tradeAmountFen": {
+        "electronics": 734291,
+        "books": 528079,
+        "clothing": 333253,
+        "daily": 330923,
+        "other": 156154
+      },
+      "contentCounts": {
+        "market": 49,
+        "tasks": 30,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-16",
+      "newUsers": 37,
+      "activeUsers": 1362,
+      "tradeAmountFen": {
+        "electronics": 786524,
+        "books": 550731,
+        "clothing": 361828,
+        "daily": 376746,
+        "other": 143971
+      },
+      "contentCounts": {
+        "market": 50,
+        "tasks": 30,
+        "study": 17,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-17",
+      "newUsers": 43,
+      "activeUsers": 1274,
+      "tradeAmountFen": {
+        "electronics": 661492,
+        "books": 456337,
+        "clothing": 261861,
+        "daily": 294741,
+        "other": 115969
+      },
+      "contentCounts": {
+        "market": 46,
+        "tasks": 28,
+        "study": 16,
+        "campus": 18,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-18",
+      "newUsers": 35,
+      "activeUsers": 1100,
+      "tradeAmountFen": {
+        "electronics": 604658,
+        "books": 403174,
+        "clothing": 251159,
+        "daily": 277019,
+        "other": 117190
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-08-19",
+      "newUsers": 35,
+      "activeUsers": 1299,
+      "tradeAmountFen": {
+        "electronics": 572616,
+        "books": 411429,
+        "clothing": 238430,
+        "daily": 270544,
+        "other": 115781
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-08-20",
+      "newUsers": 41,
+      "activeUsers": 1290,
+      "tradeAmountFen": {
+        "electronics": 580003,
+        "books": 412214,
+        "clothing": 249320,
+        "daily": 255065,
+        "other": 112698
+      },
+      "contentCounts": {
+        "market": 53,
+        "tasks": 32,
+        "study": 19,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-08-21",
+      "newUsers": 35,
+      "activeUsers": 1151,
+      "tradeAmountFen": {
+        "electronics": 613540,
+        "books": 434473,
+        "clothing": 265291,
+        "daily": 263774,
+        "other": 98122
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-08-22",
+      "newUsers": 33,
+      "activeUsers": 1251,
+      "tradeAmountFen": {
+        "electronics": 763025,
+        "books": 571374,
+        "clothing": 355805,
+        "daily": 360255,
+        "other": 156641
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-08-23",
+      "newUsers": 42,
+      "activeUsers": 1298,
+      "tradeAmountFen": {
+        "electronics": 862473,
+        "books": 535341,
+        "clothing": 366270,
+        "daily": 380138,
+        "other": 146178
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 17,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-24",
+      "newUsers": 45,
+      "activeUsers": 1271,
+      "tradeAmountFen": {
+        "electronics": 622817,
+        "books": 431195,
+        "clothing": 258560,
+        "daily": 293852,
+        "other": 120076
+      },
+      "contentCounts": {
+        "market": 43,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-25",
+      "newUsers": 38,
+      "activeUsers": 1241,
+      "tradeAmountFen": {
+        "electronics": 586573,
+        "books": 428628,
+        "clothing": 272154,
+        "daily": 285702,
+        "other": 110643
+      },
+      "contentCounts": {
+        "market": 42,
+        "tasks": 25,
+        "study": 15,
+        "campus": 17,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-26",
+      "newUsers": 28,
+      "activeUsers": 1123,
+      "tradeAmountFen": {
+        "electronics": 722250,
+        "books": 502739,
+        "clothing": 284587,
+        "daily": 318367,
+        "other": 114057
+      },
+      "contentCounts": {
+        "market": 43,
+        "tasks": 26,
+        "study": 15,
+        "campus": 17,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-08-27",
+      "newUsers": 34,
+      "activeUsers": 1041,
+      "tradeAmountFen": {
+        "electronics": 684218,
+        "books": 437935,
+        "clothing": 273678,
+        "daily": 315771,
+        "other": 126598
+      },
+      "contentCounts": {
+        "market": 52,
+        "tasks": 31,
+        "study": 18,
+        "campus": 21,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-08-28",
+      "newUsers": 30,
+      "activeUsers": 1118,
+      "tradeAmountFen": {
+        "electronics": 650865,
+        "books": 428603,
+        "clothing": 288797,
+        "daily": 285268,
+        "other": 123667
+      },
+      "contentCounts": {
+        "market": 55,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-08-29",
+      "newUsers": 26,
+      "activeUsers": 1263,
+      "tradeAmountFen": {
+        "electronics": 799294,
+        "books": 558353,
+        "clothing": 323939,
+        "daily": 340200,
+        "other": 151314
+      },
+      "contentCounts": {
+        "market": 47,
+        "tasks": 28,
+        "study": 17,
+        "campus": 19,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-08-30",
+      "newUsers": 31,
+      "activeUsers": 1376,
+      "tradeAmountFen": {
+        "electronics": 789091,
+        "books": 558736,
+        "clothing": 339520,
+        "daily": 348924,
+        "other": 166429
+      },
+      "contentCounts": {
+        "market": 45,
+        "tasks": 27,
+        "study": 16,
+        "campus": 18,
+        "other": 6
+      }
+    },
+    {
+      "date": "2026-08-31",
+      "newUsers": 33,
+      "activeUsers": 1242,
+      "tradeAmountFen": {
+        "electronics": 654791,
+        "books": 438509,
+        "clothing": 300854,
+        "daily": 321064,
+        "other": 124682
+      },
+      "contentCounts": {
+        "market": 50,
+        "tasks": 30,
+        "study": 18,
+        "campus": 20,
+        "other": 7
+      }
+    },
+    {
+      "date": "2026-09-01",
+      "newUsers": 58,
+      "activeUsers": 1535,
+      "tradeAmountFen": {
+        "electronics": 815194,
+        "books": 553307,
+        "clothing": 343654,
+        "daily": 371908,
+        "other": 139137
+      },
+      "contentCounts": {
+        "market": 63,
+        "tasks": 38,
+        "study": 22,
+        "campus": 25,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-09-02",
+      "newUsers": 56,
+      "activeUsers": 1640,
+      "tradeAmountFen": {
+        "electronics": 744688,
+        "books": 495087,
+        "clothing": 318711,
+        "daily": 344904,
+        "other": 131510
+      },
+      "contentCounts": {
+        "market": 72,
+        "tasks": 43,
+        "study": 25,
+        "campus": 29,
+        "other": 11
+      }
+    },
+    {
+      "date": "2026-09-03",
+      "newUsers": 36,
+      "activeUsers": 1622,
+      "tradeAmountFen": {
+        "electronics": 726266,
+        "books": 511501,
+        "clothing": 308130,
+        "daily": 338840,
+        "other": 117363
+      },
+      "contentCounts": {
+        "market": 73,
+        "tasks": 44,
+        "study": 26,
+        "campus": 29,
+        "other": 11
+      }
+    },
+    {
+      "date": "2026-09-04",
+      "newUsers": 37,
+      "activeUsers": 1400,
+      "tradeAmountFen": {
+        "electronics": 753157,
+        "books": 510931,
+        "clothing": 325657,
+        "daily": 365175,
+        "other": 154980
+      },
+      "contentCounts": {
+        "market": 66,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-09-05",
+      "newUsers": 47,
+      "activeUsers": 1532,
+      "tradeAmountFen": {
+        "electronics": 996467,
+        "books": 669874,
+        "clothing": 411958,
+        "daily": 459080,
+        "other": 209021
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-09-06",
+      "newUsers": 40,
+      "activeUsers": 1680,
+      "tradeAmountFen": {
+        "electronics": 990527,
+        "books": 657628,
+        "clothing": 430912,
+        "daily": 448289,
+        "other": 191744
+      },
+      "contentCounts": {
+        "market": 64,
+        "tasks": 38,
+        "study": 22,
+        "campus": 26,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-09-07",
+      "newUsers": 46,
+      "activeUsers": 1584,
+      "tradeAmountFen": {
+        "electronics": 813215,
+        "books": 521221,
+        "clothing": 331100,
+        "daily": 371733,
+        "other": 169831
+      },
+      "contentCounts": {
+        "market": 72,
+        "tasks": 43,
+        "study": 25,
+        "campus": 29,
+        "other": 12
+      }
+    },
+    {
+      "date": "2026-09-08",
+      "newUsers": 40,
+      "activeUsers": 1538,
+      "tradeAmountFen": {
+        "electronics": 801404,
+        "books": 536014,
+        "clothing": 355007,
+        "daily": 380942,
+        "other": 172933
+      },
+      "contentCounts": {
+        "market": 62,
+        "tasks": 37,
+        "study": 22,
+        "campus": 25,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-09-09",
+      "newUsers": 57,
+      "activeUsers": 1424,
+      "tradeAmountFen": {
+        "electronics": 833374,
+        "books": 558636,
+        "clothing": 375878,
+        "daily": 361078,
+        "other": 150834
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-09-10",
+      "newUsers": 42,
+      "activeUsers": 1652,
+      "tradeAmountFen": {
+        "electronics": 907524,
+        "books": 592596,
+        "clothing": 380012,
+        "daily": 410559,
+        "other": 194909
+      },
+      "contentCounts": {
+        "market": 54,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-09-11",
+      "newUsers": 50,
+      "activeUsers": 1588,
+      "tradeAmountFen": {
+        "electronics": 843519,
+        "books": 575430,
+        "clothing": 374013,
+        "daily": 392134,
+        "other": 134804
+      },
+      "contentCounts": {
+        "market": 64,
+        "tasks": 38,
+        "study": 22,
+        "campus": 25,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-09-12",
+      "newUsers": 42,
+      "activeUsers": 1673,
+      "tradeAmountFen": {
+        "electronics": 1017522,
+        "books": 708662,
+        "clothing": 453669,
+        "daily": 453837,
+        "other": 187010
+      },
+      "contentCounts": {
+        "market": 71,
+        "tasks": 43,
+        "study": 25,
+        "campus": 28,
+        "other": 11
+      }
+    },
+    {
+      "date": "2026-09-13",
+      "newUsers": 45,
+      "activeUsers": 1810,
+      "tradeAmountFen": {
+        "electronics": 959789,
+        "books": 706693,
+        "clothing": 397757,
+        "daily": 422967,
+        "other": 180894
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 34,
+        "study": 20,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-09-14",
+      "newUsers": 39,
+      "activeUsers": 1520,
+      "tradeAmountFen": {
+        "electronics": 791582,
+        "books": 535298,
+        "clothing": 334172,
+        "daily": 353077,
+        "other": 133571
+      },
+      "contentCounts": {
+        "market": 70,
+        "tasks": 42,
+        "study": 25,
+        "campus": 28,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-09-15",
+      "newUsers": 59,
+      "activeUsers": 1680,
+      "tradeAmountFen": {
+        "electronics": 822924,
+        "books": 550012,
+        "clothing": 341752,
+        "daily": 377619,
+        "other": 152293
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-09-16",
+      "newUsers": 37,
+      "activeUsers": 1636,
+      "tradeAmountFen": {
+        "electronics": 813476,
+        "books": 537958,
+        "clothing": 351532,
+        "daily": 381095,
+        "other": 142239
+      },
+      "contentCounts": {
+        "market": 66,
+        "tasks": 40,
+        "study": 23,
+        "campus": 27,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-09-17",
+      "newUsers": 49,
+      "activeUsers": 1446,
+      "tradeAmountFen": {
+        "electronics": 771756,
+        "books": 527570,
+        "clothing": 334989,
+        "daily": 374039,
+        "other": 159746
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 34,
+        "study": 20,
+        "campus": 22,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-09-18",
+      "newUsers": 57,
+      "activeUsers": 1587,
+      "tradeAmountFen": {
+        "electronics": 793691,
+        "books": 516938,
+        "clothing": 319708,
+        "daily": 335284,
+        "other": 142879
+      },
+      "contentCounts": {
+        "market": 66,
+        "tasks": 40,
+        "study": 23,
+        "campus": 27,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-09-19",
+      "newUsers": 51,
+      "activeUsers": 1667,
+      "tradeAmountFen": {
+        "electronics": 948124,
+        "books": 607849,
+        "clothing": 407917,
+        "daily": 414799,
+        "other": 181811
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-09-20",
+      "newUsers": 35,
+      "activeUsers": 1868,
+      "tradeAmountFen": {
+        "electronics": 1031934,
+        "books": 695657,
+        "clothing": 428892,
+        "daily": 461092,
+        "other": 182425
+      },
+      "contentCounts": {
+        "market": 64,
+        "tasks": 38,
+        "study": 22,
+        "campus": 25,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-09-21",
+      "newUsers": 48,
+      "activeUsers": 1406,
+      "tradeAmountFen": {
+        "electronics": 801915,
+        "books": 540083,
+        "clothing": 349689,
+        "daily": 384674,
+        "other": 145739
+      },
+      "contentCounts": {
+        "market": 71,
+        "tasks": 43,
+        "study": 25,
+        "campus": 28,
+        "other": 11
+      }
+    },
+    {
+      "date": "2026-09-22",
+      "newUsers": 55,
+      "activeUsers": 1597,
+      "tradeAmountFen": {
+        "electronics": 784320,
+        "books": 534434,
+        "clothing": 326888,
+        "daily": 368181,
+        "other": 161777
+      },
+      "contentCounts": {
+        "market": 69,
+        "tasks": 42,
+        "study": 24,
+        "campus": 28,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-09-23",
+      "newUsers": 42,
+      "activeUsers": 1483,
+      "tradeAmountFen": {
+        "electronics": 739283,
+        "books": 491096,
+        "clothing": 335508,
+        "daily": 342682,
+        "other": 145231
+      },
+      "contentCounts": {
+        "market": 71,
+        "tasks": 43,
+        "study": 25,
+        "campus": 28,
+        "other": 11
+      }
+    },
+    {
+      "date": "2026-09-24",
+      "newUsers": 47,
+      "activeUsers": 1536,
+      "tradeAmountFen": {
+        "electronics": 806221,
+        "books": 585814,
+        "clothing": 330404,
+        "daily": 359616,
+        "other": 132945
+      },
+      "contentCounts": {
+        "market": 57,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-09-25",
+      "newUsers": 42,
+      "activeUsers": 1355,
+      "tradeAmountFen": {
+        "electronics": 762091,
+        "books": 535047,
+        "clothing": 331513,
+        "daily": 368423,
+        "other": 155626
+      },
+      "contentCounts": {
+        "market": 64,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-09-26",
+      "newUsers": 35,
+      "activeUsers": 1583,
+      "tradeAmountFen": {
+        "electronics": 1116550,
+        "books": 735680,
+        "clothing": 435525,
+        "daily": 465808,
+        "other": 211037
+      },
+      "contentCounts": {
+        "market": 75,
+        "tasks": 45,
+        "study": 26,
+        "campus": 30,
+        "other": 11
+      }
+    },
+    {
+      "date": "2026-09-27",
+      "newUsers": 40,
+      "activeUsers": 1882,
+      "tradeAmountFen": {
+        "electronics": 992669,
+        "books": 663023,
+        "clothing": 424662,
+        "daily": 432503,
+        "other": 157443
+      },
+      "contentCounts": {
+        "market": 66,
+        "tasks": 40,
+        "study": 23,
+        "campus": 26,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-09-28",
+      "newUsers": 42,
+      "activeUsers": 1616,
+      "tradeAmountFen": {
+        "electronics": 924396,
+        "books": 588960,
+        "clothing": 366848,
+        "daily": 426615,
+        "other": 151081
+      },
+      "contentCounts": {
+        "market": 73,
+        "tasks": 44,
+        "study": 26,
+        "campus": 29,
+        "other": 11
+      }
+    },
+    {
+      "date": "2026-09-29",
+      "newUsers": 59,
+      "activeUsers": 1569,
+      "tradeAmountFen": {
+        "electronics": 812754,
+        "books": 550416,
+        "clothing": 360440,
+        "daily": 379625,
+        "other": 163765
+      },
+      "contentCounts": {
+        "market": 57,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-09-30",
+      "newUsers": 54,
+      "activeUsers": 1689,
+      "tradeAmountFen": {
+        "electronics": 806859,
+        "books": 545022,
+        "clothing": 360007,
+        "daily": 378071,
+        "other": 159541
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-10-01",
+      "newUsers": 49,
+      "activeUsers": 1571,
+      "tradeAmountFen": {
+        "electronics": 806486,
+        "books": 570424,
+        "clothing": 371135,
+        "daily": 373252,
+        "other": 150603
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 33,
+        "study": 19,
+        "campus": 22,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-10-02",
+      "newUsers": 49,
+      "activeUsers": 1399,
+      "tradeAmountFen": {
+        "electronics": 803068,
+        "books": 586132,
+        "clothing": 360099,
+        "daily": 391409,
+        "other": 131092
+      },
+      "contentCounts": {
+        "market": 67,
+        "tasks": 40,
+        "study": 24,
+        "campus": 27,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-10-03",
+      "newUsers": 43,
+      "activeUsers": 1716,
+      "tradeAmountFen": {
+        "electronics": 1089347,
+        "books": 779301,
+        "clothing": 454057,
+        "daily": 483995,
+        "other": 212500
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-10-04",
+      "newUsers": 43,
+      "activeUsers": 1656,
+      "tradeAmountFen": {
+        "electronics": 957186,
+        "books": 667077,
+        "clothing": 414801,
+        "daily": 429745,
+        "other": 178391
+      },
+      "contentCounts": {
+        "market": 72,
+        "tasks": 43,
+        "study": 25,
+        "campus": 29,
+        "other": 11
+      }
+    },
+    {
+      "date": "2026-10-05",
+      "newUsers": 41,
+      "activeUsers": 1669,
+      "tradeAmountFen": {
+        "electronics": 818296,
+        "books": 553366,
+        "clothing": 342168,
+        "daily": 378352,
+        "other": 152918
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-10-06",
+      "newUsers": 42,
+      "activeUsers": 1370,
+      "tradeAmountFen": {
+        "electronics": 913197,
+        "books": 614697,
+        "clothing": 388885,
+        "daily": 377272,
+        "other": 173349
+      },
+      "contentCounts": {
+        "market": 71,
+        "tasks": 43,
+        "study": 25,
+        "campus": 28,
+        "other": 11
+      }
+    },
+    {
+      "date": "2026-10-07",
+      "newUsers": 39,
+      "activeUsers": 1686,
+      "tradeAmountFen": {
+        "electronics": 763458,
+        "books": 526053,
+        "clothing": 325246,
+        "daily": 360720,
+        "other": 146623
+      },
+      "contentCounts": {
+        "market": 65,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-10-08",
+      "newUsers": 53,
+      "activeUsers": 1559,
+      "tradeAmountFen": {
+        "electronics": 788287,
+        "books": 576431,
+        "clothing": 356521,
+        "daily": 355279,
+        "other": 171082
+      },
+      "contentCounts": {
+        "market": 59,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-10-09",
+      "newUsers": 51,
+      "activeUsers": 1651,
+      "tradeAmountFen": {
+        "electronics": 729634,
+        "books": 531135,
+        "clothing": 313895,
+        "daily": 349080,
+        "other": 155156
+      },
+      "contentCounts": {
+        "market": 74,
+        "tasks": 44,
+        "study": 26,
+        "campus": 30,
+        "other": 11
+      }
+    },
+    {
+      "date": "2026-10-10",
+      "newUsers": 54,
+      "activeUsers": 1633,
+      "tradeAmountFen": {
+        "electronics": 995247,
+        "books": 663095,
+        "clothing": 399667,
+        "daily": 431473,
+        "other": 197918
+      },
+      "contentCounts": {
+        "market": 61,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-10-11",
+      "newUsers": 39,
+      "activeUsers": 1909,
+      "tradeAmountFen": {
+        "electronics": 1112187,
+        "books": 774778,
+        "clothing": 461805,
+        "daily": 517474,
+        "other": 209656
+      },
+      "contentCounts": {
+        "market": 58,
+        "tasks": 35,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-10-12",
+      "newUsers": 49,
+      "activeUsers": 1725,
+      "tradeAmountFen": {
+        "electronics": 920652,
+        "books": 611571,
+        "clothing": 388062,
+        "daily": 405034,
+        "other": 176581
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-10-13",
+      "newUsers": 43,
+      "activeUsers": 1497,
+      "tradeAmountFen": {
+        "electronics": 742613,
+        "books": 524745,
+        "clothing": 339177,
+        "daily": 331662,
+        "other": 147103
+      },
+      "contentCounts": {
+        "market": 62,
+        "tasks": 37,
+        "study": 22,
+        "campus": 25,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-10-14",
+      "newUsers": 59,
+      "activeUsers": 1678,
+      "tradeAmountFen": {
+        "electronics": 892658,
+        "books": 654086,
+        "clothing": 407479,
+        "daily": 433637,
+        "other": 148840
+      },
+      "contentCounts": {
+        "market": 56,
+        "tasks": 34,
+        "study": 20,
+        "campus": 23,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-10-15",
+      "newUsers": 42,
+      "activeUsers": 1548,
+      "tradeAmountFen": {
+        "electronics": 859181,
+        "books": 567865,
+        "clothing": 376554,
+        "daily": 384020,
+        "other": 161480
+      },
+      "contentCounts": {
+        "market": 61,
+        "tasks": 37,
+        "study": 21,
+        "campus": 24,
+        "other": 10
+      }
+    },
+    {
+      "date": "2026-10-16",
+      "newUsers": 44,
+      "activeUsers": 1465,
+      "tradeAmountFen": {
+        "electronics": 799335,
+        "books": 509006,
+        "clothing": 350923,
+        "daily": 362884,
+        "other": 158352
+      },
+      "contentCounts": {
+        "market": 63,
+        "tasks": 38,
+        "study": 22,
+        "campus": 25,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-10-17",
+      "newUsers": 45,
+      "activeUsers": 1920,
+      "tradeAmountFen": {
+        "electronics": 1135376,
+        "books": 713257,
+        "clothing": 445700,
+        "daily": 523604,
+        "other": 218563
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-10-18",
+      "newUsers": 37,
+      "activeUsers": 1571,
+      "tradeAmountFen": {
+        "electronics": 1111606,
+        "books": 748982,
+        "clothing": 480791,
+        "daily": 486430,
+        "other": 219891
+      },
+      "contentCounts": {
+        "market": 76,
+        "tasks": 45,
+        "study": 26,
+        "campus": 30,
+        "other": 12
+      }
+    },
+    {
+      "date": "2026-10-19",
+      "newUsers": 60,
+      "activeUsers": 1707,
+      "tradeAmountFen": {
+        "electronics": 915207,
+        "books": 633821,
+        "clothing": 360915,
+        "daily": 390138,
+        "other": 183319
+      },
+      "contentCounts": {
+        "market": 64,
+        "tasks": 39,
+        "study": 23,
+        "campus": 26,
+        "other": 9
+      }
+    },
+    {
+      "date": "2026-10-20",
+      "newUsers": 60,
+      "activeUsers": 1587,
+      "tradeAmountFen": {
+        "electronics": 834909,
+        "books": 533307,
+        "clothing": 358624,
+        "daily": 356341,
+        "other": 144419
+      },
+      "contentCounts": {
+        "market": 60,
+        "tasks": 36,
+        "study": 21,
+        "campus": 24,
+        "other": 8
+      }
+    },
+    {
+      "date": "2026-10-21",
+      "newUsers": 45,
+      "activeUsers": 1594,
+      "tradeAmountFen": {
+        "electronics": 782964,
+        "books": 539301,
+        "clothing": 334720,
+        "daily": 335620,
+        "other": 138195
+      },
+      "contentCounts": {
+        "market": 76,
+        "tasks": 46,
+        "study": 27,
+        "campus": 30,
+        "other": 11
+      }
+    }
+  ]
+}

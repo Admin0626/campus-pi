@@ -5,6 +5,7 @@ import WordAccountPages from "./WordAccountPages.vue";
 import WordUserManagement from "./WordUserManagement.vue";
 import WordMobileMe from "./WordMobileMe.vue";
 import WordMobileHome from "./WordMobileHome.vue";
+import AnalyticsPage from "./analytics/AnalyticsPage.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
 
 const path = ref(location.pathname),
@@ -482,6 +483,7 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
       'admin-shell': admin,
       'word-admin-shell': admin,
       'word-admin-users': path === '/admin/users',
+      'word-analytics-shell': path === '/admin/modules/analytics',
     }"
   >
     <aside class="sidebar" :class="{ 'dark-sidebar': admin }">
@@ -637,7 +639,8 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
             重试
           </button>
         </div>
-        <template v-if="path === '/home' || path === '/admin'"
+        <AnalyticsPage v-if="path === '/admin/modules/analytics'" />
+        <template v-else-if="path === '/home' || path === '/admin'"
           ><section class="panel welcome-panel">
             <span class="badge blue-badge">{{
               admin ? "管理工作台" : "欢迎回来"
@@ -672,7 +675,11 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
               <Icon :name="item[2]" :size="24" /><strong>{{
                 admin ? item[0] : item[1]
               }}</strong
-              ><span class="badge neutral">还在开发</span
+              ><span class="badge neutral">{{
+                admin && item[1] === "/admin/modules/analytics"
+                  ? "模拟数据"
+                  : "还在开发"
+              }}</span
               ><Icon name="arrow" :size="16" />
             </button></div
         ></template>
