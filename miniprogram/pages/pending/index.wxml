@@ -1,0 +1,1 @@
+<view class="page"><view class="space"></view><view class="card center"><view class="brand">校园Π</view><view class="card-title">{{name}}还在开发</view><view class="description">此页面已预留入口，功能完成后将在这里开放。</view><button class="secondary" bindtap="back">返回</button></view></view>

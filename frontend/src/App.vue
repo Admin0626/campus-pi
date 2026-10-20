@@ -1,22 +1,1286 @@
 <script setup>
+import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
+import Icon from "./Icon.vue";
+import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
+
+const path = ref(location.pathname),
+  user = ref(null),
+  busy = ref(false),
+  loading = ref(false),
+  error = ref(""),
+  notice = ref("");
+const isAuth = computed(() =>
+  ["/login", "/register", "/forgot-password"].includes(path.value),
+);
+const admin = computed(() => path.value.startsWith("/admin"));
+const registering = computed(() => path.value === "/register");
+const login = reactive({ account: "", password: "" });
+const form = reactive({
+  username: "",
+  contactType: "email",
+  contact: "",
+  password: "",
+  confirm: "",
+});
+const edit = reactive({ bio: "", address: "", campus: false, intro: false });
+const password = reactive({ current: "", next: "", confirm: "" });
+const visiblePassword = ref(false),
+  errors = reactive({});
+const users = ref([]),
+  total = ref("0"),
+  page = ref(1),
+  size = ref(20),
+  selected = ref(null);
+const filter = reactive({
+    keyword: "",
+    account_status: "",
+    role: "",
+    campus: "",
+  }),
+  applied = reactive({ ...filter });
+const statusTarget = ref(null),
+  reason = ref(""),
+  statusError = ref(""),
+  statusKey = ref("");
+let registrationKey = requestKey(),
+  registrationBody = "",
+  listVersion = 0,
+  navigationVersion = 0;
 const modules = [
-  ['A', '账号与权限'], ['B', '认证、文件与审计'], ['C', '商品与分类'],
-  ['D', '帖子与管理概览'], ['E', '任务发布与接取'], ['F', '任务验收与结算'],
-  ['G', '订单与售后'], ['H', '私信与举报'], ['I', '通知与投递'],
-]
+  ["C", "商品与分类", "box"],
+  ["D", "校园帖子", "file"],
+  ["E", "悬赏任务", "task"],
+  ["F", "任务验收与结算", "check"],
+  ["G", "订单与售后", "box"],
+  ["H", "私信与举报", "mail"],
+  ["I", "通知与投递", "bell"],
+];
+const adminMenu = [
+  ["工作台", "/admin", "grid"],
+  ["用户管理", "/admin/users", "users"],
+  ["内容审核", "/admin/modules/content", "shield"],
+  ["商品管理", "/admin/modules/products", "box"],
+  ["悬赏任务", "/admin/modules/tasks", "task"],
+  ["订单管理", "/admin/modules/orders", "file"],
+  ["通知管理", "/admin/modules/notices", "bell"],
+  ["数据分析", "/admin/modules/analytics", "chart"],
+];
+const pendingName = computed(
+  () =>
+    adminMenu.find((m) => m[1] === path.value)?.[0] ||
+    modules.find((m) => `/modules/${m[0]}` === path.value)?.[1] ||
+    "此功能",
+);
+const pageTitle = computed(() =>
+  path.value === "/admin"
+    ? "管理工作台"
+    : path.value === "/admin/users"
+      ? "用户管理"
+      : /^\/admin\/users\//.test(path.value)
+        ? "用户详情"
+        : path.value === "/home"
+          ? "校园生活"
+          : path.value === "/me"
+            ? "我的账号"
+            : path.value === "/me/profile"
+              ? "资料与隐私"
+              : path.value === "/me/password"
+                ? "账号安全"
+                : pendingName.value,
+);
+function clear() {
+  error.value = "";
+  Object.keys(errors).forEach((k) => delete errors[k]);
+}
+function displayError(e) {
+  error.value = e.message;
+  for (const f of e.fields || []) errors[f.field] = f.message;
+}
+function notify(value) {
+  notice.value = value;
+}
+function date(value) {
+  return value
+    ? new Intl.DateTimeFormat("zh-CN", {
+        timeZone: "Asia/Shanghai",
+        dateStyle: "medium",
+        timeStyle: "short",
+        hour12: false,
+      }).format(new Date(value))
+    : "—";
+}
+function initials(value) {
+  return value?.username?.slice(0, 1).toUpperCase() || "Π";
+}
+async function navigate(destination, replace = false) {
+  if (busy.value) return;
+  const version = ++navigationVersion;
+  clear();
+  statusTarget.value = null;
+  if (
+    !["/login", "/register", "/forgot-password"].includes(destination) &&
+    !user.value
+  )
+    destination = "/login";
+  if (!["/login", "/register", "/forgot-password"].includes(destination)) {
+    try {
+      const latest = await api("/me");
+      if (version !== navigationVersion) return;
+      user.value = latest;
+    } catch (e) {
+      if (version === navigationVersion) displayError(e);
+      return;
+    }
+  }
+  if (destination.startsWith("/admin") && user.value?.role !== "ADMIN") {
+    destination = "/home";
+    notify("需要管理员权限");
+  }
+  path.value = destination;
+  history[replace ? "replaceState" : "pushState"](null, "", destination);
+  window.scrollTo(0, 0);
+  if (destination === "/admin/users") await loadUsers();
+  else if (/^\/admin\/users\/[1-9]\d*$/.test(destination))
+    await loadDetail(destination.split("/").at(-1));
+  else if (destination === "/me/profile")
+    Object.assign(edit, {
+      bio: user.value.personal_bio || "",
+      address: user.value.address || "",
+      campus: user.value.privacy_settings.show_campus,
+      intro: user.value.privacy_settings.show_personal_bio,
+    });
+  else if (destination === "/me/password")
+    Object.assign(password, { current: "", next: "", confirm: "" });
+}
+function focusError() {
+  requestAnimationFrame(() =>
+    document.querySelector("[aria-invalid=true]")?.focus(),
+  );
+}
+function passwordValid(value) {
+  const count = Array.from(value).length;
+  return count >= 12 && count <= 64;
+}
+async function signIn() {
+  if (busy.value) return;
+  clear();
+  if (!login.account.trim()) errors.account = "请输入账号";
+  if (!passwordValid(login.password)) errors.password = "密码为 12–64 个字符";
+  if (Object.keys(errors).length) return focusError();
+  busy.value = true;
+  try {
+    const result = await api("/auth/login", {
+      method: "POST",
+      body: { ...login, account: login.account.trim() },
+    });
+    setToken(result.access_token);
+    user.value = result.user;
+    login.password = "";
+    busy.value = false;
+    await navigate(user.value.role === "ADMIN" ? "/admin" : "/home", true);
+    notify("登录成功");
+  } catch (e) {
+    displayError(e);
+  } finally {
+    busy.value = false;
+  }
+}
+async function register() {
+  if (busy.value) return;
+  clear();
+  if (!/^[A-Za-z][A-Za-z0-9_]{2,24}$/.test(form.username))
+    errors.username = "用户名以字母开头，3–25 位字母、数字或下划线";
+  if (
+    form.contactType === "email"
+      ? !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contact.trim()) ||
+        form.contact.trim().length > 100
+      : !/^\+[1-9][0-9]{7,14}$/.test(form.contact.trim())
+  )
+    errors.contact = "请填写有效邮箱或带国家区号的手机号";
+  if (!passwordValid(form.password)) errors.password = "密码为 12–64 个字符";
+  if (form.password !== form.confirm || !form.confirm)
+    errors.confirm = "两次输入的密码不一致";
+  if (Object.keys(errors).length) return focusError();
+  const body = {
+    username: form.username,
+    password: form.password,
+    [form.contactType]: form.contact.trim(),
+  };
+  const text = JSON.stringify(body);
+  if (registrationBody !== text) {
+    registrationKey = requestKey();
+    registrationBody = text;
+  }
+  busy.value = true;
+  try {
+    await api("/auth/register", { method: "POST", body, key: registrationKey });
+    login.account = body.username;
+    login.password = "";
+    form.password = "";
+    form.confirm = "";
+    registrationBody = "";
+    setToken("");
+    user.value = null;
+    busy.value = false;
+    await navigate("/login", true);
+    notify("注册成功，请使用新账号登录");
+  } catch (e) {
+    displayError(e);
+  } finally {
+    busy.value = false;
+  }
+}
+async function logout() {
+  if (busy.value) return;
+  busy.value = true;
+  try {
+    await api("/auth/logout", { method: "POST" });
+  } catch (e) {
+    if (e.status !== 401) {
+      displayError(e);
+      busy.value = false;
+      return;
+    }
+  }
+  setToken("");
+  user.value = null;
+  busy.value = false;
+  await navigate("/login", true);
+  notify("已退出登录");
+}
+async function loadUsers() {
+  const version = ++listVersion;
+  loading.value = true;
+  try {
+    const query = new URLSearchParams({
+      page: String(page.value),
+      page_size: String(size.value),
+    });
+    for (const [k, v] of Object.entries(applied)) if (v) query.set(k, v);
+    const result = await api(`/admin/users?${query}`);
+    if (version === listVersion) {
+      users.value = result.items;
+      total.value = result.total;
+    }
+  } catch (e) {
+    if (version === listVersion) displayError(e);
+  } finally {
+    if (version === listVersion) loading.value = false;
+  }
+}
+async function search() {
+  Object.assign(applied, filter);
+  page.value = 1;
+  await loadUsers();
+}
+async function reset() {
+  Object.assign(filter, {
+    keyword: "",
+    account_status: "",
+    role: "",
+    campus: "",
+  });
+  await search();
+}
+async function loadDetail(id) {
+  loading.value = true;
+  selected.value = null;
+  try {
+    selected.value = await api(`/admin/users/${id}`);
+  } catch (e) {
+    displayError(e);
+  } finally {
+    loading.value = false;
+  }
+}
+function statusDialog(value) {
+  statusTarget.value = value;
+  reason.value = "";
+  statusError.value = "";
+  statusKey.value = requestKey();
+}
+async function changeStatus() {
+  if (busy.value) return;
+  const why = reason.value.trim();
+  if (!why || Array.from(why).length > 500) {
+    statusError.value = "请填写 1–500 字的操作原因";
+    return;
+  }
+  busy.value = true;
+  try {
+    const updated = await api(
+      `/admin/users/${statusTarget.value.user_id}/status`,
+      {
+        method: "POST",
+        key: statusKey.value,
+        body: {
+          account_status:
+            statusTarget.value.account_status === "ACTIVE"
+              ? "DISABLED"
+              : "ACTIVE",
+          reason: why,
+        },
+      },
+    );
+    statusTarget.value = null;
+    if (selected.value?.user_id === updated.user_id) selected.value = updated;
+    await loadUsers();
+    notify("账号状态已更新");
+  } catch (e) {
+    statusError.value = e.message;
+  } finally {
+    busy.value = false;
+  }
+}
+async function saveProfile() {
+  if (busy.value) return;
+  clear();
+  if (
+    Array.from(edit.bio).length > 500 ||
+    Array.from(edit.address).length > 500
+  ) {
+    error.value = "个人介绍和地址最多 500 个字符";
+    return;
+  }
+  busy.value = true;
+  try {
+    user.value = await api("/me", {
+      method: "PATCH",
+      body: {
+        personal_bio: edit.bio,
+        address: edit.address,
+        privacy_settings: {
+          show_campus: edit.campus,
+          show_personal_bio: edit.intro,
+        },
+      },
+    });
+    busy.value = false;
+    await navigate("/me");
+    notify("个人资料已保存");
+  } catch (e) {
+    displayError(e);
+  } finally {
+    busy.value = false;
+  }
+}
+async function changePassword() {
+  if (busy.value) return;
+  clear();
+  if (
+    !passwordValid(password.current) ||
+    !passwordValid(password.next) ||
+    password.next !== password.confirm
+  ) {
+    error.value = "请检查密码长度（12–64 字符）及两次新密码是否一致";
+    return;
+  }
+  busy.value = true;
+  try {
+    await api("/me/password", {
+      method: "POST",
+      body: { current_password: password.current, new_password: password.next },
+    });
+    setToken("");
+    login.account = user.value.username;
+    user.value = null;
+    busy.value = false;
+    await navigate("/login", true);
+    notify("密码修改成功，请重新登录");
+  } catch (e) {
+    displayError(e);
+  } finally {
+    busy.value = false;
+  }
+}
+function expired() {
+  setToken("");
+  user.value = null;
+  busy.value = false;
+  navigate("/login", true);
+  notify("登录状态已失效，请重新登录");
+}
+function pop() {
+  navigate(location.pathname, true);
+}
+setExpiredHandler(expired);
+onMounted(() => {
+  window.addEventListener("popstate", pop);
+  navigate(location.pathname === "/" ? "/login" : location.pathname, true);
+});
+onUnmounted(() => window.removeEventListener("popstate", pop));
 </script>
 
 <template>
-  <main>
-    <p class="eyebrow">CAMPUS Π</p>
-    <h1>校园Π开发起始页</h1>
-    <p>前端基础工程已启动。九位成员各负责一个模块的前端、后端与联调测试。</p>
-    <p class="status">业务页面和112项接口仍待开发。模块范围、接口规则和交接说明见仓库 README。</p>
-    <h2>模块归属</h2>
-    <ul>
-      <li v-for="[code, name] in modules" :key="code">
-        <strong>{{ code }}</strong><span>{{ name }}</span><span class="pending">待开发</span>
-      </li>
-    </ul>
-  </main>
+  <div v-if="isAuth" class="auth-shell live-auth">
+    <aside class="auth-story">
+      <div class="brand">
+        <span class="brand-symbol">Π</span>校园Π<span class="brand-caption"
+          >CAMPUS PI</span
+        >
+      </div>
+      <div class="story-content">
+        <div class="section-marker"><span></span>校园生活，从这里连接</div>
+        <h1>属于你的校园，<br />从一个账号开始。</h1>
+        <p class="story-description">
+          统一身份，安心交流。<br />在每一次连接中，保留自己的边界。
+        </p>
+        <div class="identity-art" aria-hidden="true">
+          <div class="art-orbit"></div>
+          <div class="identity-card">
+            <div class="identity-card-top">
+              <span class="mini-brand">校园Π</span
+              ><span class="card-tag">CAMPUS ID</span>
+            </div>
+            <div class="identity-card-body">
+              <div class="art-avatar"><Icon name="user" :size="34" /></div>
+              <div>
+                <strong>你的校园通行证</strong>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+              </div>
+            </div>
+            <div class="identity-card-bottom">
+              <span>独立账号 · 自主公开</span><Icon name="shield" />
+            </div>
+          </div>
+          <div class="privacy-float">
+            <div class="tiny-shield"><Icon name="shield" /></div>
+            <div>
+              <strong>把隐私留给自己</strong><span>公开什么，由你决定</span>
+            </div>
+            <span class="small-check"><Icon name="check" :size="14" /></span>
+          </div>
+        </div>
+        <div class="story-features">
+          <span><Icon name="user" :size="17" />统一账号</span
+          ><span><Icon name="shield" :size="17" />隐私可控</span
+          ><span><Icon name="campus" :size="17" />校园认证</span>
+        </div>
+      </div>
+      <div class="story-foot">校园Π · 校园生活服务平台</div>
+    </aside>
+    <main class="auth-main">
+      <div class="auth-top">
+        <span>欢迎来到校园Π</span
+        ><button @click="navigate(registering ? '/login' : '/register')">
+          {{ registering ? "已有账号？去登录" : "还没有账号？立即注册"
+          }}<Icon name="arrow" :size="16" />
+        </button>
+      </div>
+      <section class="auth-form" :class="{ 'register-form': registering }">
+        <div class="mobile-brand">校园Π</div>
+        <span class="eyebrow">{{
+          registering ? "CREATE YOUR ACCOUNT" : "WELCOME BACK"
+        }}</span>
+        <h2>
+          {{
+            registering
+              ? "注册账号"
+              : path === "/forgot-password"
+                ? "找回密码"
+                : "欢迎登录"
+          }}
+        </h2>
+        <p class="form-subtitle">
+          {{
+            registering
+              ? "一个账号，开启你的校园生活"
+              : "使用用户名、手机号或邮箱登录"
+          }}
+        </p>
+        <div v-if="notice" class="alert info-alert" role="status">
+          {{ notice
+          }}<button
+            class="icon-button"
+            aria-label="关闭提示"
+            @click="notice = ''"
+          >
+            <Icon name="close" :size="15" />
+          </button>
+        </div>
+        <div v-if="error" class="alert error" role="alert">{{ error }}</div>
+        <form v-if="path === '/login'" @submit.prevent="signIn" novalidate>
+          <div class="field">
+            <label for="account">账号</label>
+            <div class="input-wrap">
+              <Icon name="user" :size="18" /><input
+                id="account"
+                v-model="login.account"
+                maxlength="100"
+                autocomplete="username"
+                placeholder="用户名 / 手机号 / 邮箱"
+                :aria-invalid="!!errors.account"
+                :disabled="busy"
+              />
+            </div>
+            <small v-if="errors.account" class="field-error">{{
+              errors.account
+            }}</small>
+          </div>
+          <div class="field">
+            <label for="login-password">密码</label>
+            <div class="input-wrap">
+              <Icon name="lock" :size="18" /><input
+                id="login-password"
+                v-model="login.password"
+                :type="visiblePassword ? 'text' : 'password'"
+                autocomplete="current-password"
+                placeholder="请输入密码"
+                :aria-invalid="!!errors.password"
+                :disabled="busy"
+              /><button
+                class="input-action"
+                type="button"
+                :aria-label="visiblePassword ? '隐藏密码' : '显示密码'"
+                @click="visiblePassword = !visiblePassword"
+              >
+                <Icon name="eye" :size="18" />
+              </button>
+            </div>
+            <small v-if="errors.password" class="field-error">{{
+              errors.password
+            }}</small>
+          </div>
+          <div class="form-assist">
+            <span><Icon name="shield" :size="14" />请保护好你的账号信息</span
+            ><button type="button" @click="navigate('/forgot-password')">
+              忘记密码？
+            </button>
+          </div>
+          <button class="primary full login-submit" :disabled="busy">
+            {{ busy ? "正在登录…" : "登录" }}<Icon name="arrow" :size="18" />
+          </button>
+          <div class="auth-switch">
+            还没有账号？<button type="button" @click="navigate('/register')">
+              立即注册
+            </button>
+          </div>
+          <div class="auth-note">
+            <Icon name="info" :size="15" />登录后可申请实名与校园认证
+          </div>
+        </form>
+        <form v-else-if="registering" @submit.prevent="register" novalidate>
+          <div class="field">
+            <label for="username">用户名</label
+            ><input
+              id="username"
+              v-model="form.username"
+              autocomplete="username"
+              placeholder="以字母开头，3–25 位字符"
+              :aria-invalid="!!errors.username"
+              :disabled="busy"
+            /><small v-if="errors.username" class="field-error">{{
+              errors.username
+            }}</small>
+          </div>
+          <div class="field">
+            <div class="label-row">
+              <label for="contact">联系方式</label>
+              <div class="contact-tabs">
+                <button
+                  type="button"
+                  :class="{ active: form.contactType === 'email' }"
+                  :disabled="busy"
+                  @click="
+                    form.contactType = 'email';
+                    form.contact = '';
+                  "
+                >
+                  邮箱</button
+                ><span>/</span
+                ><button
+                  type="button"
+                  :class="{ active: form.contactType === 'phone' }"
+                  :disabled="busy"
+                  @click="
+                    form.contactType = 'phone';
+                    form.contact = '';
+                  "
+                >
+                  手机号
+                </button>
+              </div>
+            </div>
+            <input
+              id="contact"
+              v-model="form.contact"
+              :type="form.contactType === 'email' ? 'email' : 'tel'"
+              :autocomplete="form.contactType === 'email' ? 'email' : 'tel'"
+              :placeholder="
+                form.contactType === 'email'
+                  ? '请输入常用邮箱'
+                  : '+8613800000000'
+              "
+              :aria-invalid="!!errors.contact"
+              :disabled="busy"
+            /><small :class="{ 'field-error': errors.contact }">{{
+              errors.contact || "手机号或邮箱填写一项即可"
+            }}</small>
+          </div>
+          <div class="field">
+            <label for="reg-password">设置密码</label
+            ><input
+              id="reg-password"
+              v-model="form.password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="12–64 个字符"
+              :aria-invalid="!!errors.password"
+              :disabled="busy"
+            /><small v-if="errors.password" class="field-error">{{
+              errors.password
+            }}</small>
+          </div>
+          <div class="field">
+            <label for="reg-confirm">确认密码</label
+            ><input
+              id="reg-confirm"
+              v-model="form.confirm"
+              type="password"
+              autocomplete="new-password"
+              placeholder="请再次输入密码"
+              :aria-invalid="!!errors.confirm"
+              :disabled="busy"
+            /><small v-if="errors.confirm" class="field-error">{{
+              errors.confirm
+            }}</small>
+          </div>
+          <button class="primary full" :disabled="busy">
+            {{ busy ? "正在注册…" : "注册账号"
+            }}<Icon name="arrow" :size="18" />
+          </button>
+          <div class="auth-switch">
+            已有账号？<button type="button" @click="navigate('/login')">
+              去登录
+            </button>
+          </div>
+          <div class="auth-note">注册成功后进入登录页面</div>
+        </form>
+        <div v-else class="recovery-state">
+          <div class="recovery-icon"><Icon name="lock" :size="30" /></div>
+          <h3>密码找回还在开发</h3>
+          <p>发送通道与联系方式验证尚未接入。请联系平台管理员处理。</p>
+          <button class="primary full" @click="navigate('/login')">
+            返回登录
+          </button>
+        </div>
+      </section>
+      <div class="auth-bottom">
+        <span>校园Π / 账号与权限</span><span>用心连接每一份校园生活</span>
+      </div>
+    </main>
+  </div>
+  <div
+    v-else-if="user"
+    class="app-shell live-app"
+    :class="{ 'admin-shell': admin }"
+  >
+    <aside class="sidebar" :class="{ 'dark-sidebar': admin }">
+      <div class="brand">
+        <span class="brand-symbol">Π</span>
+        <div>
+          校园Π<span class="brand-under">{{
+            admin ? "管理工作台" : "校园生活服务平台"
+          }}</span>
+        </div>
+      </div>
+      <div class="sidebar-section">{{ admin ? "平台管理" : "个人空间" }}</div>
+      <nav class="side-menu">
+        <template v-if="admin"
+          ><button
+            v-for="item in adminMenu"
+            :key="item[1]"
+            :class="{
+              selected:
+                path === item[1] ||
+                (item[1] === '/admin/users' &&
+                  path.startsWith('/admin/users/')),
+            }"
+            @click="navigate(item[1])"
+          >
+            <Icon :name="item[2]" :size="19" />{{ item[0] }}
+          </button></template
+        ><template v-else
+          ><button
+            :class="{ selected: path === '/home' }"
+            @click="navigate('/home')"
+          >
+            <Icon name="grid" />校园生活</button
+          ><button
+            :class="{ selected: path === '/me' }"
+            @click="navigate('/me')"
+          >
+            <Icon name="user" />我的账号</button
+          ><button
+            :class="{ selected: path === '/me/profile' }"
+            @click="navigate('/me/profile')"
+          >
+            <Icon name="edit" />资料与隐私</button
+          ><button
+            :class="{ selected: path === '/me/password' }"
+            @click="navigate('/me/password')"
+          >
+            <Icon name="shield" />账号安全
+          </button></template
+        >
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="sidebar-user" @click="logout">
+          <span class="avatar tiny blue">{{ initials(user) }}</span
+          ><span
+            ><strong>{{ user.username }}</strong
+            ><small>退出登录</small></span
+          ><Icon name="exit" :size="18" />
+        </button>
+      </div>
+    </aside>
+    <div class="app-body">
+      <header class="app-header">
+        <div class="breadcrumb">
+          <span>{{ admin ? "平台管理" : "个人空间" }}</span
+          ><Icon name="chevron" :size="13" /><strong>{{ pageTitle }}</strong>
+        </div>
+        <div class="header-right">
+          <button
+            v-if="user.role === 'ADMIN'"
+            class="text-link"
+            @click="navigate(admin ? '/home' : '/admin')"
+          >
+            {{ admin ? "用户端" : "管理端" }}</button
+          ><span class="avatar tiny blue">{{ initials(user) }}</span
+          ><span class="header-name">{{ user.username }}</span
+          ><button
+            class="icon-button mobile-exit"
+            aria-label="退出登录"
+            @click="logout"
+          >
+            <Icon name="exit" :size="18" />
+          </button>
+        </div>
+      </header>
+      <main class="content">
+        <div class="page-heading">
+          <div>
+            <div class="eyebrow">
+              {{ admin ? "CAMPUS PI / ADMIN" : "CAMPUS PI / ACCOUNT" }}
+            </div>
+            <h1>{{ pageTitle }}</h1>
+            <p>
+              {{ admin ? "校园Π管理工作空间" : "让每一次校园连接都更安心。" }}
+            </p>
+          </div>
+          <button
+            v-if="path.startsWith('/admin/users/')"
+            class="secondary"
+            @click="navigate('/admin/users')"
+          >
+            返回列表
+          </button>
+        </div>
+        <div v-if="notice" class="alert info-alert" role="status">
+          {{ notice
+          }}<button
+            class="icon-button"
+            aria-label="关闭提示"
+            @click="notice = ''"
+          >
+            <Icon name="close" :size="15" />
+          </button>
+        </div>
+        <div v-if="error" class="alert error" role="alert">
+          {{ error
+          }}<button
+            v-if="path === '/admin/users'"
+            class="text-link"
+            @click="loadUsers"
+          >
+            重试
+          </button>
+        </div>
+        <template v-if="path === '/home' || path === '/admin'"
+          ><section class="panel welcome-panel">
+            <span class="badge blue-badge">{{
+              admin ? "管理工作台" : "欢迎回来"
+            }}</span>
+            <h2>{{ user.username }}，你好</h2>
+            <p>
+              {{
+                admin
+                  ? "账号管理已开放，可查看平台用户并管理账号状态。"
+                  : "账号已登录。你可以查看个人资料、设置公开范围和管理账号安全。"
+              }}
+            </p>
+            <button
+              class="primary"
+              @click="navigate(admin ? '/admin/users' : '/me')"
+            >
+              {{ admin ? "进入用户管理" : "进入个人中心"
+              }}<Icon name="arrow" :size="16" />
+            </button>
+          </section>
+          <div class="module-grid">
+            <button
+              v-for="item in admin
+                ? adminMenu.filter(
+                    (m) => m[1] !== '/admin' && m[1] !== '/admin/users',
+                  )
+                : modules"
+              :key="item[0]"
+              class="panel module-card"
+              @click="navigate(admin ? item[1] : `/modules/${item[0]}`)"
+            >
+              <Icon :name="item[2]" :size="24" /><strong>{{
+                admin ? item[0] : item[1]
+              }}</strong
+              ><span class="badge neutral">还在开发</span
+              ><Icon name="arrow" :size="16" />
+            </button></div
+        ></template>
+        <section v-else-if="path === '/me'" class="panel">
+          <div class="detail-identity">
+            <span class="avatar large blue">{{ initials(user) }}</span>
+            <div>
+              <h2>
+                {{ user.username }}<span class="badge green">账号正常</span>
+              </h2>
+              <p class="subtle">
+                ID {{ user.user_id }} ·
+                {{ user.role === "ADMIN" ? "管理员" : "普通用户" }}
+              </p>
+            </div>
+          </div>
+          <dl class="info-list">
+            <div
+              v-for="[key, label] in [
+                ['email', '绑定邮箱'],
+                ['phone', '绑定手机号'],
+                ['campus', '认证校区'],
+                ['identity_verification', '实名认证'],
+                ['campus_verification', '校园认证'],
+                ['personal_bio', '个人介绍'],
+                ['address', '默认地址'],
+              ]"
+              :key="key"
+            >
+              <dt>{{ label }}</dt>
+              <dd>{{ user[key] || "尚未填写" }}</dd>
+            </div>
+            <div>
+              <dt>注册时间</dt>
+              <dd>{{ date(user.registration_time) }}</dd>
+            </div>
+          </dl>
+          <div class="form-footer live-panel-footer">
+            <button class="secondary" @click="navigate('/modules/B')">
+              查看认证</button
+            ><button class="primary" @click="navigate('/me/profile')">
+              编辑资料
+            </button>
+          </div>
+        </section>
+        <form
+          v-else-if="path === '/me/profile'"
+          class="panel edit-panel live-form-panel"
+          @submit.prevent="saveProfile"
+        >
+          <div class="panel-heading">
+            <div>
+              <Icon name="edit" />
+              <h3>个人资料</h3>
+            </div>
+          </div>
+          <div class="field">
+            <label>用户名</label><input :value="user.username" disabled />
+          </div>
+          <div class="field">
+            <label for="bio">个人介绍</label
+            ><textarea
+              id="bio"
+              v-model="edit.bio"
+              rows="3"
+              :disabled="busy"
+            ></textarea
+            ><small>最多 500 字</small>
+          </div>
+          <div class="field">
+            <label for="address">默认地址</label
+            ><input
+              id="address"
+              v-model="edit.address"
+              :disabled="busy"
+            /><small>仅本人可见</small>
+          </div>
+          <div class="toggle-row">
+            <div>
+              <label for="campus-visible">公开所在校区</label>
+              <p>认证校区按认证结果展示</p>
+            </div>
+            <button
+              id="campus-visible"
+              type="button"
+              role="switch"
+              class="switch"
+              :aria-checked="edit.campus"
+              :disabled="busy"
+              @click="edit.campus = !edit.campus"
+            >
+              <span></span>
+            </button>
+          </div>
+          <div class="toggle-row">
+            <div>
+              <label for="bio-visible">公开个人介绍</label>
+              <p>允许其他用户查看个人介绍</p>
+            </div>
+            <button
+              id="bio-visible"
+              type="button"
+              role="switch"
+              class="switch"
+              :aria-checked="edit.intro"
+              :disabled="busy"
+              @click="edit.intro = !edit.intro"
+            >
+              <span></span>
+            </button>
+          </div>
+          <div class="form-footer">
+            <button type="button" class="secondary" @click="navigate('/me')">
+              取消</button
+            ><button class="primary" :disabled="busy">
+              {{ busy ? "保存中…" : "保存资料" }}
+            </button>
+          </div>
+        </form>
+        <form
+          v-else-if="path === '/me/password'"
+          class="panel password-panel live-form-panel"
+          @submit.prevent="changePassword"
+        >
+          <div class="panel-heading">
+            <div>
+              <Icon name="lock" />
+              <h3>修改密码</h3>
+            </div>
+          </div>
+          <div class="alert info-alert">修改后所有会话失效，需要重新登录。</div>
+          <div class="field">
+            <label for="current-password">当前密码</label
+            ><input
+              id="current-password"
+              v-model="password.current"
+              type="password"
+              autocomplete="current-password"
+              :disabled="busy"
+            />
+          </div>
+          <div class="field">
+            <label for="new-password">新密码</label
+            ><input
+              id="new-password"
+              v-model="password.next"
+              type="password"
+              autocomplete="new-password"
+              :disabled="busy"
+            /><small>12–64 个字符</small>
+          </div>
+          <div class="field">
+            <label for="new-confirm">确认新密码</label
+            ><input
+              id="new-confirm"
+              v-model="password.confirm"
+              type="password"
+              autocomplete="new-password"
+              :disabled="busy"
+            />
+          </div>
+          <div class="form-footer">
+            <button type="button" class="secondary" @click="navigate('/me')">
+              取消</button
+            ><button class="primary" :disabled="busy">
+              {{ busy ? "修改中…" : "确认修改密码" }}
+            </button>
+          </div>
+        </form>
+        <section v-else-if="path === '/admin/users'" class="panel users-panel">
+          <div class="panel-heading">
+            <div>
+              <h3>用户列表</h3>
+              <span class="subtle">共 {{ total }} 位 · 管理视图已脱敏</span>
+            </div>
+          </div>
+          <form class="filter-form" @submit.prevent="search">
+            <div>
+              <label for="search">用户名</label
+              ><input
+                id="search"
+                v-model="filter.keyword"
+                placeholder="搜索用户名"
+                maxlength="100"
+              />
+            </div>
+            <div>
+              <label for="status">账号状态</label
+              ><select id="status" v-model="filter.account_status">
+                <option value="">全部</option>
+                <option value="ACTIVE">正常</option>
+                <option value="DISABLED">已停用</option>
+              </select>
+            </div>
+            <div>
+              <label for="role">角色</label
+              ><select id="role" v-model="filter.role">
+                <option value="">全部</option>
+                <option value="USER">普通用户</option>
+                <option value="ADMIN">管理员</option>
+              </select>
+            </div>
+            <div>
+              <label for="campus">校区</label
+              ><input
+                id="campus"
+                v-model="filter.campus"
+                placeholder="填写校区"
+                maxlength="50"
+              />
+            </div>
+            <div class="filter-buttons">
+              <button class="primary" :disabled="loading">查询</button
+              ><button type="button" class="secondary" @click="reset">
+                重置
+              </button>
+            </div>
+          </form>
+          <div v-if="loading" class="loading-state" role="status">
+            正在加载用户…
+          </div>
+          <div v-else class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>用户</th>
+                  <th>联系方式</th>
+                  <th>角色</th>
+                  <th>认证状态</th>
+                  <th>账号状态</th>
+                  <th>注册时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in users" :key="item.user_id">
+                  <td>
+                    <div class="table-user">
+                      <span class="avatar blue">{{ initials(item) }}</span>
+                      <div>
+                        <strong
+                          >{{ item.username
+                          }}<span
+                            v-if="item.user_id === user.user_id"
+                            class="self-label"
+                            >本人</span
+                          ></strong
+                        ><small>ID {{ item.user_id }}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="contact-cell">
+                      <span>{{ item.email || "未绑定邮箱" }}</span
+                      ><small>{{ item.phone || "未绑定手机" }}</small>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge neutral">{{
+                      item.role === "ADMIN" ? "管理员" : "普通用户"
+                    }}</span>
+                  </td>
+                  <td>
+                    <div class="certification">
+                      <span>实名 · {{ item.identity_verification }}</span
+                      ><span>校园 · {{ item.campus_verification }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span
+                      class="status-tag"
+                      :class="
+                        item.account_status === 'ACTIVE'
+                          ? 'status-active'
+                          : 'status-disabled'
+                      "
+                      ><i></i
+                      >{{
+                        item.account_status === "ACTIVE" ? "正常" : "已停用"
+                      }}</span
+                    >
+                  </td>
+                  <td class="date-cell">{{ date(item.registration_time) }}</td>
+                  <td>
+                    <div class="table-actions">
+                      <button @click="navigate(`/admin/users/${item.user_id}`)">
+                        详情</button
+                      ><span></span
+                      ><button
+                        :disabled="item.user_id === user.user_id"
+                        @click="statusDialog(item)"
+                      >
+                        {{ item.account_status === "ACTIVE" ? "停用" : "启用" }}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="!users.length">
+                  <td colspan="7">
+                    <div class="empty-state">没有找到符合条件的用户</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span>共 {{ total }} 位用户</span>
+            <div class="pagination">
+              <button
+                :disabled="page <= 1 || loading"
+                @click="
+                  page--;
+                  loadUsers();
+                "
+              >
+                上一页</button
+              ><span>第 {{ page }} 页</span
+              ><button
+                :disabled="page * size >= Number(total) || loading"
+                @click="
+                  page++;
+                  loadUsers();
+                "
+              >
+                下一页
+              </button>
+            </div>
+          </div>
+        </section>
+        <template v-else-if="/^\/admin\/users\//.test(path)"
+          ><div v-if="loading" class="loading-state">正在加载用户详情…</div>
+          <section v-else-if="selected" class="panel">
+            <div class="detail-identity">
+              <span class="avatar large blue">{{ initials(selected) }}</span>
+              <div>
+                <h2>{{ selected.username }}</h2>
+                <p class="subtle">ID {{ selected.user_id }} · 管理视图已脱敏</p>
+              </div>
+            </div>
+            <dl class="info-list">
+              <div
+                v-for="[key, label] in [
+                  ['email', '邮箱'],
+                  ['phone', '手机号'],
+                  ['role', '角色'],
+                  ['account_status', '账号状态'],
+                  ['identity_verification', '实名认证'],
+                  ['campus_verification', '校园认证'],
+                ]"
+                :key="key"
+              >
+                <dt>{{ label }}</dt>
+                <dd>{{ selected[key] || "—" }}</dd>
+              </div>
+            </dl>
+            <div class="form-footer live-panel-footer">
+              <button class="secondary" disabled>
+                <Icon name="lock" :size="15" />角色调整未开放</button
+              ><button
+                class="primary"
+                :disabled="selected.user_id === user.user_id"
+                @click="statusDialog(selected)"
+              >
+                {{
+                  selected.account_status === "ACTIVE" ? "停用账号" : "启用账号"
+                }}
+              </button>
+            </div>
+          </section></template
+        >
+        <section v-else class="panel pending-panel">
+          <div class="recovery-icon"><Icon name="task" :size="32" /></div>
+          <span class="eyebrow">COMING SOON</span>
+          <h2>{{ pendingName }}还在开发</h2>
+          <p>此页面已预留入口，功能完成后将在这里开放。</p>
+          <button
+            class="secondary"
+            @click="navigate(admin ? '/admin' : '/home')"
+          >
+            返回{{ admin ? "工作台" : "校园生活"
+            }}<Icon name="arrow" :size="16" />
+          </button>
+        </section>
+      </main>
+      <footer class="app-footer">
+        <span>校园Π · {{ admin ? "管理工作台" : "校园生活服务平台" }}</span
+        ><span>ACCOUNT & ACCESS</span>
+      </footer>
+    </div>
+    <nav v-if="!admin" class="mobile-nav">
+      <button @click="navigate('/home')"><Icon name="grid" />校园生活</button
+      ><button @click="navigate('/me')"><Icon name="user" />我的账号</button
+      ><button @click="navigate('/me/profile')">
+        <Icon name="edit" />资料隐私</button
+      ><button @click="navigate('/me/password')">
+        <Icon name="shield" />账号安全
+      </button>
+    </nav>
+  </div>
+  <div
+    v-if="statusTarget"
+    class="modal-overlay"
+    @click.self="!busy && (statusTarget = null)"
+  >
+    <section
+      class="dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="status-title"
+    >
+      <div class="dialog-heading">
+        <h2 id="status-title">
+          {{ statusTarget.account_status === "ACTIVE" ? "停用" : "启用" }}账号
+        </h2>
+        <button
+          class="icon-button"
+          :disabled="busy"
+          @click="statusTarget = null"
+          aria-label="关闭弹窗"
+        >
+          <Icon name="close" />
+        </button>
+      </div>
+      <p class="dialog-copy">
+        目标用户：{{
+          statusTarget.username
+        }}。状态变更会撤销该用户已有会话，并保留操作审计；历史订单不会自动取消。
+      </p>
+      <div class="field">
+        <label for="reason">操作原因</label
+        ><textarea
+          id="reason"
+          v-model="reason"
+          rows="4"
+          :disabled="busy"
+        ></textarea
+        ><small v-if="statusError" class="field-error" role="alert">{{
+          statusError
+        }}</small>
+      </div>
+      <div class="dialog-footer">
+        <button class="secondary" :disabled="busy" @click="statusTarget = null">
+          取消</button
+        ><button class="primary" :disabled="busy" @click="changeStatus">
+          {{ busy ? "提交中…" : "确认操作" }}
+        </button>
+      </div>
+    </section>
+  </div>
 </template>

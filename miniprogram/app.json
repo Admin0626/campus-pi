@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/login/index",
+    "pages/register/index",
+    "pages/home/index",
+    "pages/me/index",
+    "pages/pending/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "校园Π",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f6f8fc"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

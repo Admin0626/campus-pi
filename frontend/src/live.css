@@ -1,0 +1,179 @@
+.live-auth {
+  min-height: 100vh;
+}
+.live-auth .auth-main {
+  min-height: 100vh;
+}
+.live-auth .auth-form {
+  padding-bottom: 40px;
+}
+.live-app {
+  min-height: 100vh;
+}
+.live-app .sidebar {
+  height: 100vh;
+}
+.welcome-panel {
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.welcome-panel h2 {
+  font-size: 24px;
+  margin-top: 16px;
+}
+.welcome-panel p {
+  font-size: 13px;
+  color: #8795af;
+  line-height: 1.9;
+  margin: 15px 0 24px;
+}
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.module-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  text-align: left;
+  padding: 24px;
+  color: #8e9cb7;
+}
+.module-card strong {
+  font-size: 13px;
+  color: #526789;
+  flex: 1;
+}
+.module-card .badge {
+  font-size: 9px;
+}
+.module-card > svg:last-child {
+  display: none;
+}
+.module-card:hover {
+  border-color: #b9c7ed;
+  background: #fbfcff;
+}
+.live-form-panel {
+  max-width: 700px;
+}
+.live-panel-footer {
+  padding: 22px 26px;
+  margin-top: 0;
+}
+.pending-panel {
+  text-align: center;
+  padding: 60px 25px 70px;
+}
+.pending-panel h2 {
+  font-size: 23px;
+  margin-top: 17px;
+  font-weight: 500;
+}
+.pending-panel p {
+  font-size: 13px;
+  line-height: 1.9;
+  color: #94a1b7;
+  margin: 18px 0 30px;
+}
+.loading-state {
+  padding: 45px;
+  text-align: center;
+  color: #8f9eba;
+  font-size: 13px;
+}
+.live-app .side-menu button {
+  flex-shrink: 0;
+}
+.live-app .date-cell {
+  font-size: 11px;
+  line-height: 1.8;
+  white-space: normal;
+  min-width: 145px;
+}
+.live-app .content > .alert .icon-button,
+.auth-form .alert .icon-button {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.live-app .alert {
+  align-items: center;
+}
+.live-app .table-actions button {
+  min-height: 28px;
+}
+.live-app .info-list {
+  max-width: 900px;
+}
+.live-app .filter-form input {
+  padding: 0 10px;
+}
+.live-app .table-scroll table {
+  min-width: 920px;
+}
+@media (max-width: 1000px) {
+  .module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .module-card {
+    padding: 23px 18px;
+  }
+}
+@media (max-width: 720px) {
+  .live-auth .auth-main {
+    min-height: 100dvh;
+  }
+  .live-auth .auth-form {
+    padding-top: 35px;
+    padding-bottom: 35px;
+  }
+  .module-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .module-card {
+    padding: 21px;
+  }
+  .module-card > svg:last-child {
+    display: block;
+  }
+  .welcome-panel {
+    padding: 24px;
+  }
+  .welcome-panel h2 {
+    font-size: 21px;
+  }
+  .welcome-panel p {
+    font-size: 12px;
+  }
+  .live-panel-footer {
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+  .pending-panel {
+    padding: 35px 20px 45px;
+  }
+  .pending-panel h2 {
+    font-size: 20px;
+  }
+  .pending-panel p {
+    font-size: 12px;
+  }
+  .live-app .header-right .text-link {
+    font-size: 10px;
+  }
+  .live-app .admin-shell .app-footer {
+    padding-bottom: 25px;
+  }
+  .live-app .date-cell {
+    min-width: 145px;
+  }
+  .live-app .live-form-panel .field label {
+    display: block;
+    margin-bottom: 9px;
+  }
+  .live-app .edit-panel .field {
+    margin-top: 22px;
+  }
+}

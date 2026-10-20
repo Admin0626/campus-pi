@@ -1,0 +1,4 @@
+{
+  "desc": "开发中，暂不允许微信搜索索引",
+  "rules": [{ "action": "disallow", "page": "*" }]
+}

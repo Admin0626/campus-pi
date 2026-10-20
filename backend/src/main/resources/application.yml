@@ -1,14 +1,17 @@
-#数据库个人配置自行写在.env.example文件中
+# .env.example 是模板；真实值由进程环境或被忽略的 application-local.yml 注入。
 spring:
   application:
     name: campus-pi-server
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
   datasource:
-    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:campus_pi_local}?useUnicode=true&characterEncoding=UTF-8&connectionTimeZone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:campus_pi_local}?useUnicode=true&characterEncoding=UTF-8&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true
     username: ${DB_USER:}
     password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 5000
+      initialization-fail-timeout: -1
   servlet:
     multipart:
       max-file-size: 100MB
@@ -28,5 +31,10 @@ server:
     include-stacktrace: never
     include-exception: false
 
+campus:
+  auth:
+    # 注册请求摘要需要稳定的本地密钥，不能设置成示例密钥。
+    idempotency-secret: ${AUTH_IDEMPOTENCY_SECRET:}
+
 # Datasource is configured but schema initialization stays manual (see database/README.md).
-# Business mappers, sessions and external channels are still to be implemented.
+# Account sessions use transactional JDBC; other business mappers/channels remain pending.

@@ -1,0 +1,326 @@
+/* 在原报告的蓝白层级上提高表单、正文和表格的可读性。 */
+.auth-form input {
+  font-size: 14px;
+}
+.auth-form label {
+  font-size: 13px;
+}
+.form-subtitle {
+  font-size: 13px;
+  color: #7a879d;
+}
+.auth-note {
+  color: #8793aa;
+}
+.auth-form .field > small {
+  color: #7c889f;
+}
+.auth-form .field > .field-error {
+  color: #bd4449;
+}
+.auth-switch {
+  color: #8793a8;
+}
+.form-assist > span {
+  color: #8b98ad;
+}
+.auth-top {
+  color: #8c97ad;
+}
+.input-wrap > svg {
+  color: #8d9bb6;
+}
+.story-description {
+  color: #697c9f;
+}
+.story-features {
+  color: #6b7e9f;
+}
+.side-menu button {
+  font-size: 13px;
+  color: #7a889f;
+}
+.page-heading p {
+  font-size: 12px;
+  color: #7c8aa3;
+}
+.profile-bio {
+  font-size: 13px;
+  color: #697a95;
+}
+.info-list dt {
+  font-size: 12px;
+  color: #8694ad;
+}
+.info-list dd {
+  font-size: 13px;
+  color: #5f6f89;
+}
+.panel-heading h3 {
+  font-size: 14px;
+}
+.security-panel > p {
+  font-size: 12px;
+  color: #8392aa;
+}
+.profile-title p {
+  font-size: 11px;
+  color: #8c9bb5;
+}
+.profile-facts small {
+  font-size: 11px;
+  color: #8e9cb3;
+}
+.profile-facts strong {
+  font-size: 12px;
+  color: #697a95;
+}
+.identity-badges {
+  font-size: 11px;
+  color: #8b9ab3;
+}
+.verification-row {
+  font-size: 12px;
+  color: #7e8ea9;
+}
+.profile-title h2 .badge,
+.verification-row .badge {
+  font-size: 10px;
+}
+.compact-panel > p.subtle {
+  font-size: 11px;
+  color: #8795af;
+}
+.spaced-link {
+  font-size: 12px;
+}
+.management-description {
+  font-size: 12px;
+  color: #8292ad;
+}
+.toggle-row p {
+  font-size: 11px;
+  color: #8c9ab1;
+}
+.edit-panel label,
+.password-panel label {
+  font-size: 13px;
+}
+.edit-panel .field input,
+.password-panel input,
+.edit-panel textarea {
+  font-size: 13px;
+}
+.public-bio {
+  color: #8595af;
+  font-size: 12px;
+}
+.public-campus {
+  color: #8798b4;
+}
+.public-explanation {
+  font-size: 11px;
+  color: #8797b0;
+}
+.filter-form label {
+  font-size: 11px;
+  color: #8292ae;
+}
+.filter-form input,
+.filter-form select {
+  font-size: 12px;
+}
+.filter-buttons button {
+  font-size: 12px;
+}
+.users-panel .panel-heading .subtle {
+  font-size: 11px;
+  color: #94a1b9;
+}
+th {
+  font-size: 11px;
+  color: #8798b5;
+}
+td {
+  font-size: 12px;
+}
+.table-user strong {
+  font-size: 12px;
+}
+.table-user small {
+  font-size: 10px;
+  color: #99a8c0;
+}
+.contact-cell > span {
+  font-size: 11px;
+  color: #7184a5;
+}
+.contact-cell small {
+  font-size: 10px;
+  color: #94a4be;
+}
+.certification {
+  font-size: 10px;
+  color: #95a5be;
+}
+.certification .done {
+  color: #788fb4;
+}
+.status-tag {
+  font-size: 11px;
+}
+.table-actions button {
+  font-size: 11px;
+}
+.table-actions .danger-text {
+  color: #b66d7a;
+}
+.date-cell {
+  font-size: 11px;
+  color: #8193b0;
+}
+.date-cell small {
+  font-size: 10px;
+  color: #9dacc4;
+}
+.table-scroll .badge {
+  font-size: 10px;
+}
+.admin-metrics > div > div > span {
+  font-size: 11px;
+  color: #8192af;
+}
+.admin-note {
+  color: #8e9fba;
+}
+.table-footer {
+  font-size: 11px;
+  color: #8b9db9;
+}
+.pagination button {
+  font-size: 11px;
+}
+.pagination select {
+  font-size: 10px;
+}
+.admin-shell .side-menu button {
+  font-size: 13px;
+}
+.quiet-note {
+  color: #8e9fba;
+}
+.edit-panel .field small {
+  color: #8494ae;
+}
+.edit-panel .field .field-error {
+  color: #bd4449;
+}
+.password-tips > p {
+  color: #8a9bb5;
+}
+.dialog-copy {
+  font-size: 12px;
+  color: #8495af;
+}
+.dialog-info {
+  font-size: 13px;
+  color: #7b8ca7;
+}
+.dialog-target small {
+  color: #8a9cb7;
+}
+@media (max-width: 720px) {
+  .auth-form input {
+    font-size: 14px;
+  }
+  .auth-form label {
+    font-size: 13px;
+  }
+  .form-subtitle {
+    font-size: 12px;
+  }
+  .page-heading p {
+    font-size: 11px;
+  }
+  .profile-bio {
+    font-size: 12px;
+  }
+  .info-list dt {
+    font-size: 11px;
+  }
+  .info-list dd {
+    font-size: 12px;
+  }
+  .profile-facts small {
+    font-size: 10px;
+  }
+  .profile-facts strong {
+    font-size: 11px;
+  }
+  .profile-title p {
+    font-size: 9px;
+  }
+  .identity-badges {
+    font-size: 10px;
+  }
+  .panel-heading h3 {
+    font-size: 13px;
+  }
+  .security-panel > p {
+    font-size: 11px;
+  }
+  .verification-row {
+    font-size: 11px;
+  }
+  .edit-panel label,
+  .password-panel label {
+    font-size: 12px;
+  }
+  .edit-panel .field input,
+  .password-panel input,
+  .edit-panel textarea {
+    font-size: 13px;
+  }
+  .toggle-row p {
+    font-size: 10px;
+  }
+  .users-panel .panel-heading .subtle {
+    font-size: 8px;
+  }
+  .filter-form label {
+    font-size: 10px;
+  }
+  .filter-form input,
+  .filter-form select {
+    font-size: 11px;
+  }
+  .filter-buttons button {
+    font-size: 11px;
+  }
+  .admin-metrics > div > div > span {
+    font-size: 10px;
+  }
+  .admin-note {
+    font-size: 10px;
+  }
+  .table-footer {
+    font-size: 10px;
+  }
+  .public-explanation {
+    font-size: 10px;
+  }
+  .dialog-info {
+    font-size: 12px;
+  }
+  .dialog-copy {
+    font-size: 11px;
+  }
+}
+@media (max-width: 360px) {
+  .profile-facts strong {
+    font-size: 10px;
+  }
+  .profile-title p {
+    font-size: 8px;
+  }
+}
