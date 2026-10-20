@@ -2,6 +2,7 @@ const { guard } = require("../../utils/account");
 Page({
   data: {
     user: null,
+    statusHeight: 0,
     modules: [
       "商品与分类",
       "校园帖子",
@@ -11,6 +12,11 @@ Page({
       "私信与举报",
       "通知与投递",
     ],
+  },
+  onLoad() {
+    this.setData({
+      statusHeight: wx.getWindowInfo ? wx.getWindowInfo().statusBarHeight : 0,
+    });
   },
   onShow() {
     if (guard()) this.setData({ user: getApp().globalData.user });

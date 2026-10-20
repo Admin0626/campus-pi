@@ -1,0 +1,433 @@
+.word-home-page {
+  min-height: 1480.77rpx;
+  background: #f6f6f6;
+  padding-bottom: 173.08rpx;
+  color: #333;
+  font-family: Arial, "Microsoft YaHei", sans-serif;
+}
+.word-home-header {
+  background: #7872df;
+  color: white;
+  padding-top: 28.85rpx;
+}
+.word-home-search {
+  display: flex;
+  align-items: center;
+  gap: 19.23rpx;
+  margin: 0 28.85rpx 30.77rpx;
+  background: #f2f1f8;
+  color: #1b2357;
+  font-size: 26.92rpx;
+  border-radius: 23.08rpx;
+  height: 84.62rpx;
+  width: calc(100% - 57.69rpx);
+  padding: 0 28.85rpx;
+  text-align: left;
+}
+.word-home-search svg {
+  color: #9f959a;
+  width: 44.23rpx;
+  height: 44.23rpx;
+}
+.word-home-shortcuts {
+  border-top: 1.92rpx solid #ffffff44;
+  padding: 44.23rpx 25rpx 40.38rpx;
+  display: flex;
+  justify-content: space-around;
+}
+.word-home-shortcuts > button {
+  color: #fff;
+  font-size: 26.92rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 21.15rpx;
+  padding: 0;
+}
+.word-home-shortcuts > button > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 86.54rpx;
+  height: 86.54rpx;
+  border-radius: 26.92rpx;
+  background: #fff;
+  color: #6694ff;
+}
+.word-home-shortcuts svg {
+  height: 57.69rpx;
+  width: 57.69rpx;
+  stroke-width: 1.5;
+}
+.word-home-categories {
+  display: flex;
+  gap: 19.23rpx;
+  background: #fff;
+  padding: 30.77rpx 28.85rpx 3.85rpx;
+}
+.word-home-categories button {
+  font-size: 30.77rpx;
+  padding: 17.31rpx 30.77rpx;
+  border-radius: 48.08rpx;
+  background: #f1f1f7;
+  color: #666;
+  white-space: nowrap;
+}
+.word-home-categories .selected {
+  background: #498fe9;
+  color: #fff;
+}
+.word-home-panel {
+  background: #fff;
+  border-radius: 26.92rpx;
+  padding: 34.62rpx 55.77rpx 48.08rpx;
+}
+.word-home-panel > view {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.word-home-panel .word-panel-title {
+  font-size: 38.46rpx;
+  font-weight: 400;
+}
+.word-home-panel > view > button {
+  color: #388aff;
+  font-size: 26.92rpx;
+  padding: 0;
+}
+.word-home-pending {
+  width: 100%;
+  height: 278.85rpx;
+  background: #fafafa;
+  border: 1.92rpx solid #eee;
+  border-radius: 19.23rpx;
+  color: #aaa;
+  font-size: 26.92rpx;
+  margin-top: 34.62rpx;
+}
+
+.word-me-page {
+  position: relative;
+  background: #fff;
+  min-height: 1326.92rpx;
+  color: #111;
+  font-family: Arial, "Microsoft YaHei", sans-serif;
+  padding-bottom: 163.46rpx;
+  font-size: 26.92rpx;
+}
+.word-me-header {
+  background: #5446b9;
+  color: #fff;
+  padding: 57.69rpx 50rpx 48.08rpx;
+  box-shadow: 0 5.77rpx 7.69rpx #0003;
+}
+.word-me-identity {
+  display: flex;
+  gap: 28.85rpx;
+  align-items: center;
+}
+.word-me-avatar {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+  background: #8e84df;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.word-me-avatar svg {
+  width: 86.54rpx;
+  height: 86.54rpx;
+}
+.word-me-identity .word-user-name {
+  font-size: 38.46rpx;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.word-me-identity .word-student {
+  font-size: 32.69rpx;
+  line-height: 1.5;
+}
+.word-me-identity .word-cert {
+  font-size: 25rpx;
+}
+.word-me-identity .word-cert .word-chip {
+  margin-left: 15.38rpx;
+  border-radius: 23.08rpx;
+  background: #9ee7ff;
+  color: #239dd1;
+  padding: 3.85rpx 9.62rpx;
+  font-size: 19.23rpx;
+}
+.word-me-statistics {
+  display: flex;
+  justify-content: space-between;
+  padding: 53.85rpx 11.54rpx 0;
+}
+.word-me-statistics button {
+  color: #fff;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 11.54rpx;
+  align-items: center;
+  padding: 0;
+}
+.word-me-statistics .word-number {
+  font-size: 53.85rpx;
+  font-weight: 400;
+}
+.word-me-statistics .word-stat-label {
+  font-size: 21.15rpx;
+}
+.word-me-card {
+  border: 1.92rpx solid #e6e6e6;
+  border-radius: 23.08rpx;
+  margin: 38.46rpx 55.77rpx 15.38rpx;
+  padding: 13.46rpx 21.15rpx 28.85rpx;
+}
+.word-me-card .word-card-title {
+  font-size: 36.54rpx;
+  font-weight: 400;
+  line-height: 1.8;
+}
+.word-me-services {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48.08rpx 34.62rpx;
+  padding: 38.46rpx 11.54rpx 17.31rpx;
+}
+.word-me-services button {
+  padding: 0;
+  font-size: 28.85rpx;
+  height: 57.69rpx;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 13.46rpx;
+}
+.word-me-services svg {
+  width: 26.92rpx;
+  height: 26.92rpx;
+  color: #6657f0;
+}
+.word-me-settings {
+  margin-top: 15.38rpx;
+  padding-bottom: 23.08rpx;
+}
+.word-me-settings .word-card-title {
+  font-size: 46.15rpx;
+  line-height: 1.6;
+}
+.word-me-settings > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 28.85rpx 23.08rpx 19.23rpx 73.08rpx;
+  font-size: 30.77rpx;
+}
+.word-me-settings svg {
+  color: #b6bdc9;
+  width: 26.92rpx;
+  height: 26.92rpx;
+}
+.word-me-logout {
+  display: block;
+  font-size: 23.08rpx;
+  color: #999;
+  margin: 28.85rpx auto 0;
+  text-decoration: underline;
+}
+.word-mobile-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #fff;
+  border-top: 1.92rpx solid #e9e9e9;
+  height: 148.08rpx;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 13.46rpx 0 34.62rpx;
+}
+.word-mobile-tabs > button {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 7.69rpx;
+  color: #a4a4a4;
+  font-size: 19.23rpx;
+  padding: 0;
+  width: 18%;
+}
+.word-mobile-tabs svg {
+  width: 34.62rpx;
+  height: 34.62rpx;
+}
+.word-mobile-tabs .selected {
+  color: #5189ff;
+}
+.word-mobile-tabs .word-tab-publish {
+  height: 94.23rpx;
+  width: 94.23rpx;
+  border-radius: 50%;
+  font-size: 57.69rpx;
+  font-weight: 200;
+  line-height: 88.46rpx;
+  background: linear-gradient(120deg, #41d3e0, #4a8bff);
+  color: white;
+  margin-top: -23.08rpx;
+}
+
+page {
+  background: #fff;
+  color: #111;
+}
+button {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  line-height: 1.4;
+  font-weight: 400;
+}
+button::after {
+  border: 0;
+}
+.word-native-screen {
+  position: relative;
+  min-height: 100vh;
+  background: #fff;
+}
+.word-native-screen .word-mobile-tabs {
+  position: relative;
+  padding-bottom: calc(34rpx + env(safe-area-inset-bottom));
+  height: 148rpx;
+}
+.word-me-page,
+.word-home-page {
+  padding-bottom: 20rpx;
+  min-height: 0;
+}
+.word-me-identity .word-user-name {
+  font-size: 38.46rpx;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.word-me-identity .word-student {
+  font-size: 32.69rpx;
+  line-height: 1.5;
+}
+.word-me-identity .word-cert {
+  font-size: 25rpx;
+  line-height: 1.5;
+}
+.word-me-avatar {
+  font-size: 65rpx;
+}
+.word-chip {
+  background: #9ee7ff;
+  color: #239dd1;
+  border-radius: 25rpx;
+  font-size: 19rpx;
+  padding: 4rpx 10rpx;
+  margin-left: 10rpx;
+}
+.word-card-title {
+  font-size: 36.5rpx;
+  line-height: 1.8;
+}
+.word-me-settings .word-card-title {
+  font-size: 46rpx;
+}
+.word-me-settings > button > text {
+  color: #bcc3cc;
+}
+.word-home-panel > view {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.word-home-panel .word-panel-title {
+  font-size: 38.46rpx;
+  font-weight: 400;
+}
+.word-home-panel > view > button {
+  color: #388aff;
+  font-size: 26.92rpx;
+  padding: 0;
+}
+.word-home-shortcuts > button > view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 86.54rpx;
+  height: 86.54rpx;
+  border-radius: 26.92rpx;
+  background: #fff;
+  color: #6694ff;
+  font-size: 58rpx;
+}
+.word-native-icon {
+  font-size: 34rpx;
+}
+.word-me-card {
+  margin-top: 25rpx;
+}
+.word-me-statistics .word-stat-label {
+  font-size: 21rpx;
+}
+.word-number {
+  font-size: 53.85rpx;
+}
+.word-me-services > button {
+  height: 58rpx;
+}
+.word-me-card-title {
+  font-size: 36.5rpx;
+  line-height: 1.8;
+}
+.word-native-error {
+  background: #fff0f1;
+  color: #a23943;
+  padding: 18rpx;
+  font-size: 24rpx;
+}
+.word-me-services {
+  display: flex;
+  flex-wrap: wrap;
+}
+.word-me-services button {
+  width: 40%;
+}
+.word-me-page {
+  padding-bottom: 20rpx;
+}
+.word-me-header {
+  padding-top: 61.54rpx;
+  padding-bottom: 59.62rpx;
+}
+.word-me-avatar {
+  width: 161.54rpx;
+  height: 161.54rpx;
+}
+.word-me-statistics {
+  padding-top: 94.23rpx;
+}
+.word-me-statistics .word-number {
+  font-size: 61.54rpx;
+  line-height: 1;
+}
+.word-home-shortcuts > button > view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 86.54rpx;
+  height: 86.54rpx;
+  border-radius: 26.92rpx;
+  background: #fff;
+  color: #6694ff;
+  font-size: 58rpx;
+}

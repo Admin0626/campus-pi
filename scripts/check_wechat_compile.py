@@ -19,13 +19,14 @@ out = ROOT / '.local/auth-dev/wechat-compile'
 out.mkdir(parents=True, exist_ok=True)
 pages = json.loads((source / 'app.json').read_text(encoding='utf-8'))['pages']
 templates = [page + '.wxml' for page in pages]
+styles = sorted(str(p.relative_to(source)).replace('\\','/') for p in source.rglob('*.wxss'))
 checks = []
 for name in ['wcc.exe', 'wcsc.exe']:
     if not (compilers / name).is_file():
         raise SystemExit('Official compiler unavailable; specify --compiler-dir. No AppID will be invented.')
 for compiler, inputs, output, extra in [
     ('wcc.exe', templates, 'templates.js', []),
-    ('wcsc.exe', ['app.wxss'], 'styles.js', ['-js']),
+    ('wcsc.exe', styles, 'styles.js', ['-js']),
 ]:
     result = subprocess.run([str(compilers / compiler), *extra, '-o', str(out / output), *inputs], cwd=source, capture_output=True, timeout=30)
     if result.returncode:
@@ -39,10 +40,10 @@ report = {
     'scope': 'Installed official DevTools standalone WXML/WXSS compiler only',
     'pages': len(pages),
     'checks': checks,
-    'source_hashes': {name: hashlib.sha256((source / name).read_bytes()).hexdigest() for name in [*templates, 'app.wxss']},
+    'source_hashes': {name: hashlib.sha256((source / name).read_bytes()).hexdigest() for name in [*templates, *styles]},
     'AppID_configured': False,
     'authenticated_IDE_run': False,
     'device_run': False,
 }
 (out / 'compile-acceptance.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
-print(json.dumps({'status': 'PASS', 'WXML_pages': len(pages), 'WXSS_files': 1, 'device_run': False}))
+print(json.dumps({'status': 'PASS', 'WXML_pages': len(pages), 'WXSS_files': len(styles), 'device_run': False}))

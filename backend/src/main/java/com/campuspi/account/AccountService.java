@@ -13,6 +13,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.*;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -83,6 +84,14 @@ public class AccountService {
     }
     private Object idempotent(String scope,String key,String signature,Supplier<Object> action) {
         if(key==null || !key.matches("[A-Za-z0-9_-]{8,64}")) throw new ApiException(400,"缺少有效的 Idempotency-Key");
+        // Concurrent INSERT IGNORE readers can deadlock while upgrading to FOR UPDATE.
+        // Retry only after TransactionTemplate has rolled back the whole database action.
+        for(int attempt=0;;attempt++) {
+            try { return idempotentTransaction(scope,key,signature,action); }
+            catch(PessimisticLockingFailureException ex) { if(attempt>=2) throw ex; }
+        }
+    }
+    private Object idempotentTransaction(String scope,String key,String signature,Supplier<Object> action) {
         return tx.execute(status->{
             int inserted=db.update("INSERT IGNORE INTO auth_idempotency(scope_key,request_key,request_digest,expires_at) VALUES(?,?,?,?)",scope,key,signature,stamp(now().plus(24,ChronoUnit.HOURS)));
             Map<String,Object> saved=one("SELECT * FROM auth_idempotency WHERE scope_key=? AND request_key=? FOR UPDATE",scope,key);

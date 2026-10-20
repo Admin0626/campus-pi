@@ -6,7 +6,7 @@
 
 - 团队真实 AppID、主体和开发者权限尚未提供，因此没有填写伪造 AppID 或 AppSecret。
 - 上线 HTTPS 地址及 request 合法域名尚未确认，`config.js` 默认服务地址为空，明确报“尚未配置”。
-- 已验证 JS 语法与宿主适配器调用真实后端；5个WXML页面与公共WXSS也通过本机官方独立编译器。尚未在带真实AppID的开发者工具工程中运行，不等于真机登录或发布验收。
+- 已验证 JS 语法与宿主适配器调用真实后端；5个WXML页面与7个WXSS也通过本机官方独立编译器。尚未在带真实AppID的开发者工具工程中运行，不等于真机登录或发布验收。
 - 本机发现已安装微信开发者工具；未绕过账号、AppID 或域名校验。上述条件齐备后继续在工具和真机里验证。
 
 ## 配置后导入
@@ -23,6 +23,8 @@
 
 `scripts/check_miniprogram_adapter.cjs` 使用明确的 Node 宿主适配器检查页面逻辑，并调用真实 Spring Boot + MySQL。它不能验证 WXML/WXSS 在微信中的显示、request 域名校验、基础库兼容或设备交互。
 
-`scripts/check_wechat_compile.py` 调用已安装微信开发者工具附带的 `wcc.exe`、`wcsc.exe`，编译5个WXML和1个WXSS，且检查生成JS语法。结果位于`.local/auth-dev/wechat-compile/compile-acceptance.json`。此检查无需AppID，但只证明该版本独立编译器接受模板与样式；没有模拟完整微信客户端。
+`scripts/check_wechat_compile.py` 调用已安装微信开发者工具附带的 `wcc.exe`、`wcsc.exe`，编译5个WXML和7个WXSS，且检查生成JS语法。结果位于`.local/auth-dev/wechat-compile/compile-acceptance.json`。此检查无需AppID，但只证明该版本独立编译器接受模板与样式；没有模拟完整微信客户端。
 
 接口形状已对照本机微信开发者工具附带的 `lib.wx.api.d.ts`；网页文档抓取失败，不能将未读取的网页当作已核验依据。后续可查阅 [微信网络能力说明](https://developers.weixin.qq.com/miniprogram/dev/framework/ability/network.html)。
+
+登录/注册、首页与我的页面已按原Word图5-1、5-4、5-18调整。保留真实账号接口，短信、第三方与未完成业务提示开发中；原图中的系统状态栏由微信宿主提供。Web截图不能证明此目录在真机上显示一致。对应说明见 [Word界面对照](../docs/verification/Word界面对照.md)。

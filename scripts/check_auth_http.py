@@ -57,6 +57,11 @@ parallel_key=secrets.token_hex(16)
 with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
     parallel_results=list(pool.map(lambda _:call('/auth/register','POST',parallel,key=parallel_key),range(3)))
 check(all(r[0]==201 for r in parallel_results) and len({r[1]['data']['user_id'] for r in parallel_results})==1,'concurrent idempotent registration creates one account')
+replays=[]
+for _ in range(8):
+    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
+        replays.extend(pool.map(lambda _:call('/auth/register','POST',parallel,key=parallel_key),range(3)))
+check(all(r[0]==201 and r[1]['data']['user_id']==parallel_results[0][1]['data']['user_id'] for r in replays),'concurrent replay survives idempotency lock upgrades without duplicate users')
 with conn.cursor() as cursor:
     trigger='auth_accept_'+secrets.token_hex(4)
     reject_name=name+'r'

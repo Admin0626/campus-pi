@@ -3,48 +3,65 @@ const { passwordValid } = require("../../utils/account");
 Page({
   data: {
     username: "",
-    contactType: "email",
-    contact: "",
+    email: "",
+    phone: "",
+    revealed: false,
+    statusHeight: 0,
     password: "",
-    confirm: "",
     busy: false,
     error: "",
+  },
+  togglePassword() {
+    this.setData({ revealed: !this.data.revealed });
+  },
+  unavailable(event) {
+    wx.showToast({
+      title: (event.currentTarget.dataset.name || "此功能") + "还在开发",
+      icon: "none",
+    });
+  },
+  dismiss() {
+    this.setData({ error: "" });
+  },
+  back() {
+    wx.navigateBack();
   },
   input(event) {
     this.setData({ [event.currentTarget.dataset.field]: event.detail.value });
   },
-  contactType(event) {
-    if (!this.data.busy)
-      this.setData({
-        contactType: event.currentTarget.dataset.type,
-        contact: "",
-      });
+  onLoad() {
+    this.setData({
+      statusHeight: wx.getWindowInfo ? wx.getWindowInfo().statusBarHeight : 0,
+    });
   },
   async submit() {
     if (this.data.busy) return;
     const value = { ...this.data },
-      contact = value.contact.trim();
+      email = value.email.trim(),
+      phone = value.phone.trim();
     if (!/^[A-Za-z][A-Za-z0-9_]{2,24}$/.test(value.username)) {
       this.setData({ error: "用户名以字母开头，使用3–25位字母、数字或下划线" });
       return;
     }
     if (
-      value.contactType === "email"
-        ? !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) || contact.length > 100
-        : !/^\+[1-9][0-9]{7,14}$/.test(contact)
+      (!email && !phone) ||
+      (email &&
+        (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 100)) ||
+      (phone && !/^\+[1-9][0-9]{7,14}$/.test(phone))
     ) {
-      this.setData({ error: "请填写有效邮箱或带国家区号的手机号" });
+      this.setData({ error: "邮箱或手机号至少填写一项；手机号需带国家区号" });
       return;
     }
-    if (!passwordValid(value.password) || value.password !== value.confirm) {
-      this.setData({ error: "密码需12–64字符，且两次输入一致" });
+    if (!passwordValid(value.password)) {
+      this.setData({ error: "密码需12–64字符" });
       return;
     }
     this.setData({ busy: true, error: "" });
     const body = {
       username: value.username,
       password: value.password,
-      [value.contactType]: contact,
+      ...(email ? { email } : {}),
+      ...(phone ? { phone } : {}),
     };
     try {
       const serialized = JSON.stringify(body);
@@ -54,7 +71,7 @@ Page({
       }
       await request("/auth/register", { method: "POST", body, key: this._key });
       this._body = "";
-      this.setData({ password: "", confirm: "" });
+      this.setData({ password: "" });
       wx.reLaunch({
         url: "/pages/login/index?account=" + encodeURIComponent(value.username),
       });

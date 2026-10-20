@@ -79,3 +79,5 @@ scripts/        无需数据库的静态一致性检查
 ```
 
 历史Git命令参考和测试文件保留；多人开发流程以CONTRIBUTING.md为准。先在功能分支开发并提出PR，审核后合并main。仓库内的规则文本不代表GitHub分支保护已配置。
+
+当前账号界面以用户最后提供的原Word图为视觉基准，含 `/admin/login` 独立后台登录。对应页、原图资产校验与未完成控件见 [Word界面对照](docs/verification/Word界面对照.md)。

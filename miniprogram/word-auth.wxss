@@ -1,0 +1,362 @@
+page {
+  background: #fff;
+  color: #111;
+}
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  line-height: 1.4;
+  color: inherit;
+  font-weight: 400;
+}
+button::after {
+  border: 0;
+}
+.word-auth {
+  position: relative;
+  height: 1527rpx;
+  background: white;
+  font-family: Arial, sans-serif;
+}
+.word-register {
+  height: 1567rpx;
+}
+.word-logo {
+  position: absolute;
+  left: 317.4rpx;
+  top: 20.1rpx;
+  width: 116.5rpx;
+  height: 116.5rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.word-logo image {
+  position: absolute;
+  width: 854.46rpx;
+  height: 1706.25rpx;
+  left: -341.52rpx;
+  top: -127.23rpx;
+}
+.word-title {
+  position: absolute;
+  left: 0;
+  top: 160.71rpx;
+  width: 100%;
+  text-align: center;
+  font-size: 40.18rpx;
+  font-weight: 400;
+  line-height: 1.3;
+}
+.word-subtitle {
+  position: absolute;
+  top: 226.34rpx;
+  width: 100%;
+  text-align: center;
+  font-size: 26.79rpx;
+  color: #666;
+}
+.word-field {
+  position: absolute;
+  left: 46.88rpx;
+  width: 653.57rpx;
+}
+.word-label {
+  display: block;
+  margin-bottom: 13.39rpx;
+  font-size: 26.79rpx;
+  line-height: 1.4;
+  color: #333;
+}
+.word-input {
+  border: 2rpx solid #a0a0a0;
+  border-radius: 10.71rpx;
+  height: 80.36rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 16.07rpx;
+  gap: 14.73rpx;
+  background: #fff;
+}
+.word-input input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 26.79rpx;
+  color: #333;
+}
+.word-symbol {
+  color: #666;
+  font-size: 29.46rpx;
+  width: 29.46rpx;
+  flex-shrink: 0;
+  text-align: center;
+}
+.word-eye {
+  color: #666;
+  font-size: 30rpx;
+  width: 34rpx;
+}
+.word-username {
+  top: 300rpx;
+}
+.word-password {
+  top: 472.77rpx;
+}
+.word-phone {
+  top: 644.2rpx;
+}
+.word-code {
+  top: 816.96rpx;
+}
+.word-code-row {
+  display: flex;
+  gap: 13.39rpx;
+}
+.word-code-row .word-input {
+  width: 463.39rpx;
+}
+.word-code-button {
+  width: 176.79rpx;
+  flex-shrink: 0;
+  height: 80.36rpx;
+  border: 2rpx solid #5000ff;
+  border-radius: 13.39rpx;
+  font-size: 25.45rpx;
+  color: #5000ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.word-agreement {
+  position: absolute;
+  top: 992.41rpx;
+  left: 50.89rpx;
+  right: 50.89rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24.11rpx;
+}
+.word-check {
+  display: flex;
+  align-items: center;
+  gap: 13.39rpx;
+  font-size: 24.11rpx;
+  color: #333;
+}
+.word-check-box {
+  width: 32.14rpx;
+  height: 32.14rpx;
+  border: 2rpx solid #5000ff;
+  border-radius: 10.71rpx;
+}
+.word-link {
+  color: #5000ff;
+  text-decoration: underline;
+  font-size: 24.11rpx;
+}
+.word-submit {
+  position: absolute;
+  left: 40.18rpx;
+  top: 1066.07rpx;
+  width: 660.27rpx;
+  height: 81.7rpx;
+  background: #5000ff;
+  color: white;
+  border-radius: 12.05rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22rpx;
+  font-size: 28.13rpx;
+}
+.word-separator {
+  position: absolute;
+  left: 44.2rpx;
+  right: 49.55rpx;
+  top: 1189.29rpx;
+  display: flex;
+  align-items: center;
+  gap: 24.11rpx;
+  color: #666;
+  font-size: 26.79rpx;
+  white-space: nowrap;
+}
+.word-separator > view {
+  height: 4rpx;
+  background: #999;
+  flex: 1;
+}
+.word-socials {
+  position: absolute;
+  left: 218.3rpx;
+  top: 1258.93rpx;
+  display: flex;
+  gap: 24.11rpx;
+}
+.word-social {
+  position: relative;
+  width: 87.05rpx;
+  height: 87.05rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.word-social image {
+  position: absolute;
+  width: 854.46rpx;
+  height: 1706.25rpx;
+  top: -1366.07rpx;
+  left: -242.41rpx;
+}
+.word-social.social-1 image {
+  left: -353.57rpx;
+}
+.word-social.social-2 image {
+  left: -464.73rpx;
+}
+.word-register-link {
+  position: absolute;
+  top: 1400.89rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20rpx;
+  font-size: 25.45rpx;
+  color: #999;
+}
+.word-certifications {
+  position: absolute;
+  top: 1462.5rpx;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 29.46rpx;
+}
+.word-certifications button {
+  color: #ff00c8;
+  text-decoration: underline;
+  font-size: 24.11rpx;
+}
+.word-back {
+  position: absolute;
+  left: 25.45rpx;
+  top: 9.38rpx;
+  height: 57.59rpx;
+  border: 1.34rpx solid #999;
+  border-radius: 8.04rpx;
+  font-size: 28.13rpx;
+  padding: 0 6.7rpx;
+  display: flex;
+  align-items: center;
+}
+.word-back text {
+  color: #249dff;
+  font-size: 37.5rpx;
+}
+.word-register .word-logo {
+  top: 66.96rpx;
+}
+.word-register .word-title {
+  top: 214.29rpx;
+  font-size: 48.21rpx;
+}
+.word-register .word-username {
+  top: 308.04rpx;
+}
+.word-register .word-email {
+  top: 487.5rpx;
+}
+.word-register .word-password {
+  top: 662.95rpx;
+}
+.word-register .word-phone {
+  top: 834.38rpx;
+}
+.word-register .word-code {
+  top: 1031.25rpx;
+}
+.word-register .word-agreement {
+  top: 1201.34rpx;
+}
+.word-register .word-submit {
+  top: 1337.95rpx;
+  left: 46.88rpx;
+}
+.word-feedback {
+  position: absolute;
+  top: 8rpx;
+  left: 16rpx;
+  right: 16rpx;
+  z-index: 10;
+  background: #fff0f1;
+  color: #a23943;
+  border: 1rpx solid #f0ccd0;
+  padding: 16rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  border-radius: 8rpx;
+  display: flex;
+  gap: 10rpx;
+}
+.word-feedback > text {
+  flex: 1;
+}
+.word-feedback button {
+  font-size: 30rpx;
+}
+
+.word-glyph {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  width: 32.14rpx;
+  height: 34.82rpx;
+}
+.word-glyph image {
+  position: absolute;
+  width: 854.46rpx;
+  height: 1706.25rpx;
+  left: -87.05rpx;
+}
+.glyph-user image {
+  top: -480.8rpx;
+}
+.glyph-lock image {
+  top: -650.89rpx;
+}
+.glyph-phone image {
+  top: -826.34rpx;
+}
+.glyph-shield image {
+  top: -997.77rpx;
+}
+.glyph-eye {
+  width: 38.84rpx;
+  height: 32.14rpx;
+}
+.glyph-eye image {
+  left: -666.96rpx;
+  top: -657.59rpx;
+}
+.glyph-mail image {
+  width: 841.07rpx;
+  height: 1720.98rpx;
+  left: -101.79rpx;
+  top: -688.39rpx;
+}
+.word-eye {
+  width: 38.84rpx;
+}
+.glyph-login image {
+  left: -342.86rpx;
+  top: -1200rpx;
+}
+.word-submit {
+  gap: 22.77rpx;
+}

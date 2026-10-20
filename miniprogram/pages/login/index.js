@@ -1,10 +1,35 @@
 const { request } = require("../../utils/request");
 const { passwordValid } = require("../../utils/account");
 Page({
-  data: { account: "", password: "", busy: false, error: "" },
+  data: {
+    account: "",
+    password: "",
+    busy: false,
+    error: "",
+    revealed: false,
+    statusHeight: 0,
+  },
   onLoad(options) {
+    this.setData({
+      statusHeight: wx.getWindowInfo ? wx.getWindowInfo().statusBarHeight : 0,
+    });
     if (options.account)
       this.setData({ account: decodeURIComponent(options.account) });
+  },
+  togglePassword() {
+    this.setData({ revealed: !this.data.revealed });
+  },
+  unavailable(event) {
+    wx.showToast({
+      title: (event.currentTarget.dataset.name || "此功能") + "还在开发",
+      icon: "none",
+    });
+  },
+  dismiss() {
+    this.setData({ error: "" });
+  },
+  back() {
+    wx.navigateBack();
   },
   input(event) {
     this.setData({ [event.currentTarget.dataset.field]: event.detail.value });

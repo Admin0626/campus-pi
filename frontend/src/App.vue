@@ -1,6 +1,10 @@
 <script setup>
 import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import Icon from "./Icon.vue";
+import WordAccountPages from "./WordAccountPages.vue";
+import WordUserManagement from "./WordUserManagement.vue";
+import WordMobileMe from "./WordMobileMe.vue";
+import WordMobileHome from "./WordMobileHome.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
 
 const path = ref(location.pathname),
@@ -10,26 +14,25 @@ const path = ref(location.pathname),
   error = ref(""),
   notice = ref("");
 const isAuth = computed(() =>
-  ["/login", "/register", "/forgot-password"].includes(path.value),
+  ["/login", "/register", "/forgot-password", "/admin/login"].includes(
+    path.value,
+  ),
 );
 const admin = computed(() => path.value.startsWith("/admin"));
-const registering = computed(() => path.value === "/register");
 const login = reactive({ account: "", password: "" });
 const form = reactive({
   username: "",
-  contactType: "email",
-  contact: "",
+  email: "",
+  phone: "",
   password: "",
-  confirm: "",
 });
 const edit = reactive({ bio: "", address: "", campus: false, intro: false });
 const password = reactive({ current: "", next: "", confirm: "" });
-const visiblePassword = ref(false),
-  errors = reactive({});
+const errors = reactive({});
 const users = ref([]),
   total = ref("0"),
   page = ref(1),
-  size = ref(20),
+  size = ref(10),
   selected = ref(null);
 const filter = reactive({
     keyword: "",
@@ -56,14 +59,16 @@ const modules = [
   ["I", "通知与投递", "bell"],
 ];
 const adminMenu = [
-  ["工作台", "/admin", "grid"],
+  ["控制台", "/admin", "grid"],
+  ["内容发布管理", "/admin/modules/content", "shield"],
   ["用户管理", "/admin/users", "users"],
-  ["内容审核", "/admin/modules/content", "shield"],
-  ["商品管理", "/admin/modules/products", "box"],
+  ["交易管理", "/admin/modules/products", "box"],
   ["悬赏任务", "/admin/modules/tasks", "task"],
   ["订单管理", "/admin/modules/orders", "file"],
   ["通知管理", "/admin/modules/notices", "bell"],
   ["数据分析", "/admin/modules/analytics", "chart"],
+  ["系统设置", "/admin/modules/settings", "grid"],
+  ["权限管理", "/admin/modules/permissions", "lock"],
 ];
 const pendingName = computed(
   () =>
@@ -119,11 +124,17 @@ async function navigate(destination, replace = false) {
   clear();
   statusTarget.value = null;
   if (
-    !["/login", "/register", "/forgot-password"].includes(destination) &&
+    !["/login", "/register", "/forgot-password", "/admin/login"].includes(
+      destination,
+    ) &&
     !user.value
   )
-    destination = "/login";
-  if (!["/login", "/register", "/forgot-password"].includes(destination)) {
+    destination = destination.startsWith("/admin") ? "/admin/login" : "/login";
+  if (
+    !["/login", "/register", "/forgot-password", "/admin/login"].includes(
+      destination,
+    )
+  ) {
     try {
       const latest = await api("/me");
       if (version !== navigationVersion) return;
@@ -133,7 +144,11 @@ async function navigate(destination, replace = false) {
       return;
     }
   }
-  if (destination.startsWith("/admin") && user.value?.role !== "ADMIN") {
+  if (
+    destination.startsWith("/admin") &&
+    destination !== "/admin/login" &&
+    user.value?.role !== "ADMIN"
+  ) {
     destination = "/home";
     notify("需要管理员权限");
   }
@@ -167,7 +182,11 @@ async function signIn() {
   clear();
   if (!login.account.trim()) errors.account = "请输入账号";
   if (!passwordValid(login.password)) errors.password = "密码为 12–64 个字符";
-  if (Object.keys(errors).length) return focusError();
+  if (Object.keys(errors).length) {
+    error.value = Object.values(errors)[0];
+    return focusError();
+  }
+  const adminLogin = path.value === "/admin/login";
   busy.value = true;
   try {
     const result = await api("/auth/login", {
@@ -175,6 +194,16 @@ async function signIn() {
       body: { ...login, account: login.account.trim() },
     });
     setToken(result.access_token);
+    if (adminLogin && result.user.role !== "ADMIN") {
+      try {
+        await api("/auth/logout", { method: "POST" });
+      } finally {
+        setToken("");
+      }
+      user.value = null;
+      error.value = "该账号不是管理员，请使用管理员账号登录";
+      return;
+    }
     user.value = result.user;
     login.password = "";
     busy.value = false;
@@ -191,22 +220,24 @@ async function register() {
   clear();
   if (!/^[A-Za-z][A-Za-z0-9_]{2,24}$/.test(form.username))
     errors.username = "用户名以字母开头，3–25 位字母、数字或下划线";
+  if (!form.email.trim() && !form.phone.trim())
+    errors.email = "邮箱或手机号至少填写一项";
   if (
-    form.contactType === "email"
-      ? !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.contact.trim()) ||
-        form.contact.trim().length > 100
-      : !/^\+[1-9][0-9]{7,14}$/.test(form.contact.trim())
+    form.email.trim() &&
+    (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()) ||
+      form.email.trim().length > 100)
   )
-    errors.contact = "请填写有效邮箱或带国家区号的手机号";
+    errors.email = "邮箱格式不正确";
+  if (form.phone.trim() && !/^\+[1-9][0-9]{7,14}$/.test(form.phone.trim()))
+    errors.phone = "手机号需带国家区号，如 +8613800000000";
   if (!passwordValid(form.password)) errors.password = "密码为 12–64 个字符";
-  if (form.password !== form.confirm || !form.confirm)
-    errors.confirm = "两次输入的密码不一致";
-  if (Object.keys(errors).length) return focusError();
-  const body = {
-    username: form.username,
-    password: form.password,
-    [form.contactType]: form.contact.trim(),
-  };
+  if (Object.keys(errors).length) {
+    error.value = Object.values(errors)[0];
+    return focusError();
+  }
+  const body = { username: form.username, password: form.password };
+  if (form.email.trim()) body.email = form.email.trim();
+  if (form.phone.trim()) body.phone = form.phone.trim();
   const text = JSON.stringify(body);
   if (registrationBody !== text) {
     registrationKey = requestKey();
@@ -218,7 +249,6 @@ async function register() {
     login.account = body.username;
     login.password = "";
     form.password = "";
-    form.confirm = "";
     registrationBody = "";
     setToken("");
     user.value = null;
@@ -413,295 +443,80 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
 </script>
 
 <template>
-  <div v-if="isAuth" class="auth-shell live-auth">
-    <aside class="auth-story">
-      <div class="brand">
-        <span class="brand-symbol">Π</span>校园Π<span class="brand-caption"
-          >CAMPUS PI</span
-        >
-      </div>
-      <div class="story-content">
-        <div class="section-marker"><span></span>校园生活，从这里连接</div>
-        <h1>属于你的校园，<br />从一个账号开始。</h1>
-        <p class="story-description">
-          统一身份，安心交流。<br />在每一次连接中，保留自己的边界。
-        </p>
-        <div class="identity-art" aria-hidden="true">
-          <div class="art-orbit"></div>
-          <div class="identity-card">
-            <div class="identity-card-top">
-              <span class="mini-brand">校园Π</span
-              ><span class="card-tag">CAMPUS ID</span>
-            </div>
-            <div class="identity-card-body">
-              <div class="art-avatar"><Icon name="user" :size="34" /></div>
-              <div>
-                <strong>你的校园通行证</strong>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line short"></div>
-              </div>
-            </div>
-            <div class="identity-card-bottom">
-              <span>独立账号 · 自主公开</span><Icon name="shield" />
-            </div>
-          </div>
-          <div class="privacy-float">
-            <div class="tiny-shield"><Icon name="shield" /></div>
-            <div>
-              <strong>把隐私留给自己</strong><span>公开什么，由你决定</span>
-            </div>
-            <span class="small-check"><Icon name="check" :size="14" /></span>
-          </div>
-        </div>
-        <div class="story-features">
-          <span><Icon name="user" :size="17" />统一账号</span
-          ><span><Icon name="shield" :size="17" />隐私可控</span
-          ><span><Icon name="campus" :size="17" />校园认证</span>
-        </div>
-      </div>
-      <div class="story-foot">校园Π · 校园生活服务平台</div>
-    </aside>
-    <main class="auth-main">
-      <div class="auth-top">
-        <span>欢迎来到校园Π</span
-        ><button @click="navigate(registering ? '/login' : '/register')">
-          {{ registering ? "已有账号？去登录" : "还没有账号？立即注册"
-          }}<Icon name="arrow" :size="16" />
-        </button>
-      </div>
-      <section class="auth-form" :class="{ 'register-form': registering }">
-        <div class="mobile-brand">校园Π</div>
-        <span class="eyebrow">{{
-          registering ? "CREATE YOUR ACCOUNT" : "WELCOME BACK"
-        }}</span>
-        <h2>
-          {{
-            registering
-              ? "注册账号"
-              : path === "/forgot-password"
-                ? "找回密码"
-                : "欢迎登录"
-          }}
-        </h2>
-        <p class="form-subtitle">
-          {{
-            registering
-              ? "一个账号，开启你的校园生活"
-              : "使用用户名、手机号或邮箱登录"
-          }}
-        </p>
-        <div v-if="notice" class="alert info-alert" role="status">
-          {{ notice
-          }}<button
-            class="icon-button"
-            aria-label="关闭提示"
-            @click="notice = ''"
-          >
-            <Icon name="close" :size="15" />
-          </button>
-        </div>
-        <div v-if="error" class="alert error" role="alert">{{ error }}</div>
-        <form v-if="path === '/login'" @submit.prevent="signIn" novalidate>
-          <div class="field">
-            <label for="account">账号</label>
-            <div class="input-wrap">
-              <Icon name="user" :size="18" /><input
-                id="account"
-                v-model="login.account"
-                maxlength="100"
-                autocomplete="username"
-                placeholder="用户名 / 手机号 / 邮箱"
-                :aria-invalid="!!errors.account"
-                :disabled="busy"
-              />
-            </div>
-            <small v-if="errors.account" class="field-error">{{
-              errors.account
-            }}</small>
-          </div>
-          <div class="field">
-            <label for="login-password">密码</label>
-            <div class="input-wrap">
-              <Icon name="lock" :size="18" /><input
-                id="login-password"
-                v-model="login.password"
-                :type="visiblePassword ? 'text' : 'password'"
-                autocomplete="current-password"
-                placeholder="请输入密码"
-                :aria-invalid="!!errors.password"
-                :disabled="busy"
-              /><button
-                class="input-action"
-                type="button"
-                :aria-label="visiblePassword ? '隐藏密码' : '显示密码'"
-                @click="visiblePassword = !visiblePassword"
-              >
-                <Icon name="eye" :size="18" />
-              </button>
-            </div>
-            <small v-if="errors.password" class="field-error">{{
-              errors.password
-            }}</small>
-          </div>
-          <div class="form-assist">
-            <span><Icon name="shield" :size="14" />请保护好你的账号信息</span
-            ><button type="button" @click="navigate('/forgot-password')">
-              忘记密码？
-            </button>
-          </div>
-          <button class="primary full login-submit" :disabled="busy">
-            {{ busy ? "正在登录…" : "登录" }}<Icon name="arrow" :size="18" />
-          </button>
-          <div class="auth-switch">
-            还没有账号？<button type="button" @click="navigate('/register')">
-              立即注册
-            </button>
-          </div>
-          <div class="auth-note">
-            <Icon name="info" :size="15" />登录后可申请实名与校园认证
-          </div>
-        </form>
-        <form v-else-if="registering" @submit.prevent="register" novalidate>
-          <div class="field">
-            <label for="username">用户名</label
-            ><input
-              id="username"
-              v-model="form.username"
-              autocomplete="username"
-              placeholder="以字母开头，3–25 位字符"
-              :aria-invalid="!!errors.username"
-              :disabled="busy"
-            /><small v-if="errors.username" class="field-error">{{
-              errors.username
-            }}</small>
-          </div>
-          <div class="field">
-            <div class="label-row">
-              <label for="contact">联系方式</label>
-              <div class="contact-tabs">
-                <button
-                  type="button"
-                  :class="{ active: form.contactType === 'email' }"
-                  :disabled="busy"
-                  @click="
-                    form.contactType = 'email';
-                    form.contact = '';
-                  "
-                >
-                  邮箱</button
-                ><span>/</span
-                ><button
-                  type="button"
-                  :class="{ active: form.contactType === 'phone' }"
-                  :disabled="busy"
-                  @click="
-                    form.contactType = 'phone';
-                    form.contact = '';
-                  "
-                >
-                  手机号
-                </button>
-              </div>
-            </div>
-            <input
-              id="contact"
-              v-model="form.contact"
-              :type="form.contactType === 'email' ? 'email' : 'tel'"
-              :autocomplete="form.contactType === 'email' ? 'email' : 'tel'"
-              :placeholder="
-                form.contactType === 'email'
-                  ? '请输入常用邮箱'
-                  : '+8613800000000'
-              "
-              :aria-invalid="!!errors.contact"
-              :disabled="busy"
-            /><small :class="{ 'field-error': errors.contact }">{{
-              errors.contact || "手机号或邮箱填写一项即可"
-            }}</small>
-          </div>
-          <div class="field">
-            <label for="reg-password">设置密码</label
-            ><input
-              id="reg-password"
-              v-model="form.password"
-              type="password"
-              autocomplete="new-password"
-              placeholder="12–64 个字符"
-              :aria-invalid="!!errors.password"
-              :disabled="busy"
-            /><small v-if="errors.password" class="field-error">{{
-              errors.password
-            }}</small>
-          </div>
-          <div class="field">
-            <label for="reg-confirm">确认密码</label
-            ><input
-              id="reg-confirm"
-              v-model="form.confirm"
-              type="password"
-              autocomplete="new-password"
-              placeholder="请再次输入密码"
-              :aria-invalid="!!errors.confirm"
-              :disabled="busy"
-            /><small v-if="errors.confirm" class="field-error">{{
-              errors.confirm
-            }}</small>
-          </div>
-          <button class="primary full" :disabled="busy">
-            {{ busy ? "正在注册…" : "注册账号"
-            }}<Icon name="arrow" :size="18" />
-          </button>
-          <div class="auth-switch">
-            已有账号？<button type="button" @click="navigate('/login')">
-              去登录
-            </button>
-          </div>
-          <div class="auth-note">注册成功后进入登录页面</div>
-        </form>
-        <div v-else class="recovery-state">
-          <div class="recovery-icon"><Icon name="lock" :size="30" /></div>
-          <h3>密码找回还在开发</h3>
-          <p>发送通道与联系方式验证尚未接入。请联系平台管理员处理。</p>
-          <button class="primary full" @click="navigate('/login')">
-            返回登录
-          </button>
-        </div>
-      </section>
-      <div class="auth-bottom">
-        <span>校园Π / 账号与权限</span><span>用心连接每一份校园生活</span>
-      </div>
-    </main>
-  </div>
+  <WordAccountPages
+    v-if="isAuth"
+    :path="path"
+    :login="login"
+    :registration="form"
+    :errors="errors"
+    :busy="busy"
+    :error="error"
+    :notice="notice"
+    @login="signIn"
+    @register="register"
+    @navigate="navigate"
+    @unavailable="notify"
+    @dismiss="
+      error = '';
+      notice = '';
+    "
+  />
+  <WordMobileMe
+    v-else-if="user && path === '/me'"
+    :user="user"
+    :error="error"
+    @navigate="navigate"
+    @unavailable="notify"
+    @logout="logout"
+    @dismiss="error = ''"
+  />
+  <WordMobileHome
+    v-else-if="user && path === '/home'"
+    :user="user"
+    @navigate="navigate"
+  />
   <div
     v-else-if="user"
     class="app-shell live-app"
-    :class="{ 'admin-shell': admin }"
+    :class="{
+      'admin-shell': admin,
+      'word-admin-shell': admin,
+      'word-admin-users': path === '/admin/users',
+    }"
   >
     <aside class="sidebar" :class="{ 'dark-sidebar': admin }">
       <div class="brand">
-        <span class="brand-symbol">Π</span>
-        <div>
+        <Icon v-if="admin" name="campus" :size="25" />
+        <span v-else class="brand-symbol">Π</span>
+        <div v-if="admin">校园信息管理平台</div>
+        <div v-else>
           校园Π<span class="brand-under">{{
             admin ? "管理工作台" : "校园生活服务平台"
           }}</span>
         </div>
       </div>
-      <div class="sidebar-section">{{ admin ? "平台管理" : "个人空间" }}</div>
+      <div class="sidebar-section">{{ admin ? "主导航" : "个人空间" }}</div>
       <nav class="side-menu">
         <template v-if="admin"
-          ><button
-            v-for="item in adminMenu"
-            :key="item[1]"
-            :class="{
-              selected:
-                path === item[1] ||
-                (item[1] === '/admin/users' &&
-                  path.startsWith('/admin/users/')),
-            }"
-            @click="navigate(item[1])"
-          >
-            <Icon :name="item[2]" :size="19" />{{ item[0] }}
-          </button></template
+          ><template v-for="item in adminMenu" :key="item[1]">
+            <div
+              v-if="item[1] === '/admin/modules/settings'"
+              class="sidebar-section word-system-section"
+            >
+              系统设置
+            </div>
+            <button
+              :class="{
+                selected:
+                  path === item[1] ||
+                  (item[1] === '/admin/users' &&
+                    path.startsWith('/admin/users/')),
+              }"
+              @click="navigate(item[1])"
+            >
+              <Icon :name="item[2]" :size="19" />{{ item[0] }}
+            </button></template
+          ></template
         ><template v-else
           ><button
             :class="{ selected: path === '/home' }"
@@ -727,6 +542,13 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
         >
       </nav>
       <div class="sidebar-bottom">
+        <button
+          v-if="admin"
+          class="word-admin-user-return"
+          @click="navigate('/home')"
+        >
+          用户端
+        </button>
         <button class="sidebar-user" @click="logout">
           <span class="avatar tiny blue">{{ initials(user) }}</span
           ><span
@@ -738,11 +560,27 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
     </aside>
     <div class="app-body">
       <header class="app-header">
-        <div class="breadcrumb">
+        <div v-if="admin" class="word-admin-page-title">{{ pageTitle }}</div>
+        <div v-else class="breadcrumb">
           <span>{{ admin ? "平台管理" : "个人空间" }}</span
           ><Icon name="chevron" :size="13" /><strong>{{ pageTitle }}</strong>
         </div>
-        <div class="header-right">
+        <div v-if="admin" class="word-admin-header-tools">
+          <div class="word-global-search">
+            <Icon name="search" /><input
+              aria-label="全局搜索（开发中）"
+              placeholder="全局搜索...."
+              readonly
+              @click="notify('全局搜索还在开发')"
+            />
+          </div>
+          <button aria-label="通知（开发中）" @click="notify('通知还在开发')">
+            <Icon name="bell" /></button
+          ><button aria-label="帮助（开发中）" @click="notify('帮助还在开发')">
+            ●<span>?</span>
+          </button>
+        </div>
+        <div v-else class="header-right">
           <button
             v-if="user.role === 'ADMIN'"
             class="text-link"
@@ -1004,166 +842,30 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
             </button>
           </div>
         </form>
-        <section v-else-if="path === '/admin/users'" class="panel users-panel">
-          <div class="panel-heading">
-            <div>
-              <h3>用户列表</h3>
-              <span class="subtle">共 {{ total }} 位 · 管理视图已脱敏</span>
-            </div>
-          </div>
-          <form class="filter-form" @submit.prevent="search">
-            <div>
-              <label for="search">用户名</label
-              ><input
-                id="search"
-                v-model="filter.keyword"
-                placeholder="搜索用户名"
-                maxlength="100"
-              />
-            </div>
-            <div>
-              <label for="status">账号状态</label
-              ><select id="status" v-model="filter.account_status">
-                <option value="">全部</option>
-                <option value="ACTIVE">正常</option>
-                <option value="DISABLED">已停用</option>
-              </select>
-            </div>
-            <div>
-              <label for="role">角色</label
-              ><select id="role" v-model="filter.role">
-                <option value="">全部</option>
-                <option value="USER">普通用户</option>
-                <option value="ADMIN">管理员</option>
-              </select>
-            </div>
-            <div>
-              <label for="campus">校区</label
-              ><input
-                id="campus"
-                v-model="filter.campus"
-                placeholder="填写校区"
-                maxlength="50"
-              />
-            </div>
-            <div class="filter-buttons">
-              <button class="primary" :disabled="loading">查询</button
-              ><button type="button" class="secondary" @click="reset">
-                重置
-              </button>
-            </div>
-          </form>
-          <div v-if="loading" class="loading-state" role="status">
-            正在加载用户…
-          </div>
-          <div v-else class="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>用户</th>
-                  <th>联系方式</th>
-                  <th>角色</th>
-                  <th>认证状态</th>
-                  <th>账号状态</th>
-                  <th>注册时间</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in users" :key="item.user_id">
-                  <td>
-                    <div class="table-user">
-                      <span class="avatar blue">{{ initials(item) }}</span>
-                      <div>
-                        <strong
-                          >{{ item.username
-                          }}<span
-                            v-if="item.user_id === user.user_id"
-                            class="self-label"
-                            >本人</span
-                          ></strong
-                        ><small>ID {{ item.user_id }}</small>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="contact-cell">
-                      <span>{{ item.email || "未绑定邮箱" }}</span
-                      ><small>{{ item.phone || "未绑定手机" }}</small>
-                    </div>
-                  </td>
-                  <td>
-                    <span class="badge neutral">{{
-                      item.role === "ADMIN" ? "管理员" : "普通用户"
-                    }}</span>
-                  </td>
-                  <td>
-                    <div class="certification">
-                      <span>实名 · {{ item.identity_verification }}</span
-                      ><span>校园 · {{ item.campus_verification }}</span>
-                    </div>
-                  </td>
-                  <td>
-                    <span
-                      class="status-tag"
-                      :class="
-                        item.account_status === 'ACTIVE'
-                          ? 'status-active'
-                          : 'status-disabled'
-                      "
-                      ><i></i
-                      >{{
-                        item.account_status === "ACTIVE" ? "正常" : "已停用"
-                      }}</span
-                    >
-                  </td>
-                  <td class="date-cell">{{ date(item.registration_time) }}</td>
-                  <td>
-                    <div class="table-actions">
-                      <button @click="navigate(`/admin/users/${item.user_id}`)">
-                        详情</button
-                      ><span></span
-                      ><button
-                        :disabled="item.user_id === user.user_id"
-                        @click="statusDialog(item)"
-                      >
-                        {{ item.account_status === "ACTIVE" ? "停用" : "启用" }}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr v-if="!users.length">
-                  <td colspan="7">
-                    <div class="empty-state">没有找到符合条件的用户</div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="table-footer">
-            <span>共 {{ total }} 位用户</span>
-            <div class="pagination">
-              <button
-                :disabled="page <= 1 || loading"
-                @click="
-                  page--;
-                  loadUsers();
-                "
-              >
-                上一页</button
-              ><span>第 {{ page }} 页</span
-              ><button
-                :disabled="page * size >= Number(total) || loading"
-                @click="
-                  page++;
-                  loadUsers();
-                "
-              >
-                下一页
-              </button>
-            </div>
-          </div>
-        </section>
+        <WordUserManagement
+          v-else-if="path === '/admin/users'"
+          :users="users"
+          :total="total"
+          :page="page"
+          :page-size="size"
+          :filters="filter"
+          :current-id="user.user_id"
+          :loading="loading"
+          @search="search"
+          @reset="reset"
+          @detail="navigate('/admin/users/' + $event.user_id)"
+          @status="statusDialog"
+          @page="
+            page = $event;
+            loadUsers();
+          "
+          @size="
+            size = $event;
+            page = 1;
+            loadUsers();
+          "
+          @unavailable="notify"
+        />
         <template v-else-if="/^\/admin\/users\//.test(path)"
           ><div v-if="loading" class="loading-state">正在加载用户详情…</div>
           <section v-else-if="selected" class="panel">

@@ -1,7 +1,23 @@
 const { guard } = require("../../utils/account");
 const { request } = require("../../utils/request");
 Page({
-  data: { user: null, error: "", busy: false },
+  data: { user: null, statusHeight: 0, error: "", busy: false },
+  onLoad() {
+    this.setData({
+      statusHeight: wx.getWindowInfo ? wx.getWindowInfo().statusBarHeight : 0,
+    });
+  },
+  noop() {},
+  home() {
+    wx.reLaunch({ url: "/pages/home/index" });
+  },
+  pending(event) {
+    wx.navigateTo({
+      url:
+        "/pages/pending/index?name=" +
+        encodeURIComponent(event.currentTarget.dataset.name),
+    });
+  },
   async onShow() {
     if (!guard()) return;
     try {

@@ -1,0 +1,44 @@
+{
+  "authority": "User supplied original Word document, not assistant-redrawn SVG wireframes",
+  "source_filename": "软件工程校园Π最终版.doc",
+  "source_sha256": "53067cc9d46acbf71afb81c06a3e5933a841e26da3040bce9b55792a7b840458",
+  "extraction": "Original .doc read with Word COM in read-only mode with macros disabled; embedded media exported in converted.docx. PNG bytes copied without editing.",
+  "figures": [
+    {
+      "figure": "5-1",
+      "extracted_name": "image62.png",
+      "asset": "frontend/public/word-reference/login.png",
+      "sha256": "b99da0f6cd0f948d1978c240bd17c2e1c4d2d3d7e3717ef47b745fd65b7073d2"
+    },
+    {
+      "figure": "5-1",
+      "extracted_name": "image63.png",
+      "asset": "frontend/public/word-reference/register.png",
+      "sha256": "46d40b2f0b419b6e17b4e4d61b93eec71f6e3b90eda273779ac8da6548f50087"
+    },
+    {
+      "figure": "5-4",
+      "extracted_name": "image67.png",
+      "asset": "frontend/public/word-reference/home.png",
+      "sha256": "f90524f990a6c1e5aa16b33ef5fe375bdfb4e64511e5e50dc7153e658f769d0c"
+    },
+    {
+      "figure": "5-18",
+      "extracted_name": "image83.png",
+      "asset": "frontend/public/word-reference/me.png",
+      "sha256": "9e6b364653b60891cfabf5d87dc8f4845b8233e32b2365bbf294a8b7ab0f2f8a"
+    },
+    {
+      "figure": "5-23",
+      "extracted_name": "image88.png",
+      "asset": "frontend/public/word-reference/admin-login.png",
+      "sha256": "8e610abb434962305c05e73dfcfe2b1afd83ef56f4b13e193d70bf6cc0eba041"
+    },
+    {
+      "figure": "5-28",
+      "extracted_name": "image93.png",
+      "asset": "frontend/public/word-reference/admin-users.png",
+      "sha256": "32cc2b1a2141fcf2844751079180e0020629b03f44ab71ed853e8b2d2d648f89"
+    }
+  ]
+}

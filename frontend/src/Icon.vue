@@ -1,6 +1,7 @@
 <script setup>
 defineProps({ name: String, size: { type: Number, default: 20 } });
 const paths = {
+  plus: "M12 3v18M3 12h18",
   arrow: "M5 12h14m-5-5 5 5-5 5",
   back: "m14 6-6 6 6 6",
   chevron: "m9 6 6 6-6 6",
