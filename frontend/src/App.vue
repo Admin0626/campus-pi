@@ -67,6 +67,7 @@ const adminMenu = [
 ];
 const pendingName = computed(
   () =>
+    (path.value === "/modules/B" ? "实名与校园认证" : "") ||
     adminMenu.find((m) => m[1] === path.value)?.[0] ||
     modules.find((m) => `/modules/${m[0]}` === path.value)?.[1] ||
     "此功能",
