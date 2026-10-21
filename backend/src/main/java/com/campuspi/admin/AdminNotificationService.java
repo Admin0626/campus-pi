@@ -1,6 +1,7 @@
 package com.campuspi.admin;
 
 import com.campuspi.account.*;
+import com.campuspi.notification.NotificationPreferencePolicy;
 import com.fasterxml.jackson.databind.*;
 import java.sql.Timestamp;
 import java.time.*;
@@ -18,9 +19,10 @@ public class AdminNotificationService {
     private final AccountService accounts;
     private final AdminPolicy policy;
     private final ObjectMapper json;
-    public AdminNotificationService(JdbcTemplate db,AccountService accounts,AdminPolicy policy,ObjectMapper json){this.db=db;this.accounts=accounts;this.policy=policy;this.json=json;}
+    private final NotificationPreferencePolicy preferences;
+    public AdminNotificationService(JdbcTemplate db,AccountService accounts,AdminPolicy policy,ObjectMapper json,NotificationPreferencePolicy preferences){this.db=db;this.accounts=accounts;this.policy=policy;this.json=json;this.preferences=preferences;}
     private Map<String,Object> one(String sql,Object... args){var rows=db.queryForList(sql,args);return rows.isEmpty()?null:rows.get(0);}
-    public static String identifier(String id){if(id==null||!id.matches("[A-Za-z0-9_-]{1,50}"))throw new ApiException(400,"通知编号无效");return id;}
+    public static String identifier(String id){if(id==null||id.isEmpty()||id.codePointCount(0,id.length())>50||id.codePoints().anyMatch(Character::isISOControl))throw new ApiException(400,"通知编号无效");return id;}
     private Map<String,Object> notification(String id,boolean lock){identifier(id);var row=one("SELECT * FROM system_notifications WHERE notification_id=?"+(lock?" FOR UPDATE":""),id);if(row==null)throw new ApiException(404,"通知不存在");return row;}
     private Object decode(Object value){try{return value==null?Map.of():json.readValue(value.toString(),Object.class);}catch(Exception ex){throw new ApiException(503,"通知目标配置无法读取");}}
     private String encode(Object value){try{return json.writeValueAsString(value);}catch(Exception ex){throw new IllegalArgumentException("Invalid notification target",ex);}}
@@ -35,7 +37,48 @@ public class AdminNotificationService {
         return Map.of("items",db.queryForList("SELECT * FROM system_notifications"+where+" ORDER BY notification_id DESC LIMIT ? OFFSET ?",args.toArray()).stream().map(this::view).toList(),"total",Long.toString(total),"page",page,"page_size",size);
     }
     public Object detail(String id){return view(notification(id,false));}
-    public Object publishUnavailable(Identity actor,String id){policy.require(actor,"NOTIFICATION_PUBLISH");identifier(id);throw new ApiException(501,"通知发布尚未启用：接收偏好规则待确认，发布事务待接入");}
+    public Object publish(Identity actor,String id,JsonNode body,String key){
+        policy.require(actor,"NOTIFICATION_PUBLISH");identifier(id);fields(body,"channels");var input=body.get("channels");
+        if(input==null||!input.isArray()||input.isEmpty()||input.size()>3)throw new ApiException(400,"需要1–3个通知渠道","channels");
+        var channels=new TreeSet<String>();for(JsonNode channel:input){if(!channel.isTextual()||!Set.of("站内","短信","邮件").contains(channel.textValue()))throw new ApiException(400,"通知渠道无效","channels");channels.add(channel.textValue());}
+        if(!channels.contains("站内"))throw new ApiException(400,"发布必须包含站内渠道","channels");
+        return accounts.adminMutation(actor,"notification-publish:"+id,key,Map.of("channels",new ArrayList<>(channels)),()->{
+            var row=notification(id,true);if(!"草稿".equals(row.get("publish_status")))throw new ApiException(409,"仅草稿可以发布");
+            if(channels.size()>1){if(!"安全".equals(row.get("notification_type")))throw new ApiException(400,"短信邮件仅允许用于安全通知");throw new ApiException(501,"短信邮件渠道尚未接入");}
+            // Revalidate legacy drafts before taking an immutable snapshot. No raw SQL/filter is accepted.
+            var stored=new LinkedHashMap<String,Object>();for(String field:List.of("notification_title","notification_content","notification_type","target_scope"))stored.put(field,row.get(field));stored.put("target_filter",decode(row.get("target_filter")));
+            var value=validated(json.valueToTree(stored));
+            if(db.queryForObject("SELECT COUNT(*) FROM notification_receipts WHERE notification_id=?",Long.class,id)!=0||one("SELECT job_id FROM notification_publish_jobs WHERE notification_id=?",id)!=null)throw new ApiException(409,"草稿存在异常历史接收记录，请核对后处理");
+            String where="";var args=new ArrayList<Object>();args.add(id);
+            @SuppressWarnings("unchecked") var filter=(Map<String,Object>)value.get("target_filter");
+            if("校区".equals(value.get("target_scope"))){where=" WHERE u.campus=?";args.add(filter.get("campus"));}
+            else if("指定用户".equals(value.get("target_scope"))){
+                @SuppressWarnings("unchecked") var ids=(List<String>)filter.get("user_ids");where=" WHERE u.user_id IN ("+String.join(",",Collections.nCopies(ids.size(),"?"))+")";var targets=ids.stream().map(AccountService::id).toList();
+                if(db.queryForObject("SELECT COUNT(*) FROM users u"+where,Long.class,targets.toArray())!=ids.size())throw new ApiException(404,"部分指定接收用户不存在");args.addAll(targets);
+            }
+            Object before=view(row);
+            // One INSERT SELECT fixes the target set. Opt-out is excluded, including security messages.
+            // No extra account-status eligibility filter is invented for the contract's 全体/校区 scopes.
+            db.update("INSERT INTO notification_receipts(notification_id,user_id) SELECT ?,u.user_id FROM users u LEFT JOIN notification_preferences p ON p.user_id=u.user_id"+where+(where.isEmpty()?" WHERE ":" AND ")+"COALESCE(p.in_app_enabled,TRUE)=TRUE",args.toArray());
+            var decisions=new LinkedHashMap<Long,NotificationPreferencePolicy.Decision>();
+            for(var target:db.queryForList("SELECT user_id FROM notification_receipts WHERE notification_id=? ORDER BY user_id",id)){
+                long user=((Number)target.get("user_id")).longValue();var decision=preferences.lock(user,Instant.now());
+                if(!decision.enabled())db.update("DELETE FROM notification_receipts WHERE notification_id=? AND user_id=?",id,user);
+                else decisions.put(user,decision);
+            }
+            long recipients=db.queryForObject("SELECT COUNT(*) FROM notification_receipts WHERE notification_id=?",Long.class,id);
+            if(recipients>Integer.MAX_VALUE)throw new ApiException(503,"接收者数量超出当前发布契约上限");
+            String job="job_"+UUID.randomUUID().toString().replace("-","");
+            db.update("INSERT INTO notification_publish_jobs(job_id,notification_id,recipient_count) VALUES(?,?,?)",job,id,recipients);
+            db.update("INSERT INTO notification_delivery(notification_id,user_id,channel,attempt_no) SELECT notification_id,user_id,'站内',1 FROM notification_receipts WHERE notification_id=?",id);
+            for(var target:db.queryForList("SELECT delivery_id,user_id FROM notification_delivery WHERE notification_id=? ORDER BY user_id",id)){
+                var decision=decisions.get(((Number)target.get("user_id")).longValue());
+                db.update("INSERT INTO notification_outbox(delivery_id,notification_id,available_at,preference_version) VALUES(?,?,?,?)",target.get("delivery_id"),id,Timestamp.from(decision.availableAt()),decision.version());
+            }
+            db.update("UPDATE system_notifications SET publish_status='待发送',publisher_id=?,publish_time=NULL WHERE notification_id=?",actor.id(),id);
+            Object result=Map.of("notification_id",id,"publish_status","待发送","job_id",job,"recipient_count",(int)recipients);audit(actor,id,"审核发布","核对内容及目标后发布站内通知",before,result);return result;
+        });
+    }
     private Map<String,Object> validated(JsonNode body){
         fields(body,"notification_title","notification_content","notification_type","target_scope","target_filter");
         var result=new LinkedHashMap<String,Object>();result.put("notification_title",text(body,"notification_title",1,200,true));result.put("notification_content",text(body,"notification_content",1,10000,false));
@@ -95,13 +138,15 @@ public class AdminNotificationService {
             var row=notification(id,true);if(!Set.of("待发送","已发送").contains(row.get("publish_status")))throw new ApiException(409,"该通知不能重新投递");
             var attempt=one("SELECT * FROM notification_delivery WHERE delivery_id=? FOR UPDATE",deliveryId);if(attempt==null||!"失败".equals(attempt.get("delivery_status")))throw new ApiException(409,"只能重试失败的投递");
             if(!"站内".equals(attempt.get("channel")))throw new ApiException(501,"短信邮件渠道尚未接入");
+            var decision=preferences.lock(((Number)attempt.get("user_id")).longValue(),Instant.now());if(!decision.enabled())throw new ApiException(409,"接收者已关闭站内通知，不能重试");
+            var receipt=one("SELECT is_deleted FROM notification_receipts WHERE notification_id=? AND user_id=? FOR UPDATE",id,attempt.get("user_id"));Object deleted=receipt.get("is_deleted");if(Boolean.TRUE.equals(deleted)||(deleted instanceof Number n&&n.intValue()!=0))throw new ApiException(409,"接收记录已删除，不能重新投递");
             var latest=one("SELECT delivery_id,delivery_status,attempt_no FROM notification_delivery WHERE notification_id=? AND user_id=? AND channel=? ORDER BY attempt_no DESC LIMIT 1 FOR UPDATE",id,attempt.get("user_id"),attempt.get("channel"));
             if(((Number)latest.get("delivery_id")).longValue()!=deliveryId)throw new ApiException(409,"已有更新的投递尝试，请查看最新记录");
             int number=((Number)latest.get("attempt_no")).intValue();if(number>=5)throw new ApiException(409,"该用户渠道已达到5次尝试上限");
             if(one("SELECT job_id FROM notification_publish_jobs WHERE notification_id=?",id)==null)throw new ApiException(503,"该历史通知缺少持久任务，需核对后迁移");
             db.update("INSERT INTO notification_delivery(notification_id,user_id,channel,attempt_no) VALUES(?,?,?,?)",id,attempt.get("user_id"),attempt.get("channel"),number+1);
             long next=db.queryForObject("SELECT LAST_INSERT_ID()",Long.class);
-            db.update("INSERT INTO notification_outbox(delivery_id,notification_id) VALUES(?,?)",next,id);
+            db.update("INSERT INTO notification_outbox(delivery_id,notification_id,available_at,preference_version) VALUES(?,?,?,?)",next,id,Timestamp.from(decision.availableAt()),decision.version());
             Object result=deliveryView(one("SELECT * FROM notification_delivery WHERE delivery_id=?",next));audit(actor,id,"重试投递",reason,deliveryView(attempt),result);return result;
         });
     }

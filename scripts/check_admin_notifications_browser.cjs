@@ -35,13 +35,11 @@ fs.writeFileSync(report, '{"status":"RUNNING"}');
   };
   const ready = () => page.locator(".notice-panel[aria-busy=false]").waitFor();
   const row = (id) =>
-    page
-      .locator("tbody tr")
-      .filter({
-        has: page
-          .locator("td:first-child")
-          .filter({ hasText: new RegExp("^" + id + "$") }),
-      });
+    page.locator("tbody tr").filter({
+      has: page
+        .locator("td:first-child")
+        .filter({ hasText: new RegExp("^" + id + "$") }),
+    });
   async function find(id) {
     for (let n = 0; n < 100; n++) {
       await ready();
@@ -134,9 +132,9 @@ fs.writeFileSync(report, '{"status":"RUNNING"}');
     );
     check(
       await record
-        .getByRole("button", { name: "发布（开发中）", exact: true })
-        .isDisabled(),
-      "Publication is explicitly disabled while business rule is unconfirmed",
+        .getByRole("button", { name: "审核发布", exact: true })
+        .isEnabled(),
+      "Publication reaches explicit content-and-target review",
     );
     await record.getByRole("button", { name: "查看", exact: true }).click();
     dialog = page.getByRole("dialog");

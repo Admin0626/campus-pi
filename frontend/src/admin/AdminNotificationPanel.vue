@@ -16,6 +16,7 @@ const tab = ref("notices"),
   selected = ref(null),
   deliveryState = ref(""),
   channel = ref("");
+const reviewed = ref(false);
 const action = ref(null),
   reason = ref("");
 const form = reactive({
@@ -193,6 +194,11 @@ async function save() {
       },
     );
     editor.value = false;
+    if (!editing.value) {
+      page.value = 1;
+      state.value = "";
+      tab.value = "notices";
+    }
     notice.value = editing.value ? "草稿已更新" : "草稿已创建，尚未发送";
     await load();
   } catch (e) {
@@ -201,7 +207,24 @@ async function save() {
     busy.value = false;
   }
 }
-function prepare(row, kind) {
+async function prepare(row, kind) {
+  if (kind === "publish") {
+    busy.value = true;
+    error.value = "";
+    try {
+      row = await api(`/admin/notifications/${row.notification_id}`);
+    } catch (e) {
+      error.value = e.message;
+      return;
+    } finally {
+      busy.value = false;
+    }
+    if (row.publish_status !== "草稿") {
+      error.value = "通知状态已改变，请刷新后重试";
+      return;
+    }
+  }
+  reviewed.value = false;
   action.value = { row, kind };
   reason.value = "";
   mutationKey = requestKey();
@@ -209,11 +232,18 @@ function prepare(row, kind) {
   error.value = "";
 }
 async function confirmAction() {
-  if (!reason.value.trim()) {
+  if (action.value.kind === "publish" && !reviewed.value) {
+    error.value = "请先核对通知内容和发送对象";
+    return;
+  }
+  if (action.value.kind !== "publish" && !reason.value.trim()) {
     error.value = "请填写操作原因";
     return;
   }
-  const body = { reason: reason.value.trim() },
+  const body =
+      action.value.kind === "publish"
+        ? { channels: ["站内"] }
+        : { reason: reason.value.trim() },
     serialized = JSON.stringify(body);
   if (mutationBody && mutationBody !== serialized) mutationKey = requestKey();
   mutationBody = serialized;
@@ -222,16 +252,20 @@ async function confirmAction() {
   error.value = "";
   try {
     await api(
-      kind === "withdraw"
-        ? `/admin/notifications/${row.notification_id}/withdraw`
-        : `/admin/notification-deliveries/${row.delivery_id}/retry`,
+      kind === "publish"
+        ? `/admin/notifications/${row.notification_id}/publish`
+        : kind === "withdraw"
+          ? `/admin/notifications/${row.notification_id}/withdraw`
+          : `/admin/notification-deliveries/${row.delivery_id}/retry`,
       { method: "POST", body, key: mutationKey },
     );
     action.value = null;
     notice.value =
-      kind === "withdraw"
-        ? "通知已撤回，尚未执行的投递已取消"
-        : "已创建一次新的待发送尝试，请刷新查看结果";
+      kind === "publish"
+        ? "通知已进入投递队列；关闭站内接收的用户已排除，其余按免打扰时间投递"
+        : kind === "withdraw"
+          ? "通知已撤回，尚未执行的投递已取消"
+          : "已创建一次新的待发送尝试，请刷新查看结果";
     await load();
   } catch (e) {
     error.value = e.message;
@@ -370,10 +404,10 @@ async function confirmAction() {
                     发送记录</button
                   ><button
                     v-if="row.publish_status === '草稿'"
-                    disabled
-                    title="持久投递流程正在接入，尚不可发布"
+                    :disabled="busy"
+                    @click="prepare(row, 'publish')"
                   >
-                    发布（开发中）
+                    审核发布
                   </button>
                   <button
                     v-if="['待发送', '已发送'].includes(row.publish_status)"
@@ -438,7 +472,7 @@ async function confirmAction() {
       </div>
     </footer>
     <p class="admin-source-note">
-      通知正文仅支持纯文本；草稿不会发送。投递成功不代表用户已读。通知发布仍在接入。
+      草稿不会发送。发布状态表示接收者快照已建立，实际到达以投递记录为准；关闭则不接收，免打扰结束后投递，安全通知同样遵守偏好。
     </p>
     <div v-if="detail" class="admin-modal-backdrop">
       <section
@@ -570,18 +604,51 @@ async function confirmAction() {
       >
         <header>
           <h3 id="notice-action-title">
-            {{ action.kind === "withdraw" ? "撤回通知" : "重试投递" }}
+            {{
+              action.kind === "publish"
+                ? "审核并发布通知"
+                : action.kind === "withdraw"
+                  ? "撤回通知"
+                  : "重试投递"
+            }}
           </h3>
         </header>
         <p>
           {{
-            action.kind === "withdraw"
-              ? "撤回后站内不可见，并取消尚未执行的投递。已完成的发送记录保留。"
-              : "只允许重试最新的失败记录，每位用户每渠道最多5次，不会覆盖旧尝试。"
+            action.kind === "publish"
+              ? "核对后将固定当前接收者快照并创建站内投递任务；后续新增用户不会自动补发。"
+              : action.kind === "withdraw"
+                ? "撤回后站内不可见，并取消尚未执行的投递。已完成的发送记录保留。"
+                : "只允许重试最新的失败记录，每位用户每渠道最多5次，不会覆盖旧尝试。"
           }}
         </p>
         <form @submit.prevent="confirmAction">
-          <label
+          <template v-if="action.kind === 'publish'"
+            ><dl>
+              <dt>标题</dt>
+              <dd>{{ action.row.notification_title }}</dd>
+              <dt>发送对象</dt>
+              <dd>
+                {{ target(action.row)
+                }}<template v-if="action.row.target_scope === '指定用户'">
+                  · {{ action.row.target_filter.user_ids.join("、") }}</template
+                >
+              </dd>
+              <dt>通知类型</dt>
+              <dd>{{ action.row.notification_type }}</dd>
+              <dt>正文</dt>
+              <dd class="notice-body">{{ action.row.notification_content }}</dd>
+            </dl>
+            <label
+              ><input
+                v-model="reviewed"
+                type="checkbox"
+                required
+                :disabled="busy"
+              />我已核对内容及发送对象</label
+            ></template
+          >
+          <label v-else
             >操作原因<textarea
               v-model="reason"
               required
@@ -625,5 +692,12 @@ async function confirmAction() {
 .notice-panel .admin-dialog select,
 .notice-panel .admin-dialog textarea {
   width: 100%;
+}
+</style>
+
+<style scoped>
+.notice-panel .admin-dialog input[type="checkbox"] {
+  width: auto;
+  justify-self: start;
 }
 </style>

@@ -1,6 +1,9 @@
 package com.campuspi.admin;
 
 import java.util.*;
+import java.time.Instant;
+import java.sql.Timestamp;
+import com.campuspi.notification.NotificationPreferencePolicy;
 import org.slf4j.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,7 +21,8 @@ public class NotificationWorker {
     private static final Logger log=LoggerFactory.getLogger(NotificationWorker.class);
     private final JdbcTemplate db;
     private final TransactionTemplate tx;
-    public NotificationWorker(JdbcTemplate db,PlatformTransactionManager manager){this.db=db;this.tx=new TransactionTemplate(manager);}
+    private final NotificationPreferencePolicy preferences;
+    public NotificationWorker(JdbcTemplate db,PlatformTransactionManager manager,NotificationPreferencePolicy preferences){this.db=db;this.tx=new TransactionTemplate(manager);this.preferences=preferences;}
     private Map<String,Object> one(String sql,Object... args){var rows=db.queryForList(sql,args);return rows.isEmpty()?null:rows.get(0);}
     @Scheduled(fixedDelayString="${campus.notifications.poll-interval-ms:2000}")
     public void poll(){
@@ -28,7 +32,7 @@ public class NotificationWorker {
                 try {activate(row.get("notification_id").toString());}
                 catch(RuntimeException ex){log.warn("A notification snapshot could not be activated; it remains pending for inspection.");}
             }
-            for(var row:db.queryForList("SELECT o.delivery_id,o.notification_id FROM notification_outbox o JOIN system_notifications n ON n.notification_id=o.notification_id WHERE o.work_status='待执行' AND n.publish_status IN ('已发送','已撤回') ORDER BY o.delivery_id LIMIT 100"))deliver(row.get("notification_id").toString(),((Number)row.get("delivery_id")).longValue());
+            for(var row:db.queryForList("SELECT o.delivery_id,o.notification_id FROM notification_outbox o JOIN system_notifications n ON n.notification_id=o.notification_id JOIN notification_delivery d ON d.delivery_id=o.delivery_id LEFT JOIN notification_preferences p ON p.user_id=d.user_id WHERE o.work_status='待执行' AND n.publish_status IN ('已发送','已撤回') AND (o.available_at<=UTC_TIMESTAMP(3) OR COALESCE(p.config_version,0)>o.preference_version) ORDER BY o.available_at,o.delivery_id LIMIT 100"))deliver(row.get("notification_id").toString(),((Number)row.get("delivery_id")).longValue());
         } catch(RuntimeException ex){log.warn("Notification worker paused this poll because a durable dependency was unavailable; work remains recoverable.");}
     }
     private void activate(String id){
@@ -50,13 +54,23 @@ public class NotificationWorker {
                 var notification=one("SELECT publish_status FROM system_notifications WHERE notification_id=? FOR UPDATE",id);
                 var work=one("SELECT work_status FROM notification_outbox WHERE delivery_id=? AND notification_id=? FOR UPDATE",deliveryId,id);
                 if(notification==null||work==null||!"待执行".equals(work.get("work_status")))return;
-                var attempt=one("SELECT d.channel,d.delivery_status FROM notification_delivery d JOIN notification_receipts r ON r.notification_id=d.notification_id AND r.user_id=d.user_id WHERE d.delivery_id=? AND d.notification_id=? FOR UPDATE",deliveryId,id);
+                var attempt=one("SELECT d.user_id,d.channel,d.delivery_status,r.is_deleted FROM notification_delivery d JOIN notification_receipts r ON r.notification_id=d.notification_id AND r.user_id=d.user_id WHERE d.delivery_id=? AND d.notification_id=? FOR UPDATE",deliveryId,id);
                 if(attempt==null)throw new IllegalStateException("Durable notification relationship mismatch");
                 if(!"待发送".equals(attempt.get("delivery_status"))){db.update("UPDATE notification_outbox SET work_status='已完成',completed_at=UTC_TIMESTAMP(3) WHERE delivery_id=?",deliveryId);return;}
                 if("已撤回".equals(notification.get("publish_status"))){db.update("UPDATE notification_delivery SET delivery_status='失败',failure_reason='通知已撤回，未执行的投递已取消' WHERE delivery_id=?",deliveryId);db.update("UPDATE notification_outbox SET work_status='已取消',completed_at=UTC_TIMESTAMP(3) WHERE delivery_id=?",deliveryId);return;}
                 if(!"已发送".equals(notification.get("publish_status")))return;
                 // Only durable in-app storage is implemented; never claim an external provider succeeded.
                 if(!"站内".equals(attempt.get("channel")))throw new IllegalStateException("External delivery is not enabled");
+                Instant now=Instant.now();var decision=preferences.lock(((Number)attempt.get("user_id")).longValue(),now);Object deleted=attempt.get("is_deleted");
+                if(!decision.enabled()||Boolean.TRUE.equals(deleted)||(deleted instanceof Number n&&n.intValue()!=0)){
+                    db.update("UPDATE notification_delivery SET delivery_status='失败',failure_reason='接收已关闭或本人已删除，投递已取消' WHERE delivery_id=?",deliveryId);
+                    db.update("UPDATE notification_outbox SET work_status='已取消',completed_at=UTC_TIMESTAMP(3),preference_version=? WHERE delivery_id=?",decision.version(),deliveryId);return;
+                }
+                if(decision.availableAt().isAfter(now)){
+                    db.update("UPDATE notification_outbox SET available_at=?,preference_version=? WHERE delivery_id=?",Timestamp.from(decision.availableAt()),decision.version(),deliveryId);return;
+                }
+                // The preallocated receipt is invisible until this successful attempt commits.
+                db.update("UPDATE notification_receipts SET received_at=GREATEST(received_at,UTC_TIMESTAMP(3)) WHERE notification_id=? AND user_id=? AND read_at IS NULL AND clicked_at IS NULL AND NOT EXISTS(SELECT 1 FROM notification_delivery d WHERE d.notification_id=? AND d.user_id=? AND d.channel='站内' AND d.delivery_status='成功')",id,attempt.get("user_id"),id,attempt.get("user_id"));
                 db.update("UPDATE notification_delivery SET delivery_status='成功',sent_at=UTC_TIMESTAMP(3),failure_reason=NULL WHERE delivery_id=?",deliveryId);
                 db.update("UPDATE notification_outbox SET work_status='已完成',completed_at=UTC_TIMESTAMP(3) WHERE delivery_id=?",deliveryId);
             });

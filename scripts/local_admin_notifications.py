@@ -21,6 +21,13 @@ with pymysql.connect(host=c['host'],port=c['port'],user='root',password=c['root_
    source='\n'.join(line for line in (ROOT/'database/migrations/V004__i_notification_outbox.sql').read_text(encoding='utf-8').splitlines() if not line.lstrip().startswith('--'))
    for statement in source.split(';'):
     if statement.strip():cur.execute(statement)
+  cur.execute("SELECT TABLE_NAME,COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=%s AND ((TABLE_NAME='notification_preferences' AND COLUMN_NAME='config_version') OR (TABLE_NAME='notification_outbox' AND COLUMN_NAME IN ('available_at','preference_version')))",(c['database'],))
+  upgraded=set(cur.fetchall());expected={('notification_preferences','config_version'),('notification_outbox','available_at'),('notification_outbox','preference_version')}
+  assert not upgraded or upgraded==expected,'Partial V005 migration requires review'
+  if not upgraded:
+   source='\n'.join(line for line in (ROOT/'database/migrations/V005__i_notification_preferences.sql').read_text(encoding='utf-8').splitlines() if not line.lstrip().startswith('--'))
+   for statement in source.split(';'):
+    if statement.strip():cur.execute(statement)
   cur.execute('SELECT user_id FROM users WHERE username=%s AND role=%s',(c['admin_username'],'ADMIN'));admin=cur.fetchone();assert admin
 if args.configure_local_testing:
  target=ROOT/'.local/admin-security/application-local.yml'
@@ -29,4 +36,4 @@ if args.configure_local_testing:
  campus['admin']['duties-json']=json.dumps(grants)
  # Worker starts explicitly via command-line during acceptance. Do not replace personal settings.
  target.write_text(json.dumps(config,ensure_ascii=False,indent=2),encoding='utf-8')
-print('V004 ready only on verified private MySQL; shared database and personal WeChat configuration unchanged.')
+print('V004/V005 ready only on verified private MySQL; shared database and personal WeChat configuration unchanged.')

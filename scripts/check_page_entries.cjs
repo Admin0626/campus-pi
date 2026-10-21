@@ -130,15 +130,30 @@ const local = JSON.parse(
       await page.getByRole("button", { name: "我的账号", exact: true }).click();
     await page.getByRole("button", { name: button, exact: true }).click();
     await page
-      .getByRole("heading", { name: name + "还在开发", exact: true })
+      .getByRole("heading", {
+        name: code === "I" ? "通知" : name + "还在开发",
+        exact: true,
+      })
       .waitFor();
     ok(
       page.url().endsWith("/modules/" + code),
-      "user " + name + " placeholder reachable",
+      "user " +
+        name +
+        (code === "I"
+          ? " functional inbox reachable"
+          : " placeholder reachable"),
     );
-    await page
-      .getByRole("button", { name: "返回校园生活", exact: false })
-      .click();
+    if (code === "I") {
+      await page
+        .getByRole("button", { name: "返回个人页", exact: true })
+        .click();
+      await page.waitForURL("**/me");
+      await page.getByRole("button", { name: "首页", exact: true }).click();
+    } else {
+      await page
+        .getByRole("button", { name: "返回校园生活", exact: false })
+        .click();
+    }
   }
   await page.getByRole("button", { name: "我的账号", exact: true }).click();
   await page.getByRole("button", { name: "退出登录", exact: true }).click();

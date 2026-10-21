@@ -98,7 +98,7 @@ try:
   rows=call('/admin/notifications?publish_status='+urllib.parse.quote('草稿'),token=admin)[1]['data']['items'];ids=[r['notification_id'] for r in rows]
   check(ids==sorted(ids,reverse=True) and all(r['publish_status']=='草稿' for r in rows),'Notification list uses contracted status filter and stable ID ordering')
   check(mutate(id,'withdraw')[0]==409,'Draft cannot be withdrawn')
-  check(call('/admin/notifications/'+id+'/publish','POST',{'channels':['站内']},admin,secrets.token_hex(16))[0]==501,'Unconfirmed publication stays explicitly disabled, no fake send')
+  check(call('/admin/notifications/'+id+'/publish','POST',{'channels':[]},admin,secrets.token_hex(16))[0]==400,'Publication rejects empty channel selection without sending')
   check(call('/admin/notifications/'+id+'/publish','POST',{'channels':['站内']},ungranted,secrets.token_hex(16))[0]==403,'ADMIN alone does not grant publishing duty')
   check(call('/admin/notifications/'+id+'/deliveries',token=ungranted)[0]==403,'Delivery identities require explicit publishing duty')
   check(call('/admin/notifications/'+id+'/deliveries',token=admin)[1]['data']['total']=='0','Unsent draft has no deliveries')

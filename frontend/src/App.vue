@@ -11,6 +11,7 @@ import AdminSecurityPanel from "./admin/AdminSecurityPanel.vue";
 import AdminTaskPanel from "./admin/AdminTaskPanel.vue";
 import AdminTradePanel from "./admin/AdminTradePanel.vue";
 import AdminNotificationPanel from "./admin/AdminNotificationPanel.vue";
+import NotificationInbox from "./notifications/NotificationInbox.vue";
 import ReportGlyph from "./analytics/ReportGlyph.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
 
@@ -502,6 +503,10 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
   <WordMobileHome
     v-else-if="user && path === '/home'"
     :user="user"
+    @navigate="navigate"
+  />
+  <NotificationInbox
+    v-else-if="user && path === '/modules/I'"
     @navigate="navigate"
   />
   <div

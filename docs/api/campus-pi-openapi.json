@@ -2,8 +2,8 @@
   "openapi": "3.0.3",
   "info": {
     "title": "校园Π HTTP接口规范",
-    "version": "1.0.0",
-    "description": "待实现的开发契约。P0/P1为实施阶段，不代表已开发。基于2026-10-17修订报告及MySQL设计；新增依赖和设计决定见配套文档。"
+    "version": "1.0.1",
+    "description": "接口开发契约，P0/P1为实施阶段，不代表全部功能已完成。初版为2026-10-17设计；1.0.1按负责人2026-10-21答复修订通知偏好：关闭不接收、免打扰后投递、安全同样遵守。x-implementation-status保留初版设计元数据，实际进度及运行证据见管理后台实施清单。"
   },
   "servers": [
     {
@@ -9843,7 +9843,7 @@
           "站内通知"
         ],
         "summary": "查询本人通知",
-        "description": "权限：登录。阶段：P0。必须已存在接收记录，is_deleted=false且通知已发送；按received_at降序、notification_id降序。撤回通知不再展示。 数据对象：notification_receipts, system_notifications。",
+        "description": "权限：登录。阶段：P0。必须有本人未删除接收记录、通知已发布且本人站内尝试已成功；预建或延迟记录不可见。按实际投递时的received_at降序、notification_id降序；撤回后不再展示。 数据对象：notification_receipts, system_notifications。",
         "parameters": [
           {
             "name": "page",
@@ -10020,7 +10020,7 @@
           "站内通知"
         ],
         "summary": "获取通知详情",
-        "description": "权限：登录。阶段：P0。只能访问本人有效接收记录；GET不自动标记已读或点击。 数据对象：notification_receipts, system_notifications。",
+        "description": "权限：登录。阶段：P0。只能访问本人未删除且站内投递成功的接收记录；未到期、已取消、已撤回或无接收关系统一404。GET不自动标记已读或点击。 数据对象：notification_receipts, system_notifications。",
         "parameters": [
           {
             "name": "notification_id",
@@ -10674,7 +10674,7 @@
           "站内通知"
         ],
         "summary": "替换通知偏好",
-        "description": "权限：登录。阶段：P0。完整替换；dnd_start和dnd_end同空或同非空，开始等于结束拒绝。免打扰只延迟普通通知的主动提醒，不阻止站内记录落库；安全通知不受普通偏好抑制。未接入外部渠道时设置对应开关true返回501。 数据对象：notification_preferences。",
+        "description": "权限：登录。阶段：P0。完整替换；dnd_start和dnd_end同空或同非空，开始等于结束拒绝。关闭站内通知则不接收新通知；免打扰结束后才投递且此前收件箱不可见；安全通知也遵守这两项偏好。已收到的历史通知保留；排队期间关闭会取消尚未投递记录，重新开启不自动补发。未接入外部渠道时设置对应开关true返回501。 数据对象：notification_preferences。",
         "parameters": [],
         "responses": {
           "200": {
@@ -16702,7 +16702,7 @@
           "管理端通知发布"
         ],
         "summary": "审核并发布通知",
-        "description": "权限：通知发布ADMIN。阶段：P0。锁通知从草稿进入待发送，冻结接收者快照；事务内创建站内接收记录及待发送记录，提交后异步投递。每人每渠道每次尝试唯一。只在所有目标已建立站内记录后置已发送，不代表外部全部触达。短信邮件仅安全类且渠道已接入，未接入501。新增持久任务与发件箱依赖。 数据对象：system_notifications, notification_receipts, notification_delivery, admin_audit_log。",
+        "description": "权限：通知发布ADMIN。阶段：P0。锁通知从草稿进入待发送，按全体、校区或指定用户冻结目标，并排除关闭站内接收的用户。事务内预建接收、待投递及持久任务，记录免打扰截止时间；每人每渠道每次尝试唯一。快照完整后置已发送，仅表示发布完成；本人站内尝试成功后才在收件箱可见。投递前复核偏好，关闭则取消，时段变化则重新计算；安全通知无豁免。短信邮件仅安全类且渠道已接入，未接入501。 数据对象：system_notifications, notification_receipts, notification_delivery, admin_audit_log。",
         "parameters": [
           {
             "name": "notification_id",
@@ -17233,7 +17233,7 @@
           "管理端通知发布"
         ],
         "summary": "重试一次失败投递",
-        "description": "权限：通知发布ADMIN。阶段：P0。原记录必须失败且通知未撤回；不改旧尝试，锁目标渠道后新增attempt_no+1，最多5次；存在待发送尝试时拒绝。外部渠道未接入501。 数据对象：notification_delivery, system_notifications, admin_audit_log。",
+        "description": "权限：通知发布ADMIN。阶段：P0。原记录须为最新失败尝试且通知未撤回；不改旧记录，锁目标渠道后新增attempt_no+1，最多5次；存在更新或待发送尝试时拒绝。本人已删除或关闭接收时409；免打扰中的新尝试延后投递，安全通知同样遵守。外部渠道未接入501。 数据对象：notification_delivery, system_notifications, admin_audit_log。",
         "parameters": [
           {
             "name": "delivery_id",
@@ -20432,7 +20432,7 @@
         "properties": {
           "in_app_enabled": {
             "type": "boolean",
-            "description": "",
+            "description": "关闭不接收新站内通知，安全通知也遵守；已收到的历史通知保留",
             "example": true
           },
           "email_enabled": {

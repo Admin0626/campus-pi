@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.0.1",
   "assets": [
     {
       "path": "docs/design/校园Π软件工程设计报告修订版.docx",
@@ -191,25 +191,25 @@
       "path": "docs/api/校园Π接口开发规范.docx",
       "origin": "校园Π接口开发规范.docx",
       "mode": "raw-bytes",
-      "sha256": "3710277d69a6f5e3bda60c75f852af46380dfb744cd8976ed60919f3bfca50ee"
+      "sha256": "fddacefcba5d1b06a65e33495a2df1747c1cf55128cb1e366e87731b954fb3ca"
     },
     {
       "path": "docs/api/校园Π接口开发规范.md",
       "origin": "校园Π接口开发规范.md",
       "mode": "utf8-lf",
-      "sha256": "e0eae42bb728d8fe15b21a174020de6e2d60ee331c1a985b198f3db1de47821d"
+      "sha256": "33a9da9fb00b6c1791e70cdb964eee2cecd09321d7e26d46b267b7274d51ae18"
     },
     {
       "path": "docs/api/campus-pi-openapi.json",
       "origin": "campus-pi-openapi.json",
       "mode": "utf8-lf",
-      "sha256": "36a52578f7a5307a73f61acdf0b957c5df15876e90e2eb9a99af2d8889d5f416"
+      "sha256": "f7fefa00420ada6bb2d38391d6de880970f39be397a1e612535cf9c5a6eaf13c"
     },
     {
       "path": "docs/api/接口设计决定与落地清单.md",
       "origin": "接口设计决定与落地清单.md",
       "mode": "utf8-lf",
-      "sha256": "60696a9106edf1017ebe33b00951a6c93b698eec1358cb8ddf078692319df30e"
+      "sha256": "45960511cc95b380c04d8694fb3e95a789461776cb5ae940ed7eaf0322349e8d"
     },
     {
       "path": "database/schema/01_数据库结构.sql",
@@ -272,5 +272,33 @@
       "sha256": "354bf42d21e0541ffd104204a7b2478c6521ec44aae277387ff43998b546f35f"
     }
   ],
-  "notes": "导入原始设计/API/SQL及历史证据；文本按UTF-8和LF校验，DOCX按原始字节。更新基线需复核并显式更新清单。"
+  "notes": "导入原始设计/API/SQL及历史证据；文本按UTF-8和LF校验，DOCX按原始字节。更新基线需复核并显式更新清单。",
+  "revisions": [
+    {
+      "date": "2026-10-21",
+      "reason": "User explicitly confirmed opt-out excludes receiving, DND delays inbox delivery, and security obeys preferences; synchronized four API contract artifacts and fixed table pagination. Original report and initial SQL unchanged.",
+      "assets": [
+        {
+          "path": "docs/api/校园Π接口开发规范.docx",
+          "previous_sha256": "3710277d69a6f5e3bda60c75f852af46380dfb744cd8976ed60919f3bfca50ee",
+          "sha256": "fddacefcba5d1b06a65e33495a2df1747c1cf55128cb1e366e87731b954fb3ca"
+        },
+        {
+          "path": "docs/api/校园Π接口开发规范.md",
+          "previous_sha256": "e0eae42bb728d8fe15b21a174020de6e2d60ee331c1a985b198f3db1de47821d",
+          "sha256": "33a9da9fb00b6c1791e70cdb964eee2cecd09321d7e26d46b267b7274d51ae18"
+        },
+        {
+          "path": "docs/api/campus-pi-openapi.json",
+          "previous_sha256": "36a52578f7a5307a73f61acdf0b957c5df15876e90e2eb9a99af2d8889d5f416",
+          "sha256": "f7fefa00420ada6bb2d38391d6de880970f39be397a1e612535cf9c5a6eaf13c"
+        },
+        {
+          "path": "docs/api/接口设计决定与落地清单.md",
+          "previous_sha256": "60696a9106edf1017ebe33b00951a6c93b698eec1358cb8ddf078692319df30e",
+          "sha256": "45960511cc95b380c04d8694fb3e95a789461776cb5ae940ed7eaf0322349e8d"
+        }
+      ]
+    }
+  ]
 }
