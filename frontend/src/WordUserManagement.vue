@@ -14,6 +14,7 @@ const emit = defineEmits([
   "reset",
   "detail",
   "status",
+  "logs",
   "page",
   "size",
   "unavailable",
@@ -172,7 +173,7 @@ const tip = (name) =>
                   />{{
                     item.account_status === "ACTIVE" ? "禁用" : "启用"
                   }}</button
-                ><button class="logs" @click="tip('日志查看')">
+                ><button class="logs" @click="emit('logs', item)">
                   <Icon name="file" />日志
                 </button>
               </div>

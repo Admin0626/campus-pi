@@ -2,7 +2,7 @@
 import { computed, ref, reactive, watch, onUnmounted } from "vue";
 import { api, requestKey } from "../api";
 import FilePreview from "./FilePreview.vue";
-const props = defineProps({ module: String });
+const props = defineProps({ module: String, auditContext: Object });
 const emit = defineEmits(["navigate"]);
 const tab = ref("products"),
   rows = ref([]),
@@ -131,6 +131,10 @@ watch(
     formOpen.value = false;
     notice.value = "";
     Object.keys(filter).forEach((k) => (filter[k] = ""));
+    if (view.value === "audit" && props.auditContext) {
+      filter.object_type = props.auditContext.object_type;
+      filter.object_id = props.auditContext.object_id;
+    }
     load();
   },
   { immediate: true },

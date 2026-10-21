@@ -786,6 +786,18 @@
   font-size: 11px;
   line-height: 1;
 }
+.word-admin-header-tools > button > .report-notice-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 2px;
+  left: 14px;
+  top: -4px;
+  border-radius: 8px;
+  background: #ef4444;
+}
 .word-admin-users .content {
   padding: 0;
   margin: 14px 0 0;

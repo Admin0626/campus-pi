@@ -2,6 +2,10 @@
 import { ref, reactive, onMounted, onUnmounted } from "vue";
 import { api } from "../api";
 import Icon from "../Icon.vue";
+const props = defineProps({
+  backTarget: { type: String, default: "/me" },
+  backLabel: { type: String, default: "返回个人页" },
+});
 const emit = defineEmits(["navigate"]);
 const rows = ref([]),
   page = ref(1),
@@ -188,9 +192,9 @@ onUnmounted(() => {
     <section class="word-mobile-screen inbox-screen" :aria-busy="loading">
       <header class="inbox-header">
         <button
-          aria-label="返回个人页"
+          :aria-label="props.backLabel"
           :disabled="busy"
-          @click="emit('navigate', '/me')"
+          @click="emit('navigate', props.backTarget)"
         >
           <Icon name="back" />
         </button>

@@ -11,6 +11,7 @@ import AdminSecurityPanel from "./admin/AdminSecurityPanel.vue";
 import AdminTaskPanel from "./admin/AdminTaskPanel.vue";
 import AdminTradePanel from "./admin/AdminTradePanel.vue";
 import AdminNotificationPanel from "./admin/AdminNotificationPanel.vue";
+import AdminNotificationEntry from "./admin/AdminNotificationEntry.vue";
 import NotificationInbox from "./notifications/NotificationInbox.vue";
 import ReportGlyph from "./analytics/ReportGlyph.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
@@ -53,6 +54,8 @@ const statusTarget = ref(null),
   reason = ref(""),
   statusError = ref(""),
   statusKey = ref("");
+const auditContext = ref(null),
+  inboxReturn = ref("");
 let registrationKey = requestKey(),
   registrationBody = "",
   listVersion = 0,
@@ -183,6 +186,8 @@ async function navigate(destination, replace = false) {
     notify("需要管理员权限");
   }
   path.value = destination;
+  if (destination !== "/admin/modules/audit") auditContext.value = null;
+  if (destination !== "/modules/I") inboxReturn.value = "";
   history[replace ? "replaceState" : "pushState"](null, "", destination);
   window.scrollTo(0, 0);
   if (destination === "/admin/users") await loadUsers();
@@ -197,6 +202,16 @@ async function navigate(destination, replace = false) {
     });
   else if (destination === "/me/password")
     Object.assign(password, { current: "", next: "", confirm: "" });
+}
+async function openUserLogs(row) {
+  if (busy.value) return;
+  auditContext.value = { object_type: "USER", object_id: row.user_id };
+  await navigate("/admin/modules/audit");
+}
+async function openAdminInbox() {
+  if (busy.value) return;
+  inboxReturn.value = path.value;
+  await navigate("/modules/I");
 }
 function focusError() {
   requestAnimationFrame(() =>
@@ -507,6 +522,8 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
   />
   <NotificationInbox
     v-else-if="user && path === '/modules/I'"
+    :back-target="inboxReturn || '/me'"
+    :back-label="inboxReturn ? '返回管理后台' : '返回个人页'"
     @navigate="navigate"
   />
   <div
@@ -626,14 +643,8 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
               @click="notify('全局搜索还在开发')"
             />
           </div>
-          <button aria-label="通知（开发中）" @click="notify('通知还在开发')">
-            <Icon name="bell" /><span
-              v-if="path === '/admin/modules/analytics'"
-              class="report-notice-count"
-              title="原图示意数，通知功能开发中"
-              >5</span
-            ></button
-          ><button aria-label="帮助（开发中）" @click="notify('帮助还在开发')">
+          <AdminNotificationEntry :refresh-key="path" @open="openAdminInbox" />
+          <button aria-label="帮助（开发中）" @click="notify('帮助还在开发')">
             ●<span>?</span>
           </button>
         </div>
@@ -726,6 +737,7 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
         <AdminContentPanel
           v-else-if="isAdminContent"
           :module="path === '/admin' ? 'dashboard' : path.split('/').at(-1)"
+          :audit-context="auditContext"
           @navigate="navigate"
         />
         <template v-else-if="path === '/home' || path === '/admin'"
@@ -950,6 +962,7 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
           @reset="reset"
           @detail="navigate('/admin/users/' + $event.user_id)"
           @status="statusDialog"
+          @logs="openUserLogs"
           @page="
             page = $event;
             loadUsers();
@@ -993,6 +1006,8 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
                 @click="navigate('/admin/modules/permissions')"
               >
                 <Icon name="lock" :size="15" />前往角色管理</button
+              ><button class="secondary" @click="openUserLogs(selected)">
+                查看操作日志</button
               ><button
                 class="primary"
                 :disabled="selected.user_id === user.user_id"

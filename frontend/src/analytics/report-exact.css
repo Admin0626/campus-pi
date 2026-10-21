@@ -187,7 +187,9 @@
     > button
     > .report-notice-count {
     width: calc(8 * var(--report-u));
+    min-width: calc(8 * var(--report-u));
     height: calc(8 * var(--report-u));
+    padding: 0;
     font-size: calc(5 * var(--report-u));
     background: #ef4444;
     display: flex;
