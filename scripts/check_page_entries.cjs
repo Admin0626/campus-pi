@@ -91,6 +91,7 @@ const local = JSON.parse(
             permissions: "权限管理",
             tasks: "悬赏任务管理",
             orders: "订单管理",
+            notices: "通知管理",
           }[code] || name + "还在开发",
         exact: true,
       })
@@ -99,7 +100,14 @@ const local = JSON.parse(
       page.url().endsWith("/admin/modules/" + code),
       "admin " +
         name +
-        (["content", "products", "permissions", "tasks", "orders"].includes(code)
+        ([
+          "content",
+          "products",
+          "permissions",
+          "tasks",
+          "orders",
+          "notices",
+        ].includes(code)
           ? " functional page reachable"
           : code === "analytics"
             ? " mock page reachable"

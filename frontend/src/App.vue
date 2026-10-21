@@ -10,6 +10,7 @@ import AdminContentPanel from "./admin/AdminContentPanel.vue";
 import AdminSecurityPanel from "./admin/AdminSecurityPanel.vue";
 import AdminTaskPanel from "./admin/AdminTaskPanel.vue";
 import AdminTradePanel from "./admin/AdminTradePanel.vue";
+import AdminNotificationPanel from "./admin/AdminNotificationPanel.vue";
 import ReportGlyph from "./analytics/ReportGlyph.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
 
@@ -119,6 +120,7 @@ const isAdminContent = computed(
       "/admin/modules/tasks",
       "/admin/modules/orders",
       "/admin/modules/reports",
+      "/admin/modules/notices",
     ].includes(path.value),
 );
 function clear() {
@@ -699,6 +701,7 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
         </div>
         <AnalyticsPage v-if="path === '/admin/modules/analytics'" />
         <AdminTaskPanel v-else-if="path === '/admin/modules/tasks'" />
+        <AdminNotificationPanel v-else-if="path === '/admin/modules/notices'" />
         <AdminTradePanel
           v-else-if="
             ['/admin/modules/orders', '/admin/modules/reports'].includes(path)
