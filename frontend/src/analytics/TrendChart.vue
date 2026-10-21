@@ -22,7 +22,7 @@ const axis = computed(() =>
 );
 const canvas = ref(null),
   canvasWidth = ref(1050);
-let observer;
+let observer, resizeFrame;
 onMounted(() => {
   const measure = () => {
     canvasWidth.value = Math.max(
@@ -31,10 +31,20 @@ onMounted(() => {
     );
   };
   measure();
-  observer = new ResizeObserver(measure);
+  observer = new ResizeObserver(([entry]) => {
+    const width = Math.max(240, Math.round(entry.contentRect.width));
+    if (width === canvasWidth.value) return;
+    cancelAnimationFrame(resizeFrame);
+    // Apply width changes outside the observer delivery cycle. Updating SVG
+    // height in that cycle otherwise produces ResizeObserver loop warnings.
+    resizeFrame = requestAnimationFrame(() => (canvasWidth.value = width));
+  });
   observer.observe(canvas.value);
 });
-onBeforeUnmount(() => observer?.disconnect());
+onBeforeUnmount(() => {
+  observer?.disconnect();
+  cancelAnimationFrame(resizeFrame);
+});
 const chartHeight = computed(() =>
   canvasWidth.value < 600
     ? 235

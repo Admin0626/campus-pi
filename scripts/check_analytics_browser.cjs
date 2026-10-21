@@ -30,6 +30,13 @@ const fixture = JSON.parse(
       viewport: { width: 1474, height: 1114 },
       acceptDownloads: true,
     });
+    await page.addInitScript(() => {
+      window.__analyticsResizeErrors = [];
+      window.addEventListener("error", (event) => {
+        if (event.message.includes("ResizeObserver"))
+          window.__analyticsResizeErrors.push(event.message);
+      });
+    });
     const checks = [],
       errors = [],
       requests = [];
@@ -272,6 +279,15 @@ const fixture = JSON.parse(
     });
     for (const width of [390, 320]) {
       await page.setViewportSize({ width, height: 844 });
+      await page.waitForFunction(() => {
+        const canvas = document.querySelector(".analytics-trend-canvas");
+        return (
+          Math.abs(
+            canvas.clientWidth -
+              canvas.querySelector("svg").viewBox.baseVal.width,
+          ) < 1.5
+        );
+      });
       ok(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
@@ -299,6 +315,22 @@ const fixture = JSON.parse(
         animations: "disabled",
       });
     }
+    for (const width of [900, 700, 1474]) {
+      await page.setViewportSize({ width, height: 1114 });
+      await page.waitForFunction(() => {
+        const canvas = document.querySelector(".analytics-trend-canvas");
+        return (
+          Math.abs(
+            canvas.clientWidth -
+              canvas.querySelector("svg").viewBox.baseVal.width,
+          ) < 1.5
+        );
+      });
+    }
+    ok(
+      await page.evaluate(() => window.__analyticsResizeErrors.length === 0),
+      "responsive chart resizing produces no ResizeObserver loop warnings",
+    );
     ok(
       !requests.some((url) =>
         /\/api\/.*(analytics|statistics|overview)/.test(url),
