@@ -4,6 +4,10 @@
 .admin-file-preview {
   margin: 20px 0;
 }
+.task-subviews {
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
 .admin-file-preview header {
   display: flex;
   align-items: center;

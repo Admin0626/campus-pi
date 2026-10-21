@@ -33,6 +33,9 @@ server:
     include-exception: false
 
 campus:
+  tasks:
+    # Ledger-only synthetic tests; never a real cash payment integration.
+    synthetic-cash-enabled: ${TASK_SYNTHETIC_CASH_ENABLED:false}
   admin:
     # Server-owned user-ID to duty-list JSON. Empty means sensitive duties remain closed.
     duties-json: ${ADMIN_DUTIES_JSON:}

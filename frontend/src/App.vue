@@ -8,6 +8,7 @@ import WordMobileHome from "./WordMobileHome.vue";
 import AnalyticsPage from "./analytics/AnalyticsPage.vue";
 import AdminContentPanel from "./admin/AdminContentPanel.vue";
 import AdminSecurityPanel from "./admin/AdminSecurityPanel.vue";
+import AdminTaskPanel from "./admin/AdminTaskPanel.vue";
 import ReportGlyph from "./analytics/ReportGlyph.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
 
@@ -113,6 +114,7 @@ const isAdminContent = computed(
       "/admin/modules/audit",
       "/admin/modules/verifications",
       "/admin/modules/permissions",
+      "/admin/modules/tasks",
     ].includes(path.value),
 );
 function clear() {
@@ -692,6 +694,7 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
           </button>
         </div>
         <AnalyticsPage v-if="path === '/admin/modules/analytics'" />
+        <AdminTaskPanel v-else-if="path === '/admin/modules/tasks'" />
         <AdminSecurityPanel
           v-else-if="
             [

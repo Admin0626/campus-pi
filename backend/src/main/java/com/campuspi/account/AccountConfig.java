@@ -16,7 +16,7 @@ public class AccountConfig implements WebMvcConfigurer {
                 ApiSupport.requestId(req);
                 if (!(handler instanceof HandlerMethod method)) return true;
                 String path = req.getRequestURI();
-                if (method.getBeanType() != AccountController.class && !path.startsWith("/api/v1/admin/") && !path.startsWith("/api/v1/me/") && !path.equals("/api/v1/files")) return true;
+                if (method.getBeanType() != AccountController.class && !path.startsWith("/api/v1/admin/") && !path.startsWith("/api/v1/me/") && !path.equals("/api/v1/files") && !path.matches("/api/v1/tasks/[1-9][0-9]*/(proofs|logs)")) return true;
                 res.setHeader("Cache-Control", "no-store");
                 if (path.equals("/api/v1/auth/logout")) return true;
                 if (path.startsWith("/api/v1/auth/") || path.matches("/api/v1/users/[1-9][0-9]*/profile")) return true;
