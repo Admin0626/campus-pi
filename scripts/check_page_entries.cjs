@@ -56,6 +56,8 @@ const local = JSON.parse(
     "/admin",
     "/admin/users",
     "/admin/users/1",
+    "/admin/modules/categories",
+    "/admin/modules/audit",
     "/modules/B",
     ...adminEntries.map(([, code]) => "/admin/modules/" + code),
     ...userEntries.map(([, code]) => "/modules/" + code),
@@ -79,7 +81,12 @@ const local = JSON.parse(
     await page.getByRole("button", { name, exact: true }).click();
     await page
       .getByRole("heading", {
-        name: code === "analytics" ? "用户增长趋势" : name + "还在开发",
+        name:
+          {
+            analytics: "用户增长趋势",
+            content: "内容审核",
+            products: "商品信息管理",
+          }[code] || name + "还在开发",
         exact: true,
       })
       .waitFor();
@@ -87,9 +94,11 @@ const local = JSON.parse(
       page.url().endsWith("/admin/modules/" + code),
       "admin " +
         name +
-        (code === "analytics"
-          ? " mock page reachable"
-          : " placeholder reachable"),
+        (["content", "products"].includes(code)
+          ? " functional page reachable"
+          : code === "analytics"
+            ? " mock page reachable"
+            : " placeholder reachable"),
     );
   }
   await page.getByRole("button", { name: "用户端", exact: true }).click();

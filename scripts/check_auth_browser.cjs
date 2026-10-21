@@ -149,11 +149,9 @@ const local = JSON.parse(
   await page.getByRole("button", { name: "确认操作", exact: true }).click();
   await page.getByRole("dialog").waitFor({ state: "hidden" });
   await page.getByRole("button", { name: "内容发布管理", exact: true }).click();
-  await page
-    .getByRole("heading", { name: "内容发布管理还在开发", exact: true })
-    .waitFor();
-  ok(true, "other admin module has accessible placeholder");
-  await shot("05-后台开发中占位");
+  await page.getByRole("heading", { name: "内容审核", exact: true }).waitFor();
+  ok(true, "content management now reaches its real review page");
+  await shot("05-后台内容审核");
   await page
     .getByRole("button", {
       name: new RegExp(local.admin_username + " 退出登录"),

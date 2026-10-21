@@ -291,4 +291,23 @@ public class AccountService {
         }
         return result;
     }
+    // Shared admin writes use one transaction for authorization, state, audit and replay.
+    // Stored procedures with their own COMMIT must not be called inside this boundary.
+    public Object adminMutation(Identity identity,String scope,String key,Object signature,Supplier<Object> action) {
+        final String canonical;
+        try { canonical=json.writer().with(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+                .writeValueAsString(json.convertValue(signature,Object.class)); }
+        catch(Exception ex) { throw new IllegalArgumentException("Invalid action signature",ex); }
+        return idempotent("admin:"+identity.id()+":"+scope,key,digest(canonical),()->{
+            db.queryForObject("SELECT guard_id FROM auth_admin_guard WHERE guard_id=1 FOR UPDATE",Integer.class);
+            actor(identity,true);
+            return action.get();
+        });
+    }
+    public Object adminTransaction(Identity identity,Supplier<Object> action) {
+        return tx.execute(status->{
+            db.queryForObject("SELECT guard_id FROM auth_admin_guard WHERE guard_id=1 FOR UPDATE",Integer.class);
+            actor(identity,true);return action.get();
+        });
+    }
 }

@@ -8,11 +8,15 @@ export const setExpiredHandler = (handler) => {
   onExpired = handler;
 };
 export const requestKey = () => crypto.randomUUID();
-export async function api(path, { method = "GET", body, key, signal } = {}) {
+export async function api(
+  path,
+  { method = "GET", body, key, signal, reason } = {},
+) {
   const headers = { Accept: "application/json" };
   if (body !== undefined) headers["Content-Type"] = "application/json";
   if (token) headers.Authorization = `Bearer ${token}`;
   if (key) headers["Idempotency-Key"] = key;
+  if (reason) headers["X-Action-Reason"] = encodeURIComponent(reason);
   const controller = new AbortController();
   const cancel = () => controller.abort();
   signal?.addEventListener("abort", cancel, { once: true });

@@ -6,6 +6,7 @@ import WordUserManagement from "./WordUserManagement.vue";
 import WordMobileMe from "./WordMobileMe.vue";
 import WordMobileHome from "./WordMobileHome.vue";
 import AnalyticsPage from "./analytics/AnalyticsPage.vue";
+import AdminContentPanel from "./admin/AdminContentPanel.vue";
 import ReportGlyph from "./analytics/ReportGlyph.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
 
@@ -74,6 +75,10 @@ const adminMenu = [
 ];
 const pendingName = computed(
   () =>
+    ({
+      "/admin/modules/categories": "分类管理",
+      "/admin/modules/audit": "操作日志",
+    })[path.value] ||
     (path.value === "/modules/B" ? "实名与校园认证" : "") ||
     adminMenu.find((m) => m[1] === path.value)?.[0] ||
     modules.find((m) => `/modules/${m[0]}` === path.value)?.[1] ||
@@ -95,6 +100,16 @@ const pageTitle = computed(() =>
               : path.value === "/me/password"
                 ? "账号安全"
                 : pendingName.value,
+);
+const isAdminContent = computed(
+  () =>
+    path.value === "/admin" ||
+    [
+      "/admin/modules/content",
+      "/admin/modules/products",
+      "/admin/modules/categories",
+      "/admin/modules/audit",
+    ].includes(path.value),
 );
 function clear() {
   error.value = "";
@@ -484,6 +499,7 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
       'admin-shell': admin,
       'word-admin-shell': admin,
       'word-admin-users': path === '/admin/users',
+      'word-admin-content': isAdminContent,
       'word-analytics-shell': path === '/admin/modules/analytics',
     }"
   >
@@ -644,7 +660,10 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
         <div
           v-if="
             notice &&
-            !(path === '/admin/modules/analytics' && notice === '登录成功')
+            !(
+              (path === '/admin/modules/analytics' || isAdminContent) &&
+              notice === '登录成功'
+            )
           "
           class="alert info-alert"
           role="status"
@@ -669,6 +688,11 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
           </button>
         </div>
         <AnalyticsPage v-if="path === '/admin/modules/analytics'" />
+        <AdminContentPanel
+          v-else-if="isAdminContent"
+          :module="path === '/admin' ? 'dashboard' : path.split('/').at(-1)"
+          @navigate="navigate"
+        />
         <template v-else-if="path === '/home' || path === '/admin'"
           ><section class="panel welcome-panel">
             <span class="badge blue-badge">{{

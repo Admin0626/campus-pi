@@ -32,6 +32,9 @@ server:
     include-exception: false
 
 campus:
+  admin:
+    # Server-owned user-ID to duty-list JSON. Empty means sensitive duties remain closed.
+    duties-json: ${ADMIN_DUTIES_JSON:}
   auth:
     # 注册请求摘要需要稳定的本地密钥，不能设置成示例密钥。
     idempotency-secret: ${AUTH_IDEMPOTENCY_SECRET:}

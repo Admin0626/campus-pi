@@ -14,9 +14,10 @@ public class AccountConfig implements WebMvcConfigurer {
         registry.addInterceptor(new HandlerInterceptor() {
             @Override public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) {
                 ApiSupport.requestId(req);
-                if (!(handler instanceof HandlerMethod method) || method.getBeanType() != AccountController.class) return true;
-                res.setHeader("Cache-Control", "no-store");
+                if (!(handler instanceof HandlerMethod method)) return true;
                 String path = req.getRequestURI();
+                if (method.getBeanType() != AccountController.class && !path.startsWith("/api/v1/admin/")) return true;
+                res.setHeader("Cache-Control", "no-store");
                 if (path.equals("/api/v1/auth/logout")) return true;
                 if (path.startsWith("/api/v1/auth/") || path.matches("/api/v1/users/[1-9][0-9]*/profile")) return true;
                 var identity = accounts.authenticate(req.getHeader("Authorization"));
