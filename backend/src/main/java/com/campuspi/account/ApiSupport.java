@@ -19,7 +19,7 @@ public class ApiSupport {
     public ResponseEntity<Map<String,Object>> error(ApiException ex, HttpServletRequest request) {
         String code = ex.code != null ? ex.code : switch(ex.status) { case 400 -> "VALIDATION_ERROR"; case 401 -> "UNAUTHENTICATED";
             case 403 -> "FORBIDDEN"; case 404 -> "NOT_FOUND"; case 409 -> "STATE_CONFLICT";
-            case 429 -> "RATE_LIMITED"; case 501 -> "FEATURE_NOT_ENABLED"; case 503 -> "DEPENDENCY_UNAVAILABLE"; default -> "INTERNAL_ERROR"; };
+            case 413 -> "UPLOAD_TOO_LARGE"; case 415 -> "UNSUPPORTED_MEDIA_TYPE"; case 429 -> "RATE_LIMITED"; case 501 -> "FEATURE_NOT_ENABLED"; case 503 -> "DEPENDENCY_UNAVAILABLE"; default -> "INTERNAL_ERROR"; };
         Map<String,Object> body = envelope(null, requestId(request));
         body.put("code", code); body.put("message", ex.getMessage());
         body.put("errors", ex.field == null ? List.of() : List.of(Map.of("field",ex.field,"message",ex.getMessage())));
@@ -35,6 +35,8 @@ public class ApiSupport {
     public ResponseEntity<Map<String,Object>> unavailable(DataAccessException ex, HttpServletRequest request) {
         return error(new ApiException(503,"数据服务暂时不可用，请稍后重试"),request);
     }
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String,Object>> oversized(Exception ex,HttpServletRequest request){return error(new ApiException(413,"文件超过大小限制"),request);}
     public static String requestId(HttpServletRequest request) {
         Object id = request.getAttribute("request_id");
         if (id == null) { id = UUID.randomUUID().toString(); request.setAttribute("request_id",id); }

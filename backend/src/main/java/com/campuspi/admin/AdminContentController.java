@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 public class AdminContentController {
     private final AdminContentService content;
-    public AdminContentController(AdminContentService content){this.content=content;}
+    private final BusinessFileService files;
+    public AdminContentController(AdminContentService content,BusinessFileService files){this.content=content;this.files=files;}
     private AccountService.Identity actor(HttpServletRequest req){return (AccountService.Identity)req.getAttribute("identity");}
-    private Object response(Object data,HttpServletRequest req){return ApiSupport.envelope(data,ApiSupport.requestId(req));}
+    private Object response(Object data,HttpServletRequest req){return ApiSupport.envelope(files.decorateProducts(data,actor(req)),ApiSupport.requestId(req));}
     private int categoryId(String value){long id=AccountService.id(value);if(id>Integer.MAX_VALUE)throw new ApiException(400,"分类编号超出范围");return (int)id;}
     @GetMapping("/categories") public Object categories(HttpServletRequest r){return response(content.categories(),r);}
     @PostMapping("/admin/categories") public ResponseEntity<Object> create(@RequestBody JsonNode b,@RequestHeader(value="Idempotency-Key",required=false)String k,HttpServletRequest r){return ResponseEntity.status(201).body(response(content.saveCategory(actor(r),null,b,k),r));}

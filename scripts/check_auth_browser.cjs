@@ -125,9 +125,9 @@ const local = JSON.parse(
   await page.getByRole("heading", { name: username, exact: true }).waitFor();
   ok(
     await page
-      .getByRole("button", { name: "角色调整未开放", exact: false })
-      .isDisabled(),
-    "role adjustment stays closed",
+      .getByRole("button", { name: "前往角色管理", exact: false })
+      .isEnabled(),
+    "role management entry is available; sensitive authority is checked by server",
   );
   await page.getByRole("button", { name: "停用账号", exact: true }).click();
   await page.getByRole("button", { name: "确认操作", exact: true }).click();

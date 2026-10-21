@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, reactive, watch, onUnmounted } from "vue";
 import { api, requestKey } from "../api";
+import FilePreview from "./FilePreview.vue";
 const props = defineProps({ module: String });
 const emit = defineEmits(["navigate"]);
 const tab = ref("products"),
@@ -302,6 +303,12 @@ const dashboardCards = computed(() =>
       </div>
       <div class="admin-inline-actions">
         <button
+          v-if="view === 'dashboard'"
+          @click="emit('navigate', '/admin/modules/verifications')"
+        >
+          认证审核
+        </button>
+        <button
           v-if="view === 'categories'"
           class="admin-purple"
           @click="openCategory()"
@@ -367,7 +374,8 @@ const dashboardCards = computed(() =>
           <h3>业务管理</h3>
           <button @click="emit('navigate', '/admin/modules/content')">
             内容审核 →</button
-          ><button @click="emit('navigate', '/admin/users')">进入用户管理</button
+          ><button @click="emit('navigate', '/admin/users')">
+            进入用户管理</button
           ><button @click="emit('navigate', '/admin/modules/categories')">
             分类管理 →</button
           ><button @click="emit('navigate', '/admin/modules/audit')">
@@ -596,10 +604,8 @@ const dashboardCards = computed(() =>
               <dd>{{ value }}</dd></template
             >
           </dl>
-          <p v-if="view === 'products'" class="admin-source-note">
-            商品图片的受控文件预览仍在接入，当前只展示文本资料。
-          </p></template
-        >
+          <FilePreview v-if="view === 'products'" :files="detail.image_urls"
+        /></template>
         <form v-else-if="formOpen" @submit.prevent="saveCategory">
           <label
             >分类名称<input

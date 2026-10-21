@@ -21,8 +21,12 @@ public class AdminPolicy {
         } catch(Exception ex) {throw new IllegalArgumentException("Invalid server-owned admin duty configuration");}
     }
     public void require(AccountService.Identity identity,String duty) {
-        if(identity==null || !identity.admin())throw new ApiException(403,"需要管理员权限");
-        for(JsonNode value:grants.path(Long.toString(identity.id())))if(duty.equals(value.asText()))return;
+        if(has(identity,duty))return;
         throw new ApiException(403,"该管理职责尚未授权："+duty);
+    }
+    public boolean has(AccountService.Identity identity,String duty) {
+        if(identity==null||!identity.admin())return false;
+        for(JsonNode value:grants.path(Long.toString(identity.id())))if(duty.equals(value.asText()))return true;
+        return false;
     }
 }

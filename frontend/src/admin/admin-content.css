@@ -1,6 +1,29 @@
 .word-admin-content .page-heading {
   display: none;
 }
+.admin-file-preview {
+  margin: 20px 0;
+}
+.admin-file-preview header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.admin-file-preview figure {
+  margin: 12px 0;
+  border: 1px solid #e0e5ed;
+  padding: 12px;
+}
+.admin-file-preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 380px;
+  object-fit: contain;
+  margin: 10px auto;
+}
+.admin-file-preview figcaption {
+  color: #617084;
+}
 .word-admin-shell .admin-content-panel td {
   color: #354052;
 }

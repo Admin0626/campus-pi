@@ -7,6 +7,7 @@ import WordMobileMe from "./WordMobileMe.vue";
 import WordMobileHome from "./WordMobileHome.vue";
 import AnalyticsPage from "./analytics/AnalyticsPage.vue";
 import AdminContentPanel from "./admin/AdminContentPanel.vue";
+import AdminSecurityPanel from "./admin/AdminSecurityPanel.vue";
 import ReportGlyph from "./analytics/ReportGlyph.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
 
@@ -78,6 +79,7 @@ const pendingName = computed(
     ({
       "/admin/modules/categories": "分类管理",
       "/admin/modules/audit": "操作日志",
+      "/admin/modules/verifications": "认证审核",
     })[path.value] ||
     (path.value === "/modules/B" ? "实名与校园认证" : "") ||
     adminMenu.find((m) => m[1] === path.value)?.[0] ||
@@ -109,6 +111,8 @@ const isAdminContent = computed(
       "/admin/modules/products",
       "/admin/modules/categories",
       "/admin/modules/audit",
+      "/admin/modules/verifications",
+      "/admin/modules/permissions",
     ].includes(path.value),
 );
 function clear() {
@@ -688,6 +692,16 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
           </button>
         </div>
         <AnalyticsPage v-if="path === '/admin/modules/analytics'" />
+        <AdminSecurityPanel
+          v-else-if="
+            [
+              '/admin/modules/verifications',
+              '/admin/modules/permissions',
+            ].includes(path)
+          "
+          :module="path.split('/').at(-1)"
+          @navigate="navigate"
+        />
         <AdminContentPanel
           v-else-if="isAdminContent"
           :module="path === '/admin' ? 'dashboard' : path.split('/').at(-1)"
@@ -953,8 +967,11 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
               </div>
             </dl>
             <div class="form-footer live-panel-footer">
-              <button class="secondary" disabled>
-                <Icon name="lock" :size="15" />角色调整未开放</button
+              <button
+                class="secondary"
+                @click="navigate('/admin/modules/permissions')"
+              >
+                <Icon name="lock" :size="15" />前往角色管理</button
               ><button
                 class="primary"
                 :disabled="selected.user_id === user.user_id"

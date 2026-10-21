@@ -181,6 +181,11 @@ public class AccountService {
     }
     public Identity authenticate(String authorization) {
         String tokenHash=tokenHash(authorization);
+        return authenticateSessionHash(tokenHash);
+    }
+    // Internal use by short-lived file grants. This digest is never accepted as a login credential.
+    public Identity authenticateSessionHash(String tokenHash) {
+        if(tokenHash==null || !tokenHash.matches("[0-9a-f]{64}"))throw new ApiException(401,"登录状态已失效");
         return tx.execute(status->{
             var original=one("SELECT user_id FROM auth_sessions WHERE token_hash=?",tokenHash);
             if(original==null) throw new ApiException(401,"登录状态已失效，请重新登录");
@@ -260,6 +265,19 @@ public class AccountService {
         return Map.of("items",rows.stream().map(u->view(u,true)).toList(),"total",String.valueOf(count),"page",page,"page_size",size);
     }
     public Object adminDetail(long id) { return view(user(id,false),true); }
+    public Object role(Identity identity,long target,JsonNode body,String key) {
+        fields(body,"role","reason");String next=text(body,"role",1,10,false),reason=text(body,"reason",1,500,true);
+        if(!Set.of("USER","ADMIN").contains(next))throw new ApiException(400,"角色无效","role");
+        return adminMutation(identity,"role:"+target,key,body,()->{
+            var row=user(target,true);
+            if(next.equals("USER")&&"ADMIN".equals(row.get("role"))&&"ACTIVE".equals(row.get("account_status"))&&db.queryForObject("SELECT COUNT(*) FROM users WHERE role='ADMIN' AND account_status='ACTIVE'",Long.class)<=1)throw new ApiException(409,"必须保留一名启用的管理员");
+            db.update("UPDATE users SET role=?,auth_version=auth_version+1 WHERE user_id=?",next,target);
+            db.update("UPDATE auth_sessions SET revoked_at=COALESCE(revoked_at,?) WHERE user_id=?",stamp(now()),target);
+            db.update("INSERT INTO admin_audit_log(operator_id,object_type,object_id,action_name,reason,before_data,after_data,created_at) VALUES(?,'USER',?,'ROLE_CHANGE',?,?,?,?)",
+                    identity.id(),Long.toString(target),reason,encode(Map.of("role",row.get("role"))),encode(Map.of("role",next)),stamp(now()));
+            return view(user(target,false),true);
+        });
+    }
     public Object status(Identity identity,long target,JsonNode body,String key) {
         fields(body,"account_status","reason");String next=text(body,"account_status",1,10,false),reason=text(body,"reason",1,500,true);
         if(!Set.of("ACTIVE","DISABLED").contains(next)) throw new ApiException(400,"账号状态无效","account_status");
@@ -309,5 +327,17 @@ public class AccountService {
             db.queryForObject("SELECT guard_id FROM auth_admin_guard WHERE guard_id=1 FOR UPDATE",Integer.class);
             actor(identity,true);return action.get();
         });
+    }
+    public Object memberMutation(Identity identity,String scope,String key,Object signature,Supplier<Object> action) {
+        final String canonical;
+        try {canonical=json.writer().with(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS).writeValueAsString(json.convertValue(signature,Object.class));}
+        catch(Exception ex){throw new IllegalArgumentException("Invalid action signature",ex);}
+        return idempotent("member:"+identity.id()+":"+scope,key,digest(canonical),()->{
+            db.queryForObject("SELECT guard_id FROM auth_admin_guard WHERE guard_id=1 FOR UPDATE",Integer.class);
+            actor(identity,false);return action.get();
+        });
+    }
+    public Object sessionTransaction(Identity identity,Supplier<Object> action) {
+        return tx.execute(status->{actor(identity,false);return action.get();});
     }
 }
