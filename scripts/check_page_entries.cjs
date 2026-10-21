@@ -59,6 +59,7 @@ const local = JSON.parse(
     "/admin/modules/categories",
     "/admin/modules/audit",
     "/admin/modules/verifications",
+    "/admin/modules/reports",
     "/modules/B",
     ...adminEntries.map(([, code]) => "/admin/modules/" + code),
     ...userEntries.map(([, code]) => "/modules/" + code),
@@ -89,6 +90,7 @@ const local = JSON.parse(
             products: "商品信息管理",
             permissions: "权限管理",
             tasks: "悬赏任务管理",
+            orders: "订单管理",
           }[code] || name + "还在开发",
         exact: true,
       })
@@ -97,7 +99,7 @@ const local = JSON.parse(
       page.url().endsWith("/admin/modules/" + code),
       "admin " +
         name +
-        (["content", "products", "permissions", "tasks"].includes(code)
+        (["content", "products", "permissions", "tasks", "orders"].includes(code)
           ? " functional page reachable"
           : code === "analytics"
             ? " mock page reachable"

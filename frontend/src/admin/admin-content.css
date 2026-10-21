@@ -8,6 +8,18 @@
   margin-bottom: 16px;
   flex-wrap: wrap;
 }
+.trade-tabs {
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.trade-message-evidence {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 16px;
+  margin: 18px 0;
+  background: #f6f8fc;
+  border: 1px solid #e0e5ed;
+}
 .admin-file-preview header {
   display: flex;
   align-items: center;

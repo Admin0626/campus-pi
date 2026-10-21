@@ -157,7 +157,7 @@ public class BusinessFileService {
                 if(actor!=null&&(actor.id()==number(value,"buyer_id")||actor.id()==number(value,"seller_id")))return new Access(false,false,"本人订单售后");
                 if(policy.has(actor,"ORDERS"))return new Access(false,true,"售后工单 "+object);
             }else if(type.equals("MESSAGE")) {
-                var message=one("SELECT * FROM t_private_msg WHERE msg_id=? AND content_type='图片' AND content=?",object,ref);
+                var message=one("SELECT m.* FROM t_private_msg m JOIN t_chat_session s ON s.session_id=m.session_id AND s.sender_id=LEAST(m.sender_id,m.receiver_id) AND s.receiver_id=GREATEST(m.sender_id,m.receiver_id) WHERE m.msg_id=? AND m.content_type='图片' AND m.content=?",object,ref);
                 if(message==null||number(message,"sender_id")!=owner)continue;
                 if(actor!=null&&((actor.id()==number(message,"sender_id")&&!truth(message.get("sender_deleted")))||(actor.id()==number(message,"receiver_id")&&!truth(message.get("receiver_deleted")))))return new Access(false,false,"私信图片");
                 var report=one("SELECT report_id FROM t_msg_report WHERE msg_id=? AND reporter_id IN (?,?) ORDER BY report_id DESC LIMIT 1",object,message.get("sender_id"),message.get("receiver_id"));

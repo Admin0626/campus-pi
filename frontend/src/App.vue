@@ -9,6 +9,7 @@ import AnalyticsPage from "./analytics/AnalyticsPage.vue";
 import AdminContentPanel from "./admin/AdminContentPanel.vue";
 import AdminSecurityPanel from "./admin/AdminSecurityPanel.vue";
 import AdminTaskPanel from "./admin/AdminTaskPanel.vue";
+import AdminTradePanel from "./admin/AdminTradePanel.vue";
 import ReportGlyph from "./analytics/ReportGlyph.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
 
@@ -81,6 +82,7 @@ const pendingName = computed(
       "/admin/modules/categories": "分类管理",
       "/admin/modules/audit": "操作日志",
       "/admin/modules/verifications": "认证审核",
+      "/admin/modules/reports": "举报处理",
     })[path.value] ||
     (path.value === "/modules/B" ? "实名与校园认证" : "") ||
     adminMenu.find((m) => m[1] === path.value)?.[0] ||
@@ -115,6 +117,8 @@ const isAdminContent = computed(
       "/admin/modules/verifications",
       "/admin/modules/permissions",
       "/admin/modules/tasks",
+      "/admin/modules/orders",
+      "/admin/modules/reports",
     ].includes(path.value),
 );
 function clear() {
@@ -695,6 +699,12 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
         </div>
         <AnalyticsPage v-if="path === '/admin/modules/analytics'" />
         <AdminTaskPanel v-else-if="path === '/admin/modules/tasks'" />
+        <AdminTradePanel
+          v-else-if="
+            ['/admin/modules/orders', '/admin/modules/reports'].includes(path)
+          "
+          :module="path.split('/').at(-1)"
+        />
         <AdminSecurityPanel
           v-else-if="
             [

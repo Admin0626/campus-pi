@@ -304,6 +304,12 @@ const dashboardCards = computed(() =>
       <div class="admin-inline-actions">
         <button
           v-if="view === 'dashboard'"
+          @click="emit('navigate', '/admin/modules/reports')"
+        >
+          举报处理
+        </button>
+        <button
+          v-if="view === 'dashboard'"
           @click="emit('navigate', '/admin/modules/verifications')"
         >
           认证审核

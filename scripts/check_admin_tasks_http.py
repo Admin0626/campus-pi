@@ -15,7 +15,7 @@ with db.cursor() as cur:
  cur.execute("SET time_zone='+00:00'")
 out=ROOT/'.local/auth-dev/admin-tasks';out.mkdir(parents=True,exist_ok=True)
 report=out/('cash-http-acceptance.json' if args.cash_only else 'http-acceptance.json');report.write_text('{"status":"RUNNING"}')
-checks=[];finished=False;people={};files={};tag=secrets.token_hex(4)
+checks=[];finished=False;people={};files={};tag=secrets.token_hex(4);counter_key='ORDER:'+datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d')
 def check(value,name):
  checks.append({'name':name,'passed':bool(value)})
  if not value:raise AssertionError(name)
@@ -142,7 +142,7 @@ try:
   check(sorted(s for s,_ in results)==[200,409],'Concurrent approvals choose exactly one applicant')
   check(sql('SELECT COUNT(*) FROM user_orders WHERE reward_task_id=%s',(competing,))==1 and sql("SELECT COUNT(*) FROM task_applications WHERE reward_task_id=%s AND application_status='已通过'",(competing,))==1 and sql("SELECT COUNT(*) FROM task_applications WHERE reward_task_id=%s AND application_status='已驳回'",(competing,))==1,'Assignment creates one order and rejects other pending applicants atomically')
   key=secrets.token_hex(16);status,r=assign(first,key=key);check(status==200 and r['data']['application']['application_status']=='已通过' and r['data']['order_id']==r['data']['task']['order_id'],'Assignment result follows its contract')
-  order=r['data']['order_id'];check(len(order)==19 and order.startswith('ORDER') and order[5:].isdigit(),'Durable counter generates a valid order identifier')
+  order=r['data']['order_id'];check(len(order)==19 and order.startswith('ORDER'+datetime.datetime.now(datetime.timezone.utc).strftime('%y%m%d')) and order[11:].isdigit(),'Durable counter generates UTC date plus eight-digit sequence')
   check(assign(first,key=key)[1]['data']['order_id']==order and sql('SELECT COUNT(*) FROM user_orders WHERE reward_task_id=%s',(pending,))==1,'Assignment retry reuses its original order')
   public=call('/tasks/'+pending)[1]['data'];check(public['taker'] is None and public['order_id'] is None,'Public task DTO hides current taker and order')
   check(call('/tasks/'+pending,token=people[taker]['token'])[1]['data']['order_id']==order,'Actual taker can read their order relation')
@@ -179,11 +179,11 @@ try:
    check(sql('SELECT COUNT(*) FROM auth_idempotency WHERE request_key=%s',(key,))==0,'Failed acceptance does not persist success replay')
   finally:sql('DROP TRIGGER IF EXISTS `'+trigger+'`')
   check(review(p,key=key,reason=abort)[0]==200 and sql('SELECT COUNT(*) FROM task_settlement WHERE reward_task_id=%s',(rollback,))==1,'Same failed request key safely succeeds once dependency is restored')
-  assignment_rollback=task(owner,'assignment-rollback');publication(assignment_rollback);application=app(assignment_rollback,taker);counter_before=sql("SELECT counter_value FROM business_number_sequences WHERE number_type='ORDER'");trigger='task_assign_abort_'+tag
+  assignment_rollback=task(owner,'assignment-rollback');publication(assignment_rollback);application=app(assignment_rollback,taker);counter_before=sql("SELECT counter_value FROM business_number_sequences WHERE number_type=%s",(counter_key,));trigger='task_assign_abort_'+tag
   try:
    sql("CREATE TRIGGER `"+trigger+"` BEFORE INSERT ON task_audit_log FOR EACH ROW BEGIN IF NEW.reason='"+abort+"' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='synthetic assignment audit failure'; END IF; END")
    check(action('/admin/task-applications/'+application+'/review',reason=abort)[0]==503,'Assignment audit dependency failure is surfaced')
-   check(state(assignment_rollback)=='待接取' and sql('SELECT application_status FROM task_applications WHERE application_id=%s',(application,))=='待审核' and sql('SELECT COUNT(*) FROM user_orders WHERE reward_task_id=%s',(assignment_rollback,))==0 and sql("SELECT counter_value FROM business_number_sequences WHERE number_type='ORDER'")==counter_before,'Assignment failure rolls back applicant, order, task and number counter')
+   check(state(assignment_rollback)=='待接取' and sql('SELECT application_status FROM task_applications WHERE application_id=%s',(application,))=='待审核' and sql('SELECT COUNT(*) FROM user_orders WHERE reward_task_id=%s',(assignment_rollback,))==0 and sql("SELECT counter_value FROM business_number_sequences WHERE number_type=%s",(counter_key,))==counter_before,'Assignment failure rolls back applicant, order, task and number counter')
   finally:sql('DROP TRIGGER IF EXISTS `'+trigger+'`')
   insufficient=prepared(owner,taker,'insufficient-frozen');p=proof(insufficient,taker);frozen_before=balance(owner)[1]
   try:
@@ -193,11 +193,11 @@ try:
   lost=prepared(owner,taker,'response-loss');p=proof(lost,taker);key=secrets.token_hex(16)
   status,r=response_loss('/admin/task-proofs/'+p+'/review',{'decision':'通过','reason':'丢失响应恢复'},key)
   check(status==200 and r['data']['task_status']=='已完成' and sql('SELECT COUNT(*) FROM task_settlement WHERE reward_task_id=%s',(lost,))==1,'Discarded response body recovers original result without another payment')
-  exhausted=task(owner,'counter');check(publication(exhausted)[0]==200,'Approve counter-boundary fixture');application=app(exhausted,taker);counter=sql("SELECT counter_value FROM business_number_sequences WHERE number_type='ORDER'")
+  exhausted=task(owner,'counter');check(publication(exhausted)[0]==200,'Approve counter-boundary fixture');application=app(exhausted,taker);counter=sql("SELECT counter_value FROM business_number_sequences WHERE number_type=%s",(counter_key,))
   try:
-   sql("UPDATE business_number_sequences SET counter_value=99999999999999 WHERE number_type='ORDER'")
+   sql("UPDATE business_number_sequences SET counter_value=99999999 WHERE number_type=%s",(counter_key,))
    check(assign(application)[0]==503 and state(exhausted)=='待接取' and sql('SELECT COUNT(*) FROM user_orders WHERE reward_task_id=%s',(exhausted,))==0,'Order number exhaustion rolls back assignment instead of generating an invalid ID')
-  finally:sql("UPDATE business_number_sequences SET counter_value=%s WHERE number_type='ORDER'",(counter,))
+  finally:sql("UPDATE business_number_sequences SET counter_value=%s WHERE number_type=%s",(counter,counter_key))
   check(call('/admin/tasks/'+exhausted+'/publication-review','POST',{'decision':'通过','reason':'x','operator_id':owner},admin,secrets.token_hex(16))[0]==400,'Client cannot supply actor identity')
   check(publication(exhausted,reason=' ')[0]==400,'Task mutation requires a nonblank reason')
   # Fresh, untouched fixtures for the browser. Only IDs and display labels are written.
