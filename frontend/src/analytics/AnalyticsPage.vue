@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, onMounted, onBeforeUnmount, nextTick } from "vue";
 import Icon from "../Icon.vue";
+import ReportGlyph from "./ReportGlyph.vue";
 import TrendChart from "./TrendChart.vue";
 import CategoryChart from "./CategoryChart.vue";
 import BarChart from "./BarChart.vue";
@@ -162,27 +163,8 @@ onBeforeUnmount(() => {
           {{ { week: "本周", month: "本月", quarter: "本季度" }[key] }}
         </button>
       </div>
-      <div class="analytics-toolbar-actions">
-        <span class="analytics-mock-badge"><i></i>JSON 模拟数据</span
-        ><button
-          class="analytics-refresh"
-          aria-label="刷新模拟数据"
-          :disabled="loading"
-          @click="reload"
-        >
-          <Icon name="rotate" :size="15" />{{
-            loading ? "读取中" : "刷新"
-          }}</button
-        ><button
-          class="analytics-export"
-          :disabled="!data || !!error || loading"
-          @click="download"
-        >
-          <Icon name="upload" :size="15" />导出CSV
-        </button>
-      </div>
     </div>
-    <div class="analytics-source-line">
+    <div class="analytics-source-line sr-only">
       <span>仅用于页面演示，不代表真实运营统计</span
       ><span v-if="view"
         >{{ view.start }} 至 {{ view.end }} · 截至 {{ data.asOf }}</span
@@ -233,7 +215,15 @@ onBeforeUnmount(() => {
             </p>
           </div>
           <span class="analytics-metric-icon"
-            ><Icon :name="item.icon" :size="26"
+            ><ReportGlyph
+              :name="
+                {
+                  totalUsers: 'metricUsers',
+                  activeUsers: 'metricActive',
+                  tradeAmountFen: 'metricTrade',
+                  contentTotal: 'metricContent',
+                }[item.id]
+              "
           /></span>
         </article>
       </div>
@@ -241,7 +231,7 @@ onBeforeUnmount(() => {
         <header class="analytics-card-header">
           <div>
             <h2>用户增长趋势</h2>
-            <p>
+            <p class="sr-only">
               {{
                 range === "year"
                   ? "近12个月 · 新增用户与月活跃用户（按月去重）"
@@ -277,13 +267,35 @@ onBeforeUnmount(() => {
         <section class="analytics-card analytics-pie-card">
           <header class="analytics-card-header">
             <h2>交易类型占比</h2>
-            <button
-              class="analytics-card-more"
-              aria-label="查看交易分类明细"
-              @click="openDetails"
-            >
-              ⋮
-            </button>
+            <details class="analytics-tools-menu">
+              <summary aria-label="数据分析操作">⋮</summary>
+              <div class="analytics-menu-panel">
+                <div class="analytics-toolbar-actions">
+                  <span class="analytics-mock-badge"><i></i>JSON 模拟数据</span
+                  ><button
+                    class="analytics-refresh"
+                    aria-label="刷新模拟数据"
+                    :disabled="loading"
+                    @click="reload"
+                  >
+                    <Icon name="rotate" :size="15" />{{
+                      loading ? "读取中" : "刷新"
+                    }}</button
+                  ><button
+                    class="analytics-export"
+                    :disabled="!data || !!error || loading"
+                    @click="download"
+                  >
+                    <Icon name="upload" :size="15" />导出CSV
+                  </button>
+                </div>
+                <p>仅用于页面演示，不代表真实运营统计</p>
+                <p v-if="view">{{ view.start }} 至 {{ view.end }}</p>
+                <button @click="openDetails" aria-label="查看交易分类明细">
+                  查看模拟数据明细
+                </button>
+              </div>
+            </details>
           </header>
           <CategoryChart
             :items="view.trade"
@@ -304,10 +316,9 @@ onBeforeUnmount(() => {
             </button>
           </header>
           <BarChart :items="monthly" />
-          <p class="analytics-chart-footnote">
-            近6个月 · {{ Number(data.asOf.slice(5, 7)) }}月截至{{
-              Number(data.asOf.slice(8))
-            }}日
+          <p class="analytics-chart-footnote sr-only">
+            图表月份 {{ monthly[0]?.date }} 至
+            {{ monthly.at(-1)?.date }}，数据为JSON模拟
           </p>
         </section>
         <section class="analytics-card analytics-content-card">
@@ -328,7 +339,7 @@ onBeforeUnmount(() => {
           />
         </section>
       </div>
-      <div class="analytics-bottom-notes">
+      <div class="analytics-bottom-notes" v-if="showDetails">
         <p>
           活跃用户按区间去重；本月与本季度在季度首月可能覆盖相同日期。同期区间：{{
             view.comparisonStart

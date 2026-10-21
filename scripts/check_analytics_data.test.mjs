@@ -75,10 +75,10 @@ test("week/month/year switch uses 7 daily, 30 daily and 12 monthly observations"
     );
   }
 });
-test("monthly bars reconcile to six calendar months including the partial final month", () => {
+test("monthly bars reconcile to the explicit Word-reference historic window", () => {
   const bars = monthlyTrades(fixture);
   assert.equal(bars.length, 6);
-  assert.equal(bars.at(-1).date, fixture.asOf.slice(0, 7));
+  assert.equal(bars.at(-1).date, fixture.chartMonths.at(-1));
   for (const bar of bars)
     assert.equal(
       bar.value,

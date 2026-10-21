@@ -6,7 +6,7 @@ Vue 3 + Vite。npm ci后用npm run dev启动，npm run build构建。Node.js至�
 
 /api由Vite开发代理转发到真实后端。完整构建时Maven会将dist打包为Spring Boot静态资源；也可由正式反向代理提供同源访问。当前令牌仅保存在标签页内存，刷新重新登录，未决定长期持久化方式。
 
-手机端另见 miniprogram 原生接入样例，不以Web手机排版代替微信小程序。真实AppID、域名和真机验收仍待确认。接口验证与启动方法见仓库 docs/development/账号功能本地启动.md。
+手机端另见 miniprogram 原生接入样例，不以Web手机排版代替微信小程序。AppID已配置，接口域名和真机验收仍待确认。接口验证与启动方法见仓库 docs/development/账号功能本地启动.md。
 
 # 前端启动
 ```bash
@@ -21,3 +21,5 @@ npm run build
 原图归属、对应页面及尚未实现的原图控件见 [Word界面对照](../docs/verification/Word界面对照.md)。后台独立登录入口为 `/admin/login`。
 
 数据分析页面已按原Word图5-36提供JSON模拟版本，入口 `/admin/modules/analytics`。模拟数据位于 `public/mock/analytics.json`；加载、周期切换、图表交互、明细和CSV导出说明见 [数据可视化页面](../docs/development/数据可视化页面.md)。真实统计后端尚未接入。
+
+数据分析默认界面已按原图坐标严格重排；刷新、导出与模拟数据说明从原图三点菜单进入，默认不增加工具栏。

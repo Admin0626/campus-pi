@@ -11,20 +11,27 @@ watch(
   () => props.range,
   () => (active.value = null),
 );
+const reportLayout = ref(innerWidth > 650);
 const series = computed(() => SERIES.filter((s) => visible.value[s.id]));
-const axis = computed(() =>
-  niceAxis(
-    Math.max(
-      0,
-      ...props.points.flatMap((p) => series.value.map((s) => p[s.id])),
-    ),
-  ),
-);
+const axis = computed(() => {
+  const max = Math.max(
+    0,
+    ...props.points.flatMap((p) => series.value.map((s) => p[s.id])),
+  );
+  if (!reportLayout.value) return niceAxis(max);
+  const step = max <= 2000 ? 200 : 2000;
+  const upper = Math.max(step, Math.ceil(max / step) * step);
+  return {
+    max: upper,
+    ticks: Array.from({ length: upper / step + 1 }, (_, i) => i * step),
+  };
+});
 const canvas = ref(null),
   canvasWidth = ref(1050);
 let observer, resizeFrame;
 onMounted(() => {
   const measure = () => {
+    reportLayout.value = innerWidth > 650;
     canvasWidth.value = Math.max(
       240,
       Math.round(canvas.value?.clientWidth || 1050),
@@ -32,6 +39,7 @@ onMounted(() => {
   };
   measure();
   observer = new ResizeObserver(([entry]) => {
+    reportLayout.value = innerWidth > 650;
     const width = Math.max(240, Math.round(entry.contentRect.width));
     if (width === canvasWidth.value) return;
     cancelAnimationFrame(resizeFrame);
@@ -46,16 +54,23 @@ onBeforeUnmount(() => {
   cancelAnimationFrame(resizeFrame);
 });
 const chartHeight = computed(() =>
-  canvasWidth.value < 600
-    ? 235
-    : Math.min(330, Math.round(canvasWidth.value * 0.28)),
+  reportLayout.value ? (canvasWidth.value * 155) / 536 : 235,
 );
-const plot = computed(() => ({
-  left: canvasWidth.value < 600 ? 45 : 60,
-  top: 18,
-  width: canvasWidth.value - (canvasWidth.value < 600 ? 65 : 80),
-  height: chartHeight.value - 50,
-}));
+const plot = computed(() =>
+  reportLayout.value
+    ? {
+        left: (canvasWidth.value * 30) / 536,
+        top: 0,
+        width: (canvasWidth.value * 488) / 536,
+        height: (canvasWidth.value * 149) / 536,
+      }
+    : {
+        left: 45,
+        top: 18,
+        width: canvasWidth.value - 65,
+        height: chartHeight.value - 50,
+      },
+);
 const x = (index) =>
   plot.value.left +
   (index * plot.value.width) / Math.max(1, props.points.length - 1);

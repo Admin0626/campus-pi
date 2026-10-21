@@ -3,8 +3,8 @@ const DAY = 86400000;
 export const MOCK_URL = "/mock/analytics.json";
 export const PERIOD_KEYS = ["week", "month", "quarter"];
 export const SERIES = [
-  { id: "newUsers", name: "新增用户", color: "#6253ff" },
-  { id: "activeUsers", name: "活跃用户", color: "#00a57b" },
+  { id: "newUsers", name: "新增用户", color: "#6366f1" },
+  { id: "activeUsers", name: "活跃用户", color: "#059669" },
 ];
 export const countFormat = (value) =>
   new Intl.NumberFormat("zh-CN").format(value);
@@ -119,6 +119,17 @@ export function validateAnalytics(data) {
         );
       }),
   );
+  if (data.chartMonths)
+    ensure(
+      Array.isArray(data.chartMonths) &&
+        data.chartMonths.length === 6 &&
+        new Set(data.chartMonths).size === 6 &&
+        data.chartMonths.every(
+          (m, i) =>
+            Object.hasOwn(data.monthlyActiveUsers, m) &&
+            (!i || m > data.chartMonths[i - 1]),
+        ),
+    );
   const distinctWindows = new Map();
   for (const key of PERIOD_KEYS) {
     const period = data.periods?.[key];
@@ -246,17 +257,16 @@ export function trendView(data, range) {
   );
 }
 export function monthlyTrades(data) {
-  return Object.keys(data.monthlyActiveUsers)
-    .sort()
-    .slice(-6)
-    .map((month) => ({
-      date: month,
-      label: Number(month.slice(5)) + "月",
-      value: sum(
-        data.daily.filter((r) => r.date.startsWith(month)),
-        sumTrade,
-      ),
-    }));
+  return (
+    data.chartMonths || Object.keys(data.monthlyActiveUsers).sort().slice(-6)
+  ).map((month) => ({
+    date: month,
+    label: Number(month.slice(5)) + "月",
+    value: sum(
+      data.daily.filter((r) => r.date.startsWith(month)),
+      sumTrade,
+    ),
+  }));
 }
 export function percent(value, total) {
   return total > 0 ? ((value / total) * 100).toFixed(1) + "%" : "0.0%";

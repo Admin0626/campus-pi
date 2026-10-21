@@ -6,6 +6,7 @@ import WordUserManagement from "./WordUserManagement.vue";
 import WordMobileMe from "./WordMobileMe.vue";
 import WordMobileHome from "./WordMobileHome.vue";
 import AnalyticsPage from "./analytics/AnalyticsPage.vue";
+import ReportGlyph from "./analytics/ReportGlyph.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
 
 const path = ref(location.pathname),
@@ -488,7 +489,10 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
   >
     <aside class="sidebar" :class="{ 'dark-sidebar': admin }">
       <div class="brand">
-        <Icon v-if="admin" name="campus" :size="25" />
+        <ReportGlyph
+          v-if="path === '/admin/modules/analytics'"
+          name="campus"
+        /><Icon v-else-if="admin" name="campus" :size="25" />
         <span v-else class="brand-symbol">Π</span>
         <div v-if="admin">校园信息管理平台</div>
         <div v-else>
@@ -516,7 +520,12 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
               }"
               @click="navigate(item[1])"
             >
-              <Icon :name="item[2]" :size="19" />{{ item[0] }}
+              <ReportGlyph
+                v-if="path === '/admin/modules/analytics'"
+                :name="
+                  item[1] === '/admin/modules/settings' ? 'settings' : item[2]
+                "
+              /><Icon v-else :name="item[2]" :size="19" />{{ item[0] }}
             </button></template
           ></template
         ><template v-else
@@ -545,7 +554,7 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
       </nav>
       <div class="sidebar-bottom">
         <button
-          v-if="admin"
+          v-if="admin && path !== '/admin/modules/analytics'"
           class="word-admin-user-return"
           @click="navigate('/home')"
         >
@@ -554,8 +563,14 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
         <button class="sidebar-user" @click="logout">
           <span class="avatar tiny blue">{{ initials(user) }}</span
           ><span
-            ><strong>{{ user.username }}</strong
-            ><small>退出登录</small></span
+            ><strong :title="user.username">{{
+              path === "/admin/modules/analytics" ? "系统管理员" : user.username
+            }}</strong
+            ><small>{{
+              path === "/admin/modules/analytics"
+                ? user.email || user.username
+                : "退出登录"
+            }}</small></span
           ><Icon name="exit" :size="18" />
         </button>
       </div>
@@ -571,13 +586,20 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
           <div class="word-global-search">
             <Icon name="search" /><input
               aria-label="全局搜索（开发中）"
-              placeholder="全局搜索...."
+              :placeholder="
+                path === '/admin/modules/analytics' ? '搜索…' : '全局搜索....'
+              "
               readonly
               @click="notify('全局搜索还在开发')"
             />
           </div>
           <button aria-label="通知（开发中）" @click="notify('通知还在开发')">
-            <Icon name="bell" /></button
+            <Icon name="bell" /><span
+              v-if="path === '/admin/modules/analytics'"
+              class="report-notice-count"
+              title="原图示意数，通知功能开发中"
+              >5</span
+            ></button
           ><button aria-label="帮助（开发中）" @click="notify('帮助还在开发')">
             ●<span>?</span>
           </button>
@@ -619,7 +641,14 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
             返回列表
           </button>
         </div>
-        <div v-if="notice" class="alert info-alert" role="status">
+        <div
+          v-if="
+            notice &&
+            !(path === '/admin/modules/analytics' && notice === '登录成功')
+          "
+          class="alert info-alert"
+          role="status"
+        >
           {{ notice
           }}<button
             class="icon-button"

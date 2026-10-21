@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "MOCK",
-  "description": "全部为固定JSON合成数据，不代表实际校园用户、交易或运营统计。",
+  "description": "全部为固定JSON合成数据，图表形状及部分样例数值对照原Word图5-36，不代表真实校园用户或运营统计。",
   "asOf": "2026-10-21",
   "timeZone": "Asia/Shanghai",
   "currency": "CNY",
@@ -11,54 +11,54 @@
     {
       "id": "electronics",
       "name": "电子产品",
-      "color": "#5141ed"
+      "color": "#4f46e5"
     },
     {
       "id": "books",
       "name": "图书教材",
-      "color": "#009b72"
+      "color": "#059669"
     },
     {
       "id": "clothing",
       "name": "服饰鞋包",
-      "color": "#ff7815"
+      "color": "#f97316"
     },
     {
       "id": "daily",
       "name": "生活用品",
-      "color": "#8c58f5"
+      "color": "#8b5cf6"
     },
     {
       "id": "other",
       "name": "其他",
-      "color": "#6b7280"
+      "color": "#64748b"
     }
   ],
   "contentCategories": [
     {
       "id": "market",
       "name": "二手交易",
-      "color": "#5141ed"
+      "color": "#4f46e5"
     },
     {
       "id": "tasks",
       "name": "悬赏任务",
-      "color": "#009b72"
+      "color": "#059669"
     },
     {
       "id": "study",
       "name": "学习交流",
-      "color": "#ff7815"
+      "color": "#f97316"
     },
     {
       "id": "campus",
       "name": "校园资讯",
-      "color": "#8c58f5"
+      "color": "#8b5cf6"
     },
     {
       "id": "other",
       "name": "其他",
-      "color": "#93d7c2"
+      "color": "#64748b"
     }
   ],
   "periods": {
@@ -69,7 +69,7 @@
       "comparisonStart": "2026-10-12",
       "comparisonEnd": "2026-10-14",
       "activeUsers": 4272,
-      "comparisonActiveUsers": 4245
+      "comparisonActiveUsers": 3708
     },
     "month": {
       "label": "本月",
@@ -1269,11 +1269,11 @@
       "newUsers": 28,
       "activeUsers": 1043,
       "tradeAmountFen": {
-        "electronics": 561858,
-        "books": 401458,
-        "clothing": 254746,
-        "daily": 255889,
-        "other": 120449
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 39,
@@ -1288,11 +1288,11 @@
       "newUsers": 19,
       "activeUsers": 1123,
       "tradeAmountFen": {
-        "electronics": 506133,
-        "books": 367293,
-        "clothing": 227268,
-        "daily": 244557,
-        "other": 90149
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 46,
@@ -1307,11 +1307,11 @@
       "newUsers": 29,
       "activeUsers": 1100,
       "tradeAmountFen": {
-        "electronics": 546171,
-        "books": 387752,
-        "clothing": 221392,
-        "daily": 245747,
-        "other": 114838
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 47,
@@ -1326,11 +1326,11 @@
       "newUsers": 29,
       "activeUsers": 1157,
       "tradeAmountFen": {
-        "electronics": 557674,
-        "books": 359447,
-        "clothing": 224849,
-        "daily": 252461,
-        "other": 95969
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 32,
@@ -1345,11 +1345,11 @@
       "newUsers": 20,
       "activeUsers": 982,
       "tradeAmountFen": {
-        "electronics": 529414,
-        "books": 379043,
-        "clothing": 219899,
-        "daily": 227123,
-        "other": 91121
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 36,
@@ -1364,11 +1364,11 @@
       "newUsers": 30,
       "activeUsers": 1053,
       "tradeAmountFen": {
-        "electronics": 459545,
-        "books": 291827,
-        "clothing": 199066,
-        "daily": 202371,
-        "other": 84091
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 36,
@@ -1383,11 +1383,11 @@
       "newUsers": 25,
       "activeUsers": 1092,
       "tradeAmountFen": {
-        "electronics": 434295,
-        "books": 314787,
-        "clothing": 182977,
-        "daily": 205804,
-        "other": 91037
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 43,
@@ -1402,11 +1402,11 @@
       "newUsers": 33,
       "activeUsers": 1047,
       "tradeAmountFen": {
-        "electronics": 467338,
-        "books": 312304,
-        "clothing": 218486,
-        "daily": 221665,
-        "other": 98707
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 39,
@@ -1421,11 +1421,11 @@
       "newUsers": 20,
       "activeUsers": 956,
       "tradeAmountFen": {
-        "electronics": 552425,
-        "books": 377961,
-        "clothing": 231512,
-        "daily": 244897,
-        "other": 115305
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 43,
@@ -1440,11 +1440,11 @@
       "newUsers": 32,
       "activeUsers": 1095,
       "tradeAmountFen": {
-        "electronics": 634702,
-        "books": 457726,
-        "clothing": 274115,
-        "daily": 309181,
-        "other": 122376
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 36,
@@ -1459,11 +1459,11 @@
       "newUsers": 27,
       "activeUsers": 1075,
       "tradeAmountFen": {
-        "electronics": 706218,
-        "books": 456882,
-        "clothing": 301510,
-        "daily": 325192,
-        "other": 131798
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 44,
@@ -1478,11 +1478,11 @@
       "newUsers": 38,
       "activeUsers": 877,
       "tradeAmountFen": {
-        "electronics": 495096,
-        "books": 343764,
-        "clothing": 224858,
-        "daily": 221979,
-        "other": 88903
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 40,
@@ -1497,11 +1497,11 @@
       "newUsers": 20,
       "activeUsers": 996,
       "tradeAmountFen": {
-        "electronics": 491333,
-        "books": 340733,
-        "clothing": 211052,
-        "daily": 213294,
-        "other": 102488
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 38,
@@ -1516,11 +1516,11 @@
       "newUsers": 30,
       "activeUsers": 1047,
       "tradeAmountFen": {
-        "electronics": 582689,
-        "books": 390361,
-        "clothing": 255286,
-        "daily": 253873,
-        "other": 107291
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 35,
@@ -1535,11 +1535,11 @@
       "newUsers": 38,
       "activeUsers": 1085,
       "tradeAmountFen": {
-        "electronics": 487390,
-        "books": 342944,
-        "clothing": 212082,
-        "daily": 236203,
-        "other": 95281
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 34,
@@ -1554,11 +1554,11 @@
       "newUsers": 23,
       "activeUsers": 1028,
       "tradeAmountFen": {
-        "electronics": 528710,
-        "books": 346114,
-        "clothing": 225139,
-        "daily": 237727,
-        "other": 94910
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 34,
@@ -1573,11 +1573,11 @@
       "newUsers": 27,
       "activeUsers": 1282,
       "tradeAmountFen": {
-        "electronics": 676707,
-        "books": 453337,
-        "clothing": 314525,
-        "daily": 326718,
-        "other": 141513
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 42,
@@ -1592,11 +1592,11 @@
       "newUsers": 33,
       "activeUsers": 1095,
       "tradeAmountFen": {
-        "electronics": 581021,
-        "books": 408895,
-        "clothing": 241791,
-        "daily": 261736,
-        "other": 104757
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 46,
@@ -1611,11 +1611,11 @@
       "newUsers": 29,
       "activeUsers": 1154,
       "tradeAmountFen": {
-        "electronics": 470808,
-        "books": 343974,
-        "clothing": 207205,
-        "daily": 214060,
-        "other": 91253
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 33,
@@ -1630,11 +1630,11 @@
       "newUsers": 28,
       "activeUsers": 990,
       "tradeAmountFen": {
-        "electronics": 462331,
-        "books": 303323,
-        "clothing": 191974,
-        "daily": 223135,
-        "other": 98037
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 47,
@@ -1649,11 +1649,11 @@
       "newUsers": 20,
       "activeUsers": 1158,
       "tradeAmountFen": {
-        "electronics": 517003,
-        "books": 361911,
-        "clothing": 208388,
-        "daily": 223681,
-        "other": 98717
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 42,
@@ -1668,11 +1668,11 @@
       "newUsers": 36,
       "activeUsers": 906,
       "tradeAmountFen": {
-        "electronics": 562338,
-        "books": 380284,
-        "clothing": 253098,
-        "daily": 258127,
-        "other": 108053
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 47,
@@ -1687,11 +1687,11 @@
       "newUsers": 29,
       "activeUsers": 1010,
       "tradeAmountFen": {
-        "electronics": 579428,
-        "books": 407166,
-        "clothing": 264794,
-        "daily": 285438,
-        "other": 109074
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 39,
@@ -1706,11 +1706,11 @@
       "newUsers": 18,
       "activeUsers": 985,
       "tradeAmountFen": {
-        "electronics": 623960,
-        "books": 406691,
-        "clothing": 251418,
-        "daily": 290178,
-        "other": 112753
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 43,
@@ -1725,11 +1725,11 @@
       "newUsers": 21,
       "activeUsers": 1144,
       "tradeAmountFen": {
-        "electronics": 547126,
-        "books": 393672,
-        "clothing": 227076,
-        "daily": 264733,
-        "other": 108693
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 39,
@@ -1744,11 +1744,11 @@
       "newUsers": 32,
       "activeUsers": 1156,
       "tradeAmountFen": {
-        "electronics": 457506,
-        "books": 306677,
-        "clothing": 204570,
-        "daily": 217401,
-        "other": 96246
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 41,
@@ -1763,11 +1763,11 @@
       "newUsers": 23,
       "activeUsers": 947,
       "tradeAmountFen": {
-        "electronics": 510487,
-        "books": 357799,
-        "clothing": 229315,
-        "daily": 230764,
-        "other": 106235
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 46,
@@ -1782,11 +1782,11 @@
       "newUsers": 24,
       "activeUsers": 1030,
       "tradeAmountFen": {
-        "electronics": 532724,
-        "books": 383564,
-        "clothing": 234180,
-        "daily": 235234,
-        "other": 110098
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 46,
@@ -1801,11 +1801,11 @@
       "newUsers": 26,
       "activeUsers": 1111,
       "tradeAmountFen": {
-        "electronics": 477413,
-        "books": 306416,
-        "clothing": 205202,
-        "daily": 206977,
-        "other": 88492
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 47,
@@ -1820,11 +1820,11 @@
       "newUsers": 28,
       "activeUsers": 1098,
       "tradeAmountFen": {
-        "electronics": 529311,
-        "books": 381283,
-        "clothing": 222723,
-        "daily": 246564,
-        "other": 108419
+        "electronics": 50806,
+        "books": 36290,
+        "clothing": 29032,
+        "daily": 21774,
+        "other": 7259
       },
       "contentCounts": {
         "market": 44,
@@ -1839,11 +1839,11 @@
       "newUsers": 21,
       "activeUsers": 986,
       "tradeAmountFen": {
-        "electronics": 689643,
-        "books": 460164,
-        "clothing": 314137,
-        "daily": 313535,
-        "other": 116521
+        "electronics": 50810,
+        "books": 36292,
+        "clothing": 29034,
+        "daily": 21776,
+        "other": 7258
       },
       "contentCounts": {
         "market": 48,
@@ -1858,11 +1858,11 @@
       "newUsers": 25,
       "activeUsers": 1079,
       "tradeAmountFen": {
-        "electronics": 578767,
-        "books": 417284,
-        "clothing": 243720,
-        "daily": 262887,
-        "other": 101342
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 44,
@@ -1877,11 +1877,11 @@
       "newUsers": 25,
       "activeUsers": 1121,
       "tradeAmountFen": {
-        "electronics": 559914,
-        "books": 367575,
-        "clothing": 224259,
-        "daily": 251793,
-        "other": 88459
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 47,
@@ -1896,11 +1896,11 @@
       "newUsers": 32,
       "activeUsers": 941,
       "tradeAmountFen": {
-        "electronics": 571087,
-        "books": 395961,
-        "clothing": 261216,
-        "daily": 266932,
-        "other": 116804
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 36,
@@ -1915,11 +1915,11 @@
       "newUsers": 38,
       "activeUsers": 912,
       "tradeAmountFen": {
-        "electronics": 477797,
-        "books": 341836,
-        "clothing": 203911,
-        "daily": 220078,
-        "other": 95178
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 40,
@@ -1934,11 +1934,11 @@
       "newUsers": 27,
       "activeUsers": 1155,
       "tradeAmountFen": {
-        "electronics": 496247,
-        "books": 346140,
-        "clothing": 225422,
-        "daily": 217806,
-        "other": 81485
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 48,
@@ -1953,11 +1953,11 @@
       "newUsers": 31,
       "activeUsers": 1087,
       "tradeAmountFen": {
-        "electronics": 486313,
-        "books": 322570,
-        "clothing": 205342,
-        "daily": 212598,
-        "other": 78377
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 45,
@@ -1972,11 +1972,11 @@
       "newUsers": 22,
       "activeUsers": 1027,
       "tradeAmountFen": {
-        "electronics": 620786,
-        "books": 405316,
-        "clothing": 247519,
-        "daily": 278074,
-        "other": 127705
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 34,
@@ -1991,11 +1991,11 @@
       "newUsers": 27,
       "activeUsers": 1285,
       "tradeAmountFen": {
-        "electronics": 635038,
-        "books": 405979,
-        "clothing": 255765,
-        "daily": 300382,
-        "other": 120936
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 35,
@@ -2010,11 +2010,11 @@
       "newUsers": 33,
       "activeUsers": 1064,
       "tradeAmountFen": {
-        "electronics": 603406,
-        "books": 393145,
-        "clothing": 261738,
-        "daily": 266972,
-        "other": 106039
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 44,
@@ -2029,11 +2029,11 @@
       "newUsers": 27,
       "activeUsers": 1062,
       "tradeAmountFen": {
-        "electronics": 486349,
-        "books": 355116,
-        "clothing": 221640,
-        "daily": 229001,
-        "other": 98694
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 37,
@@ -2048,11 +2048,11 @@
       "newUsers": 39,
       "activeUsers": 951,
       "tradeAmountFen": {
-        "electronics": 542004,
-        "books": 380985,
-        "clothing": 237563,
-        "daily": 255070,
-        "other": 115678
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 37,
@@ -2067,11 +2067,11 @@
       "newUsers": 39,
       "activeUsers": 1023,
       "tradeAmountFen": {
-        "electronics": 535113,
-        "books": 359991,
-        "clothing": 243443,
-        "daily": 240551,
-        "other": 95302
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 34,
@@ -2086,11 +2086,11 @@
       "newUsers": 26,
       "activeUsers": 903,
       "tradeAmountFen": {
-        "electronics": 507742,
-        "books": 369087,
-        "clothing": 210492,
-        "daily": 229285,
-        "other": 86794
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 45,
@@ -2105,11 +2105,11 @@
       "newUsers": 25,
       "activeUsers": 1231,
       "tradeAmountFen": {
-        "electronics": 659842,
-        "books": 426962,
-        "clothing": 274853,
-        "daily": 278398,
-        "other": 104045
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 39,
@@ -2124,11 +2124,11 @@
       "newUsers": 18,
       "activeUsers": 1236,
       "tradeAmountFen": {
-        "electronics": 669228,
-        "books": 431959,
-        "clothing": 278292,
-        "daily": 292239,
-        "other": 120582
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 44,
@@ -2143,11 +2143,11 @@
       "newUsers": 38,
       "activeUsers": 889,
       "tradeAmountFen": {
-        "electronics": 460998,
-        "books": 323283,
-        "clothing": 207617,
-        "daily": 208837,
-        "other": 95565
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 46,
@@ -2162,11 +2162,11 @@
       "newUsers": 27,
       "activeUsers": 891,
       "tradeAmountFen": {
-        "electronics": 488985,
-        "books": 336782,
-        "clothing": 217791,
-        "daily": 236428,
-        "other": 92614
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 44,
@@ -2181,11 +2181,11 @@
       "newUsers": 27,
       "activeUsers": 1001,
       "tradeAmountFen": {
-        "electronics": 503325,
-        "books": 358030,
-        "clothing": 229194,
-        "daily": 223016,
-        "other": 101635
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 47,
@@ -2200,11 +2200,11 @@
       "newUsers": 37,
       "activeUsers": 932,
       "tradeAmountFen": {
-        "electronics": 565683,
-        "books": 379746,
-        "clothing": 230937,
-        "daily": 245704,
-        "other": 95830
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 41,
@@ -2219,11 +2219,11 @@
       "newUsers": 23,
       "activeUsers": 1147,
       "tradeAmountFen": {
-        "electronics": 486365,
-        "books": 322328,
-        "clothing": 207507,
-        "daily": 229973,
-        "other": 85927
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 38,
@@ -2238,11 +2238,11 @@
       "newUsers": 28,
       "activeUsers": 1225,
       "tradeAmountFen": {
-        "electronics": 592721,
-        "books": 397253,
-        "clothing": 250273,
-        "daily": 268093,
-        "other": 119560
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 40,
@@ -2257,11 +2257,11 @@
       "newUsers": 18,
       "activeUsers": 1233,
       "tradeAmountFen": {
-        "electronics": 601751,
-        "books": 398702,
-        "clothing": 248218,
-        "daily": 286278,
-        "other": 103051
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 46,
@@ -2276,11 +2276,11 @@
       "newUsers": 27,
       "activeUsers": 1077,
       "tradeAmountFen": {
-        "electronics": 561401,
-        "books": 371241,
-        "clothing": 242786,
-        "daily": 252001,
-        "other": 110471
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 46,
@@ -2295,11 +2295,11 @@
       "newUsers": 21,
       "activeUsers": 963,
       "tradeAmountFen": {
-        "electronics": 539690,
-        "books": 358565,
-        "clothing": 233031,
-        "daily": 238008,
-        "other": 93406
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 36,
@@ -2314,11 +2314,11 @@
       "newUsers": 31,
       "activeUsers": 957,
       "tradeAmountFen": {
-        "electronics": 480340,
-        "books": 328669,
-        "clothing": 189846,
-        "daily": 217448,
-        "other": 84097
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 40,
@@ -2333,11 +2333,11 @@
       "newUsers": 37,
       "activeUsers": 1081,
       "tradeAmountFen": {
-        "electronics": 501073,
-        "books": 328518,
-        "clothing": 218466,
-        "daily": 235993,
-        "other": 92850
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 46,
@@ -2352,11 +2352,11 @@
       "newUsers": 27,
       "activeUsers": 1101,
       "tradeAmountFen": {
-        "electronics": 540346,
-        "books": 381052,
-        "clothing": 230217,
-        "daily": 241728,
-        "other": 112657
+        "electronics": 65000,
+        "books": 46428,
+        "clothing": 37143,
+        "daily": 27857,
+        "other": 9286
       },
       "contentCounts": {
         "market": 36,
@@ -2371,11 +2371,11 @@
       "newUsers": 20,
       "activeUsers": 1113,
       "tradeAmountFen": {
-        "electronics": 685978,
-        "books": 457070,
-        "clothing": 295790,
-        "daily": 303387,
-        "other": 130675
+        "electronics": 65003,
+        "books": 46430,
+        "clothing": 37144,
+        "daily": 27858,
+        "other": 9287
       },
       "contentCounts": {
         "market": 43,
@@ -2390,11 +2390,11 @@
       "newUsers": 29,
       "activeUsers": 1569,
       "tradeAmountFen": {
-        "electronics": 754345,
-        "books": 526748,
-        "clothing": 307534,
-        "daily": 327427,
-        "other": 137846
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 51,
@@ -2409,11 +2409,11 @@
       "newUsers": 32,
       "activeUsers": 1195,
       "tradeAmountFen": {
-        "electronics": 671388,
-        "books": 479633,
-        "clothing": 304546,
-        "daily": 295911,
-        "other": 128722
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 52,
@@ -2428,11 +2428,11 @@
       "newUsers": 39,
       "activeUsers": 1345,
       "tradeAmountFen": {
-        "electronics": 727906,
-        "books": 520732,
-        "clothing": 300761,
-        "daily": 338179,
-        "other": 134422
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 60,
@@ -2447,11 +2447,11 @@
       "newUsers": 37,
       "activeUsers": 1167,
       "tradeAmountFen": {
-        "electronics": 633282,
-        "books": 421547,
-        "clothing": 280695,
-        "daily": 281907,
-        "other": 112269
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 59,
@@ -2466,11 +2466,11 @@
       "newUsers": 27,
       "activeUsers": 1217,
       "tradeAmountFen": {
-        "electronics": 623136,
-        "books": 421310,
-        "clothing": 260096,
-        "daily": 285954,
-        "other": 121104
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 58,
@@ -2485,11 +2485,11 @@
       "newUsers": 44,
       "activeUsers": 1187,
       "tradeAmountFen": {
-        "electronics": 609676,
-        "books": 411056,
-        "clothing": 278243,
-        "daily": 304176,
-        "other": 123049
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 56,
@@ -2504,11 +2504,11 @@
       "newUsers": 41,
       "activeUsers": 1458,
       "tradeAmountFen": {
-        "electronics": 847603,
-        "books": 611955,
-        "clothing": 384359,
-        "daily": 394435,
-        "other": 169048
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 61,
@@ -2523,11 +2523,11 @@
       "newUsers": 25,
       "activeUsers": 1464,
       "tradeAmountFen": {
-        "electronics": 913519,
-        "books": 601011,
-        "clothing": 382985,
-        "daily": 408438,
-        "other": 175747
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 62,
@@ -2542,11 +2542,11 @@
       "newUsers": 48,
       "activeUsers": 1313,
       "tradeAmountFen": {
-        "electronics": 596550,
-        "books": 413806,
-        "clothing": 261669,
-        "daily": 291034,
-        "other": 119641
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 52,
@@ -2561,11 +2561,11 @@
       "newUsers": 38,
       "activeUsers": 1501,
       "tradeAmountFen": {
-        "electronics": 648271,
-        "books": 418099,
-        "clothing": 271469,
-        "daily": 275592,
-        "other": 127769
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 62,
@@ -2580,11 +2580,11 @@
       "newUsers": 43,
       "activeUsers": 1419,
       "tradeAmountFen": {
-        "electronics": 685875,
-        "books": 430610,
-        "clothing": 276729,
-        "daily": 305286,
-        "other": 119600
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 62,
@@ -2599,11 +2599,11 @@
       "newUsers": 30,
       "activeUsers": 1172,
       "tradeAmountFen": {
-        "electronics": 635125,
-        "books": 439291,
-        "clothing": 277886,
-        "daily": 289310,
-        "other": 132888
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 57,
@@ -2618,11 +2618,11 @@
       "newUsers": 43,
       "activeUsers": 1404,
       "tradeAmountFen": {
-        "electronics": 789328,
-        "books": 538486,
-        "clothing": 322697,
-        "daily": 346563,
-        "other": 135126
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 53,
@@ -2637,11 +2637,11 @@
       "newUsers": 26,
       "activeUsers": 1641,
       "tradeAmountFen": {
-        "electronics": 979224,
-        "books": 642136,
-        "clothing": 391650,
-        "daily": 421440,
-        "other": 189450
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 54,
@@ -2656,11 +2656,11 @@
       "newUsers": 44,
       "activeUsers": 1405,
       "tradeAmountFen": {
-        "electronics": 738725,
-        "books": 496603,
-        "clothing": 298937,
-        "daily": 341389,
-        "other": 145446
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 45,
@@ -2675,11 +2675,11 @@
       "newUsers": 50,
       "activeUsers": 1207,
       "tradeAmountFen": {
-        "electronics": 792717,
-        "books": 544241,
-        "clothing": 334250,
-        "daily": 353514,
-        "other": 138578
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 56,
@@ -2694,11 +2694,11 @@
       "newUsers": 33,
       "activeUsers": 1240,
       "tradeAmountFen": {
-        "electronics": 782313,
-        "books": 509726,
-        "clothing": 317847,
-        "daily": 355891,
-        "other": 133523
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 58,
@@ -2713,11 +2713,11 @@
       "newUsers": 50,
       "activeUsers": 1304,
       "tradeAmountFen": {
-        "electronics": 781698,
-        "books": 551082,
-        "clothing": 332952,
-        "daily": 348284,
-        "other": 141784
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 44,
@@ -2732,11 +2732,11 @@
       "newUsers": 33,
       "activeUsers": 1457,
       "tradeAmountFen": {
-        "electronics": 710080,
-        "books": 483951,
-        "clothing": 307618,
-        "daily": 306127,
-        "other": 111824
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 55,
@@ -2751,11 +2751,11 @@
       "newUsers": 47,
       "activeUsers": 1372,
       "tradeAmountFen": {
-        "electronics": 768086,
-        "books": 505443,
-        "clothing": 340232,
-        "daily": 346617,
-        "other": 157922
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 60,
@@ -2770,11 +2770,11 @@
       "newUsers": 36,
       "activeUsers": 1425,
       "tradeAmountFen": {
-        "electronics": 750488,
-        "books": 524975,
-        "clothing": 321064,
-        "daily": 366431,
-        "other": 149242
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 62,
@@ -2789,11 +2789,11 @@
       "newUsers": 37,
       "activeUsers": 1696,
       "tradeAmountFen": {
-        "electronics": 909665,
-        "books": 610209,
-        "clothing": 389937,
-        "daily": 418002,
-        "other": 143287
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 45,
@@ -2808,11 +2808,11 @@
       "newUsers": 33,
       "activeUsers": 1255,
       "tradeAmountFen": {
-        "electronics": 715335,
-        "books": 473254,
-        "clothing": 318636,
-        "daily": 323187,
-        "other": 123188
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 45,
@@ -2827,11 +2827,11 @@
       "newUsers": 42,
       "activeUsers": 1279,
       "tradeAmountFen": {
-        "electronics": 624212,
-        "books": 433284,
-        "clothing": 275886,
-        "daily": 280269,
-        "other": 129549
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 49,
@@ -2846,11 +2846,11 @@
       "newUsers": 39,
       "activeUsers": 1330,
       "tradeAmountFen": {
-        "electronics": 648840,
-        "books": 433713,
-        "clothing": 279618,
-        "daily": 300140,
-        "other": 109689
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 53,
@@ -2865,11 +2865,11 @@
       "newUsers": 43,
       "activeUsers": 1460,
       "tradeAmountFen": {
-        "electronics": 798675,
-        "books": 550281,
-        "clothing": 333620,
-        "daily": 354573,
-        "other": 153051
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 60,
@@ -2884,11 +2884,11 @@
       "newUsers": 48,
       "activeUsers": 1508,
       "tradeAmountFen": {
-        "electronics": 732710,
-        "books": 500454,
-        "clothing": 294531,
-        "daily": 337132,
-        "other": 127673
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 58,
@@ -2903,11 +2903,11 @@
       "newUsers": 39,
       "activeUsers": 1660,
       "tradeAmountFen": {
-        "electronics": 763995,
-        "books": 493311,
-        "clothing": 321233,
-        "daily": 358317,
-        "other": 135944
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 60,
@@ -2922,11 +2922,11 @@
       "newUsers": 46,
       "activeUsers": 1490,
       "tradeAmountFen": {
-        "electronics": 810369,
-        "books": 601304,
-        "clothing": 369621,
-        "daily": 391087,
-        "other": 177919
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 53,
@@ -2941,11 +2941,11 @@
       "newUsers": 37,
       "activeUsers": 1523,
       "tradeAmountFen": {
-        "electronics": 789317,
-        "books": 553061,
-        "clothing": 315999,
-        "daily": 352870,
-        "other": 126553
+        "electronics": 76774,
+        "books": 54838,
+        "clothing": 43871,
+        "daily": 32903,
+        "other": 10968
       },
       "contentCounts": {
         "market": 51,
@@ -2960,11 +2960,11 @@
       "newUsers": 45,
       "activeUsers": 1227,
       "tradeAmountFen": {
-        "electronics": 735130,
-        "books": 513542,
-        "clothing": 323806,
-        "daily": 330438,
-        "other": 128384
+        "electronics": 76783,
+        "books": 54845,
+        "clothing": 43876,
+        "daily": 32907,
+        "other": 10969
       },
       "contentCounts": {
         "market": 53,
@@ -2979,11 +2979,11 @@
       "newUsers": 35,
       "activeUsers": 1420,
       "tradeAmountFen": {
-        "electronics": 691901,
-        "books": 463987,
-        "clothing": 296090,
-        "daily": 327487,
-        "other": 132735
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 60,
@@ -2998,11 +2998,11 @@
       "newUsers": 31,
       "activeUsers": 1244,
       "tradeAmountFen": {
-        "electronics": 665468,
-        "books": 450440,
-        "clothing": 289894,
-        "daily": 291997,
-        "other": 112201
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 59,
@@ -3017,11 +3017,11 @@
       "newUsers": 38,
       "activeUsers": 1433,
       "tradeAmountFen": {
-        "electronics": 743396,
-        "books": 517097,
-        "clothing": 300396,
-        "daily": 329663,
-        "other": 136848
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 58,
@@ -3036,11 +3036,11 @@
       "newUsers": 26,
       "activeUsers": 1452,
       "tradeAmountFen": {
-        "electronics": 970216,
-        "books": 616557,
-        "clothing": 427901,
-        "daily": 457178,
-        "other": 157348
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 65,
@@ -3055,11 +3055,11 @@
       "newUsers": 35,
       "activeUsers": 1676,
       "tradeAmountFen": {
-        "electronics": 939830,
-        "books": 656561,
-        "clothing": 399016,
-        "daily": 420681,
-        "other": 194212
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 55,
@@ -3074,11 +3074,11 @@
       "newUsers": 34,
       "activeUsers": 1441,
       "tradeAmountFen": {
-        "electronics": 629805,
-        "books": 458878,
-        "clothing": 285299,
-        "daily": 280694,
-        "other": 111224
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 58,
@@ -3093,11 +3093,11 @@
       "newUsers": 44,
       "activeUsers": 1527,
       "tradeAmountFen": {
-        "electronics": 655072,
-        "books": 457772,
-        "clothing": 295971,
-        "daily": 298203,
-        "other": 125182
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 59,
@@ -3112,11 +3112,11 @@
       "newUsers": 51,
       "activeUsers": 1533,
       "tradeAmountFen": {
-        "electronics": 745656,
-        "books": 535924,
-        "clothing": 319929,
-        "daily": 331723,
-        "other": 155268
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 54,
@@ -3131,11 +3131,11 @@
       "newUsers": 52,
       "activeUsers": 1453,
       "tradeAmountFen": {
-        "electronics": 738207,
-        "books": 486548,
-        "clothing": 329896,
-        "daily": 356692,
-        "other": 135857
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 49,
@@ -3150,11 +3150,11 @@
       "newUsers": 33,
       "activeUsers": 1329,
       "tradeAmountFen": {
-        "electronics": 711536,
-        "books": 461187,
-        "clothing": 285406,
-        "daily": 325217,
-        "other": 143254
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 63,
@@ -3169,11 +3169,11 @@
       "newUsers": 29,
       "activeUsers": 1731,
       "tradeAmountFen": {
-        "electronics": 931876,
-        "books": 593470,
-        "clothing": 371505,
-        "daily": 414124,
-        "other": 149325
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 62,
@@ -3188,11 +3188,11 @@
       "newUsers": 37,
       "activeUsers": 1611,
       "tradeAmountFen": {
-        "electronics": 910833,
-        "books": 598052,
-        "clothing": 375989,
-        "daily": 407579,
-        "other": 156347
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 63,
@@ -3207,11 +3207,11 @@
       "newUsers": 36,
       "activeUsers": 1242,
       "tradeAmountFen": {
-        "electronics": 816192,
-        "books": 536306,
-        "clothing": 350177,
-        "daily": 366720,
-        "other": 142405
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 60,
@@ -3226,11 +3226,11 @@
       "newUsers": 40,
       "activeUsers": 1217,
       "tradeAmountFen": {
-        "electronics": 789542,
-        "books": 526249,
-        "clothing": 346596,
-        "daily": 367852,
-        "other": 127361
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 65,
@@ -3245,11 +3245,11 @@
       "newUsers": 44,
       "activeUsers": 1415,
       "tradeAmountFen": {
-        "electronics": 721616,
-        "books": 502524,
-        "clothing": 318504,
-        "daily": 327375,
-        "other": 118781
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 46,
@@ -3264,11 +3264,11 @@
       "newUsers": 52,
       "activeUsers": 1290,
       "tradeAmountFen": {
-        "electronics": 792093,
-        "books": 565341,
-        "clothing": 331391,
-        "daily": 371076,
-        "other": 131599
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 56,
@@ -3283,11 +3283,11 @@
       "newUsers": 33,
       "activeUsers": 1384,
       "tradeAmountFen": {
-        "electronics": 652600,
-        "books": 450065,
-        "clothing": 262134,
-        "daily": 286576,
-        "other": 106725
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 62,
@@ -3302,11 +3302,11 @@
       "newUsers": 42,
       "activeUsers": 1407,
       "tradeAmountFen": {
-        "electronics": 958598,
-        "books": 613731,
-        "clothing": 380022,
-        "daily": 428869,
-        "other": 154380
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 60,
@@ -3321,11 +3321,11 @@
       "newUsers": 30,
       "activeUsers": 1686,
       "tradeAmountFen": {
-        "electronics": 845319,
-        "books": 581930,
-        "clothing": 371230,
-        "daily": 403528,
-        "other": 182793
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 58,
@@ -3340,11 +3340,11 @@
       "newUsers": 39,
       "activeUsers": 1476,
       "tradeAmountFen": {
-        "electronics": 723325,
-        "books": 465882,
-        "clothing": 285078,
-        "daily": 325030,
-        "other": 131785
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 55,
@@ -3359,11 +3359,11 @@
       "newUsers": 34,
       "activeUsers": 1460,
       "tradeAmountFen": {
-        "electronics": 808380,
-        "books": 548356,
-        "clothing": 336106,
-        "daily": 369502,
-        "other": 166356
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 54,
@@ -3378,11 +3378,11 @@
       "newUsers": 33,
       "activeUsers": 1267,
       "tradeAmountFen": {
-        "electronics": 707199,
-        "books": 463448,
-        "clothing": 303414,
-        "daily": 316239,
-        "other": 121800
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 54,
@@ -3397,11 +3397,11 @@
       "newUsers": 43,
       "activeUsers": 1511,
       "tradeAmountFen": {
-        "electronics": 670250,
-        "books": 450605,
-        "clothing": 282476,
-        "daily": 285673,
-        "other": 136196
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 54,
@@ -3416,11 +3416,11 @@
       "newUsers": 49,
       "activeUsers": 1407,
       "tradeAmountFen": {
-        "electronics": 722652,
-        "books": 490580,
-        "clothing": 303451,
-        "daily": 336929,
-        "other": 152988
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 48,
@@ -3435,11 +3435,11 @@
       "newUsers": 41,
       "activeUsers": 1479,
       "tradeAmountFen": {
-        "electronics": 922707,
-        "books": 626445,
-        "clothing": 402286,
-        "daily": 403149,
-        "other": 162213
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 64,
@@ -3454,11 +3454,11 @@
       "newUsers": 29,
       "activeUsers": 1671,
       "tradeAmountFen": {
-        "electronics": 782977,
-        "books": 534905,
-        "clothing": 363715,
-        "daily": 352894,
-        "other": 158909
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 62,
@@ -3473,11 +3473,11 @@
       "newUsers": 53,
       "activeUsers": 1524,
       "tradeAmountFen": {
-        "electronics": 736636,
-        "books": 533925,
-        "clothing": 328513,
-        "daily": 325587,
-        "other": 127039
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 66,
@@ -3492,11 +3492,11 @@
       "newUsers": 29,
       "activeUsers": 1445,
       "tradeAmountFen": {
-        "electronics": 789067,
-        "books": 576212,
-        "clothing": 353213,
-        "daily": 363418,
-        "other": 171190
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 48,
@@ -3511,11 +3511,11 @@
       "newUsers": 38,
       "activeUsers": 1241,
       "tradeAmountFen": {
-        "electronics": 822414,
-        "books": 541354,
-        "clothing": 352256,
-        "daily": 374003,
-        "other": 166673
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 66,
@@ -3530,11 +3530,11 @@
       "newUsers": 48,
       "activeUsers": 1467,
       "tradeAmountFen": {
-        "electronics": 668077,
-        "books": 441518,
-        "clothing": 269689,
-        "daily": 314397,
-        "other": 141919
+        "electronics": 84000,
+        "books": 60000,
+        "clothing": 48000,
+        "daily": 36000,
+        "other": 12000
       },
       "contentCounts": {
         "market": 54,
@@ -3549,11 +3549,11 @@
       "newUsers": 53,
       "activeUsers": 1220,
       "tradeAmountFen": {
-        "electronics": 651391,
-        "books": 438094,
-        "clothing": 287344,
-        "daily": 323862,
-        "other": 134909
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 57,
@@ -3568,11 +3568,11 @@
       "newUsers": 37,
       "activeUsers": 1373,
       "tradeAmountFen": {
-        "electronics": 975959,
-        "books": 653648,
-        "clothing": 383420,
-        "daily": 449470,
-        "other": 183803
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 62,
@@ -3587,11 +3587,11 @@
       "newUsers": 30,
       "activeUsers": 1658,
       "tradeAmountFen": {
-        "electronics": 848065,
-        "books": 581263,
-        "clothing": 368195,
-        "daily": 374122,
-        "other": 145055
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 56,
@@ -3606,11 +3606,11 @@
       "newUsers": 44,
       "activeUsers": 1302,
       "tradeAmountFen": {
-        "electronics": 769653,
-        "books": 537431,
-        "clothing": 347206,
-        "daily": 342840,
-        "other": 138970
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 63,
@@ -3625,11 +3625,11 @@
       "newUsers": 51,
       "activeUsers": 1505,
       "tradeAmountFen": {
-        "electronics": 801022,
-        "books": 502438,
-        "clothing": 310103,
-        "daily": 349623,
-        "other": 130814
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 58,
@@ -3644,11 +3644,11 @@
       "newUsers": 30,
       "activeUsers": 1246,
       "tradeAmountFen": {
-        "electronics": 652959,
-        "books": 461230,
-        "clothing": 272501,
-        "daily": 293057,
-        "other": 121953
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 49,
@@ -3663,11 +3663,11 @@
       "newUsers": 49,
       "activeUsers": 1415,
       "tradeAmountFen": {
-        "electronics": 831974,
-        "books": 570402,
-        "clothing": 348645,
-        "daily": 378043,
-        "other": 148536
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 49,
@@ -3682,11 +3682,11 @@
       "newUsers": 50,
       "activeUsers": 1468,
       "tradeAmountFen": {
-        "electronics": 794714,
-        "books": 527886,
-        "clothing": 345966,
-        "daily": 342148,
-        "other": 142686
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 58,
@@ -3701,11 +3701,11 @@
       "newUsers": 35,
       "activeUsers": 1398,
       "tradeAmountFen": {
-        "electronics": 839761,
-        "books": 537394,
-        "clothing": 340492,
-        "daily": 387467,
-        "other": 172086
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 59,
@@ -3720,11 +3720,11 @@
       "newUsers": 32,
       "activeUsers": 1758,
       "tradeAmountFen": {
-        "electronics": 919984,
-        "books": 635088,
-        "clothing": 388656,
-        "daily": 435957,
-        "other": 186815
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 58,
@@ -3739,11 +3739,11 @@
       "newUsers": 42,
       "activeUsers": 1402,
       "tradeAmountFen": {
-        "electronics": 779037,
-        "books": 564481,
-        "clothing": 353761,
-        "daily": 353446,
-        "other": 155975
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 54,
@@ -3758,11 +3758,11 @@
       "newUsers": 40,
       "activeUsers": 1328,
       "tradeAmountFen": {
-        "electronics": 648244,
-        "books": 448009,
-        "clothing": 276466,
-        "daily": 299618,
-        "other": 125363
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 60,
@@ -3777,11 +3777,11 @@
       "newUsers": 30,
       "activeUsers": 1394,
       "tradeAmountFen": {
-        "electronics": 809265,
-        "books": 529061,
-        "clothing": 347317,
-        "daily": 376522,
-        "other": 134635
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 53,
@@ -3796,11 +3796,11 @@
       "newUsers": 41,
       "activeUsers": 1580,
       "tradeAmountFen": {
-        "electronics": 684535,
-        "books": 497440,
-        "clothing": 290100,
-        "daily": 334782,
-        "other": 125843
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 55,
@@ -3815,11 +3815,11 @@
       "newUsers": 30,
       "activeUsers": 1398,
       "tradeAmountFen": {
-        "electronics": 671052,
-        "books": 447612,
-        "clothing": 275524,
-        "daily": 312029,
-        "other": 109783
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 60,
@@ -3834,11 +3834,11 @@
       "newUsers": 31,
       "activeUsers": 1712,
       "tradeAmountFen": {
-        "electronics": 869098,
-        "books": 594949,
-        "clothing": 374209,
-        "daily": 400831,
-        "other": 142813
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 64,
@@ -3853,11 +3853,11 @@
       "newUsers": 41,
       "activeUsers": 1685,
       "tradeAmountFen": {
-        "electronics": 806637,
-        "books": 536115,
-        "clothing": 363624,
-        "daily": 365663,
-        "other": 159061
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 50,
@@ -3872,11 +3872,11 @@
       "newUsers": 33,
       "activeUsers": 1398,
       "tradeAmountFen": {
-        "electronics": 873718,
-        "books": 558758,
-        "clothing": 343347,
-        "daily": 386910,
-        "other": 136467
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 61,
@@ -3891,11 +3891,11 @@
       "newUsers": 38,
       "activeUsers": 1337,
       "tradeAmountFen": {
-        "electronics": 707465,
-        "books": 474297,
-        "clothing": 310217,
-        "daily": 310193,
-        "other": 139928
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 67,
@@ -3910,11 +3910,11 @@
       "newUsers": 45,
       "activeUsers": 1431,
       "tradeAmountFen": {
-        "electronics": 785773,
-        "books": 558915,
-        "clothing": 328901,
-        "daily": 358056,
-        "other": 157155
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 53,
@@ -3929,11 +3929,11 @@
       "newUsers": 32,
       "activeUsers": 1348,
       "tradeAmountFen": {
-        "electronics": 830820,
-        "books": 558362,
-        "clothing": 348588,
-        "daily": 374010,
-        "other": 150520
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 61,
@@ -3948,11 +3948,11 @@
       "newUsers": 42,
       "activeUsers": 1394,
       "tradeAmountFen": {
-        "electronics": 717328,
-        "books": 479375,
-        "clothing": 314838,
-        "daily": 318489,
-        "other": 119470
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 54,
@@ -3967,11 +3967,11 @@
       "newUsers": 33,
       "activeUsers": 1687,
       "tradeAmountFen": {
-        "electronics": 908051,
-        "books": 628379,
-        "clothing": 356318,
-        "daily": 390842,
-        "other": 141210
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 54,
@@ -3986,11 +3986,11 @@
       "newUsers": 35,
       "activeUsers": 1548,
       "tradeAmountFen": {
-        "electronics": 839453,
-        "books": 597457,
-        "clothing": 358560,
-        "daily": 396689,
-        "other": 170741
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 55,
@@ -4005,11 +4005,11 @@
       "newUsers": 30,
       "activeUsers": 1248,
       "tradeAmountFen": {
-        "electronics": 728623,
-        "books": 472841,
-        "clothing": 315627,
-        "daily": 324405,
-        "other": 130704
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 67,
@@ -4024,11 +4024,11 @@
       "newUsers": 46,
       "activeUsers": 1458,
       "tradeAmountFen": {
-        "electronics": 682599,
-        "books": 459610,
-        "clothing": 295867,
-        "daily": 302800,
-        "other": 150024
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 65,
@@ -4043,11 +4043,11 @@
       "newUsers": 54,
       "activeUsers": 1425,
       "tradeAmountFen": {
-        "electronics": 801543,
-        "books": 520916,
-        "clothing": 351039,
-        "daily": 344829,
-        "other": 149273
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 51,
@@ -4062,11 +4062,11 @@
       "newUsers": 37,
       "activeUsers": 1237,
       "tradeAmountFen": {
-        "electronics": 766908,
-        "books": 527524,
-        "clothing": 301070,
-        "daily": 341781,
-        "other": 151217
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 61,
@@ -4081,11 +4081,11 @@
       "newUsers": 33,
       "activeUsers": 1523,
       "tradeAmountFen": {
-        "electronics": 762060,
-        "books": 524541,
-        "clothing": 333442,
-        "daily": 342383,
-        "other": 126274
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 66,
@@ -4100,11 +4100,11 @@
       "newUsers": 41,
       "activeUsers": 1779,
       "tradeAmountFen": {
-        "electronics": 828437,
-        "books": 565132,
-        "clothing": 345665,
-        "daily": 391535,
-        "other": 151731
+        "electronics": 101613,
+        "books": 72580,
+        "clothing": 58064,
+        "daily": 43548,
+        "other": 14517
       },
       "contentCounts": {
         "market": 52,
@@ -4119,11 +4119,11 @@
       "newUsers": 40,
       "activeUsers": 1684,
       "tradeAmountFen": {
-        "electronics": 1003227,
-        "books": 668345,
-        "clothing": 400572,
-        "daily": 423591,
-        "other": 174765
+        "electronics": 101619,
+        "books": 72585,
+        "clothing": 58068,
+        "daily": 43551,
+        "other": 14517
       },
       "contentCounts": {
         "market": 57,
@@ -4138,11 +4138,11 @@
       "newUsers": 29,
       "activeUsers": 1084,
       "tradeAmountFen": {
-        "electronics": 528323,
-        "books": 381884,
-        "clothing": 219947,
-        "daily": 254182,
-        "other": 92564
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 51,
@@ -4157,11 +4157,11 @@
       "newUsers": 39,
       "activeUsers": 1066,
       "tradeAmountFen": {
-        "electronics": 563724,
-        "books": 373443,
-        "clothing": 242966,
-        "daily": 264179,
-        "other": 109588
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 48,
@@ -4176,11 +4176,11 @@
       "newUsers": 38,
       "activeUsers": 1249,
       "tradeAmountFen": {
-        "electronics": 636472,
-        "books": 461558,
-        "clothing": 268000,
-        "daily": 284545,
-        "other": 125025
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 40,
@@ -4195,11 +4195,11 @@
       "newUsers": 27,
       "activeUsers": 1202,
       "tradeAmountFen": {
-        "electronics": 625632,
-        "books": 427067,
-        "clothing": 263244,
-        "daily": 282099,
-        "other": 99358
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 45,
@@ -4214,11 +4214,11 @@
       "newUsers": 30,
       "activeUsers": 1074,
       "tradeAmountFen": {
-        "electronics": 575521,
-        "books": 369574,
-        "clothing": 239270,
-        "daily": 259471,
-        "other": 99164
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 44,
@@ -4233,11 +4233,11 @@
       "newUsers": 36,
       "activeUsers": 1138,
       "tradeAmountFen": {
-        "electronics": 713875,
-        "books": 491608,
-        "clothing": 310889,
-        "daily": 325121,
-        "other": 129707
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 49,
@@ -4252,11 +4252,11 @@
       "newUsers": 24,
       "activeUsers": 1222,
       "tradeAmountFen": {
-        "electronics": 746383,
-        "books": 547632,
-        "clothing": 338135,
-        "daily": 361793,
-        "other": 131157
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 44,
@@ -4271,11 +4271,11 @@
       "newUsers": 26,
       "activeUsers": 1233,
       "tradeAmountFen": {
-        "electronics": 661679,
-        "books": 451292,
-        "clothing": 306464,
-        "daily": 313932,
-        "other": 110333
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 52,
@@ -4290,11 +4290,11 @@
       "newUsers": 41,
       "activeUsers": 1087,
       "tradeAmountFen": {
-        "electronics": 585657,
-        "books": 372786,
-        "clothing": 252408,
-        "daily": 241052,
-        "other": 97197
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 47,
@@ -4309,11 +4309,11 @@
       "newUsers": 29,
       "activeUsers": 1054,
       "tradeAmountFen": {
-        "electronics": 550719,
-        "books": 350442,
-        "clothing": 227229,
-        "daily": 237054,
-        "other": 112056
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 46,
@@ -4328,11 +4328,11 @@
       "newUsers": 29,
       "activeUsers": 1154,
       "tradeAmountFen": {
-        "electronics": 624692,
-        "books": 445293,
-        "clothing": 258513,
-        "daily": 267312,
-        "other": 122990
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 49,
@@ -4347,11 +4347,11 @@
       "newUsers": 37,
       "activeUsers": 1191,
       "tradeAmountFen": {
-        "electronics": 556035,
-        "books": 382390,
-        "clothing": 235774,
-        "daily": 249630,
-        "other": 111571
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 52,
@@ -4366,11 +4366,11 @@
       "newUsers": 31,
       "activeUsers": 1358,
       "tradeAmountFen": {
-        "electronics": 802611,
-        "books": 531762,
-        "clothing": 358497,
-        "daily": 349183,
-        "other": 158847
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 54,
@@ -4385,11 +4385,11 @@
       "newUsers": 32,
       "activeUsers": 1255,
       "tradeAmountFen": {
-        "electronics": 677069,
-        "books": 472335,
-        "clothing": 265022,
-        "daily": 291897,
-        "other": 123577
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 52,
@@ -4404,11 +4404,11 @@
       "newUsers": 25,
       "activeUsers": 1085,
       "tradeAmountFen": {
-        "electronics": 560992,
-        "books": 387528,
-        "clothing": 252772,
-        "daily": 256236,
-        "other": 98672
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 45,
@@ -4423,11 +4423,11 @@
       "newUsers": 27,
       "activeUsers": 1248,
       "tradeAmountFen": {
-        "electronics": 611461,
-        "books": 409278,
-        "clothing": 280917,
-        "daily": 275896,
-        "other": 118248
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 40,
@@ -4442,11 +4442,11 @@
       "newUsers": 36,
       "activeUsers": 1147,
       "tradeAmountFen": {
-        "electronics": 551195,
-        "books": 374256,
-        "clothing": 230401,
-        "daily": 249463,
-        "other": 111485
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 45,
@@ -4461,11 +4461,11 @@
       "newUsers": 40,
       "activeUsers": 1006,
       "tradeAmountFen": {
-        "electronics": 620655,
-        "books": 415556,
-        "clothing": 262845,
-        "daily": 281779,
-        "other": 126765
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 41,
@@ -4480,11 +4480,11 @@
       "newUsers": 39,
       "activeUsers": 1094,
       "tradeAmountFen": {
-        "electronics": 587543,
-        "books": 428496,
-        "clothing": 260971,
-        "daily": 282874,
-        "other": 114916
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 48,
@@ -4499,11 +4499,11 @@
       "newUsers": 24,
       "activeUsers": 1274,
       "tradeAmountFen": {
-        "electronics": 710392,
-        "books": 477620,
-        "clothing": 280957,
-        "daily": 321825,
-        "other": 115806
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 44,
@@ -4518,11 +4518,11 @@
       "newUsers": 26,
       "activeUsers": 1283,
       "tradeAmountFen": {
-        "electronics": 774029,
-        "books": 526728,
-        "clothing": 348301,
-        "daily": 369959,
-        "other": 150683
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 51,
@@ -4537,11 +4537,11 @@
       "newUsers": 42,
       "activeUsers": 1156,
       "tradeAmountFen": {
-        "electronics": 536677,
-        "books": 369711,
-        "clothing": 220801,
-        "daily": 252846,
-        "other": 109665
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 52,
@@ -4556,11 +4556,11 @@
       "newUsers": 42,
       "activeUsers": 1218,
       "tradeAmountFen": {
-        "electronics": 577325,
-        "books": 418472,
-        "clothing": 248044,
-        "daily": 256575,
-        "other": 112084
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 48,
@@ -4575,11 +4575,11 @@
       "newUsers": 26,
       "activeUsers": 1145,
       "tradeAmountFen": {
-        "electronics": 629035,
-        "books": 409506,
-        "clothing": 287480,
-        "daily": 279422,
-        "other": 115257
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 48,
@@ -4594,11 +4594,11 @@
       "newUsers": 35,
       "activeUsers": 1180,
       "tradeAmountFen": {
-        "electronics": 582497,
-        "books": 430989,
-        "clothing": 270966,
-        "daily": 284914,
-        "other": 127234
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 54,
@@ -4613,11 +4613,11 @@
       "newUsers": 33,
       "activeUsers": 1263,
       "tradeAmountFen": {
-        "electronics": 668288,
-        "books": 466436,
-        "clothing": 303243,
-        "daily": 292685,
-        "other": 125348
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 41,
@@ -4632,11 +4632,11 @@
       "newUsers": 38,
       "activeUsers": 1200,
       "tradeAmountFen": {
-        "electronics": 713303,
-        "books": 512057,
-        "clothing": 330214,
-        "daily": 324218,
-        "other": 139108
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 43,
@@ -4651,11 +4651,11 @@
       "newUsers": 28,
       "activeUsers": 1301,
       "tradeAmountFen": {
-        "electronics": 703904,
-        "books": 508908,
-        "clothing": 308163,
-        "daily": 306116,
-        "other": 149909
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 54,
@@ -4670,11 +4670,11 @@
       "newUsers": 40,
       "activeUsers": 1268,
       "tradeAmountFen": {
-        "electronics": 660261,
-        "books": 440375,
-        "clothing": 267339,
-        "daily": 282311,
-        "other": 129414
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 44,
@@ -4689,11 +4689,11 @@
       "newUsers": 42,
       "activeUsers": 1081,
       "tradeAmountFen": {
-        "electronics": 658824,
-        "books": 429364,
-        "clothing": 255100,
-        "daily": 287445,
-        "other": 133967
+        "electronics": 70000,
+        "books": 50000,
+        "clothing": 40000,
+        "daily": 30000,
+        "other": 10000
       },
       "contentCounts": {
         "market": 54,
@@ -5883,7 +5883,7 @@
     },
     {
       "date": "2026-09-01",
-      "newUsers": 58,
+      "newUsers": 2,
       "activeUsers": 1535,
       "tradeAmountFen": {
         "electronics": 815194,
@@ -5902,7 +5902,7 @@
     },
     {
       "date": "2026-09-02",
-      "newUsers": 56,
+      "newUsers": 2,
       "activeUsers": 1640,
       "tradeAmountFen": {
         "electronics": 744688,
@@ -5921,7 +5921,7 @@
     },
     {
       "date": "2026-09-03",
-      "newUsers": 36,
+      "newUsers": 2,
       "activeUsers": 1622,
       "tradeAmountFen": {
         "electronics": 726266,
@@ -5940,7 +5940,7 @@
     },
     {
       "date": "2026-09-04",
-      "newUsers": 37,
+      "newUsers": 2,
       "activeUsers": 1400,
       "tradeAmountFen": {
         "electronics": 753157,
@@ -5959,7 +5959,7 @@
     },
     {
       "date": "2026-09-05",
-      "newUsers": 47,
+      "newUsers": 2,
       "activeUsers": 1532,
       "tradeAmountFen": {
         "electronics": 996467,
@@ -5978,7 +5978,7 @@
     },
     {
       "date": "2026-09-06",
-      "newUsers": 40,
+      "newUsers": 2,
       "activeUsers": 1680,
       "tradeAmountFen": {
         "electronics": 990527,
@@ -5997,7 +5997,7 @@
     },
     {
       "date": "2026-09-07",
-      "newUsers": 46,
+      "newUsers": 2,
       "activeUsers": 1584,
       "tradeAmountFen": {
         "electronics": 813215,
@@ -6016,7 +6016,7 @@
     },
     {
       "date": "2026-09-08",
-      "newUsers": 40,
+      "newUsers": 2,
       "activeUsers": 1538,
       "tradeAmountFen": {
         "electronics": 801404,
@@ -6035,7 +6035,7 @@
     },
     {
       "date": "2026-09-09",
-      "newUsers": 57,
+      "newUsers": 2,
       "activeUsers": 1424,
       "tradeAmountFen": {
         "electronics": 833374,
@@ -6054,7 +6054,7 @@
     },
     {
       "date": "2026-09-10",
-      "newUsers": 42,
+      "newUsers": 2,
       "activeUsers": 1652,
       "tradeAmountFen": {
         "electronics": 907524,
@@ -6073,7 +6073,7 @@
     },
     {
       "date": "2026-09-11",
-      "newUsers": 50,
+      "newUsers": 2,
       "activeUsers": 1588,
       "tradeAmountFen": {
         "electronics": 843519,
@@ -6092,7 +6092,7 @@
     },
     {
       "date": "2026-09-12",
-      "newUsers": 42,
+      "newUsers": 2,
       "activeUsers": 1673,
       "tradeAmountFen": {
         "electronics": 1017522,
@@ -6111,7 +6111,7 @@
     },
     {
       "date": "2026-09-13",
-      "newUsers": 45,
+      "newUsers": 2,
       "activeUsers": 1810,
       "tradeAmountFen": {
         "electronics": 959789,
@@ -6130,7 +6130,7 @@
     },
     {
       "date": "2026-09-14",
-      "newUsers": 39,
+      "newUsers": 2,
       "activeUsers": 1520,
       "tradeAmountFen": {
         "electronics": 791582,
@@ -6149,7 +6149,7 @@
     },
     {
       "date": "2026-09-15",
-      "newUsers": 59,
+      "newUsers": 2,
       "activeUsers": 1680,
       "tradeAmountFen": {
         "electronics": 822924,
@@ -6168,7 +6168,7 @@
     },
     {
       "date": "2026-09-16",
-      "newUsers": 37,
+      "newUsers": 2,
       "activeUsers": 1636,
       "tradeAmountFen": {
         "electronics": 813476,
@@ -6187,7 +6187,7 @@
     },
     {
       "date": "2026-09-17",
-      "newUsers": 49,
+      "newUsers": 2,
       "activeUsers": 1446,
       "tradeAmountFen": {
         "electronics": 771756,
@@ -6206,7 +6206,7 @@
     },
     {
       "date": "2026-09-18",
-      "newUsers": 57,
+      "newUsers": 2,
       "activeUsers": 1587,
       "tradeAmountFen": {
         "electronics": 793691,
@@ -6225,7 +6225,7 @@
     },
     {
       "date": "2026-09-19",
-      "newUsers": 51,
+      "newUsers": 2,
       "activeUsers": 1667,
       "tradeAmountFen": {
         "electronics": 948124,
@@ -6244,7 +6244,7 @@
     },
     {
       "date": "2026-09-20",
-      "newUsers": 35,
+      "newUsers": 2,
       "activeUsers": 1868,
       "tradeAmountFen": {
         "electronics": 1031934,
@@ -6263,7 +6263,7 @@
     },
     {
       "date": "2026-09-21",
-      "newUsers": 48,
+      "newUsers": 2,
       "activeUsers": 1406,
       "tradeAmountFen": {
         "electronics": 801915,
@@ -6282,7 +6282,7 @@
     },
     {
       "date": "2026-09-22",
-      "newUsers": 55,
+      "newUsers": 2,
       "activeUsers": 1597,
       "tradeAmountFen": {
         "electronics": 784320,
@@ -6301,7 +6301,7 @@
     },
     {
       "date": "2026-09-23",
-      "newUsers": 42,
+      "newUsers": 2,
       "activeUsers": 1483,
       "tradeAmountFen": {
         "electronics": 739283,
@@ -6320,7 +6320,7 @@
     },
     {
       "date": "2026-09-24",
-      "newUsers": 47,
+      "newUsers": 2,
       "activeUsers": 1536,
       "tradeAmountFen": {
         "electronics": 806221,
@@ -6339,7 +6339,7 @@
     },
     {
       "date": "2026-09-25",
-      "newUsers": 42,
+      "newUsers": 2,
       "activeUsers": 1355,
       "tradeAmountFen": {
         "electronics": 762091,
@@ -6358,7 +6358,7 @@
     },
     {
       "date": "2026-09-26",
-      "newUsers": 35,
+      "newUsers": 2,
       "activeUsers": 1583,
       "tradeAmountFen": {
         "electronics": 1116550,
@@ -6377,7 +6377,7 @@
     },
     {
       "date": "2026-09-27",
-      "newUsers": 40,
+      "newUsers": 2,
       "activeUsers": 1882,
       "tradeAmountFen": {
         "electronics": 992669,
@@ -6396,7 +6396,7 @@
     },
     {
       "date": "2026-09-28",
-      "newUsers": 42,
+      "newUsers": 8,
       "activeUsers": 1616,
       "tradeAmountFen": {
         "electronics": 924396,
@@ -6665,18 +6665,18 @@
       "newUsers": 49,
       "activeUsers": 1725,
       "tradeAmountFen": {
-        "electronics": 920652,
-        "books": 611571,
-        "clothing": 388062,
-        "daily": 405034,
-        "other": 176581
+        "electronics": 1278503,
+        "books": 913216,
+        "clothing": 730573,
+        "daily": 547930,
+        "other": 182644
       },
       "contentCounts": {
-        "market": 60,
-        "tasks": 36,
-        "study": 21,
-        "campus": 24,
-        "other": 8
+        "market": 1502,
+        "tasks": 939,
+        "study": 563,
+        "campus": 563,
+        "other": 189
       }
     },
     {
@@ -6684,18 +6684,18 @@
       "newUsers": 43,
       "activeUsers": 1497,
       "tradeAmountFen": {
-        "electronics": 742613,
-        "books": 524745,
-        "clothing": 339177,
-        "daily": 331662,
-        "other": 147103
+        "electronics": 1278503,
+        "books": 913216,
+        "clothing": 730573,
+        "daily": 547930,
+        "other": 182644
       },
       "contentCounts": {
-        "market": 62,
-        "tasks": 37,
-        "study": 22,
-        "campus": 25,
-        "other": 8
+        "market": 1502,
+        "tasks": 939,
+        "study": 563,
+        "campus": 563,
+        "other": 189
       }
     },
     {
@@ -6703,24 +6703,24 @@
       "newUsers": 59,
       "activeUsers": 1678,
       "tradeAmountFen": {
-        "electronics": 892658,
-        "books": 654086,
-        "clothing": 407479,
-        "daily": 433637,
-        "other": 148840
+        "electronics": 1278504,
+        "books": 913217,
+        "clothing": 730574,
+        "daily": 547930,
+        "other": 182643
       },
       "contentCounts": {
-        "market": 56,
-        "tasks": 34,
-        "study": 20,
-        "campus": 23,
-        "other": 8
+        "market": 1503,
+        "tasks": 940,
+        "study": 564,
+        "campus": 564,
+        "other": 187
       }
     },
     {
       "date": "2026-10-15",
-      "newUsers": 42,
-      "activeUsers": 1548,
+      "newUsers": 120,
+      "activeUsers": 1200,
       "tradeAmountFen": {
         "electronics": 859181,
         "books": 567865,
@@ -6738,8 +6738,8 @@
     },
     {
       "date": "2026-10-16",
-      "newUsers": 44,
-      "activeUsers": 1465,
+      "newUsers": 190,
+      "activeUsers": 1350,
       "tradeAmountFen": {
         "electronics": 799335,
         "books": 509006,
@@ -6757,8 +6757,8 @@
     },
     {
       "date": "2026-10-17",
-      "newUsers": 45,
-      "activeUsers": 1920,
+      "newUsers": 150,
+      "activeUsers": 1280,
       "tradeAmountFen": {
         "electronics": 1135376,
         "books": 713257,
@@ -6776,8 +6776,8 @@
     },
     {
       "date": "2026-10-18",
-      "newUsers": 37,
-      "activeUsers": 1571,
+      "newUsers": 220,
+      "activeUsers": 1450,
       "tradeAmountFen": {
         "electronics": 1111606,
         "books": 748982,
@@ -6795,60 +6795,68 @@
     },
     {
       "date": "2026-10-19",
-      "newUsers": 60,
-      "activeUsers": 1707,
+      "newUsers": 180,
+      "activeUsers": 1400,
       "tradeAmountFen": {
-        "electronics": 915207,
-        "books": 633821,
-        "clothing": 360915,
-        "daily": 390138,
-        "other": 183319
+        "electronics": 1344980,
+        "books": 960700,
+        "clothing": 768560,
+        "daily": 576420,
+        "other": 192140
       },
       "contentCounts": {
-        "market": 64,
-        "tasks": 39,
-        "study": 23,
-        "campus": 26,
-        "other": 9
+        "market": 1665,
+        "tasks": 1040,
+        "study": 624,
+        "campus": 624,
+        "other": 209
       }
     },
     {
       "date": "2026-10-20",
-      "newUsers": 60,
-      "activeUsers": 1587,
+      "newUsers": 250,
+      "activeUsers": 1600,
       "tradeAmountFen": {
-        "electronics": 834909,
-        "books": 533307,
-        "clothing": 358624,
-        "daily": 356341,
-        "other": 144419
+        "electronics": 1344980,
+        "books": 960700,
+        "clothing": 768560,
+        "daily": 576420,
+        "other": 192140
       },
       "contentCounts": {
-        "market": 60,
-        "tasks": 36,
-        "study": 21,
-        "campus": 24,
-        "other": 8
+        "market": 1665,
+        "tasks": 1040,
+        "study": 624,
+        "campus": 624,
+        "other": 209
       }
     },
     {
       "date": "2026-10-21",
-      "newUsers": 45,
-      "activeUsers": 1594,
+      "newUsers": 210,
+      "activeUsers": 1480,
       "tradeAmountFen": {
-        "electronics": 782964,
-        "books": 539301,
-        "clothing": 334720,
-        "daily": 335620,
-        "other": 138195
+        "electronics": 1344980,
+        "books": 960700,
+        "clothing": 768560,
+        "daily": 576420,
+        "other": 192140
       },
       "contentCounts": {
-        "market": 76,
-        "tasks": 46,
-        "study": 27,
-        "campus": 30,
-        "other": 11
+        "market": 1665,
+        "tasks": 1041,
+        "study": 624,
+        "campus": 624,
+        "other": 209
       }
     }
+  ],
+  "chartMonths": [
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06"
   ]
 }

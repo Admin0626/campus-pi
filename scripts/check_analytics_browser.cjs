@@ -27,7 +27,7 @@ const fixture = JSON.parse(
   });
   try {
     const page = await browser.newPage({
-      viewport: { width: 1474, height: 1114 },
+      viewport: { width: 1460, height: 1094 },
       acceptDownloads: true,
     });
     await page.addInitScript(() => {
@@ -59,14 +59,19 @@ const fixture = JSON.parse(
     await page
       .getByRole("heading", { name: "用户增长趋势", exact: true })
       .waitFor();
+    const toolsMenu = page.locator(".analytics-tools-menu");
+    const openTools = async () => {
+      if (!((await toolsMenu.getAttribute("open")) === ""))
+        await toolsMenu.locator("summary").click();
+    };
+    await openTools();
     ok(
       await page.getByText("JSON 模拟数据", { exact: true }).isVisible(),
       "mock source explicitly visible",
     );
-    await page
-      .getByLabel("关闭提示")
-      .click()
-      .catch(() => {});
+    await toolsMenu.locator("summary").click();
+    if (await page.getByLabel("关闭提示").count())
+      await page.getByLabel("关闭提示").click();
     const periodButtons = page.getByRole("group", { name: "指标统计周期" });
     for (const [key, label] of [
       ["week", "本周"],
@@ -164,9 +169,10 @@ const fixture = JSON.parse(
     await periodButtons
       .getByRole("button", { name: "本月", exact: true })
       .click();
+    await openTools();
     const downloadPromise = page.waitForEvent("download");
     await page
-      .locator(".analytics-toolbar")
+      .locator(".analytics-tools-menu")
       .getByRole("button", { name: "导出CSV", exact: true })
       .click();
     const download = await downloadPromise;
@@ -196,6 +202,7 @@ const fixture = JSON.parse(
     await page.route("**/mock/analytics.json", (route) =>
       route.fulfill({ status: 503, body: "unavailable" }),
     );
+    await openTools();
     await page
       .getByRole("button", { name: "刷新模拟数据", exact: true })
       .click();
@@ -218,6 +225,7 @@ const fixture = JSON.parse(
         body: '{"source":"MOCK"}',
       }),
     );
+    await openTools();
     await page
       .getByRole("button", { name: "刷新模拟数据", exact: true })
       .click();
@@ -262,6 +270,7 @@ const fixture = JSON.parse(
       "zero dataset shows honest empty classifications and finite metrics",
     );
     await page.unroute("**/mock/analytics.json");
+    await openTools();
     await page
       .getByRole("button", { name: "刷新模拟数据", exact: true })
       .click();
@@ -272,6 +281,46 @@ const fixture = JSON.parse(
     await periodButtons
       .getByRole("button", { name: "本周", exact: true })
       .click();
+    if ((await toolsMenu.getAttribute("open")) === "")
+      await toolsMenu.locator("summary").click();
+    const reportRects = [
+      [".sidebar", [0, 0, 242, 1094]],
+      [".app-header", [242, 0, 1218, 62]],
+      [".analytics-toolbar", [282, 88, 1156, 44]],
+      [".analytics-metrics", [282, 132, 1156, 140]],
+      [".analytics-growth", [282, 280, 1156, 412]],
+      [".analytics-pie-card", [282, 696, 374, 394]],
+      [".analytics-monthly-card", [674, 696, 420, 394]],
+      [".analytics-content-card", [1114, 696, 324, 394]],
+    ];
+    for (const [selector, expected] of reportRects) {
+      const rect = await page.locator(selector).boundingBox();
+      ok(
+        [rect.x, rect.y, rect.width, rect.height].every(
+          (v, i) => Math.abs(v - expected[i]) <= 2,
+        ),
+        selector + " matches original Word coordinates at 2x content scale",
+      );
+    }
+    ok(
+      (await page
+        .locator(".analytics-toolbar .analytics-toolbar-actions")
+        .count()) === 0,
+      "extra tools moved into the original ellipsis menu",
+    );
+    ok(
+      (await page
+        .locator(".sidebar")
+        .evaluate(
+          (e) => getComputedStyle(e).backgroundColor === "rgb(30, 41, 59)",
+        )) &&
+        (await periodButtons
+          .getByRole("button", { name: "本周", exact: true })
+          .evaluate(
+            (e) => getComputedStyle(e).backgroundColor === "rgb(79, 70, 229)",
+          )),
+      "navigation and selected-state colors match original figure",
+    );
     await page.screenshot({
       path: path.join(out, "01-Word5-36-desktop.png"),
       fullPage: true,

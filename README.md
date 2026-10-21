@@ -67,7 +67,7 @@ P0共104项；P1共8项，分别是A的2项找回密码和G的6项交易扩展�
 
 ```text
 frontend/       Vue基础工程及模块接入说明
-miniprogram/    微信小程序原生接入样例；AppID与真机验收待确认
+miniprogram/    微信小程序原生接入样例；AppID已配置；接口地址与真机验收待确认
 backend/        Spring Boot基础工程及模块接入说明
 database/       结构、事务、合成数据、增量迁移、独立验收
 docs/design/    设计报告及可编辑SVG图源

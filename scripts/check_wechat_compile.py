@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,13 +36,17 @@ for compiler, inputs, output, extra in [
     assert (out / output).stat().st_size > 0
     subprocess.run(['node', '--check', str(out / output)], check=True, capture_output=True, timeout=10)
     checks.append({'compiler': compiler, 'inputs': inputs, 'result': 'PASS', 'generated_js_syntax': 'PASS'})
+config_path = source / 'project.config.json'
+if not config_path.exists(): config_path = source / 'project.config.example.json'
+configured_appid = json.loads(config_path.read_text(encoding='utf-8-sig')).get('appid', '')
 report = {
     'status': 'PASS',
     'scope': 'Installed official DevTools standalone WXML/WXSS compiler only',
     'pages': len(pages),
     'checks': checks,
     'source_hashes': {name: hashlib.sha256((source / name).read_bytes()).hexdigest() for name in [*templates, *styles]},
-    'AppID_configured': False,
+    'AppID_configured': bool(re.fullmatch(r'wx[0-9a-f]{16}', configured_appid)),
+    'AppID_access_verified': False,
     'authenticated_IDE_run': False,
     'device_run': False,
 }
