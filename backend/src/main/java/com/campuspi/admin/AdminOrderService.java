@@ -81,5 +81,4 @@ public class AdminOrderService {
         enumFilter(state,Set.of("待审核","已驳回","退款中","已完成","已取消"));String where=state.isEmpty()?"":" WHERE aftersale_status=?";List<Object> args=state.isEmpty()?List.of():List.of(state);
         return page("order_aftersales","aftersale_id,order_id,user_id,aftersale_status,apply_amount,approve_amount,apply_reason,evidence_urls,audit_reason,apply_time,audit_time,complete_time",where,args,page,size,"apply_time ASC,aftersale_id ASC",this::aftersaleView);
     }
-    public Object reviewUnavailable(Identity actor,String id){policy.require(actor,"ORDERS");aftersaleId(id);throw new ApiException(501,"退款原状态、余额预占及可信支付通道尚未接入，售后审核未启用");}
 }

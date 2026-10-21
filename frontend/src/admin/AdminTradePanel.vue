@@ -17,7 +17,14 @@ const loading = ref(false),
   detail = ref(null),
   action = ref(null),
   reason = ref(""),
-  relatedTask = ref(null);
+  relatedTask = ref(null),
+  aftersaleOrder = ref(null);
+const taskDispute = computed(
+  () =>
+    detail.value?.kind === "aftersales" &&
+    aftersaleOrder.value?.order_type === "任务" &&
+    detail.value.value.apply_amount === "0.00",
+);
 const view = computed(() =>
   props.module === "reports" ? "reports" : tab.value,
 );
@@ -109,6 +116,7 @@ watch(
     detail.value = null;
     action.value = null;
     relatedTask.value = null;
+    aftersaleOrder.value = null;
     notice.value = "";
     load();
   },
@@ -147,8 +155,23 @@ function orderState(value) {
 }
 async function show(row) {
   if (view.value === "aftersales") {
-    detail.value = { kind: "aftersales", value: row };
+    busy.value = true;
+    aftersaleOrder.value = null;
     error.value = "";
+    const serial = generation;
+    try {
+      const orders = await api(
+        `/admin/orders?order_id=${encodeURIComponent(row.order_id)}&page_size=1`,
+      );
+      if (serial === generation) {
+        aftersaleOrder.value = orders.items[0] || null;
+        detail.value = { kind: "aftersales", value: row };
+      }
+    } catch (e) {
+      if (serial === generation) error.value = e.message;
+    } finally {
+      busy.value = false;
+    }
     return;
   }
   busy.value = true;
@@ -214,9 +237,15 @@ async function save() {
   }
   const { row, decision, kind } = action.value,
     body =
-      kind === "reports"
-        ? { decision, reason: reason.value.trim() }
-        : { reason: reason.value.trim() };
+      kind === "aftersales"
+        ? {
+            decision,
+            reason: reason.value.trim(),
+            ...(decision === "通过" ? { approve_amount: "0.00" } : {}),
+          }
+        : kind === "reports"
+          ? { decision, reason: reason.value.trim() }
+          : { reason: reason.value.trim() };
   const serialized = JSON.stringify(body);
   if (mutationBody && mutationBody !== serialized) mutationKey = requestKey();
   mutationBody = serialized;
@@ -224,9 +253,11 @@ async function save() {
   error.value = "";
   try {
     await api(
-      kind === "reports"
-        ? `/admin/message-reports/${row.report_id}/review`
-        : `/admin/orders/${row.order_id}/cancel`,
+      kind === "aftersales"
+        ? `/admin/aftersales/${row.aftersale_id}/review`
+        : kind === "reports"
+          ? `/admin/message-reports/${row.report_id}/review`
+          : `/admin/orders/${row.order_id}/cancel`,
       { method: "POST", body, key: mutationKey },
     );
     action.value = null;
@@ -338,7 +369,7 @@ const fields = computed(() => {
       列表隐藏交付地址；查看详情需要订单处理权限。
     </p>
     <p v-else-if="view === 'aftersales'" class="admin-source-note">
-      售后退款审核暂未启用，可查询工单及授权材料。
+      任务零金额争议可审核结案，不改变任务或奖励；商品退款暂未启用。
     </p>
     <p v-else class="admin-source-note">
       仅处理举报案件关联的消息；判定成立不会自动停用账号。
@@ -415,8 +446,8 @@ const fields = computed(() => {
               <td>{{ time(row.apply_time) }}</td>
               <td class="admin-row-actions">
                 <button :disabled="busy || loading" @click="show(row)">
-                  查看工单</button
-                ><button disabled>审核未启用</button>
+                  查看工单
+                </button>
               </td></template
             >
             <template v-else
@@ -500,12 +531,23 @@ const fields = computed(() => {
         <form v-if="action" @submit.prevent="save">
           <p>
             {{
-              action.kind === "reports"
-                ? "将举报 " + action.row.report_id + " 判定为" + action.decision
-                : "取消订单 " + action.row.order_id
+              action.kind === "aftersales"
+                ? "将任务争议 " +
+                  action.row.aftersale_id +
+                  " 审核为" +
+                  action.decision
+                : action.kind === "reports"
+                  ? "将举报 " +
+                    action.row.report_id +
+                    " 判定为" +
+                    action.decision
+                  : "取消订单 " + action.row.order_id
             }}
           </p>
           <p v-if="action.kind === 'orders'">取消后恢复该订单预留库存。</p>
+          <p v-if="action.kind === 'aftersales'">
+            争议金额为0.00，仅记录审核结论；任务状态、积分和现金均不改变。
+          </p>
           <label
             >操作原因<textarea
               v-model="reason"
@@ -566,7 +608,28 @@ const fields = computed(() => {
           </dl>
           <template v-if="detail.kind === 'aftersales'"
             ><FilePreview :files="detail.value.evidence_refs" />
-            <p class="admin-source-note">退款审核暂未启用。</p>
+            <p class="admin-source-note">
+              {{
+                taskDispute
+                  ? "任务零金额争议，仅记录审核结论，不退款或变更任务。"
+                  : "商品退款暂未启用；异常任务工单需核对原始记录。"
+              }}
+            </p>
+            <div
+              v-if="taskDispute && detail.value.aftersale_status === '待审核'"
+              class="admin-inline-actions"
+            >
+              <button
+                class="admin-purple"
+                :disabled="busy"
+                @click="prepare(detail.value, '通过')"
+              >
+                通过争议
+              </button>
+              <button :disabled="busy" @click="prepare(detail.value, '驳回')">
+                驳回争议
+              </button>
+            </div>
             <button :disabled="busy" @click="showOrder(detail.value)">
               查看关联订单
             </button></template

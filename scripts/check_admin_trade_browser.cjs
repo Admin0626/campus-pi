@@ -175,14 +175,12 @@ fs.writeFileSync(
     await page.getByRole("button", { name: "售后工单", exact: true }).click();
     row = await findRow(f.aftersale_id);
     check(
-      await row
-        .getByRole("button", { name: "审核未启用", exact: true })
-        .isDisabled(),
-      "Unavailable P1 review is clearly disabled in the UI",
+      (await row.getByRole("button", { name: /通过|驳回/ }).count()) === 0,
+      "Product refund cannot be approved from the queue",
     );
     await row.getByRole("button", { name: "查看工单", exact: true }).click();
     dialog = page.getByRole("dialog");
-    await dialog.getByText("退款审核暂未启用。", { exact: true }).waitFor();
+    await dialog.getByText("商品退款暂未启用；异常任务工单需核对原始记录。", { exact: true }).waitFor();
     await page.waitForFunction(() => {
       const image = document.querySelector('[aria-label="文件材料预览"] img');
       return image?.complete && image.naturalWidth > 0;
