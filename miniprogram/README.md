@@ -38,3 +38,5 @@
 可重复检查：将`miniprogram-automator@0.13.0`安装到被忽略的`.local/auth-dev/wechat-automation`，执行官方CLI `auto --project <仓库绝对路径>/miniprogram --auto-port 9420`，再在仓库根目录运行`node scripts/check_wechat_runtime.cjs`。也可用`WECHAT_AUTOMATOR_MODULE`指定已安装模块的绝对路径。脚本只读取连接、路由、运行环境和数据通道是否可用，不保存表单值、不发业务请求；失败返回非零，证据保存在`.local/auth-dev/wechat-automation/runtime-acceptance.json`。此工具依赖只供本机验收，不是小程序或生产运行依赖。
 
 `node scripts/check_wechat_accounts.cjs`则调用真实页面方法和`wx.request`，会在独立本地库创建随机测试账号。当前验证了原生表单校验及后端注册成功，但返回登录页收到`reLaunch:fail timeout`，脚本如实返回非零，不能记为完整流程通过。已将成功提示移到跳转成功回调，并在失败时显示“注册已成功，返回登录页失败”，避免静默停留。该脚本没有用tap或截图验证视觉交互；凭证不写入证据文件。
+
+09:10补充：通过真实`wx.request`顺序验证注册、登录、本人查询、退出及已退出令牌被401拒绝，五个网络步骤均通过。此检查在App服务执行，未替代页面跳转。完整账号探针仍因注册后路由超时而非零退出，`network_flow_verified`与`page_method_flow_verified`分别记录，避免把网络通过写成页面通过。已尝试清理本工程编译缓存，未清账号、存储或认证缓存；页面数据通道仍超时。最小无业务页面的查询亦未正常返回，但该对照未完成启动验收，不能据此确定根因。

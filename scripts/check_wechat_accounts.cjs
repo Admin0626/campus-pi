@@ -21,6 +21,8 @@ const report = {
   scope:
     "Real DevTools app service, native page methods and real wx.request; no visual or device acceptance",
   checks: [],
+  network_flow_verified: false,
+  page_method_flow_verified: false,
   visual_verified: false,
   device_run: false,
 };
@@ -75,6 +77,61 @@ async function wait(mp, predicate) {
         environment.base === "http://127.0.0.1:8080",
       "Only the explicitly selected local DevTools environment is tested",
     );
+    const networkAccount = {
+      username: "wxnet_" + Date.now().toString(36),
+      password: crypto.randomBytes(18).toString("base64url") + "!Aa1",
+      key: crypto.randomBytes(16).toString("hex"),
+    };
+    const network = await mp.evaluate(async (account) => {
+      const call = (route, method, data, token, key) =>
+        new Promise((resolve, reject) =>
+          wx.request({
+            url: getApp().globalData.apiBaseUrl + "/api/v1" + route,
+            method,
+            data,
+            timeout: 15000,
+            header: {
+              "Content-Type": "application/json",
+              ...(token ? { Authorization: "Bearer " + token } : {}),
+              ...(key ? { "Idempotency-Key": key } : {}),
+            },
+            success: resolve,
+            fail: () => reject(new Error("Real wx.request failed")),
+          }),
+        );
+      const registered = await call(
+        "/auth/register",
+        "POST",
+        {
+          username: account.username,
+          password: account.password,
+          email: account.username + "@example.invalid",
+        },
+        "",
+        account.key,
+      );
+      if (registered.data.code !== "OK") return { registered: false };
+      const login = await call("/auth/login", "POST", {
+        account: account.username,
+        password: account.password,
+      });
+      if (login.data.code !== "OK") return { registered: true, login: false };
+      const token = login.data.data.access_token;
+      const me = await call("/me", "GET", undefined, token);
+      const logout = await call("/auth/logout", "POST", undefined, token);
+      const revoked = await call("/me", "GET", undefined, token);
+      return {
+        registered: true,
+        login: !!token,
+        me: me.data.code === "OK" && me.data.data.username === account.username,
+        logout: logout.data.code === "OK",
+        revoked: revoked.statusCode === 401,
+      };
+    }, networkAccount);
+    for (const name of ["registered", "login", "me", "logout", "revoked"]) {
+      check(network[name], "Real wx.request account network flow: " + name);
+    }
+    report.network_flow_verified = true;
     await mp.reLaunch("/pages/login/index");
     await mp.evaluate(() => {
       const p = getCurrentPages().slice(-1)[0];
@@ -162,6 +219,7 @@ async function wait(mp, predicate) {
       "Native logout revokes session and returns to login",
     );
     report.status = "PASS";
+    report.page_method_flow_verified = true;
     console.log(
       JSON.stringify({
         status: "PASS",
