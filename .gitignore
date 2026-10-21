@@ -31,6 +31,7 @@ runtime/
 .local/
 miniprogram/project.config.json
 miniprogram/project.private.config.json
+miniprogram/config.js
 .idea/
 .vscode/
 .DS_Store

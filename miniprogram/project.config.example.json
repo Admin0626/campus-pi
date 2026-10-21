@@ -1,5 +1,5 @@
 {
-  "appid": "YOUR_LOCAL_APPID",
+  "appid": "",
   "projectname": "campus-pi",
   "compileType": "miniprogram",
   "miniprogramRoot": "./",
@@ -7,5 +7,5 @@
     "es6": true,
     "urlCheck": true
   },
-  "description": "校园Π微信小程序；AppID由项目负责人提供，配置中不包含AppSecret"
+  "description": "校园Π微信小程序；真实AppID仅填写本机被忽略的project.config.json"
 }

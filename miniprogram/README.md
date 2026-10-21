@@ -4,15 +4,15 @@
 
 ## 尚未具备的验收条件
 
-- 用户已提供 AppID `YOUR_LOCAL_APPID`，已配置到模板及本机项目；主体与当前微信账号开发权限尚待验证。配置中不包含AppSecret。
+- 实际AppID和接口地址仅保存在被Git忽略的本机配置；共享模板保持空值。主体与当前微信账号开发权限尚待验证，不在仓库中记录个人AppID或AppSecret。
 - 上线 HTTPS 地址及 request 合法域名尚未确认。负责人已确认开发者工具使用本机`http://127.0.0.1:8080`；`app.js`按`platform === devtools`选择此地址，真机服务地址仍为空，明确报“尚未配置”。
 - 已验证 JS 语法与宿主适配器调用真实后端；5个WXML页面与7个WXSS也通过本机官方独立编译器。尚未完成带真实AppID的开发者工具运行验收，不等于真机登录或发布验收。
 - 本机发现已安装微信开发者工具；未绕过账号、AppID 或域名校验。上述条件齐备后继续在工具和真机里验证。
 
 ## 配置后导入
 
-1. 模板已填入负责人提供的AppID `YOUR_LOCAL_APPID`；本机 `project.config.json` 已生成并被Git忽略。其他成员可复制模板创建本机配置。不要把 AppSecret 放进小程序。
-2. 本机联调地址已确认并配置。仅在被Git忽略的`project.private.config.json`设置`setting.urlCheck=false`以允许本机HTTP请求；共享模板仍为true。发布/真机需要在`config.js`设置经确认的HTTPS主机地址，不包含`/api/v1`后缀，并正确配置合法域名。
+1. 复制`project.config.example.json`为`project.config.json`，只在这个被Git忽略的本机文件填写实际AppID；共享模板留空。不要把AppSecret放进小程序、文档或提交记录。
+2. 复制`config.example.js`为被Git忽略的`config.js`，仅在本机填写API地址；共享模板的两个地址均留空。开发者工具与真机分别使用各自的地址。仅本机HTTP联调可在被忽略的`project.private.config.json`关闭URL校验；共享模板保持true。发布/真机须配置经确认的HTTPS地址及合法域名。
 3. 微信开发者工具导入本目录，核对所选 AppID 与 request 合法域名。开发工具与手机真机访问的网络环境不同，本机 `127.0.0.1` 不是手机上的后端。
 4. 注册后返回登录，不自动登录。登录取得服务端不透明令牌，后续请求附带 Bearer；冷启动后重新登录，尚未决定长期存储方式。
 5. 验收注册校验、重复提交、登录错误、本人信息、退出、过期及服务不可用，再做真机检查。
