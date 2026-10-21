@@ -1,3 +1,6 @@
-// 请确认 HTTPS 服务地址和 request 合法域名后配置，不填写虚构上线地址。
-// 微信开发者工具本机联调时，可按本地开发说明显式选择本地地址。
-module.exports = { apiBaseUrl: "" };
+// 真机/发布主机及 request 合法域名尚未确认。
+// 2026-10-21负责人确认：仅开发者工具使用本机8080联调。
+module.exports = {
+  apiBaseUrl: "",
+  devtoolsApiBaseUrl: "http://127.0.0.1:8080",
+};

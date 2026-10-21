@@ -62,6 +62,22 @@ function check(v, name) {
   checks.push({ name, passed: true });
 }
 (async () => {
+  let definition;
+  global.App = (value) => (definition = value);
+  require(path.join(root, "miniprogram/app.js"));
+  for (const [platform, expected] of [
+    ["devtools", "http://127.0.0.1:8080"],
+    ["ios", ""],
+    ["android", ""],
+  ]) {
+    global.wx.getDeviceInfo = () => ({ platform });
+    definition.onLaunch.call(definition);
+    check(
+      definition.globalData.apiBaseUrl === expected,
+      "app host selection for " + platform,
+    );
+  }
+  delete global.wx.getDeviceInfo;
   const config = JSON.parse(
     fs.readFileSync(path.join(root, "miniprogram/app.json"), "utf8"),
   );

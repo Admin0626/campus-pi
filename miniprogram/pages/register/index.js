@@ -74,8 +74,15 @@ Page({
       this.setData({ password: "" });
       wx.reLaunch({
         url: "/pages/login/index?account=" + encodeURIComponent(value.username),
+        success() {
+          wx.showToast({ title: "注册成功，请登录", icon: "none" });
+        },
+        fail: () => {
+          this.setData({
+            error: "注册已成功，返回登录页失败，请重新打开登录页",
+          });
+        },
       });
-      wx.showToast({ title: "注册成功，请登录", icon: "none" });
     } catch (error) {
       this.setData({ error: error.message });
     } finally {
