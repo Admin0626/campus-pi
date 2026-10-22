@@ -1,22 +1,4 @@
 /* Layout and palette follow original Word figure 5-36. All values come from mock JSON. */
-.word-analytics-shell .content {
-  padding: 22px 22px 28px;
-  margin: 0;
-  max-width: none;
-  background: #f6f8fa;
-  min-height: calc(100vh - 64px);
-}
-.word-analytics-shell .page-heading {
-  display: none;
-}
-.word-analytics-shell .content > .alert {
-  position: fixed;
-  right: 20px;
-  top: 72px;
-  z-index: 15;
-  max-width: 390px;
-  box-shadow: 0 3px 15px #0002;
-}
 .analytics-page {
   color: #202427;
   font-family: Arial, "Microsoft YaHei", sans-serif;
@@ -771,9 +753,6 @@
   }
 }
 @media (max-width: 650px) {
-  .word-analytics-shell .content {
-    padding: 17px 14px 24px;
-  }
   .analytics-toolbar {
     gap: 10px;
   }

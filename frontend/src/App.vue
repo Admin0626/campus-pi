@@ -11,9 +11,9 @@ import AdminSecurityPanel from "./admin/AdminSecurityPanel.vue";
 import AdminTaskPanel from "./admin/AdminTaskPanel.vue";
 import AdminTradePanel from "./admin/AdminTradePanel.vue";
 import AdminNotificationPanel from "./admin/AdminNotificationPanel.vue";
-import AdminNotificationEntry from "./admin/AdminNotificationEntry.vue";
+import WorkspaceLayout from "./admin/WorkspaceLayout.vue";
+import { adminMenu } from "./admin/navigation.js";
 import NotificationInbox from "./notifications/NotificationInbox.vue";
-import ReportGlyph from "./analytics/ReportGlyph.vue";
 import { api, requestKey, setToken, setExpiredHandler } from "./api.js";
 
 const path = ref(location.pathname),
@@ -68,18 +68,6 @@ const modules = [
   ["G", "订单与售后", "box"],
   ["H", "私信与举报", "mail"],
   ["I", "通知与投递", "bell"],
-];
-const adminMenu = [
-  ["控制台", "/admin", "grid"],
-  ["内容发布管理", "/admin/modules/content", "shield"],
-  ["用户管理", "/admin/users", "users"],
-  ["交易管理", "/admin/modules/products", "box"],
-  ["悬赏任务", "/admin/modules/tasks", "task"],
-  ["订单管理", "/admin/modules/orders", "file"],
-  ["通知管理", "/admin/modules/notices", "bell"],
-  ["数据分析", "/admin/modules/analytics", "chart"],
-  ["系统设置", "/admin/modules/settings", "grid"],
-  ["权限管理", "/admin/modules/permissions", "lock"],
 ];
 const pendingName = computed(
   () =>
@@ -526,529 +514,364 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
     :back-label="inboxReturn ? '返回管理后台' : '返回个人页'"
     @navigate="navigate"
   />
-  <div
+  <WorkspaceLayout
     v-else-if="user"
-    class="app-shell live-app"
-    :class="{
-      'admin-shell': admin,
-      'word-admin-shell': admin,
-      'word-admin-users': path === '/admin/users',
-      'word-admin-content': isAdminContent,
-      'word-analytics-shell': path === '/admin/modules/analytics',
-    }"
+    :admin="admin"
+    :user="user"
+    :path="path"
+    :page-title="pageTitle"
+    :content-panel="isAdminContent"
+    @navigate="navigate"
+    @logout="logout"
+    @notice="notify"
+    @open-inbox="openAdminInbox"
   >
-    <aside class="sidebar" :class="{ 'dark-sidebar': admin }">
-      <div class="brand">
-        <ReportGlyph
-          v-if="path === '/admin/modules/analytics'"
-          name="campus"
-        /><Icon v-else-if="admin" name="campus" :size="25" />
-        <span v-else class="brand-symbol">Π</span>
-        <div v-if="admin">校园信息管理平台</div>
-        <div v-else>
-          校园Π<span class="brand-under">{{
-            admin ? "管理工作台" : "校园生活服务平台"
-          }}</span>
+    <div class="page-heading">
+      <div>
+        <div class="eyebrow">
+          {{ admin ? "CAMPUS PI / ADMIN" : "CAMPUS PI / ACCOUNT" }}
         </div>
+        <h1>{{ pageTitle }}</h1>
+        <p>
+          {{ admin ? "校园Π管理工作空间" : "让每一次校园连接都更安心。" }}
+        </p>
       </div>
-      <div class="sidebar-section">{{ admin ? "主导航" : "个人空间" }}</div>
-      <nav class="side-menu">
-        <template v-if="admin"
-          ><template v-for="item in adminMenu" :key="item[1]">
-            <div
-              v-if="item[1] === '/admin/modules/settings'"
-              class="sidebar-section word-system-section"
-            >
-              系统设置
-            </div>
-            <button
-              :class="{
-                selected:
-                  path === item[1] ||
-                  (item[1] === '/admin/users' &&
-                    path.startsWith('/admin/users/')),
-              }"
-              @click="navigate(item[1])"
-            >
-              <ReportGlyph
-                v-if="path === '/admin/modules/analytics'"
-                :name="
-                  item[1] === '/admin/modules/settings' ? 'settings' : item[2]
-                "
-              /><Icon v-else :name="item[2]" :size="19" />{{ item[0] }}
-            </button></template
-          ></template
-        ><template v-else
-          ><button
-            :class="{ selected: path === '/home' }"
-            @click="navigate('/home')"
-          >
-            <Icon name="grid" />校园生活</button
-          ><button
-            :class="{ selected: path === '/me' }"
-            @click="navigate('/me')"
-          >
-            <Icon name="user" />我的账号</button
-          ><button
-            :class="{ selected: path === '/me/profile' }"
-            @click="navigate('/me/profile')"
-          >
-            <Icon name="edit" />资料与隐私</button
-          ><button
-            :class="{ selected: path === '/me/password' }"
-            @click="navigate('/me/password')"
-          >
-            <Icon name="shield" />账号安全
-          </button></template
-        >
-      </nav>
-      <div class="sidebar-bottom">
-        <button
-          v-if="admin && path !== '/admin/modules/analytics'"
-          class="word-admin-user-return"
-          @click="navigate('/home')"
-        >
-          用户端
-        </button>
-        <button class="sidebar-user" @click="logout">
-          <span class="avatar tiny blue">{{ initials(user) }}</span
-          ><span
-            ><strong :title="user.username">{{
-              path === "/admin/modules/analytics" ? "系统管理员" : user.username
-            }}</strong
-            ><small>{{
-              path === "/admin/modules/analytics"
-                ? user.email || user.username
-                : "退出登录"
-            }}</small></span
-          ><Icon name="exit" :size="18" />
-        </button>
-      </div>
-    </aside>
-    <div class="app-body">
-      <header class="app-header">
-        <div v-if="admin" class="word-admin-page-title">{{ pageTitle }}</div>
-        <div v-else class="breadcrumb">
-          <span>{{ admin ? "平台管理" : "个人空间" }}</span
-          ><Icon name="chevron" :size="13" /><strong>{{ pageTitle }}</strong>
-        </div>
-        <div v-if="admin" class="word-admin-header-tools">
-          <div class="word-global-search">
-            <Icon name="search" /><input
-              aria-label="全局搜索（开发中）"
-              :placeholder="
-                path === '/admin/modules/analytics' ? '搜索…' : '全局搜索....'
-              "
-              readonly
-              @click="notify('全局搜索还在开发')"
-            />
-          </div>
-          <AdminNotificationEntry :refresh-key="path" @open="openAdminInbox" />
-          <button aria-label="帮助（开发中）" @click="notify('帮助还在开发')">
-            ●<span>?</span>
-          </button>
-        </div>
-        <div v-else class="header-right">
-          <button
-            v-if="user.role === 'ADMIN'"
-            class="text-link"
-            @click="navigate(admin ? '/home' : '/admin')"
-          >
-            {{ admin ? "用户端" : "管理端" }}</button
-          ><span class="avatar tiny blue">{{ initials(user) }}</span
-          ><span class="header-name">{{ user.username }}</span
-          ><button
-            class="icon-button mobile-exit"
-            aria-label="退出登录"
-            @click="logout"
-          >
-            <Icon name="exit" :size="18" />
-          </button>
-        </div>
-      </header>
-      <main class="content">
-        <div class="page-heading">
-          <div>
-            <div class="eyebrow">
-              {{ admin ? "CAMPUS PI / ADMIN" : "CAMPUS PI / ACCOUNT" }}
-            </div>
-            <h1>{{ pageTitle }}</h1>
-            <p>
-              {{ admin ? "校园Π管理工作空间" : "让每一次校园连接都更安心。" }}
-            </p>
-          </div>
-          <button
-            v-if="path.startsWith('/admin/users/')"
-            class="secondary"
-            @click="navigate('/admin/users')"
-          >
-            返回列表
-          </button>
-        </div>
-        <div
-          v-if="
-            notice &&
-            !(
-              (path === '/admin/modules/analytics' || isAdminContent) &&
-              notice === '登录成功'
-            )
-          "
-          class="alert info-alert"
-          role="status"
-        >
-          {{ notice
-          }}<button
-            class="icon-button"
-            aria-label="关闭提示"
-            @click="notice = ''"
-          >
-            <Icon name="close" :size="15" />
-          </button>
-        </div>
-        <div v-if="error" class="alert error" role="alert">
-          {{ error
-          }}<button
-            v-if="path === '/admin/users'"
-            class="text-link"
-            @click="loadUsers"
-          >
-            重试
-          </button>
-        </div>
-        <AnalyticsPage v-if="path === '/admin/modules/analytics'" />
-        <AdminTaskPanel v-else-if="path === '/admin/modules/tasks'" />
-        <AdminNotificationPanel v-else-if="path === '/admin/modules/notices'" />
-        <AdminTradePanel
-          v-else-if="
-            ['/admin/modules/orders', '/admin/modules/reports'].includes(path)
-          "
-          :module="path.split('/').at(-1)"
-        />
-        <AdminSecurityPanel
-          v-else-if="
-            [
-              '/admin/modules/verifications',
-              '/admin/modules/permissions',
-            ].includes(path)
-          "
-          :module="path.split('/').at(-1)"
-          @navigate="navigate"
-        />
-        <AdminContentPanel
-          v-else-if="isAdminContent"
-          :module="path === '/admin' ? 'dashboard' : path.split('/').at(-1)"
-          :audit-context="auditContext"
-          @navigate="navigate"
-        />
-        <template v-else-if="path === '/home' || path === '/admin'"
-          ><section class="panel welcome-panel">
-            <span class="badge blue-badge">{{
-              admin ? "管理工作台" : "欢迎回来"
-            }}</span>
-            <h2>{{ user.username }}，你好</h2>
-            <p>
-              {{
-                admin
-                  ? "账号管理已开放，可查看平台用户并管理账号状态。"
-                  : "账号已登录。你可以查看个人资料、设置公开范围和管理账号安全。"
-              }}
-            </p>
-            <button
-              class="primary"
-              @click="navigate(admin ? '/admin/users' : '/me')"
-            >
-              {{ admin ? "进入用户管理" : "进入个人中心"
-              }}<Icon name="arrow" :size="16" />
-            </button>
-          </section>
-          <div class="module-grid">
-            <button
-              v-for="item in admin
-                ? adminMenu.filter(
-                    (m) => m[1] !== '/admin' && m[1] !== '/admin/users',
-                  )
-                : modules"
-              :key="item[0]"
-              class="panel module-card"
-              @click="navigate(admin ? item[1] : `/modules/${item[0]}`)"
-            >
-              <Icon :name="item[2]" :size="24" /><strong>{{
-                admin ? item[0] : item[1]
-              }}</strong
-              ><span class="badge neutral">{{
-                admin && item[1] === "/admin/modules/analytics"
-                  ? "模拟数据"
-                  : "还在开发"
-              }}</span
-              ><Icon name="arrow" :size="16" />
-            </button></div
-        ></template>
-        <section v-else-if="path === '/me'" class="panel">
-          <div class="detail-identity">
-            <span class="avatar large blue">{{ initials(user) }}</span>
-            <div>
-              <h2>
-                {{ user.username }}<span class="badge green">账号正常</span>
-              </h2>
-              <p class="subtle">
-                ID {{ user.user_id }} ·
-                {{ user.role === "ADMIN" ? "管理员" : "普通用户" }}
-              </p>
-            </div>
-          </div>
-          <dl class="info-list">
-            <div
-              v-for="[key, label] in [
-                ['email', '绑定邮箱'],
-                ['phone', '绑定手机号'],
-                ['campus', '认证校区'],
-                ['identity_verification', '实名认证'],
-                ['campus_verification', '校园认证'],
-                ['personal_bio', '个人介绍'],
-                ['address', '默认地址'],
-              ]"
-              :key="key"
-            >
-              <dt>{{ label }}</dt>
-              <dd>{{ user[key] || "尚未填写" }}</dd>
-            </div>
-            <div>
-              <dt>注册时间</dt>
-              <dd>{{ date(user.registration_time) }}</dd>
-            </div>
-          </dl>
-          <div class="form-footer live-panel-footer">
-            <button class="secondary" @click="navigate('/modules/B')">
-              查看认证</button
-            ><button class="primary" @click="navigate('/me/profile')">
-              编辑资料
-            </button>
-          </div>
-        </section>
-        <form
-          v-else-if="path === '/me/profile'"
-          class="panel edit-panel live-form-panel"
-          @submit.prevent="saveProfile"
-        >
-          <div class="panel-heading">
-            <div>
-              <Icon name="edit" />
-              <h3>个人资料</h3>
-            </div>
-          </div>
-          <div class="field">
-            <label>用户名</label><input :value="user.username" disabled />
-          </div>
-          <div class="field">
-            <label for="bio">个人介绍</label
-            ><textarea
-              id="bio"
-              v-model="edit.bio"
-              rows="3"
-              :disabled="busy"
-            ></textarea
-            ><small>最多 500 字</small>
-          </div>
-          <div class="field">
-            <label for="address">默认地址</label
-            ><input
-              id="address"
-              v-model="edit.address"
-              :disabled="busy"
-            /><small>仅本人可见</small>
-          </div>
-          <div class="toggle-row">
-            <div>
-              <label for="campus-visible">公开所在校区</label>
-              <p>认证校区按认证结果展示</p>
-            </div>
-            <button
-              id="campus-visible"
-              type="button"
-              role="switch"
-              class="switch"
-              :aria-checked="edit.campus"
-              :disabled="busy"
-              @click="edit.campus = !edit.campus"
-            >
-              <span></span>
-            </button>
-          </div>
-          <div class="toggle-row">
-            <div>
-              <label for="bio-visible">公开个人介绍</label>
-              <p>允许其他用户查看个人介绍</p>
-            </div>
-            <button
-              id="bio-visible"
-              type="button"
-              role="switch"
-              class="switch"
-              :aria-checked="edit.intro"
-              :disabled="busy"
-              @click="edit.intro = !edit.intro"
-            >
-              <span></span>
-            </button>
-          </div>
-          <div class="form-footer">
-            <button type="button" class="secondary" @click="navigate('/me')">
-              取消</button
-            ><button class="primary" :disabled="busy">
-              {{ busy ? "保存中…" : "保存资料" }}
-            </button>
-          </div>
-        </form>
-        <form
-          v-else-if="path === '/me/password'"
-          class="panel password-panel live-form-panel"
-          @submit.prevent="changePassword"
-        >
-          <div class="panel-heading">
-            <div>
-              <Icon name="lock" />
-              <h3>修改密码</h3>
-            </div>
-          </div>
-          <div class="alert info-alert">修改后所有会话失效，需要重新登录。</div>
-          <div class="field">
-            <label for="current-password">当前密码</label
-            ><input
-              id="current-password"
-              v-model="password.current"
-              type="password"
-              autocomplete="current-password"
-              :disabled="busy"
-            />
-          </div>
-          <div class="field">
-            <label for="new-password">新密码</label
-            ><input
-              id="new-password"
-              v-model="password.next"
-              type="password"
-              autocomplete="new-password"
-              :disabled="busy"
-            /><small>12–64 个字符</small>
-          </div>
-          <div class="field">
-            <label for="new-confirm">确认新密码</label
-            ><input
-              id="new-confirm"
-              v-model="password.confirm"
-              type="password"
-              autocomplete="new-password"
-              :disabled="busy"
-            />
-          </div>
-          <div class="form-footer">
-            <button type="button" class="secondary" @click="navigate('/me')">
-              取消</button
-            ><button class="primary" :disabled="busy">
-              {{ busy ? "修改中…" : "确认修改密码" }}
-            </button>
-          </div>
-        </form>
-        <WordUserManagement
-          v-else-if="path === '/admin/users'"
-          :users="users"
-          :total="total"
-          :page="page"
-          :page-size="size"
-          :filters="filter"
-          :current-id="user.user_id"
-          :loading="loading"
-          @search="search"
-          @reset="reset"
-          @detail="navigate('/admin/users/' + $event.user_id)"
-          @status="statusDialog"
-          @logs="openUserLogs"
-          @page="
-            page = $event;
-            loadUsers();
-          "
-          @size="
-            size = $event;
-            page = 1;
-            loadUsers();
-          "
-          @unavailable="notify"
-        />
-        <template v-else-if="/^\/admin\/users\//.test(path)"
-          ><div v-if="loading" class="loading-state">正在加载用户详情…</div>
-          <section v-else-if="selected" class="panel">
-            <div class="detail-identity">
-              <span class="avatar large blue">{{ initials(selected) }}</span>
-              <div>
-                <h2>{{ selected.username }}</h2>
-                <p class="subtle">ID {{ selected.user_id }} · 管理视图已脱敏</p>
-              </div>
-            </div>
-            <dl class="info-list">
-              <div
-                v-for="[key, label] in [
-                  ['email', '邮箱'],
-                  ['phone', '手机号'],
-                  ['role', '角色'],
-                  ['account_status', '账号状态'],
-                  ['identity_verification', '实名认证'],
-                  ['campus_verification', '校园认证'],
-                ]"
-                :key="key"
-              >
-                <dt>{{ label }}</dt>
-                <dd>{{ selected[key] || "—" }}</dd>
-              </div>
-            </dl>
-            <div class="form-footer live-panel-footer">
-              <button
-                class="secondary"
-                @click="navigate('/admin/modules/permissions')"
-              >
-                <Icon name="lock" :size="15" />前往角色管理</button
-              ><button class="secondary" @click="openUserLogs(selected)">
-                查看操作日志</button
-              ><button
-                class="primary"
-                :disabled="selected.user_id === user.user_id"
-                @click="statusDialog(selected)"
-              >
-                {{
-                  selected.account_status === "ACTIVE" ? "停用账号" : "启用账号"
-                }}
-              </button>
-            </div>
-          </section></template
-        >
-        <section v-else class="panel pending-panel">
-          <div class="recovery-icon"><Icon name="task" :size="32" /></div>
-          <span class="eyebrow">COMING SOON</span>
-          <h2>{{ pendingName }}还在开发</h2>
-          <p>此页面已预留入口，功能完成后将在这里开放。</p>
-          <button
-            class="secondary"
-            @click="navigate(admin ? '/admin' : '/home')"
-          >
-            返回{{ admin ? "工作台" : "校园生活"
-            }}<Icon name="arrow" :size="16" />
-          </button>
-        </section>
-      </main>
-      <footer class="app-footer">
-        <span>校园Π · {{ admin ? "管理工作台" : "校园生活服务平台" }}</span
-        ><span>ACCOUNT & ACCESS</span>
-      </footer>
-    </div>
-    <nav v-if="!admin" class="mobile-nav">
-      <button @click="navigate('/home')"><Icon name="grid" />校园生活</button
-      ><button @click="navigate('/me')"><Icon name="user" />我的账号</button
-      ><button @click="navigate('/me/profile')">
-        <Icon name="edit" />资料隐私</button
-      ><button @click="navigate('/me/password')">
-        <Icon name="shield" />账号安全
+      <button
+        v-if="path.startsWith('/admin/users/')"
+        class="secondary"
+        @click="navigate('/admin/users')"
+      >
+        返回列表
       </button>
-    </nav>
-  </div>
+    </div>
+    <div
+      v-if="notice && !(admin && notice === '登录成功')"
+      class="alert info-alert"
+      role="status"
+    >
+      {{ notice
+      }}<button class="icon-button" aria-label="关闭提示" @click="notice = ''">
+        <Icon name="close" :size="15" />
+      </button>
+    </div>
+    <div v-if="error" class="alert error" role="alert">
+      {{ error
+      }}<button
+        v-if="path === '/admin/users'"
+        class="text-link"
+        @click="loadUsers"
+      >
+        重试
+      </button>
+    </div>
+    <AnalyticsPage v-if="path === '/admin/modules/analytics'" />
+    <AdminTaskPanel v-else-if="path === '/admin/modules/tasks'" />
+    <AdminNotificationPanel v-else-if="path === '/admin/modules/notices'" />
+    <AdminTradePanel
+      v-else-if="
+        ['/admin/modules/orders', '/admin/modules/reports'].includes(path)
+      "
+      :module="path.split('/').at(-1)"
+    />
+    <AdminSecurityPanel
+      v-else-if="
+        ['/admin/modules/verifications', '/admin/modules/permissions'].includes(
+          path,
+        )
+      "
+      :module="path.split('/').at(-1)"
+      @navigate="navigate"
+    />
+    <AdminContentPanel
+      v-else-if="isAdminContent"
+      :module="path === '/admin' ? 'dashboard' : path.split('/').at(-1)"
+      :audit-context="auditContext"
+      @navigate="navigate"
+    />
+    <template v-else-if="path === '/home' || path === '/admin'"
+      ><section class="panel welcome-panel">
+        <span class="badge blue-badge">{{
+          admin ? "管理工作台" : "欢迎回来"
+        }}</span>
+        <h2>{{ user.username }}，你好</h2>
+        <p>
+          {{
+            admin
+              ? "账号管理已开放，可查看平台用户并管理账号状态。"
+              : "账号已登录。你可以查看个人资料、设置公开范围和管理账号安全。"
+          }}
+        </p>
+        <button
+          class="primary"
+          @click="navigate(admin ? '/admin/users' : '/me')"
+        >
+          {{ admin ? "进入用户管理" : "进入个人中心"
+          }}<Icon name="arrow" :size="16" />
+        </button>
+      </section>
+      <div class="module-grid">
+        <button
+          v-for="item in admin
+            ? adminMenu.filter(
+                (m) => m[1] !== '/admin' && m[1] !== '/admin/users',
+              )
+            : modules"
+          :key="item[0]"
+          class="panel module-card"
+          @click="navigate(admin ? item[1] : `/modules/${item[0]}`)"
+        >
+          <Icon :name="item[2]" :size="24" /><strong>{{
+            admin ? item[0] : item[1]
+          }}</strong
+          ><span class="badge neutral">{{
+            admin && item[1] === "/admin/modules/analytics"
+              ? "模拟数据"
+              : "还在开发"
+          }}</span
+          ><Icon name="arrow" :size="16" />
+        </button></div
+    ></template>
+    <section v-else-if="path === '/me'" class="panel">
+      <div class="detail-identity">
+        <span class="avatar large blue">{{ initials(user) }}</span>
+        <div>
+          <h2>{{ user.username }}<span class="badge green">账号正常</span></h2>
+          <p class="subtle">
+            ID {{ user.user_id }} ·
+            {{ user.role === "ADMIN" ? "管理员" : "普通用户" }}
+          </p>
+        </div>
+      </div>
+      <dl class="info-list">
+        <div
+          v-for="[key, label] in [
+            ['email', '绑定邮箱'],
+            ['phone', '绑定手机号'],
+            ['campus', '认证校区'],
+            ['identity_verification', '实名认证'],
+            ['campus_verification', '校园认证'],
+            ['personal_bio', '个人介绍'],
+            ['address', '默认地址'],
+          ]"
+          :key="key"
+        >
+          <dt>{{ label }}</dt>
+          <dd>{{ user[key] || "尚未填写" }}</dd>
+        </div>
+        <div>
+          <dt>注册时间</dt>
+          <dd>{{ date(user.registration_time) }}</dd>
+        </div>
+      </dl>
+      <div class="form-footer live-panel-footer">
+        <button class="secondary" @click="navigate('/modules/B')">
+          查看认证</button
+        ><button class="primary" @click="navigate('/me/profile')">
+          编辑资料
+        </button>
+      </div>
+    </section>
+    <form
+      v-else-if="path === '/me/profile'"
+      class="panel edit-panel live-form-panel"
+      @submit.prevent="saveProfile"
+    >
+      <div class="panel-heading">
+        <div>
+          <Icon name="edit" />
+          <h3>个人资料</h3>
+        </div>
+      </div>
+      <div class="field">
+        <label>用户名</label><input :value="user.username" disabled />
+      </div>
+      <div class="field">
+        <label for="bio">个人介绍</label
+        ><textarea
+          id="bio"
+          v-model="edit.bio"
+          rows="3"
+          :disabled="busy"
+        ></textarea
+        ><small>最多 500 字</small>
+      </div>
+      <div class="field">
+        <label for="address">默认地址</label
+        ><input id="address" v-model="edit.address" :disabled="busy" /><small
+          >仅本人可见</small
+        >
+      </div>
+      <div class="toggle-row">
+        <div>
+          <label for="campus-visible">公开所在校区</label>
+          <p>认证校区按认证结果展示</p>
+        </div>
+        <button
+          id="campus-visible"
+          type="button"
+          role="switch"
+          class="switch"
+          :aria-checked="edit.campus"
+          :disabled="busy"
+          @click="edit.campus = !edit.campus"
+        >
+          <span></span>
+        </button>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <label for="bio-visible">公开个人介绍</label>
+          <p>允许其他用户查看个人介绍</p>
+        </div>
+        <button
+          id="bio-visible"
+          type="button"
+          role="switch"
+          class="switch"
+          :aria-checked="edit.intro"
+          :disabled="busy"
+          @click="edit.intro = !edit.intro"
+        >
+          <span></span>
+        </button>
+      </div>
+      <div class="form-footer">
+        <button type="button" class="secondary" @click="navigate('/me')">
+          取消</button
+        ><button class="primary" :disabled="busy">
+          {{ busy ? "保存中…" : "保存资料" }}
+        </button>
+      </div>
+    </form>
+    <form
+      v-else-if="path === '/me/password'"
+      class="panel password-panel live-form-panel"
+      @submit.prevent="changePassword"
+    >
+      <div class="panel-heading">
+        <div>
+          <Icon name="lock" />
+          <h3>修改密码</h3>
+        </div>
+      </div>
+      <div class="alert info-alert">修改后所有会话失效，需要重新登录。</div>
+      <div class="field">
+        <label for="current-password">当前密码</label
+        ><input
+          id="current-password"
+          v-model="password.current"
+          type="password"
+          autocomplete="current-password"
+          :disabled="busy"
+        />
+      </div>
+      <div class="field">
+        <label for="new-password">新密码</label
+        ><input
+          id="new-password"
+          v-model="password.next"
+          type="password"
+          autocomplete="new-password"
+          :disabled="busy"
+        /><small>12–64 个字符</small>
+      </div>
+      <div class="field">
+        <label for="new-confirm">确认新密码</label
+        ><input
+          id="new-confirm"
+          v-model="password.confirm"
+          type="password"
+          autocomplete="new-password"
+          :disabled="busy"
+        />
+      </div>
+      <div class="form-footer">
+        <button type="button" class="secondary" @click="navigate('/me')">
+          取消</button
+        ><button class="primary" :disabled="busy">
+          {{ busy ? "修改中…" : "确认修改密码" }}
+        </button>
+      </div>
+    </form>
+    <WordUserManagement
+      v-else-if="path === '/admin/users'"
+      :users="users"
+      :total="total"
+      :page="page"
+      :page-size="size"
+      :filters="filter"
+      :current-id="user.user_id"
+      :loading="loading"
+      @search="search"
+      @reset="reset"
+      @detail="navigate('/admin/users/' + $event.user_id)"
+      @status="statusDialog"
+      @logs="openUserLogs"
+      @page="
+        page = $event;
+        loadUsers();
+      "
+      @size="
+        size = $event;
+        page = 1;
+        loadUsers();
+      "
+      @unavailable="notify"
+    />
+    <template v-else-if="/^\/admin\/users\//.test(path)"
+      ><div v-if="loading" class="loading-state">正在加载用户详情…</div>
+      <section v-else-if="selected" class="panel">
+        <div class="detail-identity">
+          <span class="avatar large blue">{{ initials(selected) }}</span>
+          <div>
+            <h2>{{ selected.username }}</h2>
+            <p class="subtle">ID {{ selected.user_id }} · 管理视图已脱敏</p>
+          </div>
+        </div>
+        <dl class="info-list">
+          <div
+            v-for="[key, label] in [
+              ['email', '邮箱'],
+              ['phone', '手机号'],
+              ['role', '角色'],
+              ['account_status', '账号状态'],
+              ['identity_verification', '实名认证'],
+              ['campus_verification', '校园认证'],
+            ]"
+            :key="key"
+          >
+            <dt>{{ label }}</dt>
+            <dd>{{ selected[key] || "—" }}</dd>
+          </div>
+        </dl>
+        <div class="form-footer live-panel-footer">
+          <button
+            class="secondary"
+            @click="navigate('/admin/modules/permissions')"
+          >
+            <Icon name="lock" :size="15" />前往角色管理</button
+          ><button class="secondary" @click="openUserLogs(selected)">
+            查看操作日志</button
+          ><button
+            class="primary"
+            :disabled="selected.user_id === user.user_id"
+            @click="statusDialog(selected)"
+          >
+            {{ selected.account_status === "ACTIVE" ? "停用账号" : "启用账号" }}
+          </button>
+        </div>
+      </section></template
+    >
+    <section v-else class="panel pending-panel">
+      <div class="recovery-icon"><Icon name="task" :size="32" /></div>
+      <span class="eyebrow">COMING SOON</span>
+      <h2>{{ pendingName }}还在开发</h2>
+      <p>此页面已预留入口，功能完成后将在这里开放。</p>
+      <button class="secondary" @click="navigate(admin ? '/admin' : '/home')">
+        返回{{ admin ? "工作台" : "校园生活" }}<Icon name="arrow" :size="16" />
+      </button>
+    </section>
+  </WorkspaceLayout>
   <div
     v-if="statusTarget"
     class="modal-overlay"

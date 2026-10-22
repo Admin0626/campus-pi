@@ -36,6 +36,16 @@ def request(route,method='GET',body=None,token=None,key=None,raw=None,content_ty
  except urllib.error.HTTPError as e:r=e
  data=r.read();return r.status,data if binary else json.loads(data),dict(r.headers)
 def call(*args,**kwargs):return request(*args,**kwargs)[:2]
+
+def paged_items(route,token):
+ items=[]
+ for page in range(1,101):
+  separator='&' if '?' in route else '?'
+  status,result=call(route+separator+'page_size=100&page='+str(page),token=token)
+  if status!=200:raise AssertionError('Paged fixture lookup failed')
+  batch=result['data']['items'];items.extend(batch)
+  if not batch or len(items)>=int(result['data']['total']):return items
+ raise AssertionError('Paged fixture lookup exceeded local test limit')
 def login(name,password):
  status,r=call('/auth/login','POST',{'account':name,'password':password});check(status==200,'Real login succeeds');return r['data']['access_token']
 def user(label):
@@ -153,9 +163,9 @@ try:
  check(call('/admin/orders/'+o+'/cancel','POST',{'reason':' '},admin,secrets.token_hex(16))[0]==400,'Blank cancel reason rejected')
  check(call('/admin/orders/'+o+'/cancel','POST',{'reason':'x','buyer_id':buyer},admin,secrets.token_hex(16))[0]==400,'Cancellation cannot accept client-supplied participants')
  material=upload(buyer,'AFTERSALE');after=aftersale(paid,material);empty_after=aftersale(paid)
- status,r=call('/admin/aftersales?aftersale_status='+urllib.parse.quote('待审核'),token=admin);a=next(x for x in r['data']['items'] if x['aftersale_id']==after)
- check(status==200 and a['evidence_refs']==[material['file_ref']] and a['apply_amount']=='1.00' and 'refund_transaction_no' not in a,'Aftersale queue is readable with stable evidence refs and exact amounts')
- check(next(x for x in r['data']['items'] if x['aftersale_id']==empty_after)['evidence_refs']==[],'Null legacy aftersale attachments become an empty list')
+ aftersale_rows=paged_items('/admin/aftersales?aftersale_status='+urllib.parse.quote('待审核'),admin);a=next(x for x in aftersale_rows if x['aftersale_id']==after)
+ check(a['evidence_refs']==[material['file_ref']] and a['apply_amount']=='1.00' and 'refund_transaction_no' not in a,'Aftersale queue is readable with stable evidence refs and exact amounts')
+ check(next(x for x in aftersale_rows if x['aftersale_id']==empty_after)['evidence_refs']==[],'Null legacy aftersale attachments become an empty list')
  check(grant(material)[0]==200 and grant(material,ungranted)[0]==403,'Aftersale material requires order party or ORDERS duty')
  before=sql('SELECT aftersale_status FROM order_aftersales WHERE aftersale_id=%s',(after,)),audit_count('售后',after)
  check(call('/admin/aftersales/'+after+'/review','POST',{'decision':'通过','approve_amount':'1.00','reason':'not enabled'},admin,secrets.token_hex(16))[0]==501,'P1 refund review is explicitly unavailable without a real refund model/channel')

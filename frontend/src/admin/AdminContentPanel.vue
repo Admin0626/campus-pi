@@ -1,4 +1,6 @@
 <script setup>
+import AdminPageHeader from "./AdminPageHeader.vue";
+import AdminPagination from "./AdminPagination.vue";
 import { computed, ref, reactive, watch, onUnmounted } from "vue";
 import { api, requestKey } from "../api";
 import FilePreview from "./FilePreview.vue";
@@ -62,7 +64,6 @@ const time = (v) =>
     : "—";
 const id = (row) =>
   row.product_id || row.post_id || row.category_id || row.audit_id;
-const hasNext = computed(() => BigInt(page.value) * 20n < BigInt(total.value));
 const status = (row) =>
   row.audit_status || row.post_status || row.category_level || "";
 const stateClass = (value) =>
@@ -300,13 +301,11 @@ const dashboardCards = computed(() =>
 </script>
 <template>
   <section class="admin-content-panel" :aria-busy="loading">
-    <div class="admin-section-title">
-      <div>
-        <h2>{{ title }}</h2>
-        <p v-if="view !== 'dashboard'">共 {{ total }} 条记录</p>
-      </div>
-      <div class="admin-inline-actions">
-        <button
+    <AdminPageHeader
+      :title="title"
+      :subtitle="view === 'dashboard' ? undefined : `共 ${total} 条记录`"
+      ><template #actions
+        ><button
           v-if="view === 'dashboard'"
           @click="emit('navigate', '/admin/modules/reports')"
         >
@@ -324,9 +323,11 @@ const dashboardCards = computed(() =>
           @click="openCategory()"
         >
           ＋ 新增分类</button
-        ><button :disabled="loading || busy" @click="load">刷新</button>
-      </div>
-    </div>
+        ><button :disabled="loading || busy" @click="load">
+          刷新
+        </button></template
+      ></AdminPageHeader
+    >
     <div
       v-if="
         props.module === 'content' ||
@@ -575,14 +576,12 @@ const dashboardCards = computed(() =>
           </tbody>
         </table>
       </div>
-      <footer class="admin-pagination">
-        <span>第 {{ page }} 页 · 共 {{ total }} 条</span
-        ><button :disabled="page === 1 || loading || busy" @click="turn(-1)">
-          上一页</button
-        ><button :disabled="!hasNext || loading || busy" @click="turn(1)">
-          下一页
-        </button>
-      </footer>
+      <AdminPagination
+        :page="page"
+        :total="total"
+        :disabled="loading || busy"
+        @turn="turn"
+      />
     </template>
     <div v-if="detail || action || formOpen" class="admin-modal-backdrop">
       <section
@@ -681,4 +680,3 @@ const dashboardCards = computed(() =>
     </div>
   </section>
 </template>
-<style src="./admin-content.css"></style>

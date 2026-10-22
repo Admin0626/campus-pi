@@ -283,15 +283,17 @@ const fixture = JSON.parse(
       .click();
     if ((await toolsMenu.getAttribute("open")) === "")
       await toolsMenu.locator("summary").click();
+    // Shared workspace replaces the former whole-screen Word-image scaling.
+    // Internal chart proportions remain, while navigation/header use stable sizes.
     const reportRects = [
-      [".sidebar", [0, 0, 242, 1094]],
-      [".app-header", [242, 0, 1218, 62]],
-      [".analytics-toolbar", [282, 88, 1156, 44]],
-      [".analytics-metrics", [282, 132, 1156, 140]],
-      [".analytics-growth", [282, 280, 1156, 412]],
-      [".analytics-pie-card", [282, 696, 374, 394]],
-      [".analytics-monthly-card", [674, 696, 420, 394]],
-      [".analytics-content-card", [1114, 696, 324, 394]],
+      [".sidebar", [0, 0, 240, 1094]],
+      [".app-header", [240, 0, 1220, 64]],
+      [".analytics-toolbar", [264, 88, 1172, 44]],
+      [".analytics-metrics", [264, 132, 1172, 140]],
+      [".analytics-growth", [264, 280, 1172, 412]],
+      [".analytics-pie-card", [264, 696, 380, 394]],
+      [".analytics-monthly-card", [662, 696, 427, 394]],
+      [".analytics-content-card", [1107, 696, 329, 394]],
     ];
     for (const [selector, expected] of reportRects) {
       const rect = await page.locator(selector).boundingBox();
@@ -299,7 +301,8 @@ const fixture = JSON.parse(
         [rect.x, rect.y, rect.width, rect.height].every(
           (v, i) => Math.abs(v - expected[i]) <= 2,
         ),
-        selector + " matches original Word coordinates at 2x content scale",
+        selector +
+          " follows shared workspace dimensions and Word chart proportions",
       );
     }
     ok(
@@ -307,6 +310,12 @@ const fixture = JSON.parse(
         .locator(".analytics-toolbar .analytics-toolbar-actions")
         .count()) === 0,
       "extra tools moved into the original ellipsis menu",
+    );
+    await page.waitForFunction(
+      () =>
+        getComputedStyle(
+          document.querySelector(".analytics-period-tabs button.selected"),
+        ).backgroundColor === "rgb(79, 70, 229)",
     );
     ok(
       (await page
@@ -332,6 +341,7 @@ const fixture = JSON.parse(
       [2560, 1440],
     ]) {
       await page.setViewportSize({ width, height });
+      await page.evaluate(() => scrollTo(0, 0));
       await page.waitForFunction(() => {
         const canvas = document.querySelector(".analytics-trend-canvas");
         const svg = canvas.querySelector("svg");
@@ -346,11 +356,15 @@ const fixture = JSON.parse(
             .querySelector(".analytics-bottom-grid")
             .getBoundingClientRect();
           return (
-            bottom.bottom <= innerHeight + 2 &&
+            bottom.top >=
+              document
+                .querySelector(".analytics-growth")
+                .getBoundingClientRect().bottom &&
+            bottom.bottom <= document.documentElement.scrollHeight + 2 &&
             document.documentElement.scrollWidth <= innerWidth
           );
         }),
-        `${width}x${height} wide dashboard keeps all three lower charts in view`,
+        `${width}x${height} lower charts follow the trend in normal document flow without horizontal overflow`,
       );
       ok(
         await page.evaluate(() => {

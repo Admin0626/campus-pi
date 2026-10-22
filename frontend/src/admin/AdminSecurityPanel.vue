@@ -1,4 +1,6 @@
 <script setup>
+import AdminPageHeader from "./AdminPageHeader.vue";
+import AdminPagination from "./AdminPagination.vue";
 import { computed, ref, watch, onUnmounted } from "vue";
 import { api, requestKey } from "../api";
 import FilePreview from "./FilePreview.vue";
@@ -20,7 +22,6 @@ const state = ref(""),
   reason = ref(""),
   role = ref("USER");
 const title = computed(() => (verification.value ? "认证审核" : "权限管理"));
-const next = computed(() => BigInt(page.value) * 20n < BigInt(total.value));
 const time = (value) =>
   value
     ? new Date(value).toLocaleString("zh-CN", {
@@ -160,16 +161,14 @@ const fields = computed(() =>
 </script>
 <template>
   <section class="admin-content-panel" :aria-busy="loading">
-    <div class="admin-section-title">
-      <div>
-        <h2>{{ title }}</h2>
-        <p>共 {{ total }} 条记录</p>
-      </div>
-      <div class="admin-inline-actions">
-        <button :disabled="loading || busy" @click="load">刷新</button
-        ><button @click="emit('navigate', '/admin')">返回控制台</button>
-      </div>
-    </div>
+    <AdminPageHeader :title="title" :subtitle="`共 ${total} 条记录`"
+      ><template #actions
+        ><button :disabled="loading || busy" @click="load">刷新</button
+        ><button @click="emit('navigate', '/admin')">
+          返回控制台
+        </button></template
+      ></AdminPageHeader
+    >
     <p class="admin-source-note">
       {{
         verification
@@ -267,14 +266,12 @@ const fields = computed(() =>
         </tbody>
       </table>
     </div>
-    <footer class="admin-pagination">
-      <span>第 {{ page }} 页 · 共 {{ total }} 条</span
-      ><button :disabled="page === 1 || loading || busy" @click="turn(-1)">
-        上一页</button
-      ><button :disabled="!next || loading || busy" @click="turn(1)">
-        下一页
-      </button>
-    </footer>
+    <AdminPagination
+      :page="page"
+      :total="total"
+      :disabled="loading || busy"
+      @turn="turn"
+    />
     <div v-if="detail || action" class="admin-modal-backdrop">
       <section
         class="admin-dialog"

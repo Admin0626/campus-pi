@@ -628,263 +628,19 @@
   }
 }
 /* Figure 5-28: original Word administration layout. */
-.word-admin-shell {
-  --blue: #5141e9;
-  --navy: #1e293b;
-  --line: #dce3ed;
-  grid-template-columns: 16.14% minmax(0, 1fr);
-  background: #fff;
-  color: #242424;
-  font-family: Arial, "Microsoft YaHei", sans-serif;
-}
-.word-admin-shell .sidebar {
-  width: auto;
-  background: #1e293b;
-  padding: 0;
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 16.14%;
-  min-width: 0;
-  border-right: 1px solid #657080;
-  color: #c3cbd7;
-}
-.word-admin-shell .brand {
-  height: 61px;
-  padding: 0 8px;
-  display: flex;
-  gap: 7px;
-  font-size: clamp(14px, 1.42vw, 23px);
-  font-weight: 600;
-  color: white;
-  border-bottom: 1px solid #a5a9b2;
-  margin: 0;
-  white-space: nowrap;
-}
-.word-admin-shell .brand svg {
-  fill: white;
-  stroke-width: 2.6;
-  width: 23px;
-}
-.word-admin-shell .sidebar-section {
-  color: #8794a6;
-  font-size: 13px;
-  padding: 17px 8px 9px;
-  margin: 0;
-  font-weight: 400;
-  letter-spacing: 0;
-}
-.word-admin-shell .side-menu {
-  padding: 0;
-  gap: 0;
-}
-.word-admin-shell .side-menu > button {
-  height: 51px;
-  border-radius: 0;
-  padding: 0 9px;
-  gap: 21px;
-  font-size: 18px;
-  font-weight: 400;
-  color: #c3cbd7;
-  white-space: nowrap;
-}
-.word-admin-shell .side-menu > button.selected {
-  background: #5141e9;
-  color: #fff;
-}
-.word-admin-shell .side-menu > button svg {
-  width: 19px;
-  height: 19px;
-}
-.word-admin-shell .side-menu .word-system-section {
-  margin-top: 17px;
-  margin-bottom: 1px;
-  padding: 11px 8px;
-}
-.word-admin-shell .sidebar-bottom {
-  margin: 0;
-  padding: 12px 7px;
-  border-top: 1px solid #364154;
-}
-.word-admin-shell .sidebar-user {
-  padding: 0;
-  gap: 12px;
-}
-.word-admin-shell .sidebar-user .avatar {
-  background: #d9d9d9;
-  color: transparent;
-  width: 42px;
-  height: 42px;
-}
-.word-admin-shell .sidebar-user strong {
-  font-weight: 400;
-  font-size: 16px;
-}
-.word-admin-shell .sidebar-user small {
-  font-size: 12px;
-  color: #88aabc;
-}
-.word-admin-shell .sidebar-user > svg {
-  margin-left: auto;
-}
-.word-admin-shell .app-body {
-  min-width: 0;
-}
-.word-admin-shell .app-header {
-  height: 64px;
-  padding: 0 27px;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 3px 3px #0003;
-  z-index: 3;
-  position: relative;
-}
-.word-admin-page-title {
-  font-size: 24px;
-  font-weight: 400;
-}
-.word-admin-header-tools {
-  display: flex;
-  align-items: center;
-  gap: 26px;
-}
-.word-global-search {
-  display: flex;
-  align-items: center;
-  border: 1px solid #999;
-  border-radius: 10px;
-  height: 47px;
-  width: 310px;
-  gap: 13px;
-  padding: 0 12px;
-  color: #aaa;
-}
-.word-global-search input {
-  height: 100%;
-  border: 0;
-  padding: 0;
-  font-size: 23px;
-  background: transparent;
-  box-shadow: none;
-}
-.word-global-search svg {
-  width: 22px;
-  height: 22px;
-}
-.word-admin-header-tools > button {
-  position: relative;
-  padding: 0;
-  width: 24px;
-  font-size: 20px;
-  color: #000;
-}
-.word-admin-header-tools > button span {
-  position: absolute;
-  left: 8px;
-  top: 8px;
-  color: #fff;
-  font-size: 11px;
-  line-height: 1;
-}
-.word-admin-header-tools > button > .report-notice-count {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 14px;
-  height: 14px;
-  padding: 0 2px;
-  left: 14px;
-  top: -4px;
-  border-radius: 8px;
-  background: #ef4444;
-}
-.word-admin-users .content {
-  padding: 0;
-  margin: 14px 0 0;
-  max-width: none;
-  min-height: calc(100vh - 78px);
-  background: #fff;
-}
-.word-admin-users .page-heading {
-  display: none;
-}
-.word-admin-users .content > .alert {
-  position: fixed;
-  top: 68px;
-  right: 20px;
-  max-width: 430px;
-  z-index: 15;
-  box-shadow: 0 3px 15px #0002;
-  font-size: 13px;
-}
-.word-user-toolbar {
-  min-height: 106px;
-  padding: 17px 20px 22px 33px;
-  border-bottom: 1px solid #dce3ed;
-  background: #fafafa;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-.word-user-toolbar h1 {
-  font-size: 17px;
-  font-weight: 400;
-  margin: 0;
-  line-height: 1.4;
-}
-.word-user-toolbar p {
-  font-size: 12px;
-  color: #999;
-  line-height: 1.5;
-}
-.word-user-tools {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  padding-top: 2px;
-}
-.word-user-tools button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 44px;
-  background: #5141e9;
-  border: 1px solid #a294ff;
-  color: white;
-  border-radius: 4px;
-  font-size: 19px;
-  white-space: nowrap;
-  padding: 0 12px;
-}
-.word-user-tools svg {
-  width: 25px;
-  height: 25px;
-}
-.word-user-tools .word-batch {
-  background: #85cfec;
-  border-color: #a7d8ed;
-}
-.word-plus {
-  font-size: 32px;
-  font-weight: 200;
-  line-height: 1;
-}
 .word-user-filters {
-  margin-top: 19px;
-  min-height: 157px;
-  border-top: 1px solid #dce3ed;
-  border-bottom: 1px solid #dce3ed;
-  padding: 12px 31px 19px 27px;
   display: grid;
-  grid-template-columns: 25.2% 39% minmax(0, 1fr);
-  column-gap: 14px;
-  row-gap: 14px;
+  grid-template-columns: minmax(170px, 1fr) minmax(130px, 0.7fr) minmax(
+      300px,
+      1.5fr
+    );
+  gap: 16px;
+  margin: 20px 0 24px;
+  padding: 0;
 }
 .word-user-filters label {
   display: block;
-  font-size: 16px;
+  font-size: var(--admin-font-size);
   font-weight: 400;
   color: #354052;
   line-height: 1.5;
@@ -892,10 +648,10 @@
 }
 .word-user-filters input,
 .word-user-filters select {
-  height: 44px;
+  height: var(--admin-control-height);
   border-color: #d3ddeb;
   border-radius: 6px;
-  font-size: 16px;
+  font-size: var(--admin-font-size);
   color: #485161;
   padding: 0 14px;
 }
@@ -918,7 +674,7 @@
   gap: 20px;
 }
 .word-filter-actions button {
-  height: 41px;
+  height: var(--admin-control-height);
   border: 1px solid #9e93f5;
   border-radius: 4px;
   background: #5141e9;
@@ -927,25 +683,26 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 16px;
+  font-size: var(--admin-font-size);
 }
 .word-filter-actions svg {
   width: 22px;
   height: 22px;
 }
 .word-user-table-wrap {
-  margin: 77px 9px 0 17px;
+  margin: 0;
   overflow: auto;
 }
 .word-user-table {
   width: 100%;
+  min-width: 1120px;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 16px;
   white-space: nowrap;
+  font-size: var(--admin-font-size);
 }
 .word-user-table th {
-  height: 51px;
+  height: 44px;
   background: #f0f5fa;
   font-weight: 400;
   color: #354052;
@@ -954,7 +711,7 @@
   padding: 0 9px;
 }
 .word-user-table td {
-  height: 65px;
+  height: 56px;
   border-bottom: 1px solid #e3e7ef;
   padding: 0 9px;
   text-align: left;
@@ -1034,40 +791,6 @@
   padding: 60px 20px;
   text-align: center;
   color: #777;
-}
-.word-user-pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  padding: 31px 14px 30px 28px;
-  font-size: 14px;
-}
-.word-user-pagination > div {
-  display: flex;
-}
-.word-user-pagination button {
-  border: 1px solid #d4dfed;
-  min-width: 33px;
-  height: 40px;
-  margin-left: -1px;
-  font-size: 18px;
-}
-.word-user-pagination button.current {
-  color: #5141e9;
-  background: #f7f5ff;
-}
-.word-user-pagination label {
-  display: flex;
-  align-items: center;
-  color: #8a919c;
-  font-size: 13px;
-  gap: 10px;
-}
-.word-user-pagination select {
-  height: 39px;
-  width: 80px;
-  font-size: 14px;
 }
 /* Figure 5-18: personal center, content only (system status/navigation are native). */
 .word-me-page {
@@ -1245,16 +968,6 @@
   margin-top: -12px;
 }
 @media (max-width: 1100px) {
-  .word-admin-shell .side-menu > button {
-    font-size: 14px;
-    gap: 12px;
-  }
-  .word-user-tools {
-    gap: 8px;
-  }
-  .word-user-tools button {
-    font-size: 14px;
-  }
   .word-user-filters {
     grid-template-columns: 1fr 1fr;
     padding: 15px;
@@ -1266,65 +979,11 @@
   .word-user-table {
     min-width: 1150px;
   }
-  .word-admin-header-tools {
-    gap: 16px;
-  }
-  .word-global-search {
-    width: 230px;
-  }
-  .word-admin-page-title {
-    font-size: 21px;
-  }
 }
 @media (max-width: 650px) {
-  .word-admin-shell {
-    display: block;
-  }
-  .word-admin-shell .sidebar {
-    display: none;
-  }
-  .word-admin-shell .app-header {
-    padding: 0 15px;
-  }
-  .word-admin-shell .word-global-search {
-    display: none;
-  }
-  .word-user-toolbar {
-    padding: 15px;
-    flex-wrap: wrap;
-  }
-  .word-user-tools {
-    width: 100%;
-    justify-content: flex-end;
-  }
-  .word-user-tools button {
-    font-size: 12px;
-    height: 34px;
-    padding: 0 7px;
-  }
-  .word-user-tools svg {
-    width: 17px;
-    height: 17px;
-  }
-  .word-user-pagination {
-    padding: 20px 14px;
-    flex-wrap: wrap;
-    font-size: 12px;
-  }
-  .word-user-pagination label {
-    margin-left: auto;
-  }
   .word-user-table-wrap {
-    margin-top: 35px;
+    margin-top: 0;
   }
-}
-.word-admin-user-return {
-  font-size: 11px;
-  color: #9eb1c6;
-  display: block;
-  margin: 0 0 8px auto;
-  padding: 0;
-  text-decoration: underline;
 }
 .word-home-page {
   min-height: 770px;
@@ -1434,55 +1093,16 @@
   font-size: 14px;
   margin-top: 18px;
 }
-.word-admin-shell {
-  display: block;
-}
-.word-admin-shell .app-body {
-  margin-left: 16.14%;
-}
-.word-admin-shell .sidebar .brand {
-  align-items: center;
-  flex-shrink: 0;
-}
-.word-admin-shell .sidebar-bottom {
-  margin-top: auto;
-}
-.word-admin-shell .sidebar-user {
-  border-top: 0;
-}
-.word-admin-shell .sidebar-user .avatar {
-  border-radius: 50%;
-}
-.word-admin-shell .app-header {
-  flex-shrink: 0;
-}
-.word-admin-shell .app-footer {
-  display: none;
-}
 .word-user-table td,
 .word-user-table th {
-  font-size: 16px;
-  color: #303030;
+  font-size: var(--admin-font-size);
+  color: var(--admin-text);
 }
 .word-user-table td {
   font-family: Arial, "Microsoft YaHei", sans-serif;
 }
 .word-user-table th {
   color: #354052;
-}
-.word-admin-shell .side-menu > button.selected:hover {
-  background: #5141e9;
-}
-.word-admin-shell .side-menu > button:hover {
-  background: #29364a;
-}
-.word-admin-shell .side-menu > button.selected svg {
-  color: #fff;
-}
-@media (max-width: 650px) {
-  .word-admin-shell .app-body {
-    margin-left: 0;
-  }
 }
 /* Personal-center proportions use the 232px content width of figure 5-18. */
 .word-me-header {

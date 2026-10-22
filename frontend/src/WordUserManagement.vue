@@ -1,4 +1,6 @@
 <script setup>
+import AdminPageHeader from "./admin/AdminPageHeader.vue";
+import AdminPagination from "./admin/AdminPagination.vue";
 import Icon from "./Icon.vue";
 defineProps({
   users: Array,
@@ -36,21 +38,17 @@ const tip = (name) =>
 </script>
 <template>
   <section class="word-user-management">
-    <div class="word-user-toolbar">
-      <div>
-        <h1>用户列表</h1>
-        <p>共{{ total }}名用户</p>
-      </div>
-      <div class="word-user-tools">
+    <AdminPageHeader title="用户列表" :subtitle="`共${total}名用户`"
+      ><template #actions>
         <button @click="tip('意见反馈管理')">
           <Icon name="file" />意见反馈管理</button
         ><button class="word-batch" @click="tip('批量操作')">
           <Icon name="grid" />批量操作⌄</button
         ><button @click="tip('新增用户')">
-          <span class="word-plus">＋</span>新增用户
+          <Icon name="plus" />新增用户
         </button>
-      </div>
-    </div>
+      </template></AdminPageHeader
+    >
     <form class="word-user-filters" @submit.prevent="emit('search')">
       <div class="word-filter-name">
         <label for="search">用户名/id搜索</label
@@ -187,39 +185,14 @@ const tip = (name) =>
         </tbody>
       </table>
     </div>
-    <footer class="word-user-pagination">
-      <span
-        >显示{{ Number(total) ? (page - 1) * pageSize + 1 : 0 }}至{{
-          Math.min(page * pageSize, Number(total))
-        }}条，共{{ total }}条</span
-      >
-      <div>
-        <button
-          aria-label="上一页"
-          :disabled="page <= 1 || loading"
-          @click="emit('page', page - 1)"
-        >
-          〈</button
-        ><button class="current">{{ page }}</button
-        ><button
-          aria-label="下一页"
-          :disabled="page * pageSize >= Number(total) || loading"
-          @click="emit('page', page + 1)"
-        >
-          〉
-        </button>
-      </div>
-      <label
-        >每页显示：<select
-          :value="pageSize"
-          aria-label="每页显示条数"
-          @change="emit('size', Number($event.target.value))"
-        >
-          <option :value="10">10条</option>
-          <option :value="20">20条</option>
-          <option :value="50">50条</option>
-        </select></label
-      >
-    </footer>
+    <AdminPagination
+      :page="page"
+      :total="total"
+      :page-size="pageSize"
+      :page-sizes="[10, 20, 50]"
+      :disabled="loading"
+      @turn="emit('page', page + $event)"
+      @size="emit('size', $event)"
+    />
   </section>
 </template>

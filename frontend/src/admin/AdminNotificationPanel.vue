@@ -1,4 +1,6 @@
 <script setup>
+import AdminPageHeader from "./AdminPageHeader.vue";
+import AdminPagination from "./AdminPagination.vue";
 import { ref, reactive, watch, onUnmounted } from "vue";
 import { api, requestKey } from "../api";
 const tab = ref("notices"),
@@ -276,21 +278,19 @@ async function confirmAction() {
 </script>
 <template>
   <section class="admin-content-panel notice-panel" :aria-busy="loading">
-    <div class="admin-section-title">
-      <div>
-        <h2>通知管理</h2>
-        <p>共 {{ total }} 条记录</p>
-      </div>
-      <div class="admin-inline-actions">
-        <button
+    <AdminPageHeader title="通知管理" :subtitle="`共 ${total} 条记录`"
+      ><template #actions
+        ><button
           class="admin-purple"
           :disabled="busy || loading"
           @click="open()"
         >
           ＋ 新建通知</button
-        ><button :disabled="busy || loading" @click="load">刷新</button>
-      </div>
-    </div>
+        ><button :disabled="busy || loading" @click="load">
+          刷新
+        </button></template
+      ></AdminPageHeader
+    >
     <div class="admin-tabs">
       <button
         :class="{ active: tab === 'notices' }"
@@ -458,19 +458,12 @@ async function confirmAction() {
         </tbody>
       </table>
     </div>
-    <footer class="admin-pagination">
-      <span>第 {{ page }} 页 · 共 {{ total }} 条</span>
-      <div>
-        <button :disabled="busy || loading || page <= 1" @click="turn(-1)">
-          上一页</button
-        ><button
-          :disabled="busy || loading || BigInt(page) * 20n >= BigInt(total)"
-          @click="turn(1)"
-        >
-          下一页
-        </button>
-      </div>
-    </footer>
+    <AdminPagination
+      :page="page"
+      :total="total"
+      :disabled="loading || busy"
+      @turn="turn"
+    />
     <p class="admin-source-note">
       草稿不会发送。发布状态表示接收者快照已建立，实际到达以投递记录为准；关闭则不接收，免打扰结束后投递，安全通知同样遵守偏好。
     </p>

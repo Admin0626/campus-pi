@@ -1,3 +1,4 @@
+/* Shared admin panels, tables, filters, actions, pagination and dialogs. */
 .word-admin-content .page-heading {
   display: none;
 }
@@ -48,7 +49,8 @@
   min-height: 65vh;
   padding: 22px 24px;
   color: #263238;
-  font-size: 13px;
+  font-size: var(--admin-font-size, 14px);
+  border-radius: 8px;
 }
 .admin-section-title {
   display: flex;
@@ -69,15 +71,17 @@
 .admin-inline-actions {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 .admin-content-panel button {
   border: 1px solid #e0e5ed;
   border-radius: 4px;
   background: #fff;
   color: #505d70;
-  padding: 7px 12px;
+  padding: 6px 12px;
   cursor: pointer;
   font: inherit;
+  min-height: var(--admin-control-height, 36px);
 }
 .admin-content-panel button:disabled {
   opacity: 0.45;
@@ -91,9 +95,9 @@
   outline-offset: 2px;
 }
 .admin-content-panel .admin-purple {
-  background: #5749ee;
+  background: var(--admin-primary, #4f46e5);
   color: white;
-  border-color: #5749ee;
+  border-color: var(--admin-primary, #4f46e5);
 }
 .admin-tabs {
   display: flex;
@@ -135,6 +139,7 @@
   background: #fff;
   color: #263238;
   font: inherit;
+  min-height: var(--admin-control-height, 36px);
 }
 .admin-filters input {
   width: 190px;
@@ -146,18 +151,22 @@
 .admin-content-panel table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: var(--admin-font-size, 14px);
 }
 .admin-content-panel th {
+  font-size: var(--admin-font-size, 14px);
   text-align: left;
   background: #f1f5f9;
   color: #617084;
-  padding: 12px 10px;
+  padding: 10px;
+  height: 44px;
   font-weight: 500;
   white-space: nowrap;
 }
 .admin-content-panel td {
-  padding: 15px 10px;
+  font-size: var(--admin-font-size, 14px);
+  padding: 10px;
+  height: 56px;
   border-bottom: 1px solid #f0f1f4;
   max-width: 280px;
   overflow-wrap: anywhere;
@@ -170,7 +179,8 @@
   padding: 4px 6px;
   border: 0;
   color: #4f46e5;
-  font-size: 12px;
+  font-size: 13px;
+  min-height: 28px;
 }
 .admin-content-panel button.positive {
   color: #059669;
@@ -207,6 +217,7 @@
   align-items: center;
   gap: 10px;
   margin-top: 24px;
+  flex-wrap: wrap;
 }
 .admin-pagination span {
   margin-right: auto;

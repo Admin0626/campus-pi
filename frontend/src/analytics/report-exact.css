@@ -48,169 +48,9 @@
   visibility: hidden;
 }
 @media (min-width: 651px) {
-  .word-analytics-shell {
-    /* Keep the Word geometry at its native aspect ratio, but do not magnify a
-       short widescreen dashboard solely from its width. Small windows may scroll. */
-    --report-u: min(calc(100vw / 730), max(1.5px, calc(100dvh / 547)));
-    background: #f8fafc;
-    min-height: calc(547 * var(--report-u));
-    font-family: Arial, "Microsoft YaHei", sans-serif;
-  }
-  .word-analytics-shell .sidebar {
-    width: calc(121 * var(--report-u));
-    border-right: calc(0.5 * var(--report-u)) solid #cbd5e1;
-    background: #1e293b;
-    height: 100vh;
-  }
-  .word-analytics-shell .app-body {
-    margin-left: calc(121 * var(--report-u));
-  }
-  .word-analytics-shell .sidebar .brand {
-    height: calc(31 * var(--report-u));
-    padding: 0 calc(7 * var(--report-u));
-    gap: calc(4 * var(--report-u));
-    font-size: calc(10 * var(--report-u));
-    border-bottom: calc(0.5 * var(--report-u)) solid #8793a3;
-    align-items: center;
-  }
-  .word-analytics-shell .sidebar-section {
-    height: calc(19 * var(--report-u));
-    font-size: calc(6 * var(--report-u));
-    padding: calc(7 * var(--report-u)) calc(10 * var(--report-u)) 0;
-    line-height: 1.3;
-    letter-spacing: 0;
-    color: #8491a4;
-  }
-  .word-analytics-shell .side-menu {
-    gap: 0;
-  }
-  .word-analytics-shell .side-menu > button {
-    height: calc(24.5 * var(--report-u));
-    padding: 0 calc(9 * var(--report-u));
-    gap: calc(7 * var(--report-u));
-    font-size: calc(8 * var(--report-u));
-    color: #cbd5e1;
-    font-weight: 400;
-    border-radius: 0;
-  }
-  .word-analytics-shell .side-menu > button.selected {
-    background: #4f46e5;
-    color: white;
-  }
-  .word-analytics-shell .side-menu > button.selected:hover {
-    background: #4f46e5;
-  }
-  .word-analytics-shell .side-menu .word-system-section {
-    height: calc(26 * var(--report-u));
-    margin: 0;
-    padding: calc(12 * var(--report-u)) calc(10 * var(--report-u)) 0;
-    font-size: calc(6 * var(--report-u));
-  }
-  .word-analytics-shell .sidebar-bottom {
-    border-top: calc(0.5 * var(--report-u)) solid #334155;
-    padding: calc(9 * var(--report-u)) calc(8 * var(--report-u));
-    height: calc(44 * var(--report-u));
-    margin-top: auto;
-  }
-  .word-analytics-shell .sidebar-user {
-    gap: calc(7 * var(--report-u));
-    border: 0;
-    padding: 0;
-    height: calc(25 * var(--report-u));
-  }
-  .word-analytics-shell .sidebar-user .avatar {
-    height: calc(20 * var(--report-u));
-    width: calc(20 * var(--report-u));
-    border-radius: 50%;
-    background: #d9d9d9;
-  }
-  .word-analytics-shell .sidebar-user strong {
-    font-size: calc(6.5 * var(--report-u));
-    line-height: 1.4;
-  }
-  .word-analytics-shell .sidebar-user small {
-    font-size: calc(5.5 * var(--report-u));
-    margin-top: calc(1 * var(--report-u));
-    color: #7c9caf;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .word-analytics-shell .sidebar-user > svg {
-    height: calc(9 * var(--report-u));
-    width: calc(9 * var(--report-u));
-    color: #cbd5e1;
-  }
-  .word-analytics-shell .app-header {
-    height: calc(31 * var(--report-u));
-    padding: 0 calc(22 * var(--report-u));
-    box-shadow: 0 calc(1.5 * var(--report-u)) calc(1.5 * var(--report-u)) #0003;
-    border-bottom: calc(0.5 * var(--report-u)) solid #ddd;
-  }
-  .word-analytics-shell .word-admin-page-title {
-    font-size: calc(12 * var(--report-u));
-    font-weight: 400;
-  }
-  .word-analytics-shell .word-admin-header-tools {
-    gap: calc(16 * var(--report-u));
-  }
-  .word-analytics-shell .word-global-search {
-    width: calc(149 * var(--report-u));
-    height: calc(23 * var(--report-u));
-    padding: 0 calc(7 * var(--report-u));
-    gap: calc(7 * var(--report-u));
-    border-radius: calc(4 * var(--report-u));
-    border-width: calc(0.5 * var(--report-u));
-  }
-  .word-analytics-shell .word-global-search input {
-    font-size: calc(9 * var(--report-u));
-    font-weight: 400;
-  }
-  .word-analytics-shell .word-global-search svg {
-    width: calc(9 * var(--report-u));
-    height: calc(9 * var(--report-u));
-  }
-  .word-analytics-shell .word-admin-header-tools > button {
-    width: calc(10 * var(--report-u));
-    font-size: calc(10 * var(--report-u));
-  }
-  .word-analytics-shell .word-admin-header-tools > button > svg {
-    width: calc(10 * var(--report-u));
-    height: calc(10 * var(--report-u));
-    fill: #111;
-  }
-  .word-analytics-shell .word-admin-header-tools > button > span {
-    font-size: calc(6 * var(--report-u));
-    top: calc(4 * var(--report-u));
-    left: calc(3 * var(--report-u));
-  }
-  .word-analytics-shell
-    .word-admin-header-tools
-    > button
-    > .report-notice-count {
-    width: calc(8 * var(--report-u));
-    min-width: calc(8 * var(--report-u));
-    height: calc(8 * var(--report-u));
-    padding: 0;
-    font-size: calc(5 * var(--report-u));
-    background: #ef4444;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    left: calc(7 * var(--report-u));
-    top: calc(-5 * var(--report-u));
-    border-radius: 50%;
-    color: white;
-    line-height: 1;
-  }
-  .word-analytics-shell .content {
-    padding: calc(13 * var(--report-u)) calc(11 * var(--report-u)) 0
-      calc(20 * var(--report-u));
-    margin: 0;
-    min-height: calc(516 * var(--report-u));
-    background: #f8fafc;
-  }
   .analytics-page {
+    --report-u: 2px;
+    container-type: inline-size;
     max-width: none;
     margin: 0;
     --analytics-purple: #4f46e5;
@@ -597,7 +437,7 @@
     display: none;
   }
 }
-@media (min-width: 651px) and (min-aspect-ratio: 3/2) {
+@media (min-width: 651px) {
   .analytics-growth .analytics-series-legend {
     left: 50%;
     transform: translateX(-50%);
@@ -627,6 +467,25 @@
     background: #4eb49a !important;
   }
 }
-.word-analytics-shell button {
-  transition: none;
+
+/* Keep readable dimensions; only the content grid changes with available width. */
+@container (max-width: 1100px) {
+  .analytics-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    height: auto;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .analytics-bottom-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .analytics-bottom-grid .analytics-content-card {
+    grid-column: 1 / -1;
+  }
+}
+@container (max-width: 900px) {
+  .analytics-bottom-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

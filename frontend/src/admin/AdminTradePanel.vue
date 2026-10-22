@@ -1,4 +1,6 @@
 <script setup>
+import AdminPageHeader from "./AdminPageHeader.vue";
+import AdminPagination from "./AdminPagination.vue";
 import { computed, ref, watch, onUnmounted } from "vue";
 import { api, requestKey } from "../api";
 import FilePreview from "./FilePreview.vue";
@@ -51,7 +53,6 @@ const states = computed(
       reports: ["待审核", "成立", "不成立"],
     })[view.value],
 );
-const next = computed(() => BigInt(page.value) * 20n < BigInt(total.value));
 const time = (value) =>
   value
     ? new Date(value).toLocaleString("zh-CN", {
@@ -312,13 +313,13 @@ const fields = computed(() => {
 </script>
 <template>
   <section class="admin-content-panel" :aria-busy="loading">
-    <div class="admin-section-title">
-      <div>
-        <h2>{{ title }}</h2>
-        <p>共 {{ total }} 条记录</p>
-      </div>
-      <button :disabled="loading || busy" @click="load">刷新</button>
-    </div>
+    <AdminPageHeader :title="title" :subtitle="`共 ${total} 条记录`"
+      ><template #actions
+        ><button :disabled="loading || busy" @click="load">
+          刷新
+        </button></template
+      ></AdminPageHeader
+    >
     <div v-if="props.module === 'orders'" class="admin-tabs trade-tabs">
       <button
         v-for="[value, label] in [
@@ -478,14 +479,12 @@ const fields = computed(() => {
         </tbody>
       </table>
     </div>
-    <footer class="admin-pagination">
-      <span>第 {{ page }} 页 · 共 {{ total }} 条</span
-      ><button :disabled="page === 1 || loading || busy" @click="turn(-1)">
-        上一页</button
-      ><button :disabled="!next || loading || busy" @click="turn(1)">
-        下一页
-      </button>
-    </footer>
+    <AdminPagination
+      :page="page"
+      :total="total"
+      :disabled="loading || busy"
+      @turn="turn"
+    />
     <div v-if="detail || action" class="admin-modal-backdrop">
       <section
         class="admin-dialog"
