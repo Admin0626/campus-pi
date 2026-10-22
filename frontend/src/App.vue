@@ -807,6 +807,7 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
       :filters="filter"
       :current-id="user.user_id"
       :loading="loading"
+      @reload="loadUsers"
       @search="search"
       @reset="reset"
       @detail="navigate('/admin/users/' + $event.user_id)"

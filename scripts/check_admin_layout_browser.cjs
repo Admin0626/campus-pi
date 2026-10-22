@@ -81,7 +81,7 @@ fs.mkdirSync(out, { recursive: true });
           const root = document.querySelector(".admin-workspace"),
             sidebar = root.querySelector(".sidebar"),
             header = root.querySelector(".app-header");
-          const firstCell = root.querySelector("tbody td"),
+          const firstCell = root.querySelector("[data-admin-records] tbody td") || root.querySelector("tbody td"),
             pager = root.querySelector(".admin-pagination");
           return {
             sidebar: sidebar.getBoundingClientRect().width,
@@ -151,7 +151,7 @@ fs.mkdirSync(out, { recursive: true });
     await page.getByLabel("每页显示条数").selectOption("20");
     await settle();
     ok(
-      (await page.locator("tbody tr").count()) === 20,
+      (await page.locator("[data-admin-records] tbody tr").count()) === 20,
       "shared page-size selector reloads twenty actual users",
     );
     await page.getByRole("button", { name: "下一页", exact: true }).click();

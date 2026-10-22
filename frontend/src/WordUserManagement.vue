@@ -2,7 +2,10 @@
 import AdminPageHeader from "./admin/AdminPageHeader.vue";
 import AdminPagination from "./admin/AdminPagination.vue";
 import Icon from "./Icon.vue";
-defineProps({
+import { toRef } from "vue";
+import AdminBatchActions from "./admin/AdminBatchActions.vue";
+import { useAdminSelection } from "./admin/useAdminSelection";
+const props = defineProps({
   users: Array,
   total: String,
   page: Number,
@@ -20,7 +23,9 @@ const emit = defineEmits([
   "page",
   "size",
   "unavailable",
+  "reload",
 ]);
+const { selected, available, allSelected, toggle, toggleAll } = useAdminSelection(toRef(props, "users"), row => row.user_id, row => row.user_id !== props.currentId, toRef(props, "loading"));
 const date = (value) =>
   value
     ? new Intl.DateTimeFormat("sv-SE", {
@@ -42,8 +47,6 @@ const tip = (name) =>
       ><template #actions>
         <button @click="tip('意见反馈管理')">
           <Icon name="file" />意见反馈管理</button
-        ><button class="word-batch" @click="tip('批量操作')">
-          <Icon name="grid" />批量操作⌄</button
         ><button @click="tip('新增用户')">
           <Icon name="plus" />新增用户
         </button>
@@ -92,7 +95,8 @@ const tip = (name) =>
         ><button :disabled="loading"><Icon name="search" />搜索</button>
       </div>
     </form>
-    <div class="word-user-table-wrap">
+    <AdminBatchActions kind="users" :ids="selected" :disabled="loading" @completed="emit('reload')" />
+    <div class="word-user-table-wrap" data-admin-records>
       <div v-if="loading" class="word-table-loading" role="status">
         正在加载用户…
       </div>
@@ -112,8 +116,11 @@ const tip = (name) =>
             <th>
               <input
                 type="checkbox"
-                aria-label="全选（批量操作开发中）"
-                @click.prevent="tip('批量操作')"
+                aria-label="全选当前页可操作用户"
+                :checked="allSelected"
+                :indeterminate="selected.length > 0 && !allSelected"
+                :disabled="loading || !available.length"
+                @change="toggleAll"
               />
             </th>
             <th>用户ID<span class="word-sort">◆</span></th>
@@ -130,8 +137,10 @@ const tip = (name) =>
             <td>
               <input
                 type="checkbox"
-                :aria-label="'选择用户' + item.username + '（开发中）'"
-                @click.prevent="tip('批量操作')"
+                :aria-label="'选择用户' + item.username"
+                :checked="selected.includes(item.user_id)"
+                :disabled="loading || item.user_id === currentId"
+                @change="toggle(item)"
               />
             </td>
             <td>{{ item.user_id }}</td>

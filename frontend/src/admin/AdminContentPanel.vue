@@ -4,6 +4,8 @@ import AdminPagination from "./AdminPagination.vue";
 import { computed, ref, reactive, watch, onUnmounted } from "vue";
 import { api, requestKey } from "../api";
 import FilePreview from "./FilePreview.vue";
+import AdminBatchActions from "./AdminBatchActions.vue";
+import { useAdminSelection } from "./useAdminSelection";
 const props = defineProps({ module: String, auditContext: Object });
 const emit = defineEmits(["navigate"]);
 const tab = ref("products"),
@@ -66,6 +68,8 @@ const id = (row) =>
   row.product_id || row.post_id || row.category_id || row.audit_id;
 const status = (row) =>
   row.audit_status || row.post_status || row.category_level || "";
+const batchView = computed(() => ["products", "posts"].includes(view.value));
+const { selected, available, allSelected, toggle, toggleAll } = useAdminSelection(rows, id, row => status(row) === "待审核", loading);
 const stateClass = (value) =>
   ["已通过", "已发布", "在售"].includes(value)
     ? "good"
@@ -479,10 +483,12 @@ const dashboardCards = computed(() =>
         <button class="admin-purple" :disabled="loading">筛选</button
         ><button type="button" :disabled="loading" @click="reset">重置</button>
       </form>
-      <div class="admin-table-scroll">
+      <AdminBatchActions v-if="batchView" :key="view" :kind="view" :ids="selected" :disabled="loading || busy" @completed="load" />
+      <div class="admin-table-scroll" data-admin-records>
         <table>
           <thead>
             <tr>
+              <th v-if="batchView"><input type="checkbox" aria-label="全选当前页待审核记录" :checked="allSelected" :indeterminate="selected.length > 0 && !allSelected" :disabled="loading || !available.length" @change="toggleAll" /></th>
               <th>编号</th>
               <template v-if="view === 'audit'"
                 ><th>对象</th>
@@ -501,7 +507,8 @@ const dashboardCards = computed(() =>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="row in rows" :key="id(row)">
+            <tr v-for="row in rows" :key="id(row)" :data-row-id="id(row)">
+              <td v-if="batchView"><input type="checkbox" :aria-label="'选择记录' + id(row)" :checked="selected.includes(String(id(row)))" :disabled="loading || status(row) !== '待审核'" @change="toggle(row)" /></td>
               <td>{{ id(row) }}</td>
               <template v-if="view === 'audit'"
                 ><td>{{ row.object_type }} / {{ row.object_id }}</td>
@@ -563,7 +570,7 @@ const dashboardCards = computed(() =>
               >
             </tr>
             <tr v-if="!rows.length">
-              <td colspan="7" class="admin-empty">
+              <td :colspan="batchView ? (view === 'products' ? 8 : 7) : 6" class="admin-empty">
                 {{
                   loading
                     ? "正在加载…"

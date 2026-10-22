@@ -73,7 +73,7 @@
   gap: 8px;
   flex-wrap: wrap;
 }
-.admin-content-panel button {
+:is(.admin-content-panel, .admin-batch) button {
   border: 1px solid #e0e5ed;
   border-radius: 4px;
   background: #fff;
@@ -83,18 +83,18 @@
   font: inherit;
   min-height: var(--admin-control-height, 36px);
 }
-.admin-content-panel button:disabled {
+:is(.admin-content-panel, .admin-batch) button:disabled {
   opacity: 0.45;
   cursor: default;
 }
-.admin-content-panel button:focus-visible,
-.admin-content-panel input:focus,
-.admin-content-panel select:focus,
-.admin-content-panel textarea:focus {
+:is(.admin-content-panel, .admin-batch) button:focus-visible,
+:is(.admin-content-panel, .admin-batch) input:focus,
+:is(.admin-content-panel, .admin-batch) select:focus,
+:is(.admin-content-panel, .admin-batch) textarea:focus {
   outline: 2px solid #4f46e5;
   outline-offset: 2px;
 }
-.admin-content-panel .admin-purple {
+:is(.admin-content-panel, .admin-batch) .admin-purple {
   background: var(--admin-primary, #4f46e5);
   color: white;
   border-color: var(--admin-primary, #4f46e5);
@@ -130,9 +130,9 @@
   gap: 7px;
   color: #667084;
 }
-.admin-content-panel input,
-.admin-content-panel select,
-.admin-content-panel textarea {
+:is(.admin-content-panel, .admin-batch) input,
+:is(.admin-content-panel, .admin-batch) select,
+:is(.admin-content-panel, .admin-batch) textarea {
   border: 1px solid #dfe3ec;
   border-radius: 4px;
   padding: 9px;
@@ -148,12 +148,12 @@
   overflow: auto;
   min-height: 300px;
 }
-.admin-content-panel table {
+:is(.admin-content-panel, .admin-batch) table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--admin-font-size, 14px);
 }
-.admin-content-panel th {
+:is(.admin-content-panel, .admin-batch) th {
   font-size: var(--admin-font-size, 14px);
   text-align: left;
   background: #f1f5f9;
@@ -163,7 +163,7 @@
   font-weight: 500;
   white-space: nowrap;
 }
-.admin-content-panel td {
+:is(.admin-content-panel, .admin-batch) td {
   font-size: var(--admin-font-size, 14px);
   padding: 10px;
   height: 56px;
@@ -206,7 +206,7 @@
   background: #fff4d6;
   color: #b08a2f;
 }
-.admin-content-panel td small {
+:is(.admin-content-panel, .admin-batch) td small {
   display: block;
   margin-top: 5px;
   color: #8992a3;
@@ -307,6 +307,13 @@
 .admin-dialog textarea {
   min-height: 90px;
   resize: vertical;
+}
+.admin-workspace input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  min-height: 16px;
+  padding: 0;
+  accent-color: var(--admin-primary, #4f46e5);
 }
 .admin-dialog dl {
   display: grid;

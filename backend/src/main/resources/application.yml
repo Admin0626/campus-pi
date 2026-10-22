@@ -33,6 +33,9 @@ server:
     include-exception: false
 
 campus:
+  admin-batches:
+    worker-enabled: ${ADMIN_BATCH_WORKER_ENABLED:false}
+    poll-interval-ms: ${ADMIN_BATCH_POLL_INTERVAL_MS:1000}
   notifications:
     worker-enabled: ${NOTIFICATION_WORKER_ENABLED:false}
     poll-interval-ms: ${NOTIFICATION_POLL_INTERVAL_MS:2000}

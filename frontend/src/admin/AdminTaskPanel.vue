@@ -4,6 +4,8 @@ import AdminPagination from "./AdminPagination.vue";
 import { computed, ref, watch, onUnmounted } from "vue";
 import { api, requestKey } from "../api";
 import FilePreview from "./FilePreview.vue";
+import AdminBatchActions from "./AdminBatchActions.vue";
+import { useAdminSelection } from "./useAdminSelection";
 const section = ref("management"),
   kind = ref("tasks");
 const rows = ref([]),
@@ -52,6 +54,7 @@ let controller,
   mutationBody = "";
 const rowId = (row) =>
   row.application_id || row.proof_id || row.log_id || row.reward_task_id;
+const { selected, available, allSelected, toggle, toggleAll } = useAdminSelection(rows, row => row.reward_task_id, row => row.task_status === "待审核", loading);
 async function load() {
   const serial = ++generation;
   controller?.abort();
@@ -286,10 +289,12 @@ const detailFields = computed(() =>
     <p v-if="notice" role="status" class="admin-message success">
       {{ notice }}
     </p>
-    <div class="admin-table-scroll">
+    <AdminBatchActions v-if="view === 'tasks'" kind="tasks" :ids="selected" :disabled="loading || busy" @completed="load" />
+    <div class="admin-table-scroll" data-admin-records>
       <table>
         <thead>
           <tr v-if="view === 'tasks'">
+            <th><input type="checkbox" aria-label="全选当前页待审核任务" :checked="allSelected" :indeterminate="selected.length > 0 && !allSelected" :disabled="loading || !available.length" @change="toggleAll" /></th>
             <th>任务ID</th>
             <th>标题</th>
             <th>发布者</th>
@@ -327,9 +332,10 @@ const detailFields = computed(() =>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in rows" :key="rowId(row)">
+          <tr v-for="row in rows" :key="rowId(row)" :data-row-id="rowId(row)">
             <template v-if="view === 'tasks'"
-              ><td>{{ row.reward_task_id }}</td>
+              ><td><input type="checkbox" :aria-label="'选择任务' + row.reward_task_id" :checked="selected.includes(row.reward_task_id)" :disabled="loading || row.task_status !== '待审核'" @change="toggle(row)" /></td>
+              <td>{{ row.reward_task_id }}</td>
               <td>{{ row.task_name }}</td>
               <td>{{ row.publisher.username }}</td>
               <td>{{ row.reward_amount }} {{ row.reward_type }}</td>
@@ -438,7 +444,7 @@ const detailFields = computed(() =>
             >
           </tr>
           <tr v-if="!rows.length">
-            <td colspan="7" class="admin-empty">
+            <td :colspan="view === 'tasks' ? 8 : 7" class="admin-empty">
               {{
                 loading
                   ? "正在加载…"

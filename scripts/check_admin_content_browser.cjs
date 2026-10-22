@@ -193,7 +193,7 @@ fs.writeFileSync(
       .waitFor();
     await page.locator(".admin-content-panel[aria-busy=false]").waitFor();
     check(
-      (await page.locator("tbody").innerText()).includes("浏览器帖子下架"),
+      (await page.locator("[data-admin-records] tbody").innerText()).includes("浏览器帖子下架"),
       "Audit browser displays real operation history",
     );
     await page.screenshot({

@@ -42,13 +42,7 @@ fs.writeFileSync(
   const screenshot = (name) =>
     page.screenshot({ path: path.join(out, name + ".png"), fullPage: true });
   async function row(id) {
-    const locator = page
-      .locator("tbody tr")
-      .filter({
-        has: page
-          .locator("td:first-child")
-          .filter({ hasText: new RegExp("^" + id + "$") }),
-      });
+    const locator = page.locator(`[data-admin-records] tr[data-row-id="${id}"]`);
     for (let i = 0; i < 100; i++) {
       await ready();
       if (await locator.count()) return locator;
@@ -226,12 +220,7 @@ fs.writeFileSync(
     await ready();
     check(
       (await page
-        .locator("tbody tr")
-        .filter({
-          has: page
-            .locator("td:first-child")
-            .filter({ hasText: new RegExp("^" + f.review_task + "$") }),
-        })
+        .locator(`[data-admin-records] tr[data-row-id="${f.review_task}"]`)
         .count()) === 0,
       "State filter excludes tasks in other states",
     );
