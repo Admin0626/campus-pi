@@ -16,6 +16,17 @@ class BootstrapTest {
     private TestRestTemplate rest;
 
     @Test
+    void frontendEntriesDoNotReuseAnOldAssetManifest() {
+        for (String path : new String[] {"/", "/index.html", "/admin/login", "/admin/modules/analytics"}) {
+            ResponseEntity<String> response = rest.getForEntity(path, String.class);
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(response.getHeaders().getCacheControl()).isEqualTo("no-store");
+            assertThat(response.getHeaders().getLastModified()).isEqualTo(-1L);
+            assertThat(response.getBody()).contains("/assets/");
+        }
+    }
+
+    @Test
     void unknownRouteReturnsReal404AndSafeErrorEnvelope() {
         ResponseEntity<JsonNode> response = rest.getForEntity("/api/v1/__baseline_unknown_route__", JsonNode.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);

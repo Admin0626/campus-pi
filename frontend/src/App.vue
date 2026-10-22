@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, onUnmounted, reactive, ref } from "vue";
 import Icon from "./Icon.vue";
+import AppUpdateNotice from "./AppUpdateNotice.vue";
 import WordAccountPages from "./WordAccountPages.vue";
 import WordUserManagement from "./WordUserManagement.vue";
 import WordMobileMe from "./WordMobileMe.vue";
@@ -476,6 +477,7 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
 </script>
 
 <template>
+  <AppUpdateNotice />
   <WordAccountPages
     v-if="isAuth"
     :path="path"
