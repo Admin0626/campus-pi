@@ -215,7 +215,8 @@ async function signIn() {
   if (busy.value) return;
   clear();
   if (!login.account.trim()) errors.account = "请输入账号";
-  if (!passwordValid(login.password)) errors.password = "密码为 12–64 个字符";
+  if (!login.password || Array.from(login.password).length > 64)
+    errors.password = "请输入密码（最多64个字符）";
   if (Object.keys(errors).length) {
     error.value = Object.values(errors)[0];
     return focusError();
@@ -433,11 +434,13 @@ async function changePassword() {
   if (busy.value) return;
   clear();
   if (
-    !passwordValid(password.current) ||
+    !password.current ||
+    Array.from(password.current).length > 64 ||
     !passwordValid(password.next) ||
     password.next !== password.confirm
   ) {
-    error.value = "请检查密码长度（12–64 字符）及两次新密码是否一致";
+    error.value =
+      "请填写当前密码，并检查新密码长度（12–64 字符）及两次输入是否一致";
     return;
   }
   busy.value = true;

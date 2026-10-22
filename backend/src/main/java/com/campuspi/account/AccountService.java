@@ -26,6 +26,8 @@ public class AccountService {
     private final TransactionTemplate tx;
     private final ObjectMapper json;
     private final String secret;
+    @Value("${campus.auth.local-short-password-admin-id:0}")
+    private long localShortPasswordAdminId;
     private final SecureRandom random = new SecureRandom();
     private final Argon2PasswordEncoder encoder = new Argon2PasswordEncoder(16,32,1,65536,3);
     private final String dummyHash;
@@ -135,8 +137,13 @@ public class AccountService {
     }
     public Object login(JsonNode body,String source) {
         fields(body,"account","password");
-        String account=text(body,"account",1,100,true), password=text(body,"password",12,64,false);
+        String account=text(body,"account",1,100,true);
         String normalized=account.toLowerCase(Locale.ROOT);
+        // Explicit private development setting for one existing administrator only.
+        // Shared/default registration, password changes and other logins keep their policy.
+        int minimum=12;
+        if(localShortPasswordAdminId>0 && one("SELECT user_id FROM users WHERE user_id=? AND role='ADMIN' AND (username=? OR email=? OR phone=?)",localShortPasswordAdminId,account,normalized,account)!=null) minimum=6;
+        String password=text(body,"password",minimum,64,false);
         String throttle=digest(normalized+"\n"+source);
         var earlyLimit=one("SELECT locked_until FROM auth_login_throttle WHERE throttle_key=?",throttle);
         if(earlyLimit!=null && earlyLimit.get("locked_until")!=null && instant(earlyLimit.get("locked_until")).isAfter(now())) {
@@ -212,8 +219,9 @@ public class AccountService {
     }
     public Object changePassword(Identity identity,JsonNode body) {
         fields(body,"current_password","new_password");
-        String old=text(body,"current_password",12,64,false), next=text(body,"new_password",12,64,false);
         var snapshot=user(identity.id(),false);
+        int currentMinimum=localShortPasswordAdminId>0 && identity.id()==localShortPasswordAdminId && "ADMIN".equals(snapshot.get("role"))?6:12;
+        String old=text(body,"current_password",currentMinimum,64,false), next=text(body,"new_password",12,64,false);
         if(!encoder.matches(old,snapshot.get("password_hash").toString())) throw new ApiException(400,"当前密码不正确","current_password");
         String encoded=encoder.encode(next);
         return tx.execute(status->{
