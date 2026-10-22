@@ -49,7 +49,9 @@
 }
 @media (min-width: 651px) {
   .word-analytics-shell {
-    --report-u: calc(100vw / 730);
+    /* Keep the Word geometry at its native aspect ratio, but do not magnify a
+       short widescreen dashboard solely from its width. Small windows may scroll. */
+    --report-u: min(calc(100vw / 730), max(1.5px, calc(100dvh / 547)));
     background: #f8fafc;
     min-height: calc(547 * var(--report-u));
     font-family: Arial, "Microsoft YaHei", sans-serif;
@@ -595,5 +597,36 @@
     display: none;
   }
 }
-@media(min-width:651px){.analytics-growth .analytics-series-legend button:first-child i{background:#4f46e5!important}.analytics-growth .analytics-series-legend button:last-child i{background:#4eb49a!important}}
-.word-analytics-shell button{transition:none}
+@media (min-width: 651px) and (min-aspect-ratio: 3/2) {
+  .analytics-growth .analytics-series-legend {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .analytics-category-chart.pie .analytics-pie-drawing {
+    left: calc(50% - 106.5 * var(--report-u));
+  }
+  .analytics-category-chart.pie .analytics-category-legend {
+    left: calc(50% + 45.5 * var(--report-u));
+  }
+  .analytics-content-card .analytics-pie-drawing {
+    left: calc(50% - 85 * var(--report-u));
+    top: calc(-21 * var(--report-u));
+  }
+  .analytics-content-card .analytics-category-legend {
+    left: 50%;
+    right: auto;
+    width: calc(144 * var(--report-u));
+    transform: translateX(-50%);
+  }
+}
+@media (min-width: 651px) {
+  .analytics-growth .analytics-series-legend button:first-child i {
+    background: #4f46e5 !important;
+  }
+  .analytics-growth .analytics-series-legend button:last-child i {
+    background: #4eb49a !important;
+  }
+}
+.word-analytics-shell button {
+  transition: none;
+}

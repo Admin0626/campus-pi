@@ -27,7 +27,8 @@ const axis = computed(() => {
   };
 });
 const canvas = ref(null),
-  canvasWidth = ref(1050);
+  canvasWidth = ref(1050),
+  canvasHeight = ref(0);
 let observer, resizeFrame;
 onMounted(() => {
   const measure = () => {
@@ -36,16 +37,21 @@ onMounted(() => {
       240,
       Math.round(canvas.value?.clientWidth || 1050),
     );
+    canvasHeight.value = Math.round(canvas.value?.clientHeight || 0);
   };
   measure();
   observer = new ResizeObserver(([entry]) => {
     reportLayout.value = innerWidth > 650;
     const width = Math.max(240, Math.round(entry.contentRect.width));
-    if (width === canvasWidth.value) return;
+    const height = Math.round(entry.contentRect.height);
+    if (width === canvasWidth.value && height === canvasHeight.value) return;
     cancelAnimationFrame(resizeFrame);
-    // Apply width changes outside the observer delivery cycle. Updating SVG
-    // height in that cycle otherwise produces ResizeObserver loop warnings.
-    resizeFrame = requestAnimationFrame(() => (canvasWidth.value = width));
+    // The desktop canvas has an explicit CSS height. Observe both dimensions,
+    // outside this delivery cycle, so height-limited layouts cannot spill into the next row.
+    resizeFrame = requestAnimationFrame(() => {
+      canvasWidth.value = width;
+      canvasHeight.value = height;
+    });
   });
   observer.observe(canvas.value);
 });
@@ -54,7 +60,9 @@ onBeforeUnmount(() => {
   cancelAnimationFrame(resizeFrame);
 });
 const chartHeight = computed(() =>
-  reportLayout.value ? (canvasWidth.value * 155) / 536 : 235,
+  reportLayout.value
+    ? canvasHeight.value || (canvasWidth.value * 155) / 536
+    : 235,
 );
 const plot = computed(() =>
   reportLayout.value
@@ -62,7 +70,7 @@ const plot = computed(() =>
         left: (canvasWidth.value * 30) / 536,
         top: 0,
         width: (canvasWidth.value * 488) / 536,
-        height: (canvasWidth.value * 149) / 536,
+        height: (chartHeight.value * 149) / 155,
       }
     : {
         left: 45,

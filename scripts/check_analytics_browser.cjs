@@ -326,6 +326,68 @@ const fixture = JSON.parse(
       fullPage: true,
       animations: "disabled",
     });
+    for (const [width, height] of [
+      [1918, 944],
+      [1920, 1080],
+      [2560, 1440],
+    ]) {
+      await page.setViewportSize({ width, height });
+      await page.waitForFunction(() => {
+        const canvas = document.querySelector(".analytics-trend-canvas");
+        const svg = canvas.querySelector("svg");
+        return (
+          Math.abs(canvas.clientWidth - svg.viewBox.baseVal.width) < 1.5 &&
+          Math.abs(canvas.clientHeight - svg.viewBox.baseVal.height) < 1.5
+        );
+      });
+      ok(
+        await page.evaluate(() => {
+          const bottom = document
+            .querySelector(".analytics-bottom-grid")
+            .getBoundingClientRect();
+          return (
+            bottom.bottom <= innerHeight + 2 &&
+            document.documentElement.scrollWidth <= innerWidth
+          );
+        }),
+        `${width}x${height} wide dashboard keeps all three lower charts in view`,
+      );
+      ok(
+        await page.evaluate(() => {
+          const card = document
+            .querySelector(".analytics-growth")
+            .getBoundingClientRect();
+          const svg = document
+            .querySelector(".analytics-trend-canvas svg")
+            .getBoundingClientRect();
+          return svg.bottom <= card.bottom + 2;
+        }),
+        `${width}x${height} trend SVG stays within its own card`,
+      );
+      ok(
+        await page.evaluate(() => {
+          const card = document.querySelector(".analytics-content-card");
+          const ringBottom = Math.max(
+            ...Array.from(
+              card.querySelectorAll("svg path"),
+              (path) => path.getBoundingClientRect().bottom,
+            ),
+          );
+          return (
+            ringBottom <
+            card
+              .querySelector(".analytics-category-legend")
+              .getBoundingClientRect().top
+          );
+        }),
+        `${width}x${height} content legend stays below the donut`,
+      );
+      await page.screenshot({
+        path: path.join(out, `03-wide-${width}x${height}.png`),
+        fullPage: true,
+        animations: "disabled",
+      });
+    }
     for (const width of [390, 320]) {
       await page.setViewportSize({ width, height: 844 });
       await page.waitForFunction(() => {
