@@ -91,4 +91,8 @@ with conn, conn.cursor() as cursor:
 private_yml=LOCAL/'application-local.yml'
 private_yml.write_text('spring:\n  datasource:\n    url: '+json.dumps('jdbc:mysql://127.0.0.1:33320/'+config['database']+'?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&allowPublicKeyRetrieval=true&sslMode=DISABLED')+'\n    username: '+json.dumps(config['user'])+'\n    password: '+json.dumps(config['password'])+'\ncampus:\n  auth:\n    idempotency-secret: '+json.dumps(config['idempotency_secret'])+'\n',encoding='utf-8')
 (LOCAL/'管理员登录.txt').write_text('仅限本机独立开发库，勿提交或用于生产。\n地址：http://127.0.0.1:8080/login\n账号：'+config['admin_username']+'\n密码：'+config['admin_password']+'\n',encoding='utf-8')
+local_short_id = int(config.get('local_short_password_admin_id', 0))
+if local_short_id > 0:
+    with private_yml.open('a', encoding='utf-8') as private_file:
+        private_file.write('    local-short-password-admin-id: '+str(local_short_id)+'\n')
 print('Private MySQL ready on 127.0.0.1:33320; 25 baseline tables + A migration; local admin credentials saved under .local/auth-dev. No existing service changed.')
