@@ -6,6 +6,8 @@ import WordAccountPages from "./WordAccountPages.vue";
 import WordUserManagement from "./WordUserManagement.vue";
 import WordMobileMe from "./WordMobileMe.vue";
 import WordMobileHome from "./WordMobileHome.vue";
+import MemberWorkspace from "./member/MemberWorkspace.vue";
+import MemberFiles from "./member/MemberFiles.vue";
 import AnalyticsPage from "./analytics/AnalyticsPage.vue";
 import AdminContentPanel from "./admin/AdminContentPanel.vue";
 import AdminSecurityPanel from "./admin/AdminSecurityPanel.vue";
@@ -37,6 +39,7 @@ const form = reactive({
   password: "",
 });
 const edit = reactive({ bio: "", address: "", campus: false, intro: false });
+const avatarFiles = ref([]);
 const password = reactive({ current: "", next: "", confirm: "" });
 const errors = reactive({});
 const users = ref([]),
@@ -49,6 +52,8 @@ const filter = reactive({
     account_status: "",
     role: "",
     campus: "",
+    date_from: "",
+    date_to: "",
   }),
   applied = reactive({ ...filter });
 const statusTarget = ref(null),
@@ -183,12 +188,12 @@ async function navigate(destination, replace = false) {
   else if (/^\/admin\/users\/[1-9]\d*$/.test(destination))
     await loadDetail(destination.split("/").at(-1));
   else if (destination === "/me/profile")
-    Object.assign(edit, {
+    { avatarFiles.value=[]; Object.assign(edit, {
       bio: user.value.personal_bio || "",
       address: user.value.address || "",
       campus: user.value.privacy_settings.show_campus,
       intro: user.value.privacy_settings.show_personal_bio,
-    });
+    }); }
   else if (destination === "/me/password")
     Object.assign(password, { current: "", next: "", confirm: "" });
 }
@@ -340,12 +345,7 @@ async function search() {
   await loadUsers();
 }
 async function reset() {
-  Object.assign(filter, {
-    keyword: "",
-    account_status: "",
-    role: "",
-    campus: "",
-  });
+  Object.keys(filter).forEach(key => filter[key] = "");
   await search();
 }
 async function loadDetail(id) {
@@ -415,6 +415,7 @@ async function saveProfile() {
       body: {
         personal_bio: edit.bio,
         address: edit.address,
+        ...(avatarFiles.value.length ? {avatar_ref:avatarFiles.value[0]} : {}),
         privacy_settings: {
           show_campus: edit.campus,
           show_personal_bio: edit.intro,
@@ -512,6 +513,10 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
     v-else-if="user && path === '/home'"
     :user="user"
     @navigate="navigate"
+  />
+  <MemberWorkspace
+    v-else-if="user && (/^\/modules\/[B-H]$/.test(path) || path === '/publish')"
+    :key="path" :path="path" :user="user" @navigate="navigate"
   />
   <NotificationInbox
     v-else-if="user && path === '/modules/I'"
@@ -690,6 +695,7 @@ onUnmounted(() => window.removeEventListener("popstate", pop));
       <div class="field">
         <label>用户名</label><input :value="user.username" disabled />
       </div>
+      <MemberFiles v-model="avatarFiles" purpose="AVATAR" :max="1" :disabled="busy" />
       <div class="field">
         <label for="bio">个人介绍</label
         ><textarea

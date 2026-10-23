@@ -16,11 +16,12 @@ import static com.campuspi.account.AccountService.*;
 @Service
 public class AdminContentService {
     private final JdbcTemplate db;
+    private final com.campuspi.notification.ReviewNotifications notifications;
     private final AccountService accounts;
     private final ObjectMapper json;
     private final AdminPolicy policy;
-    public AdminContentService(JdbcTemplate db,AccountService accounts,ObjectMapper json,AdminPolicy policy) {
-        this.db=db;this.accounts=accounts;this.json=json;this.policy=policy;
+    public AdminContentService(JdbcTemplate db,AccountService accounts,ObjectMapper json,AdminPolicy policy,com.campuspi.notification.ReviewNotifications notifications) {
+        this.notifications=notifications;this.db=db;this.accounts=accounts;this.json=json;this.policy=policy;
     }
     private Map<String,Object> one(String sql,Object... args) {
         var rows=db.queryForList(sql,args);return rows.isEmpty()?null:rows.get(0);
@@ -142,6 +143,7 @@ public class AdminContentService {
                 if(next.equals("在售") && (!"已通过".equals(row.get("audit_status")) || ((Number)row.get("stock_quantity")).intValue()<1 || !"ACTIVE".equals(require("users","user_id",row.get("user_id")).get("account_status"))))throw new ApiException(409,"上架需要审核通过、库存充足且卖方账号启用");
                 db.update("UPDATE product_info SET shelf_status=? WHERE product_id=?",next,target);
             }
+            notifications.send(actor.id(),((Number)row.get("user_id")).longValue(),"商品",target,next,reason);
             Object result=product(require("product_info","product_id",target),actor);audit(actor,"商品",target,review?"审核":"上下架",reason,before,result);return result;
         });
     }
@@ -173,13 +175,14 @@ public class AdminContentService {
             if(!(review?"待审核":"已发布").equals(row.get("post_status")))throw new ApiException(409,"当前帖子状态不能执行此操作");
             db.update("UPDATE post_info SET post_status=? WHERE post_id=?",review?(next.equals("通过")?"已发布":"已驳回"):"已下架",target);
             if(!review)db.update("UPDATE post_collection SET collection_status='失效' WHERE post_id=?",target);
+            notifications.send(actor.id(),((Number)row.get("publisher_id")).longValue(),"帖子",target,review?next:"已下架",reason);
             Object result=post(require("post_info","post_id",target),actor);audit(actor,"帖子",target,review?"审核":"下架",reason,before,result);return result;
         });
     }
     public Object dashboard() {
-        var row=db.queryForMap("SELECT (SELECT COUNT(*) FROM users) user_count,(SELECT COUNT(*) FROM post_info WHERE post_status='已发布') published_post_count,(SELECT COUNT(*) FROM product_info WHERE audit_status='已通过' AND shelf_status='在售') onsale_product_count,(SELECT COUNT(*) FROM RewardTasks WHERE task_status='已完成') completed_task_count,(SELECT COALESCE(SUM(actual_amount),0.00) FROM user_orders WHERE order_type='商品' AND order_status='已完成') completed_product_amount,UTC_TIMESTAMP(3) as_of");
+        var row=db.queryForMap("SELECT (SELECT COUNT(*) FROM users) user_count,(SELECT COUNT(*) FROM post_info WHERE post_status='已发布') published_post_count,(SELECT COUNT(*) FROM product_info WHERE audit_status='已通过' AND shelf_status='在售') onsale_product_count,(SELECT COUNT(*) FROM RewardTasks WHERE task_status='已完成') completed_task_count,(SELECT COALESCE(SUM(actual_amount),0.00) FROM user_orders WHERE order_type='商品' AND order_status='已完成') completed_product_amount,(SELECT COUNT(*) FROM user_verification WHERE audit_status='待审核') pending_verifications,(SELECT COUNT(*) FROM product_info WHERE audit_status='待审核') pending_products,(SELECT COUNT(*) FROM post_info WHERE post_status='待审核') pending_posts,(SELECT COUNT(*) FROM RewardTasks WHERE task_status='待审核') pending_tasks,(SELECT COUNT(*) FROM task_applications WHERE application_status='待审核') pending_applications,(SELECT COUNT(*) FROM task_proofs WHERE audit_status='待审核') pending_proofs,(SELECT COUNT(*) FROM t_msg_report WHERE audit_status='待审核') pending_reports,UTC_TIMESTAMP(3) as_of");
         var result=new LinkedHashMap<String,Object>();
-        for(String key:List.of("user_count","published_post_count","onsale_product_count","completed_task_count"))result.put(key,row.get(key).toString());
+        for(String key:List.of("user_count","published_post_count","onsale_product_count","completed_task_count","pending_verifications","pending_products","pending_posts","pending_tasks","pending_applications","pending_proofs","pending_reports"))result.put(key,row.get(key).toString());
         result.put("completed_product_amount",money(row.get("completed_product_amount")));result.put("as_of",time(row.get("as_of")));return result;
     }
     public Object logs(Identity actor,int page,int size,String type,String target) {

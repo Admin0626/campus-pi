@@ -1,0 +1,1233 @@
+{
+  "generated_at": "2026-10-23T01:54:02.200343+00:00",
+  "scope": "Completed local implementation; synthetic isolated fixtures; no production, real WeChat exchange or device acceptance",
+  "overall": "EXECUTED_SCOPE_PASSED_WITH_NATIVE_RUNTIME_BLOCKED",
+  "branch": "wlky",
+  "base_commit": "9d403fabca9ae8ac1c584468df87eb70f3398698",
+  "worktree_has_uncommitted_changes": true,
+  "remote_ci_executed": false,
+  "published": false,
+  "java": {
+    "total": 71,
+    "passed": 71,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "class": "com.campuspi.account.WechatAccountIntegrationTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "com.campuspi.admin.BusinessFileValidatorTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "com.campuspi.BootstrapTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "tests": 27,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "class": "com.campuspi.notification.NotificationPreferencePolicyTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "cases": [
+      {
+        "class": "com.campuspi.account.WechatAccountIntegrationTest",
+        "name": "rejectsClientIdentitiesAndReplayedCodes",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatAccountIntegrationTest",
+        "name": "disableBlocksWechatLoginAndRevocationDuringExchangeBlocksBinding",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatAccountIntegrationTest",
+        "name": "exchangeAttemptsAreRateLimitedBeforeCallingProvider",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatAccountIntegrationTest",
+        "name": "unboundWechatDoesNotCreateAnAccount",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatAccountIntegrationTest",
+        "name": "bindingLoginAndLogoutUseRealOpaqueSessions",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatAccountIntegrationTest",
+        "name": "ownershipCannotBeReplacedOrStolen",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatAccountIntegrationTest",
+        "name": "concurrentClaimHasOneWinner",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatAccountIntegrationTest",
+        "name": "configurationAndAnonymousBindingAreSeparated",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "networkFailureDoesNotExposeRequestUrl",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "sendsCodeOnlyToFixedHttpsOriginAndDiscardsSessionKey",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "malformedOrProviderFailuresAreSanitized(String)[1]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "malformedOrProviderFailuresAreSanitized(String)[2]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "malformedOrProviderFailuresAreSanitized(String)[3]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "malformedOrProviderFailuresAreSanitized(String)[4]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "malformedOrProviderFailuresAreSanitized(String)[5]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "malformedOrProviderFailuresAreSanitized(String)[6]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "malformedOrProviderFailuresAreSanitized(String)[7]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "invalidAndReplayedCodesHaveSafeErrors(int)[1]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "invalidAndReplayedCodesHaveSafeErrors(int)[2]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.account.WechatIdentityClientTest",
+        "name": "unconfiguredNeverCallsWechat",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.admin.BusinessFileValidatorTest",
+        "name": "detectsPngAndJpegFromBytesNotTheClientExtension",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.admin.BusinessFileValidatorTest",
+        "name": "rejectsHtmlAndSvgDisguisedAsImages",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.admin.BusinessFileValidatorTest",
+        "name": "scannerMissingConfigurationFailsClosed",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.admin.BusinessFileValidatorTest",
+        "name": "rejectsActualPdfJavaScriptActions",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.admin.BusinessFileValidatorTest",
+        "name": "rejectsEncryptedPdf",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.admin.BusinessFileValidatorTest",
+        "name": "acceptsOrdinaryPdfOnlyForEvidencePurposes",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.BootstrapTest",
+        "name": "frontendEntriesDoNotReuseAnOldAssetManifest",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.BootstrapTest",
+        "name": "unknownRouteReturnsReal404AndSafeErrorEnvelope",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.BootstrapTest",
+        "name": "disabledWechatDoesNotRequireOrContactExternalServices",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "ordersReserveAndReleaseExactlyOnceAndProtectPrivateAddresses",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "inconsistentTaskOrderSnapshotMustNotAdvanceProofOrSettlement",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "anonymousPostsReenterReviewAndCollectionsBecomeInvalid",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "competingOrdersCannotOversell",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "imageFilesAndAvatarsCannotBeBorrowedAcrossAccounts",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "productsEnforceVerificationOwnershipVisibilityAndIdempotency",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "chatPairCursorReadDeleteAndReportRespectBothParticipants",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "taskPublishCancelAndInsufficientBalanceAreAtomic",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "taskApplicationProofAndSettlementFormARealHttpChain",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "notificationDependencyFailureRollsBackReviewAndReplayRecord",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberBusinessIntegrationTest",
+        "name": "reviewNotificationsAreAtomicPrivateIdempotentAndRespectPreferences",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[1]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[2]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[3]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[4]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[5]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[6]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[7]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[8]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[9]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[10]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[11]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "rejectsInvalidMoneyEquivalenceClasses(String)[12]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "integerInvalidClasses(String)[1]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "integerInvalidClasses(String)[2]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "integerInvalidClasses(String)[3]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "integerInvalidClasses(String)[4]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "integerInvalidClasses(String)[5]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "integerInvalidClasses(String)[6]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "integerInvalidClasses(String)[7]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "validMoneyBoundaries(String)[1]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "validMoneyBoundaries(String)[2]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "validMoneyBoundaries(String)[3]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "textCountsUnicodeCodePointsAndRejectsControls",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "integerBoundaries(int)[1]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "integerBoundaries(int)[2]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "integerBoundaries(int)[3]",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.member.MemberValidationTest",
+        "name": "safeStatesAndNoBodyRules",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.notification.NotificationPreferencePolicyTest",
+        "name": "daytimeWindowUsesShanghaiAndExcludesEnd",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.notification.NotificationPreferencePolicyTest",
+        "name": "malformedLegacyWindowsFailClosed",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.notification.NotificationPreferencePolicyTest",
+        "name": "overnightWindowCrossesLocalMidnight",
+        "status": "PASS"
+      },
+      {
+        "class": "com.campuspi.notification.NotificationPreferencePolicyTest",
+        "name": "midnightAndYearRolloverAreNotTreatedAsSameUtcDay",
+        "status": "PASS"
+      }
+    ]
+  },
+  "node": {
+    "total": 22,
+    "passed": 22,
+    "web_whitebox": 7,
+    "native_whitebox": 2,
+    "analytics_data": 13,
+    "cases": [
+      {
+        "name": "fixture declares synthetic data and accepts its continuous dated records",
+        "status": "PASS"
+      },
+      {
+        "name": "period totals, pie amounts, content quantities and comparison amounts reconcile with source rows",
+        "status": "PASS"
+      },
+      {
+        "name": "active users use explicit interval distinct counts, not daily sums",
+        "status": "PASS"
+      },
+      {
+        "name": "week/month/year switch uses 7 daily, 30 daily and 12 monthly observations",
+        "status": "PASS"
+      },
+      {
+        "name": "monthly bars reconcile to the explicit Word-reference historic window",
+        "status": "PASS"
+      },
+      {
+        "name": "comparisons and empty charts handle zeros without NaN or Infinity",
+        "status": "PASS"
+      },
+      {
+        "name": "CSV includes UTF8 BOM, source, exact period, fen units and matching category breakdown",
+        "status": "PASS"
+      },
+      {
+        "name": "rejects non-mock, negative amounts, duplicate dates and invalid distinct counts",
+        "status": "PASS"
+      },
+      {
+        "name": "local loader does not fall back to invented values on HTTP, syntax or schema failure",
+        "status": "PASS"
+      },
+      {
+        "name": "aborted loads remain aborts for component cleanup",
+        "status": "PASS"
+      },
+      {
+        "name": "rejects aggregate amounts beyond safe integer precision",
+        "status": "PASS"
+      },
+      {
+        "name": "rejects conflicting distinct counts for the same date interval",
+        "status": "PASS"
+      },
+      {
+        "name": "CSV neutralizes formula-like labels from an edited local fixture",
+        "status": "PASS"
+      },
+      {
+        "name": "WB-U01 late 401 cannot erase a newer identity",
+        "status": "PASS"
+      },
+      {
+        "name": "WB-U02 upload preserves multipart encoding and authorization",
+        "status": "PASS"
+      },
+      {
+        "name": "WB-U03 failed mutation retry keeps idempotency key and success releases it",
+        "status": "PASS"
+      },
+      {
+        "name": "WB-U04 operation lock releases after exception and refuses duplicate work",
+        "status": "PASS"
+      },
+      {
+        "name": "WB-U05 old list completion cannot overwrite a newer filter",
+        "status": "PASS"
+      },
+      {
+        "name": "WB-U06 failed page clears old totals and data together",
+        "status": "PASS"
+      },
+      {
+        "name": "WB-U07 unmounted page ignores a late response",
+        "status": "PASS"
+      },
+      {
+        "name": "WB-M01 switching conversation clears old messages before network completion",
+        "status": "PASS"
+      },
+      {
+        "name": "WB-M02 detached initialization cannot restore old identity or start polling",
+        "status": "PASS"
+      }
+    ]
+  },
+  "http_boundaries": {
+    "status": "PASS",
+    "cases": [
+      {
+        "case": "V01",
+        "method": "GET",
+        "path": "/products?page=0",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V02",
+        "method": "GET",
+        "path": "/products?page_size=101",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V03",
+        "method": "GET",
+        "path": "/posts?page=2147483647",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V04",
+        "method": "GET",
+        "path": "/tasks?page_size=0",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V05",
+        "method": "GET",
+        "path": "/products?min_price=NaN",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V06",
+        "method": "GET",
+        "path": "/products?min_price=01.00",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V07",
+        "method": "GET",
+        "path": "/products?min_price=2.00&max_price=1.00",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V08",
+        "method": "GET",
+        "path": "/products?min_price=0.00&max_price=9999999999.99",
+        "expected": 200,
+        "actual": 200,
+        "passed": true
+      },
+      {
+        "case": "V09",
+        "method": "GET",
+        "path": "/posts?keyword=%27%20OR%201%3D1%20--",
+        "expected": 200,
+        "actual": 200,
+        "passed": true
+      },
+      {
+        "case": "V10",
+        "method": "GET",
+        "path": "/tasks?task_status=INVALID",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V11",
+        "method": "GET",
+        "path": "/chat-sessions",
+        "expected": 401,
+        "actual": 401,
+        "passed": true
+      },
+      {
+        "case": "V12",
+        "method": "GET",
+        "path": "/admin/users",
+        "expected": 403,
+        "actual": 403,
+        "passed": true
+      },
+      {
+        "case": "V13",
+        "method": "GET",
+        "path": "/me/orders?side=INVALID",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V14",
+        "method": "GET",
+        "path": "/me/notifications?notification_type=INVALID",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V15",
+        "method": "POST",
+        "path": "/posts",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V16",
+        "method": "POST",
+        "path": "/posts",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V17",
+        "method": "POST",
+        "path": "/chat-sessions",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V18",
+        "method": "PUT",
+        "path": "/me/notification-preferences",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V19",
+        "method": "POST",
+        "path": "/tasks",
+        "expected": 400,
+        "actual": 400,
+        "passed": true
+      },
+      {
+        "case": "V20",
+        "method": "GET",
+        "path": "/unknown-testing-resource",
+        "expected": 404,
+        "actual": 404,
+        "passed": true
+      }
+    ]
+  },
+  "grouped_regression": {
+    "invocations": 32,
+    "includes_fixture_preparation": 1,
+    "initial_core_passed": 25,
+    "initial_core_failed": 1,
+    "initial_failure_resolved": "security-browser harness locator fixed; own fixtures rebuilt; 15 checks passed",
+    "suites": [
+      {
+        "phase": "core",
+        "suite": "auth-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "auth-http.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "auth-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "auth-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "content-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "content-http.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "content-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "content-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "security-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "security-http.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "security-browser",
+        "status": "FAIL",
+        "exit_code": 1,
+        "private_log": "security-browser.log",
+        "final_status": "PASS_AFTER_HARNESS_FIX",
+        "retest_evidence": ".local/testing/security-browser-retest.log",
+        "cause": "ID column locator assumed first cell; checkbox column changed layout"
+      },
+      {
+        "phase": "core",
+        "suite": "task-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "task-http.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "task-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "task-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "trade-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "trade-http.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "trade-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "trade-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "dispute-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "dispute-http.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "dispute-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "dispute-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "batch-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "batch-http.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "batch-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "batch-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "analytics-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "analytics-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "layout-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "layout-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "admin-links-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "admin-links-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "entries-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "entries-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "asset-updates-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "asset-updates-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "prepare-member",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "prepare-member.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "member-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "member-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "chat-isolation-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "chat-isolation-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "native-business-adapter",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "native-business-adapter.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "native-account-adapter",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "native-account-adapter.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "native-components",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "native-components.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "core",
+        "suite": "native-compile",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "native-compile.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "notification-off",
+        "suite": "notification-prepare",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "notification-prepare.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "notification-off",
+        "suite": "publication-prepare",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "publication-prepare.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "notification-on",
+        "suite": "notification-resume",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "notification-resume.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "notification-on",
+        "suite": "publication-resume",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "publication-resume.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "notification-on",
+        "suite": "notification-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "notification-browser.log",
+        "final_status": "PASS"
+      },
+      {
+        "phase": "notification-on",
+        "suite": "publication-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "publication-browser.log",
+        "final_status": "PASS"
+      }
+    ]
+  },
+  "targeted_final": {
+    "chat_browser_cases": 2,
+    "member_browser_checks": 10,
+    "native_business_adapter_checks": 17,
+    "status": "PASS"
+  },
+  "coverage": {
+    "tool": "JaCoCo 0.8.13",
+    "scope": "main Java classes; combined JUnit and running backend HTTP/browser/worker traces",
+    "counters": {
+      "INSTRUCTION": {
+        "covered": 25080,
+        "missed": 2266,
+        "percent": 91.71
+      },
+      "BRANCH": {
+        "covered": 1824,
+        "missed": 593,
+        "percent": 75.47
+      },
+      "LINE": {
+        "covered": 1757,
+        "missed": 33,
+        "percent": 98.16
+      },
+      "COMPLEXITY": {
+        "covered": 1314,
+        "missed": 569,
+        "percent": 69.78
+      },
+      "METHOD": {
+        "covered": 652,
+        "missed": 10,
+        "percent": 98.49
+      },
+      "CLASS": {
+        "covered": 59,
+        "missed": 0,
+        "percent": 100.0
+      }
+    },
+    "uncovered_lines": [
+      {
+        "file": "com/campuspi/notification/NotificationService.java",
+        "lines": [
+          50
+        ]
+      },
+      {
+        "file": "com/campuspi/admin/AdminNotificationService.java",
+        "lines": [
+          95
+        ]
+      },
+      {
+        "file": "com/campuspi/admin/AdminTaskService.java",
+        "lines": [
+          88
+        ]
+      },
+      {
+        "file": "com/campuspi/admin/VerificationController.java",
+        "lines": [
+          16
+        ]
+      },
+      {
+        "file": "com/campuspi/admin/AdminBatchService.java",
+        "lines": [
+          116
+        ]
+      },
+      {
+        "file": "com/campuspi/admin/BusinessFileService.java",
+        "lines": [
+          56,
+          104,
+          198
+        ]
+      },
+      {
+        "file": "com/campuspi/admin/BusinessFileScanner.java",
+        "lines": [
+          31,
+          32
+        ]
+      },
+      {
+        "file": "com/campuspi/aftersale/AftersaleService.java",
+        "lines": [
+          68
+        ]
+      },
+      {
+        "file": "com/campuspi/account/WechatAccountService.java",
+        "lines": [
+          54,
+          56
+        ]
+      },
+      {
+        "file": "com/campuspi/account/WechatIdentityClient.java",
+        "lines": [
+          33,
+          45
+        ]
+      },
+      {
+        "file": "com/campuspi/account/AccountService.java",
+        "lines": [
+          60,
+          64,
+          69,
+          106,
+          107,
+          155,
+          156,
+          157
+        ]
+      },
+      {
+        "file": "com/campuspi/member/MemberTaskService.java",
+        "lines": [
+          42,
+          43
+        ]
+      },
+      {
+        "file": "com/campuspi/member/MemberContentService.java",
+        "lines": [
+          41,
+          42
+        ]
+      },
+      {
+        "file": "com/campuspi/member/MemberSupport.java",
+        "lines": [
+          39
+        ]
+      },
+      {
+        "file": "com/campuspi/member/MemberContentController.java",
+        "lines": [
+          23,
+          26,
+          35
+        ]
+      },
+      {
+        "file": "com/campuspi/member/MemberOrderController.java",
+        "lines": [
+          18
+        ]
+      },
+      {
+        "file": "com/campuspi/member/MemberTaskController.java",
+        "lines": [
+          21
+        ]
+      }
+    ],
+    "html_report": "backend/target/site/jacoco/index.html"
+  },
+  "product_defects": [
+    {
+      "id": "BUG-01",
+      "priority": "P1",
+      "status": "FIXED_AND_RETESTED",
+      "pre_fix_red_recorded": true
+    },
+    {
+      "id": "BUG-02",
+      "priority": "P2",
+      "status": "FIXED_AND_RETESTED",
+      "pre_fix_red_recorded": true
+    },
+    {
+      "id": "BUG-03",
+      "priority": "P2",
+      "status": "FIXED_AND_RETESTED",
+      "pre_fix_red_recorded": true
+    },
+    {
+      "id": "BUG-04",
+      "priority": "P2",
+      "status": "FIXED_AND_RETESTED",
+      "pre_fix_red_recorded": false,
+      "discovery": "whitebox asynchronous lifecycle review"
+    }
+  ],
+  "native_runtime": {
+    "status": "BLOCKED",
+    "reason": "Could not connect to local developer tool automation port 9420",
+    "official_compile": {
+      "status": "PASS",
+      "pages": 10,
+      "components": 5,
+      "styles": 18
+    },
+    "real_device_verified": false,
+    "real_wechat_exchange_verified": false
+  },
+  "source_snapshot": {
+    "files_hashed": 247,
+    "canonical_manifest_sha256": "0d70499de39930f087662c3a1f33f9a260e4f60e16afd293ccc1ca74435778ab",
+    "private_manifest": ".local/testing/tested-source-manifest.json",
+    "selected_files_sha256": {
+      "backend/src/main/java/com/campuspi/member/MemberTaskService.java": "a1b4b1491ab8328b675317f12afd90ac3504533f859a2eafa53779cd0a36560a",
+      "backend/src/main/java/com/campuspi/admin/AdminTaskService.java": "7f7f77936be3b488dd8baedc1362eccb64ffad88b2cb7a81a9be575f5b71af1b",
+      "frontend/src/member/ChatBoard.vue": "76b8eea9349c1d3d3980a55ee821c3b6268ff86082cd7c4ca5c42ec0cc3fcc1d",
+      "frontend/src/member/useMember.js": "d654c9ebb34a14215b2a51594e10f6a1d5741d547a2637db119ef64d78c9570a",
+      "miniprogram/components/business-surface/index.js": "a99074d6025ac9a82f733538abbfa9ff3473ea9c3d4d4edd5c2bd25f1e98291a",
+      "backend/pom.xml": "2c3105122e0371754022b95504917842e04116934305dc61a93d5cbfb603ffda",
+      ".github/workflows/verify.yml": "aba1c0eaa6b8e3ba8635944dd5b8148d460de016a02ccc417a2f6bc31b514e5e"
+    },
+    "jar_sha256": "bf0bd956f204e94a361021e88efafb82b5bf2c8845d77eb3afd3f0e239dcf2ab",
+    "verified_unchanged_after_report": true
+  },
+  "evidence_sha256": {
+    ".local/testing/java-coverage.log": "36f37bc0fb3005c59974e0750a9f55b029d05985473619b8b65474d25fe40bac",
+    ".local/testing/node-whitebox.tap": "82c6fcf342fcbf081b508c58ff4944911d8c935d4e8aabb6bba4f2d550639277",
+    ".local/testing/api-boundaries.json": "cbd30d7794a731f28f44b83ec2cc8c4740e29fcfce26a9e5e10953b38228aec1",
+    ".local/testing/blackbox-core.json": "c6e9fb79069a2d6418005a7b909171f300e29fca8fb260391abeb133dc8e0611",
+    ".local/testing/blackbox-notification-off.json": "9f230b2649f15e94e3ce50a7ff720deb8ef6f462d0844f961a306ad71839bb81",
+    ".local/testing/blackbox-notification-on.json": "eeb2b1d010d86c58a45e3eab84ddb12b0c596167e70afc87115d9ea29c501309",
+    ".local/testing/security-http-retest.log": "336e53be228359810504ac6c114637ad479b6c6f0e64be8912e8b2210bf4c2e4",
+    ".local/testing/security-browser-retest.log": "e7fb9cb61af19cf42b7a01ecc7e3ae96311fb87f837025daf1d9ec89f2cfcdc6",
+    ".local/testing/chat-isolation-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".local/testing/member-browser-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".local/testing/native-business-final.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".local/testing/native-runtime.log": "badc76766cbf3010287eb73dc58ac83d484df0c8e11e0e44bb6e57be09491fa2",
+    ".local/testing/dump-final.log": "12ece12cd2c662edcaaa32d915668335e530e62a0d008f3bfba09916dbe70d1c",
+    ".local/testing/coverage-final.log": "ae547cae01f67d21cb889c9705cddab5ecb3627d86c7b9411f5a71448131d3de",
+    ".local/testing/baseline-invariants.log": "64c3c6f3181b59277d493773c8d732df41993d05c27e9795a3c8c8135f12496e",
+    ".local/testing/baseline-chat.log": "80ad6e2b8fb09c681a503ea479061c7441d9f9d8dbe223e7b46c59267719dd7a",
+    ".local/testing/baseline-native.log": "1365d652980b62e80d0053063500e3b59535958cb742acc3f4f0ebdbdab0bd26",
+    ".local/testing/baseline-frontend.log": "de03ab2b09db07be8408771dabffb092e433b4223585a9dc403f7dfc3714d847"
+  },
+  "service_restored": {
+    "login_http": 200,
+    "notifications_worker": true,
+    "batch_worker": true,
+    "coverage_agent": false
+  },
+  "static_checks": {
+    "baseline": {
+      "status": "PASS",
+      "baseline_assets": 45,
+      "api_operations": 112,
+      "api_paths": 94,
+      "options": 9,
+      "P0": 104,
+      "P1": 8,
+      "ownership": "UNIQUE_AND_COMPLETE",
+      "schema_references": "RESOLVED",
+      "markdown_links": "PASS",
+      "sql_objects": {
+        "tables": 25,
+        "procedures": 12,
+        "triggers": 4
+      },
+      "sql_executed": false,
+      "business_http_tests_run": false,
+      "note": "Static consistency checks only; not full OpenAPI schema validation or application acceptance."
+    },
+    "shared_config": {
+      "status": "PASS",
+      "shared_files_checked": 372,
+      "includes_untracked_nonignored": true,
+      "issues": [],
+      "credential_values_printed": false
+    },
+    "frontend_package": {
+      "status": "PASS",
+      "exact_static_file_set": true,
+      "static_files": 12,
+      "private_config_entries": 0
+    }
+  }
+}

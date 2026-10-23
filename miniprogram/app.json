@@ -4,7 +4,12 @@
     "pages/register/index",
     "pages/home/index",
     "pages/me/index",
-    "pages/pending/index"
+    "pages/pending/index",
+    "pages/discover/index",
+    "pages/publish/index",
+    "pages/messages/index",
+    "pages/wechat-binding/index",
+    "pages/business/index"
   ],
   "window": {
     "navigationBarTitleText": "校园Π",
@@ -13,5 +18,37 @@
     "backgroundColor": "#f6f8fc"
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "custom": true,
+    "color": "#a4a4a4",
+    "selectedColor": "#5189ff",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/discover/index",
+        "text": "发现"
+      },
+      {
+        "pagePath": "pages/publish/index",
+        "text": "发布"
+      },
+      {
+        "pagePath": "pages/messages/index",
+        "text": "私信"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "text": "个人"
+      }
+    ]
+  },
+  "usingComponents": {
+    "auth-field": "/components/auth-field/index",
+    "state-panel": "/components/state-panel/index"
+  }
 }

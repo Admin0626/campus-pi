@@ -17,13 +17,14 @@ import static com.campuspi.account.AccountService.*;
 public class AdminTaskService {
     private static final Set<String> TASK_STATES=Set.of("待审核","待接取","进行中","待验收","已完成","未完成","已驳回","已取消");
     private final JdbcTemplate db;
+    private final com.campuspi.notification.ReviewNotifications notifications;
     private final AccountService accounts;
     private final ObjectMapper json;
     private final BusinessNumbers numbers;
     private final boolean syntheticCash;
-    public AdminTaskService(JdbcTemplate db,AccountService accounts,ObjectMapper json,BusinessNumbers numbers,
+    public AdminTaskService(JdbcTemplate db,AccountService accounts,ObjectMapper json,BusinessNumbers numbers,com.campuspi.notification.ReviewNotifications notifications,
             @Value("${campus.tasks.synthetic-cash-enabled:false}")boolean syntheticCash){
-        this.db=db;this.accounts=accounts;this.json=json;this.numbers=numbers;this.syntheticCash=syntheticCash;
+        this.notifications=notifications;this.db=db;this.accounts=accounts;this.json=json;this.numbers=numbers;this.syntheticCash=syntheticCash;
     }
     private Map<String,Object> one(String sql,Object... args){var rows=db.queryForList(sql,args);return rows.isEmpty()?null:rows.get(0);}
     private Map<String,Object> require(String table,String field,Object id,boolean lock){var row=one("SELECT * FROM "+table+" WHERE "+field+"=?"+(lock?" FOR UPDATE":""),id);if(row==null)throw new ApiException(404,"记录不存在");return row;}
@@ -42,7 +43,7 @@ public class AdminTaskService {
     private Object publicUser(Object id){var user=require("users","user_id",id,false);return Map.of("user_id",text(user.get("user_id")),"username",user.get("username"));}
     private boolean related(Map<String,Object> task,Identity actor){return actor!=null&&(actor.admin()||actor.id()==number(task,"publisher_id")||(task.get("taker_id") instanceof Number n&&actor.id()==n.longValue()));}
     private void party(Map<String,Object> task,Identity actor){if(!related(task,actor))throw new ApiException(404,"任务不存在或无权读取");}
-    private Object taskView(Map<String,Object> task,Identity actor){
+    public Object taskView(Map<String,Object> task,Identity actor){
         var result=new LinkedHashMap<String,Object>();result.put("reward_task_id",text(task.get("reward_task_id")));result.put("publisher",publicUser(task.get("publisher_id")));
         boolean privateView=related(task,actor);
         result.put("taker",privateView&&task.get("taker_id")!=null?publicUser(task.get("taker_id")):null);
@@ -51,17 +52,17 @@ public class AdminTaskService {
         var order=privateView?one("SELECT order_id FROM user_orders WHERE reward_task_id=?",task.get("reward_task_id")):null;
         result.put("order_id",order==null?null:order.get("order_id"));return result;
     }
-    private Object applicationView(Map<String,Object> row){
+    public Object applicationView(Map<String,Object> row){
         var result=new LinkedHashMap<String,Object>();for(String key:List.of("application_id","reward_task_id","applicant_id"))result.put(key,text(row.get(key)));
         for(String key:List.of("application_status","audit_reason"))result.put(key,row.get(key));
         for(String key:List.of("applied_at","reviewed_at"))result.put(key,time(row.get(key)));return result;
     }
-    private Object proofView(Map<String,Object> row){
+    public Object proofView(Map<String,Object> row){
         var result=new LinkedHashMap<String,Object>();for(String key:List.of("proof_id","reward_task_id","submitter_id"))result.put(key,text(row.get(key)));
         for(String key:List.of("submission_no","proof_text","audit_status","audit_reason"))result.put(key,row.get(key));
         result.put("evidence_refs",decode(row.get("evidence_urls")));for(String key:List.of("submitted_at","reviewed_at"))result.put(key,time(row.get(key)));return result;
     }
-    private Object logView(Map<String,Object> row){
+    private Map<String,Object> logView(Map<String,Object> row){
         var result=new LinkedHashMap<String,Object>();for(String key:List.of("log_id","reward_task_id","operator_id"))result.put(key,text(row.get(key)));
         for(String key:List.of("action_name","from_status","to_status","reason"))result.put(key,row.get(key));result.put("operated_at",time(row.get("operated_at")));return result;
     }
@@ -92,6 +93,18 @@ public class AdminTaskService {
         party(require("RewardTasks","reward_task_id",taskId,false),actor);
         return page("task_audit_log"," WHERE reward_task_id=?",List.of(taskId),page,size,"operated_at DESC,log_id DESC",this::logView);
     }
+    public Object reviewLogs(Identity actor,int page,int size,String taskId,String keyword,String state,String from,String to){
+        if(actor==null||!actor.admin())throw new ApiException(403,"需要管理员权限");
+        enumFilter(state,TASK_STATES);keyword=AdminQuery.keyword(keyword);
+        String where=" WHERE 1=1";var args=new ArrayList<Object>();
+        if(!taskId.isEmpty()){where+=" AND l.reward_task_id=?";args.add(id(taskId));}
+        if(!keyword.isEmpty()){where+=" AND LOCATE(?,t.task_name)>0";args.add(keyword);}
+        if(!state.isEmpty()){where+=" AND l.to_status=?";args.add(state);}
+        where+=AdminQuery.dates("l.operated_at",from,to,args);
+        return page("task_audit_log l JOIN RewardTasks t ON t.reward_task_id=l.reward_task_id",where,args,page,size,"l.operated_at DESC,l.log_id DESC",row->{
+            var value=new LinkedHashMap<>(logView(row));value.put("task_name",row.get("task_name"));value.put("reward_amount",money(row.get("reward_amount")));value.put("reward_type",row.get("reward_type"));return value;
+        });
+    }
     public Object balances(Identity actor){
         var items=new ArrayList<Object>();for(String type:List.of("积分","现金")){
             var row=one("SELECT available_amount,frozen_amount FROM reward_accounts WHERE user_id=? AND reward_type=?",actor.id(),type);
@@ -121,6 +134,19 @@ public class AdminTaskService {
         db.update("UPDATE reward_accounts SET available_amount=available_amount+?,frozen_amount=frozen_amount-? WHERE user_id=? AND reward_type=?",amount,amount,task.get("publisher_id"),task.get("reward_type"));
         db.update("INSERT INTO reward_ledger(event_key,reward_task_id,user_id,reward_type,event_type,available_delta,frozen_delta) VALUES(?,?,?,?,'解冻',?,?)","RELEASE:"+task.get("reward_task_id"),task.get("reward_task_id"),task.get("publisher_id"),task.get("reward_type"),amount,amount.negate());
     }
+    public Object cancelByOwner(Identity actor,long id,JsonNode body,String key){
+        fields(body,"reason");String reason=AccountService.text(body,"reason",1,500,true);
+        return accounts.memberMutation(actor,"task-cancel:"+id,key,body,()->{
+            var task=require("RewardTasks","reward_task_id",id,true);
+            if(number(task,"publisher_id")!=actor.id())throw new ApiException(404,"任务不存在");
+            cash(task);
+            if(!Set.of("待审核","待接取").contains(text(task.get("task_status")))||task.get("taker_id")!=null||one("SELECT order_id FROM user_orders WHERE reward_task_id=?",id)!=null)throw new ApiException(409,"只能取消本人尚未分配的任务");
+            release(task);
+            db.update("UPDATE RewardTasks SET task_status='已取消',cancel_reason=?,version=version+1 WHERE reward_task_id=?",reason,id);
+            db.update("UPDATE task_applications SET application_status='已取消',audit_reason=? WHERE reward_task_id=? AND application_status='待审核'",reason,id);
+            log(actor,task,"本人取消","已取消",reason);return taskView(require("RewardTasks","reward_task_id",id,false),actor);
+        });
+    }
     private void log(Identity actor,Map<String,Object> task,String action,String next,String reason){
         db.update("INSERT INTO task_audit_log(reward_task_id,operator_id,action_name,from_status,to_status,reason) VALUES(?,?,?,?,?,?)",task.get("reward_task_id"),actor.id(),action,task.get("task_status"),next,reason);
         db.update("INSERT INTO admin_audit_log(operator_id,object_type,object_id,action_name,reason) VALUES(?,'任务',?,?,?)",actor.id(),text(task.get("reward_task_id")),action,reason);
@@ -132,7 +158,7 @@ public class AdminTaskService {
             if(!"待审核".equals(task.get("task_status")))throw new ApiException(409,"只能审核待发布任务");
             if("通过".equals(decision)){eligible(task.get("publisher_id"),text(task.get("campus")));frozen(task);}else release(task);
             String next=decision.equals("通过")?"待接取":"已驳回";
-            db.update("UPDATE RewardTasks SET task_status=?,version=version+1 WHERE reward_task_id=?",next,id);log(actor,task,"发布审核",next,reason);return taskView(require("RewardTasks","reward_task_id",id,false),actor);
+            db.update("UPDATE RewardTasks SET task_status=?,version=version+1 WHERE reward_task_id=?",next,id);notifications.send(actor.id(),number(task,"publisher_id"),"任务发布",Long.toString(id),next,reason);log(actor,task,"发布审核",next,reason);return taskView(require("RewardTasks","reward_task_id",id,false),actor);
         });
     }
     public Object assign(Identity actor,long id,JsonNode body,String key){
@@ -141,6 +167,7 @@ public class AdminTaskService {
             var initial=require("task_applications","application_id",id,false);long taskId=number(initial,"reward_task_id");
             var task=require("RewardTasks","reward_task_id",taskId,true);var application=require("task_applications","application_id",id,true);cash(task);
             if(!"待接取".equals(task.get("task_status"))||!"待审核".equals(application.get("application_status")))throw new ApiException(409,"任务已分配或当前申请不可审批");
+            var pendingApplicants=db.queryForList("SELECT application_id,applicant_id FROM task_applications WHERE reward_task_id=? AND application_status='待审核' ORDER BY applicant_id",taskId);
             String orderId=null;
             if(decision.equals("驳回"))db.update("UPDATE task_applications SET application_status='已驳回',reviewer_id=?,audit_reason=?,reviewed_at=UTC_TIMESTAMP(3) WHERE application_id=?",actor.id(),reason,id);
             else {
@@ -152,13 +179,14 @@ public class AdminTaskService {
                 db.update("UPDATE RewardTasks SET task_status='进行中',taker_id=?,accepted_at=UTC_TIMESTAMP(3),version=version+1 WHERE reward_task_id=?",application.get("applicant_id"),taskId);
                 db.update("INSERT INTO user_orders(order_id,order_type,user_id,seller_id,reward_task_id,item_name,quantity,unit_price,total_amount,order_status) VALUES(?,'任务',?,?,?,?,1,?,?,'进行中')",orderId,task.get("publisher_id"),application.get("applicant_id"),taskId,task.get("task_name"),task.get("reward_amount"),task.get("reward_amount"));
             }
+            for(var pending:pendingApplicants)if(decision.equals("通过")||number(pending,"application_id")==id)notifications.send(actor.id(),number(pending,"applicant_id"),"任务申请",text(pending.get("application_id")),decision.equals("通过")&&number(pending,"application_id")==id?"已通过":"已驳回",number(pending,"application_id")==id?reason:"任务已分配给其他申请者");
             log(actor,task,decision.equals("通过")?"接取审核":"接取驳回",decision.equals("通过")?"进行中":"待接取",reason);
             var result=new LinkedHashMap<String,Object>();result.put("application",applicationView(require("task_applications","application_id",id,false)));result.put("task",taskView(require("RewardTasks","reward_task_id",taskId,false),actor));result.put("order_id",orderId);return result;
         });
     }
     private Map<String,Object> taskOrder(Map<String,Object> task,String state){
         var order=one("SELECT * FROM user_orders WHERE reward_task_id=? FOR UPDATE",task.get("reward_task_id"));
-        if(order==null||!"任务".equals(order.get("order_type"))||number(order,"user_id")!=number(task,"publisher_id")||number(order,"seller_id")!=number(task,"taker_id")||!state.equals(order.get("order_status"))||((BigDecimal)order.get("total_amount")).compareTo((BigDecimal)task.get("reward_amount"))!=0)throw new ApiException(409,"任务订单关联或状态不一致，需要核对");return order;
+        if(order==null||!"任务".equals(order.get("order_type"))||number(order,"user_id")!=number(task,"publisher_id")||number(order,"seller_id")!=number(task,"taker_id")||!state.equals(order.get("order_status"))||number(order,"quantity")!=1||((BigDecimal)order.get("unit_price")).compareTo((BigDecimal)task.get("reward_amount"))!=0||((BigDecimal)order.get("total_amount")).compareTo((BigDecimal)task.get("reward_amount"))!=0)throw new ApiException(409,"任务订单关联或状态不一致，需要核对");return order;
     }
     private void settle(Map<String,Object> task,Map<String,Object> proof){
         frozen(task);BigDecimal amount=(BigDecimal)task.get("reward_amount");long owner=number(task,"publisher_id"),taker=number(task,"taker_id");String type=text(task.get("reward_type"));
@@ -185,6 +213,8 @@ public class AdminTaskService {
             db.update("UPDATE RewardTasks SET task_status=?,completed_at=IF(?='已完成',UTC_TIMESTAMP(3),NULL),version=version+1 WHERE reward_task_id=?",next,next,taskId);
             if(decision.equals("通过"))db.update("UPDATE user_orders SET order_status='已完成',actual_amount=?,payment_method='奖励账户',completion_time=UTC_TIMESTAMP(3),payment_time=UTC_TIMESTAMP(3) WHERE order_id=?",task.get("reward_amount"),order.get("order_id"));
             else db.update("UPDATE user_orders SET order_status=? WHERE order_id=?",next,order.get("order_id"));
+            notifications.send(actor.id(),number(task,"publisher_id"),"任务验收",Long.toString(taskId),next,reason);
+            notifications.send(actor.id(),number(task,"taker_id"),"任务验收",Long.toString(taskId),next,reason);
             log(actor,task,"完成验收",next,reason);return taskView(require("RewardTasks","reward_task_id",taskId,false),actor);
         });
     }

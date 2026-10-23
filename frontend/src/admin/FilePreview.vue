@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onUnmounted } from "vue";
 import { api } from "../api";
-const props = defineProps({ files: { type: Array, default: () => [] } });
+const props = defineProps({ files: { type: Array, default: () => [] }, mode: { type: String, default: 'materials', validator: value => ['materials','thumbnail','gallery','message'].includes(value) } });
 const entries = ref([]);
 let generation = 0,
   controller;
@@ -34,7 +34,7 @@ async function load() {
   const signal = activeController.signal;
   entries.value = props.files.map((value, i) => ({
     id: idOf(value),
-    label: `材料 ${i + 1}`,
+    label: `${props.mode === 'materials' ? '材料' : '图片'} ${i + 1}`,
     src: "",
     mime: "",
     loading: true,
@@ -92,16 +92,16 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <section class="admin-file-preview" aria-label="文件材料预览">
-    <header>
+  <section class="admin-file-preview" :class="'file-preview-' + mode" :aria-label="mode === 'materials' ? '文件材料预览' : '图片预览'">
+    <header v-if="mode === 'materials'">
       <h4>文件材料</h4>
       <button type="button" @click="load">刷新材料</button>
     </header>
-    <p v-if="!entries.length">暂无文件材料</p>
+    <p v-if="!entries.length" class="file-preview-empty">{{ mode === 'materials' ? '暂无文件材料' : '暂无图片' }}</p>
     <figure v-for="(entry, index) in entries" :key="index">
-      <figcaption>{{ entry.label }}</figcaption>
+      <figcaption v-if="mode === 'materials'">{{ entry.label }}</figcaption>
       <p v-if="entry.loading" role="status">正在读取材料…</p>
-      <p v-else-if="entry.error" role="alert">{{ entry.error }}</p>
+      <p v-else-if="entry.error" role="alert">{{ entry.error }} <button type="button" @click="load">重新加载图片</button></p>
       <img
         v-else-if="entry.mime.startsWith('image/')"
         :src="entry.src"

@@ -1,3 +1,4 @@
+@import "styles/auth-controls.wxss";
 page {
   background: #fff;
   color: #111;
@@ -62,43 +63,6 @@ button::after {
   position: absolute;
   left: 46.88rpx;
   width: 653.57rpx;
-}
-.word-label {
-  display: block;
-  margin-bottom: 13.39rpx;
-  font-size: 26.79rpx;
-  line-height: 1.4;
-  color: #333;
-}
-.word-input {
-  border: 2rpx solid #a0a0a0;
-  border-radius: 10.71rpx;
-  height: 80.36rpx;
-  display: flex;
-  align-items: center;
-  padding: 0 16.07rpx;
-  gap: 14.73rpx;
-  background: #fff;
-}
-.word-input input {
-  flex: 1;
-  min-width: 0;
-  width: 100%;
-  height: 100%;
-  font-size: 26.79rpx;
-  color: #333;
-}
-.word-symbol {
-  color: #666;
-  font-size: 29.46rpx;
-  width: 29.46rpx;
-  flex-shrink: 0;
-  text-align: center;
-}
-.word-eye {
-  color: #666;
-  font-size: 30rpx;
-  width: 34rpx;
 }
 .word-username {
   top: 300rpx;
@@ -309,49 +273,6 @@ button::after {
 }
 .word-feedback button {
   font-size: 30rpx;
-}
-
-.word-glyph {
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-  width: 32.14rpx;
-  height: 34.82rpx;
-}
-.word-glyph image {
-  position: absolute;
-  width: 854.46rpx;
-  height: 1706.25rpx;
-  left: -87.05rpx;
-}
-.glyph-user image {
-  top: -480.8rpx;
-}
-.glyph-lock image {
-  top: -650.89rpx;
-}
-.glyph-phone image {
-  top: -826.34rpx;
-}
-.glyph-shield image {
-  top: -997.77rpx;
-}
-.glyph-eye {
-  width: 38.84rpx;
-  height: 32.14rpx;
-}
-.glyph-eye image {
-  left: -666.96rpx;
-  top: -657.59rpx;
-}
-.glyph-mail image {
-  width: 841.07rpx;
-  height: 1720.98rpx;
-  left: -101.79rpx;
-  top: -688.39rpx;
-}
-.word-eye {
-  width: 38.84rpx;
 }
 .glyph-login image {
   left: -342.86rpx;

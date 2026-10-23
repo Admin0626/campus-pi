@@ -1,0 +1,224 @@
+<view class="business"
+  ><view class="heading">{{title}}</view
+  ><view class="toolbar"
+    ><button
+      wx:for="{{scopes}}"
+      wx:key="value"
+      data-value="{{item.value}}"
+      bindtap="scope"
+      disabled="{{busy}}"
+      class="{{scope===item.value&&!(stage==='form'&&mode==='create')?'active':''}}"
+    >
+      {{item.label}}</button
+    ><button
+      wx:if="{{module==='B'||module==='C'||module==='D'||module==='E'||module==='F'}}"
+      bindtap="edit"
+      disabled="{{busy}}"
+      class="{{stage==='form'&&mode==='create'?'active':''}}"
+    >
+      发布 / 申请</button
+    ><button
+      wx:if="{{module==='H'&&scope==='sessions'&&!detail}}"
+      bindtap="createChat"
+    >
+      新会话</button
+    ><button wx:if="{{module==='A'}}" bindtap="edit" disabled="{{busy}}">编辑资料</button
+    ><button wx:if="{{module==='I'}}" bindtap="preferences">通知偏好</button
+    ><button bindtap="refresh" disabled="{{busy}}">刷新</button></view
+  ><view wx:if="{{error}}" class="error">{{error}}</view
+  ><view wx:if="{{notice}}" class="notice">{{notice}}</view
+  ><view wx:if="{{loading}}" class="muted">正在加载…</view
+  ><view wx:for="{{balances}}" wx:key="reward_type" class="muted"
+    >{{item.reward_type}}：可用 {{item.available_amount}} / 冻结
+    {{item.frozen_amount}}</view
+  ><view wx:if="{{module==='E'||module==='F'}}" class="muted"
+    >发布任务会冻结奖励；新账号余额为零，平台未开放自行充值。</view
+  >
+  <view wx:if="{{stage==='form'}}" class="card"
+    ><view wx:for="{{fields}}" wx:key="key" class="field"
+      ><label>{{item.label}}</label
+      ><switch
+        wx:if="{{item.type==='switch'}}"
+        checked="{{item.value}}"
+        data-index="{{index}}"
+        bindchange="field"
+        disabled="{{busy}}"
+        color="#7757e6" /><picker
+        wx:elif="{{item.type==='select'}}"
+        range="{{item.options}}"
+        range-key="label"
+        data-index="{{index}}"
+        bindchange="field"
+        disabled="{{busy}}"
+        ><view class="picker"
+          >{{item.options[item.selected||0].label||'请选择'}} ▾</view
+        ></picker
+      ><textarea
+        wx:elif="{{item.type==='textarea'}}"
+        auto-height="{{true}}"
+        value="{{item.value}}"
+        maxlength="{{item.max||5000}}"
+        data-index="{{index}}"
+        bindinput="field"
+        disabled="{{busy}}" /><input
+        wx:else
+        value="{{item.value}}"
+        type="{{item.type==='number'?'number':'text'}}"
+        password="{{item.password}}"
+        maxlength="{{item.max||500}}"
+        data-index="{{index}}"
+        bindinput="field"
+        disabled="{{busy||item.readonly}}" /></view
+    ><view wx:if="{{purpose}}"
+      ><button bindtap="choose" disabled="{{busy}}">
+        上传{{purpose==='VERIFICATION'?'认证材料':'图片'}}（安全扫描）</button
+      ><protected-files files="{{files}}" /><button
+        wx:for="{{files}}"
+        wx:key="*this"
+        data-index="{{index}}"
+        bindtap="removeFile"
+        disabled="{{busy}}"
+      >
+        移除文件 {{index+1}}</button
+      ><view wx:if="{{mode==='edit'&&module==='C'}}" class="muted"
+        >编辑商品需重新上传完整图片集。</view
+      ></view
+    ><view class="toolbar"
+      ><button class="primary" bindtap="submit" disabled="{{busy}}">
+        {{busy?'提交中…':'确认提交'}}</button
+      ><button bindtap="cancelForm" disabled="{{busy}}">取消</button></view
+    ></view
+  >
+  <view wx:elif="{{stage==='detail'}}"
+    ><button bindtap="back" disabled="{{busy}}">返回列表</button
+    ><view wx:if="{{module==='H'&&detail.session_id}}"
+      ><view class="card"
+        >与 {{detail.peer.username}} 的私信（每10秒检查新消息）</view
+      ><button wx:if="{{older}}" bindtap="olderMessages" disabled="{{busy}}">
+        更早消息</button
+      ><view
+        wx:for="{{messages}}"
+        wx:key="msg_id"
+        class="card bubble {{item.mine?'mine':''}}"
+        ><text wx:if="{{item.content_type==='文本'}}" class="copy"
+          >{{item.content}}</text
+        ><protected-files wx:else files="{{item.files}}" /><view class="muted"
+          >{{item.time}} · {{item.read_at?'已读':'未读'}}</view
+        ><view class="toolbar"
+          ><button
+            wx:if="{{!item.mine&&!item.read_at}}"
+            data-id="{{item.msg_id}}"
+            data-action="read"
+            bindtap="messageAction"
+            disabled="{{busy}}"
+          >
+            标记已读</button
+          ><button
+            data-id="{{item.msg_id}}"
+            data-action="delete"
+            bindtap="messageAction"
+            disabled="{{busy}}"
+          >
+            删除</button
+          ><button
+            data-id="{{item.msg_id}}"
+            data-action="report"
+            bindtap="messageAction"
+            disabled="{{busy}}"
+          >
+            举报
+          </button></view
+        ></view
+      ><textarea
+        auto-height="{{true}}"
+        value="{{messageText}}"
+        data-key="messageText"
+        bindinput="input"
+        maxlength="2000"
+        placeholder="输入消息"
+      /><view class="toolbar"
+        ><button bindtap="sendImage" disabled="{{busy}}">发图片</button
+        ><button class="primary" bindtap="send" disabled="{{busy}}">
+          发送
+        </button></view
+      ></view
+    ><view wx:else class="card"
+      ><view wx:for="{{detailLines}}" wx:key="label" class="detail-line"
+        ><text class="muted">{{item.label}}</text
+        ><text class="copy">{{item.value}}</text></view
+      ><protected-files files="{{detailFiles}}" /><view class="toolbar"
+        ><button
+          wx:for="{{actions}}"
+          wx:key="value"
+          data-action="{{item.value}}"
+          bindtap="action"
+          disabled="{{busy}}"
+        >
+          {{item.label}}
+        </button></view
+      ><view wx:if="{{module==='G'&&detail.order_type==='商品'}}" class="muted"
+        >真实支付、物流及商品退款尚未接入，当前支持创建与取消订单。</view
+      ></view
+    ><view wx:for="{{history}}" wx:key="index" class="card"
+      ><view wx:if="{{item.proof_id}}">第 {{item.submission_no}} 次凭证 · {{item.audit_status}}</view><view wx:else>{{item.action_name}} · {{item.from_status}} → {{item.to_status}}</view
+      ><view class="copy">{{item.proof_text||item.reason}}</view
+      ><view>{{item.audit_reason}}</view
+      ><protected-files files="{{item.evidence_refs}}" /><view class="muted"
+        >{{item.time}}</view
+      ></view
+    ><view wx:if="{{history.length}}" class="toolbar"
+      ><button
+        bindtap="historyTurn"
+        data-delta="-1"
+        disabled="{{historyPage<=1||busy}}"
+      >
+        上一页凭证</button
+      ><button
+        bindtap="historyTurn"
+        data-delta="1"
+        disabled="{{!historyMore||busy}}"
+      >
+        下一页凭证
+      </button></view
+    ></view
+  >
+  <view wx:else
+    ><view
+      wx:if="{{(module==='C'||module==='D'||module==='E')&&scope==='all'}}"
+      class="toolbar search-toolbar"
+      ><input
+        value="{{keyword}}"
+        data-key="keyword"
+        bindinput="input"
+        maxlength="100"
+        placeholder="搜索当前模块"
+      /><button bindtap="search" disabled="{{busy}}">搜索</button></view
+    ><view wx:if="{{!rows.length&&!loading&&!error}}" class="muted"
+      >暂无记录</view
+    ><view wx:for="{{rows}}" wx:key="id" class="card"
+      ><view class="row-title">{{item.title}}</view
+      ><view class="muted">{{item.status}} · {{item.date}}</view
+      ><view wx:if="{{item.price}}" class="price">{{item.price}}</view
+      ><view class="copy summary">{{item.summary}}</view
+      ><view class="toolbar"
+        ><button data-index="{{index}}" bindtap="open" disabled="{{busy}}">
+          查看详情</button
+        ><button
+          wx:if="{{item.raw.application_status==='待审核'}}"
+          data-id="{{item.raw.application_id}}"
+          bindtap="cancelApplication"
+          disabled="{{busy}}"
+        >
+          取消申请
+        </button></view
+      ></view
+    ><view class="toolbar pager"
+      ><button bindtap="turn" data-delta="-1" disabled="{{page<=1||busy}}">
+        上一页</button
+      ><text class="pager-summary">{{page}} 页 · {{total}} 条</text
+      ><button bindtap="turn" data-delta="1" disabled="{{!canNext||busy}}">
+        下一页
+      </button></view
+    ></view
+  ></view
+>

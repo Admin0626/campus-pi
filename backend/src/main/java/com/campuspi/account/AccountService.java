@@ -85,16 +85,21 @@ public class AccountService {
         return value;
     }
     private Object idempotent(String scope,String key,String signature,Supplier<Object> action) {
+        return idempotent(scope,key,signature,()->{},action);
+    }
+    private Object idempotent(String scope,String key,String signature,Runnable authorize,Supplier<Object> action) {
         if(key==null || !key.matches("[A-Za-z0-9_-]{8,64}")) throw new ApiException(400,"缺少有效的 Idempotency-Key");
         // Concurrent INSERT IGNORE readers can deadlock while upgrading to FOR UPDATE.
         // Retry only after TransactionTemplate has rolled back the whole database action.
         for(int attempt=0;;attempt++) {
-            try { return idempotentTransaction(scope,key,signature,action); }
+            try { return idempotentTransaction(scope,key,signature,authorize,action); }
             catch(PessimisticLockingFailureException ex) { if(attempt>=2) throw ex; }
         }
     }
-    private Object idempotentTransaction(String scope,String key,String signature,Supplier<Object> action) {
+    private Object idempotentTransaction(String scope,String key,String signature,Runnable authorize,Supplier<Object> action) {
         return tx.execute(status->{
+            // Replays must authenticate too, in the same transaction as the stored response.
+            authorize.run();
             int inserted=db.update("INSERT IGNORE INTO auth_idempotency(scope_key,request_key,request_digest,expires_at) VALUES(?,?,?,?)",scope,key,signature,stamp(now().plus(24,ChronoUnit.HOURS)));
             Map<String,Object> saved=one("SELECT * FROM auth_idempotency WHERE scope_key=? AND request_key=? FOR UPDATE",scope,key);
             if(inserted==0 && !instant(saved.get("expires_at")).isAfter(now())) {
@@ -154,11 +159,11 @@ public class AccountService {
         var snapshot=one("SELECT * FROM users WHERE username=? OR email=? OR phone=?",account,normalized,account);
         String snapshotHash=snapshot==null?dummyHash:snapshot.get("password_hash").toString();
         boolean correct=encoder.matches(password,snapshotHash);
-        byte[] bytes=new byte[32];random.nextBytes(bytes);
-        String token=Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
         LoginAttempt result=tx.execute(status->{
             Instant time=now();
-            db.update("INSERT IGNORE INTO auth_login_throttle(throttle_key,window_start) VALUES(?,?)",throttle,stamp(time));
+            // Acquire an exclusive row lock immediately. INSERT IGNORE would let
+            // concurrent requests hold shared locks and deadlock on the lock upgrade.
+            db.update("INSERT INTO auth_login_throttle(throttle_key,window_start) VALUES(?,?) ON DUPLICATE KEY UPDATE window_start=auth_login_throttle.window_start",throttle,stamp(time));
             var limit=one("SELECT * FROM auth_login_throttle WHERE throttle_key=? FOR UPDATE",throttle);
             if(limit.get("locked_until")!=null && instant(limit.get("locked_until")).isAfter(time)) return new LoginAttempt(429,Math.max(1,Duration.between(time,instant(limit.get("locked_until"))).toSeconds()));
             Map<String,Object> latest=snapshot==null?null:user(number(snapshot,"user_id"),true);
@@ -172,8 +177,7 @@ public class AccountService {
             }
             if(!"ACTIVE".equals(latest.get("account_status"))) return new LoginAttempt(403,null);
             db.update("UPDATE auth_login_throttle SET failure_count=0,window_start=?,locked_until=NULL WHERE throttle_key=?",stamp(time),throttle);
-            db.update("INSERT INTO auth_sessions(token_hash,user_id,auth_version,issued_at,expires_at,last_seen_at) VALUES(?,?,?,?,?,?)",hash(token),number(latest,"user_id"),number(latest,"auth_version"),stamp(time),stamp(time.plus(2,ChronoUnit.HOURS)),stamp(time));
-            return new LoginAttempt(200,Map.of("access_token",token,"token_type","Bearer","expires_in",7200,"user",view(latest,false)));
+            return new LoginAttempt(200,issueSession(latest));
         });
         if(result.status()!=200) {
             ApiException failure = new ApiException(result.status(),result.status()==429?"尝试次数过多，请稍后重试":result.status()==403?"账号已停用，请联系管理员":"账号或密码错误",null,result.status()==403?"ACCOUNT_DISABLED":null);
@@ -181,6 +185,30 @@ public class AccountService {
             throw failure;
         }
         return result.data();
+    }
+    // Password and verified WeChat identities share the existing opaque sessions.
+    private Object issueSession(Map<String,Object> latest) {
+        if(!"ACTIVE".equals(latest.get("account_status"))) throw new ApiException(403,"账号已停用，请联系管理员",null,"ACCOUNT_DISABLED");
+        byte[] bytes=new byte[32];random.nextBytes(bytes);
+        String token=Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        Instant time=now();
+        db.update("INSERT INTO auth_sessions(token_hash,user_id,auth_version,issued_at,expires_at,last_seen_at) VALUES(?,?,?,?,?,?)",hash(token),number(latest,"user_id"),number(latest,"auth_version"),stamp(time),stamp(time.plus(2,ChronoUnit.HOURS)),stamp(time));
+        return Map.of("access_token",token,"token_type","Bearer","expires_in",7200,"user",view(latest,false));
+    }
+    // Package-private: caller holds the binding row in the same transaction.
+    Object issueWechatSession(long userId) { return issueSession(user(userId,true)); }
+    void consumeWechatAttempt(String source) {
+        String throttle=digest("wechat-code\n"+source);
+        boolean allowed=Boolean.TRUE.equals(tx.execute(status->{
+            Instant time=now();
+            db.update("INSERT INTO auth_login_throttle(throttle_key,window_start) VALUES(?,?) ON DUPLICATE KEY UPDATE window_start=auth_login_throttle.window_start",throttle,stamp(time));
+            var saved=one("SELECT * FROM auth_login_throttle WHERE throttle_key=? FOR UPDATE",throttle);
+            boolean fresh=!instant(saved.get("window_start")).plusSeconds(60).isAfter(time);
+            int count=fresh?1:((Number)saved.get("failure_count")).intValue()+1;
+            db.update("UPDATE auth_login_throttle SET failure_count=?,window_start=? WHERE throttle_key=?",count,fresh?stamp(time):saved.get("window_start"),throttle);
+            return count<=30;
+        }));
+        if(!allowed) { var failure=new ApiException(429,"微信登录请求过于频繁，请稍后重试");failure.retryAfter=60;throw failure; }
     }
     private String tokenHash(String authorization) {
         if(authorization==null || !authorization.matches("Bearer [A-Za-z0-9_-]{43}")) throw new ApiException(401,"请先登录");
@@ -232,9 +260,8 @@ public class AccountService {
         });
     }
     public Object patch(Identity identity,JsonNode body) {
-        fields(body,"avatar_ref","personal_bio","address","privacy_settings");
+        fields(body,"personal_bio","address","privacy_settings");
         if(body.isEmpty()) throw new ApiException(400,"至少修改一项资料");
-        if(body.has("avatar_ref")) throw new ApiException(501,"头像文件服务尚在开发");
         String bio=body.has("personal_bio")?text(body,"personal_bio",0,500,false):null;
         String address=body.has("address")?text(body,"address",0,500,false):null;
         JsonNode privacy=body.get("privacy_settings");
@@ -260,17 +287,21 @@ public class AccountService {
         result.put("personal_bio",privacy.path("show_personal_bio").asBoolean()?row.get("personal_bio"):null);return result;
     }
     public Object list(int page,int size,String keyword,String state,String role,String campus) {
+        return list(page,size,keyword,state,role,campus,"","");
+    }
+    public Object list(int page,int size,String keyword,String state,String role,String campus,String from,String to) {
         if(page<1 || size<1 || size>100 || (long)(page-1)*size>Integer.MAX_VALUE) throw new ApiException(400,"分页参数超出范围");
         if(keyword.length()>100 || campus.length()>50 || (!state.isEmpty()&&!Set.of("ACTIVE","DISABLED").contains(state)) || (!role.isEmpty()&&!Set.of("USER","ADMIN").contains(role))) throw new ApiException(400,"筛选条件格式错误");
         String where=" WHERE 1=1";List<Object> args=new ArrayList<>();
-        if(!keyword.isBlank()){where+=" AND LOCATE(?,username)>0";args.add(keyword.trim());}
+        if(!keyword.isBlank()){where+=" AND (LOCATE(?,username)>0 OR CAST(user_id AS CHAR)=?)";args.add(keyword.trim());args.add(keyword.trim());}
         if(!state.isEmpty()){where+=" AND account_status=?";args.add(state);}
         if(!role.isEmpty()){where+=" AND role=?";args.add(role);}
         if(!campus.isEmpty()){where+=" AND campus=?";args.add(campus);}
+        where+=com.campuspi.admin.AdminQuery.dates("registration_time",from,to,args);
         long count=Objects.requireNonNull(db.queryForObject("SELECT COUNT(*) FROM users"+where,Long.class,args.toArray()));
         args.add(size);args.add((page-1)*size);
-        var rows=db.queryForList("SELECT * FROM users"+where+" ORDER BY registration_time DESC,user_id DESC LIMIT ? OFFSET ?",args.toArray());
-        return Map.of("items",rows.stream().map(u->view(u,true)).toList(),"total",String.valueOf(count),"page",page,"page_size",size);
+        var rows=db.queryForList("SELECT users.*,(SELECT MAX(s.issued_at) FROM auth_sessions s WHERE s.user_id=users.user_id) AS last_login_time FROM users"+where+" ORDER BY registration_time DESC,user_id DESC LIMIT ? OFFSET ?",args.toArray());
+        return Map.of("items",rows.stream().map(u->{var value=view(u,true);value.put("last_login_time",u.get("last_login_time")==null?null:instant(u.get("last_login_time")).toString());return value;}).toList(),"total",String.valueOf(count),"page",page,"page_size",size);
     }
     public Object adminDetail(long id) { return view(user(id,false),true); }
     public Object role(Identity identity,long target,JsonNode body,String key) {
@@ -327,8 +358,7 @@ public class AccountService {
         return idempotent("admin:"+identity.id()+":"+scope,key,digest(canonical),()->{
             db.queryForObject("SELECT guard_id FROM auth_admin_guard WHERE guard_id=1 FOR UPDATE",Integer.class);
             actor(identity,true);
-            return action.get();
-        });
+        },action);
     }
     public Object adminTransaction(Identity identity,Supplier<Object> action) {
         return tx.execute(status->{
@@ -342,10 +372,16 @@ public class AccountService {
         catch(Exception ex){throw new IllegalArgumentException("Invalid action signature",ex);}
         return idempotent("member:"+identity.id()+":"+scope,key,digest(canonical),()->{
             db.queryForObject("SELECT guard_id FROM auth_admin_guard WHERE guard_id=1 FOR UPDATE",Integer.class);
-            actor(identity,false);return action.get();
-        });
+            actor(identity,false);
+        },action);
     }
     public Object sessionTransaction(Identity identity,Supplier<Object> action) {
         return tx.execute(status->{actor(identity,false);return action.get();});
+    }
+    public Object memberTransaction(Identity identity,Supplier<Object> action) {
+        return tx.execute(status->{
+            db.queryForObject("SELECT guard_id FROM auth_admin_guard WHERE guard_id=1 FOR UPDATE",Integer.class);
+            actor(identity,false);return action.get();
+        });
     }
 }

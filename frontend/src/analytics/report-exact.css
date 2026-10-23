@@ -469,7 +469,7 @@
 }
 
 /* Keep readable dimensions; only the content grid changes with available width. */
-@container (max-width: 1100px) {
+@container (max-width: 850px) {
   .analytics-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     height: auto;
@@ -484,8 +484,97 @@
     grid-column: 1 / -1;
   }
 }
-@container (max-width: 900px) {
+@container (max-width: 650px) {
   .analytics-bottom-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Desktop height adaptation changes chart space, never the shared shell or font scale. */
+@media (min-width: 1100px) and (max-height: 1000px) {
+  .admin-workspace .analytics-page:not(.is-dashboard) .analytics-metrics {
+    height: 110px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 8px;
+  }
+  .admin-workspace .analytics-page:not(.is-dashboard) .analytics-metric {
+    height: 110px;
+    padding: 14px;
+  }
+  .admin-workspace .analytics-page:not(.is-dashboard) .analytics-growth {
+    height: max(260px, calc((100dvh - 310px) * 0.55));
+  }
+  .admin-workspace .analytics-page:not(.is-dashboard) .analytics-trend-canvas {
+    top: 82px;
+    height: calc(100% - 94px);
+  }
+  .admin-workspace .analytics-page:not(.is-dashboard) .analytics-bottom-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .admin-workspace
+    .analytics-page:not(.is-dashboard)
+    .analytics-bottom-grid
+    .analytics-card {
+    height: max(225px, calc((100dvh - 310px) * 0.45));
+    padding: 14px;
+    border-radius: 18px;
+  }
+  .admin-workspace
+    .analytics-page:not(.is-dashboard)
+    .analytics-category-chart {
+    display: flex;
+    height: calc(100% - 40px);
+    align-items: center;
+    margin: 0;
+  }
+  .admin-workspace .analytics-page:not(.is-dashboard) .analytics-pie-drawing {
+    position: static;
+    width: 65%;
+    height: 100%;
+    min-width: 0;
+    transform: none;
+  }
+  .admin-workspace
+    .analytics-page:not(.is-dashboard)
+    .analytics-pie-drawing
+    svg {
+    height: 100%;
+  }
+  .admin-workspace
+    .analytics-page:not(.is-dashboard)
+    .analytics-category-legend {
+    position: static;
+    width: 35%;
+    transform: none;
+    flex-shrink: 0;
+  }
+  .admin-workspace
+    .analytics-page:not(.is-dashboard)
+    .analytics-content-card
+    .analytics-category-chart {
+    flex-direction: column;
+  }
+  .admin-workspace
+    .analytics-page:not(.is-dashboard)
+    .analytics-content-card
+    .analytics-pie-drawing {
+    width: 100%;
+    height: calc(100% - 38px);
+  }
+  .admin-workspace
+    .analytics-page:not(.is-dashboard)
+    .analytics-content-card
+    .analytics-category-legend {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .admin-workspace .analytics-page:not(.is-dashboard) .analytics-bar-canvas {
+    position: static;
+    width: 100%;
+    height: calc(100% - 40px);
+    margin: 0;
   }
 }

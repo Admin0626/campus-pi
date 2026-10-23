@@ -61,17 +61,17 @@ const local = JSON.parse(
   await page.waitForURL("**/home");
   ok(
     await page
-      .getByRole("button", { name: "我的账号", exact: true })
+      .getByRole("button", { name: /^(我的账号|个人)$/, exact: true })
       .isVisible(),
     "registered account logs into real backend",
   );
   await page.getByRole("button", { name: "二手交易", exact: true }).click();
   await page
-    .getByRole("heading", { name: "商品与分类还在开发", exact: true })
+    .getByRole("heading", { name: "校园二手", exact: true })
     .waitFor();
-  ok(true, "other module entry reaches development placeholder");
+  ok(true, "product entry reaches implemented user module");
   await page
-    .getByRole("button", { name: "我的账号", exact: true })
+    .getByRole("button", { name: /^(我的账号|个人)$/, exact: true })
     .first()
     .click();
   await page.getByRole("heading", { name: username, exact: true }).waitFor();
@@ -164,7 +164,7 @@ const local = JSON.parse(
   for (const width of [390, 320]) {
     await page.setViewportSize({ width, height: 844 });
     if (page.url().endsWith("/home"))
-      await page.getByRole("button", { name: "我的账号", exact: true }).click();
+      await page.getByRole("button", { name: /^(我的账号|个人)$/, exact: true }).click();
     const fit = await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
     );

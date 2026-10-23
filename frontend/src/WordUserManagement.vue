@@ -61,7 +61,7 @@ const tip = (name) =>
           aria-label="用户名"
           placeholder="输入用户名或用户id"
           maxlength="100"
-          title="当前接口支持用户名关键词，ID搜索待契约确认"
+          title="按用户名关键词或完整用户ID搜索"
         />
       </div>
       <div class="word-filter-state">
@@ -76,16 +76,14 @@ const tip = (name) =>
         <label>注册时间范围</label>
         <div>
           <input
-            aria-label="注册起始时间（开发中）"
+            aria-label="注册起始时间"
             type="date"
-            readonly
-            @click="tip('注册时间范围筛选')"
+            v-model="filters.date_from"
           /><span>至</span
           ><input
-            aria-label="注册结束时间（开发中）"
+            aria-label="注册结束时间"
             type="date"
-            readonly
-            @click="tip('注册时间范围筛选')"
+            v-model="filters.date_to"
           />
         </div>
       </div>
@@ -161,7 +159,7 @@ const tip = (name) =>
                 >{{ item.account_status === "ACTIVE" ? "启用" : "禁用" }}</span
               >
             </td>
-            <td title="接口尚未提供最后登录时间">—</td>
+            <td>{{ item.last_login_time ? date(item.last_login_time) : '—' }}</td>
             <td>
               <div class="word-row-actions">
                 <button class="view" @click="emit('detail', item)">

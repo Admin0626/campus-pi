@@ -19,6 +19,7 @@ fs.writeFileSync(report, '{"status":"RUNNING"}');
 const check = (v, name) => {
   assert.ok(v, name);
   checks.push({ name, passed: true });
+  fs.writeFileSync(report,JSON.stringify({status:'RUNNING',checks,errors},null,2));
 };
 (async () => {
   const browser = await chromium.launch({
@@ -68,6 +69,11 @@ const check = (v, name) => {
         .filter({ hasText: new RegExp("^" + id + "$") }),
     });
   async function find(id) {
+    // Repeated regression runs retain history. Narrow to the actual draft state
+    // before paging, so accumulated review-result notifications do not hide it.
+    await ready(admin);
+    await admin.getByLabel('通知状态',{exact:true}).selectOption('草稿');
+    await admin.locator('.admin-filters').getByRole('button',{name:'查询',exact:true}).click();
     for (let n = 0; n < 100; n++) {
       await ready(admin);
       if (await row(id).count()) return row(id);
@@ -104,7 +110,7 @@ const check = (v, name) => {
     return data;
   }
   async function inbox() {
-    await user.getByRole("button", { name: "我的账号", exact: true }).click();
+    await user.getByRole("button", { name: /^(我的账号|个人)$/, exact: true }).click();
     await user.getByRole("button", { name: "通知中心", exact: true }).click();
     await user.getByRole("heading", { name: "通知", exact: true }).waitFor();
     await ready(user);

@@ -1,3 +1,5 @@
+const session = require("./session");
+const { goLogin } = require("./navigation");
 function request(path, options = {}) {
   const app = getApp(),
     base = app.globalData.apiBaseUrl;
@@ -10,6 +12,7 @@ function request(path, options = {}) {
   if (app.globalData.token)
     header.Authorization = "Bearer " + app.globalData.token;
   if (options.key) header["Idempotency-Key"] = options.key;
+  const sentToken = app.globalData.token;
   return new Promise((resolve, reject) =>
     wx.request({
       url: base.replace(/\/$/, "") + "/api/v1" + path,
@@ -25,16 +28,14 @@ function request(path, options = {}) {
           result.data.code === "OK"
         )
           return resolve(result.data.data);
-        if (result.statusCode === 401 && !path.startsWith("/auth/")) {
-          app.globalData.token = "";
-          app.globalData.user = null;
-          wx.reLaunch({ url: "/pages/login/index" });
+        if (result.statusCode === 401 && !path.startsWith("/auth/") && sentToken && app.globalData.token === sentToken) {
+          session.clear();
+          goLogin().catch(error => wx.showToast({ title: error.message, icon: "none" }));
         }
-        reject(
-          new Error(
-            (result.data && result.data.message) || "服务请求失败，请稍后重试",
-          ),
-        );
+        const error = new Error((result.data && result.data.message) || "服务请求失败，请稍后重试");
+        error.code = result.data && result.data.code;
+        error.status = result.statusCode;
+        reject(error);
       },
       fail() {
         reject(new Error("无法连接服务，请检查网络或联调配置"));

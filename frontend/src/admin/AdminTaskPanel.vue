@@ -6,6 +6,7 @@ import { api, requestKey } from "../api";
 import FilePreview from "./FilePreview.vue";
 import AdminBatchActions from "./AdminBatchActions.vue";
 import { useAdminSelection } from "./useAdminSelection";
+defineProps({ embedded: Boolean });
 const section = ref("management"),
   kind = ref("tasks");
 const rows = ref([]),
@@ -14,6 +15,7 @@ const rows = ref([]),
   state = ref(""),
   campus = ref(""),
   taskId = ref("");
+const logKeyword = ref(''), dateFrom = ref(''), dateTo = ref('');
 const loading = ref(false),
   busy = ref(false),
   error = ref(""),
@@ -68,12 +70,11 @@ async function load() {
     });
     let url;
     if (view.value === "logs") {
-      if (!/^[1-9][0-9]{0,18}$/.test(taskId.value)) {
-        rows.value = [];
-        total.value = "0";
-        return;
-      }
-      url = `/tasks/${taskId.value}/logs?${query}`;
+      if (taskId.value.trim()) query.set('reward_task_id', taskId.value.trim());
+      if (logKeyword.value.trim()) query.set('keyword', logKeyword.value.trim());
+      if (dateFrom.value) query.set('date_from', dateFrom.value);
+      if (dateTo.value) query.set('date_to', dateTo.value);
+      url = `/admin/task-audit-logs?${query}`;
     } else {
       if (view.value === "tasks") {
         if (campus.value.trim()) query.set("campus", campus.value.trim());
@@ -129,6 +130,7 @@ function reset() {
   state.value = "";
   campus.value = "";
   taskId.value = "";
+  logKeyword.value = ''; dateFrom.value = ''; dateTo.value = '';
   search();
 }
 function turn(delta) {
@@ -222,7 +224,7 @@ const detailFields = computed(() =>
 </script>
 <template>
   <section class="admin-content-panel" :aria-busy="loading">
-    <AdminPageHeader title="悬赏任务管理" :subtitle="`共 ${total} 条记录`"
+    <AdminPageHeader v-if="!embedded" title="悬赏任务管理" :subtitle="`共 ${total} 条记录`"
       ><template #actions
         ><button :disabled="loading || busy" @click="load">
           刷新
@@ -275,15 +277,15 @@ const detailFields = computed(() =>
           inputmode="numeric"
           pattern="[1-9][0-9]{0,18}"
           maxlength="19"
-          :required="view === 'logs'"
       /></label>
+      <template v-if="view === 'logs'"><label>任务标题<input v-model="logKeyword" maxlength="100" /></label><label>开始日期<input type="date" v-model="dateFrom" /></label><label>结束日期<input type="date" v-model="dateTo" /></label></template>
       <button class="admin-purple" :disabled="loading || busy">查询</button
       ><button type="button" :disabled="loading || busy" @click="reset">
         重置
       </button>
     </form>
     <p v-if="view === 'logs' && !taskId" class="admin-source-note">
-      请输入任务编号，或从任务详情打开审核记录。
+      当前显示全部任务审核记录，可按任务编号、标题和北京时间日期筛选。
     </p>
     <p v-if="error" role="alert" class="admin-message failure">{{ error }}</p>
     <p v-if="notice" role="status" class="admin-message success">
@@ -324,6 +326,7 @@ const detailFields = computed(() =>
           <tr v-else>
             <th>记录ID</th>
             <th>任务ID</th>
+            <th>任务标题 / 奖励</th>
             <th>操作人ID</th>
             <th>动作</th>
             <th>状态变化</th>
@@ -436,6 +439,7 @@ const detailFields = computed(() =>
             <template v-else
               ><td>{{ row.log_id }}</td>
               <td>{{ row.reward_task_id }}</td>
+              <td>{{ row.task_name }}<small>{{ row.reward_amount }} {{ row.reward_type }}</small></td>
               <td>{{ row.operator_id }}</td>
               <td>{{ row.action_name }}</td>
               <td>{{ row.from_status || "—" }} → {{ row.to_status }}</td>
@@ -444,7 +448,7 @@ const detailFields = computed(() =>
             >
           </tr>
           <tr v-if="!rows.length">
-            <td :colspan="view === 'tasks' ? 8 : 7" class="admin-empty">
+            <td :colspan="['tasks','logs'].includes(view) ? 8 : 7" class="admin-empty">
               {{
                 loading
                   ? "正在加载…"

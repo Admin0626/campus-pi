@@ -1,0 +1,6 @@
+<label class="word-label" for="{{name}}">{{label}}</label>
+<view class="word-input" bindtap="unavailable">
+  <view class="word-glyph glyph-{{glyph}}"><image src="{{glyph === 'mail' ? '/assets/word-reference/register.png' : '/assets/word-reference/login.png'}}"/></view>
+  <input id="{{name}}" value="{{value}}" bindinput="input" placeholder="{{placeholder}}" maxlength="-1" password="{{password && !revealed}}" disabled="{{disabled || readonly}}" />
+  <button wx:if="{{password}}" class="word-eye" catchtap="reveal" disabled="{{disabled}}" aria-label="显示或隐藏密码"><view class="word-glyph glyph-eye"><image src="/assets/word-reference/login.png"/></view></button>
+</view>

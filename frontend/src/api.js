@@ -13,8 +13,10 @@ export async function api(
   { method = "GET", body, key, signal, reason } = {},
 ) {
   const headers = { Accept: "application/json" };
-  if (body !== undefined) headers["Content-Type"] = "application/json";
-  if (token) headers.Authorization = `Bearer ${token}`;
+  const multipart = body instanceof FormData;
+  if (body !== undefined && !multipart) headers["Content-Type"] = "application/json";
+  const sentToken = token;
+  if (sentToken) headers.Authorization = `Bearer ${sentToken}`;
   if (key) headers["Idempotency-Key"] = key;
   if (reason) headers["X-Action-Reason"] = encodeURIComponent(reason);
   const controller = new AbortController();
@@ -27,7 +29,7 @@ export async function api(
     response = await fetch(`/api/v1${path}`, {
       method,
       headers,
-      body: body === undefined ? undefined : JSON.stringify(body),
+      body: body === undefined ? undefined : multipart ? body : JSON.stringify(body),
       signal: controller.signal,
       cache: "no-store",
     });
@@ -51,7 +53,7 @@ export async function api(
     error.fields = value.errors || [];
     error.requestId = value.request_id;
     error.retryAfter = response.headers.get("Retry-After");
-    if (response.status === 401 && !path.startsWith("/auth/")) {
+    if (response.status === 401 && !path.startsWith("/auth/") && sentToken && token === sentToken) {
       token = "";
       onExpired();
     }

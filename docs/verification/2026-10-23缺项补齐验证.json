@@ -1,0 +1,354 @@
+{
+  "date": "2026-10-23",
+  "status": "PASS_FOR_IMPLEMENTED_LOCAL_SCOPE",
+  "branch": "wlky",
+  "base_sha": "9d403fabca9ae8ac1c584468df87eb70f3398698",
+  "uncommitted": true,
+  "remote_delivery": false,
+  "java": {
+    "tests": 85,
+    "failures": 0,
+    "skipped": 0,
+    "suites": {
+      "com.campuspi.account.WechatAccountIntegrationTest": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "com.campuspi.account.WechatIdentityClientTest": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "com.campuspi.admin.AdminQueryTest": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "com.campuspi.admin.BusinessFileValidatorTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "com.campuspi.BootstrapTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "com.campuspi.member.MemberBusinessIntegrationTest": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "com.campuspi.member.MemberValidationTest": {
+        "tests": 27,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "com.campuspi.notification.NotificationPreferencePolicyTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "node_whitebox": {
+    "tests": 22,
+    "status": "PASS"
+  },
+  "http_boundaries": {
+    "tests": 20,
+    "status": "PASS"
+  },
+  "core_regression": {
+    "first_run": "NEEDS_REVIEW",
+    "first_results": [
+      {
+        "suite": "auth-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "auth-http.log"
+      },
+      {
+        "suite": "auth-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "auth-browser.log"
+      },
+      {
+        "suite": "content-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "content-http.log"
+      },
+      {
+        "suite": "content-browser",
+        "status": "FAIL",
+        "exit_code": 1,
+        "private_log": "content-browser.log"
+      },
+      {
+        "suite": "security-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "security-http.log"
+      },
+      {
+        "suite": "security-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "security-browser.log"
+      },
+      {
+        "suite": "task-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "task-http.log"
+      },
+      {
+        "suite": "task-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "task-browser.log"
+      },
+      {
+        "suite": "trade-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "trade-http.log"
+      },
+      {
+        "suite": "trade-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "trade-browser.log"
+      },
+      {
+        "suite": "dispute-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "dispute-http.log"
+      },
+      {
+        "suite": "dispute-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "dispute-browser.log"
+      },
+      {
+        "suite": "batch-http",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "batch-http.log"
+      },
+      {
+        "suite": "batch-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "batch-browser.log"
+      },
+      {
+        "suite": "analytics-browser",
+        "status": "FAIL",
+        "exit_code": 1,
+        "private_log": "analytics-browser.log"
+      },
+      {
+        "suite": "layout-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "layout-browser.log"
+      },
+      {
+        "suite": "admin-links-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "admin-links-browser.log"
+      },
+      {
+        "suite": "entries-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "entries-browser.log"
+      },
+      {
+        "suite": "asset-updates-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "asset-updates-browser.log"
+      },
+      {
+        "suite": "prepare-member",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "prepare-member.log"
+      },
+      {
+        "suite": "member-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "member-browser.log"
+      },
+      {
+        "suite": "chat-isolation-browser",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "chat-isolation-browser.log"
+      },
+      {
+        "suite": "native-business-adapter",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "native-business-adapter.log"
+      },
+      {
+        "suite": "native-account-adapter",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "native-account-adapter.log"
+      },
+      {
+        "suite": "native-components",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "native-components.log"
+      },
+      {
+        "suite": "native-compile",
+        "status": "PASS",
+        "exit_code": 0,
+        "private_log": "native-compile.log"
+      }
+    ],
+    "resolved_by_targeted_rechecks": [
+      {
+        "suite": "content-browser",
+        "status": "PASS",
+        "checks": 14,
+        "fixture_refresh": true
+      },
+      {
+        "suite": "analytics-browser",
+        "status": "PASS",
+        "checks": 57,
+        "svg_height_fixed": true
+      }
+    ],
+    "final_scope_status": "PASS_AFTER_RECHECK"
+  },
+  "notification_regression": {
+    "off": {
+      "started_at": "2026-10-23T12:21:50.409276+00:00",
+      "stage": "notification-off",
+      "results": [
+        {
+          "suite": "notification-prepare",
+          "status": "PASS",
+          "exit_code": 0,
+          "private_log": "notification-prepare.log"
+        },
+        {
+          "suite": "publication-prepare",
+          "status": "PASS",
+          "exit_code": 0,
+          "private_log": "publication-prepare.log"
+        }
+      ],
+      "scope": "Verified local isolated DB; synthetic fixtures; no production or device claim",
+      "status": "PASS"
+    },
+    "on": {
+      "started_at": "2026-10-23T12:22:58.097806+00:00",
+      "stage": "notification-on",
+      "results": [
+        {
+          "suite": "notification-resume",
+          "status": "PASS",
+          "exit_code": 0,
+          "private_log": "notification-resume.log"
+        },
+        {
+          "suite": "publication-resume",
+          "status": "PASS",
+          "exit_code": 0,
+          "private_log": "publication-resume.log"
+        },
+        {
+          "suite": "notification-browser",
+          "status": "PASS",
+          "exit_code": 0,
+          "private_log": "notification-browser.log"
+        },
+        {
+          "suite": "publication-browser",
+          "status": "PASS",
+          "exit_code": 0,
+          "private_log": "publication-browser.log"
+        }
+      ],
+      "scope": "Verified local isolated DB; synthetic fixtures; no production or device claim",
+      "status": "PASS"
+    },
+    "publication_browser_latest": {
+      "status": "PASS",
+      "checks": 24
+    }
+  },
+  "manual_dataset": {
+    "users": 13,
+    "cases": 117,
+    "baseline_cases": 112,
+    "additional_cases": 5,
+    "images": 25,
+    "checks": 45,
+    "status": "PASS",
+    "schema": "campus_pi_manual_test",
+    "mysql_port": 33321,
+    "http_port": 8082,
+    "first_empty_load_passed": true,
+    "later_case_metadata_synchronized": true,
+    "sql_bytes": 199243,
+    "sql_sha256": "18196cd64bf2cb4fe60461fa2a8ea839d598c71c9ec23903ba4d11f070c67f85"
+  },
+  "new_layout": {
+    "status": "PASS",
+    "checks": 28
+  },
+  "native_methods": {
+    "status": "PASS",
+    "checks": 18,
+    "real_http_adapter": true,
+    "native_renderer_verified": false,
+    "device_run": false
+  },
+  "official_native_compile": {
+    "pages": 10,
+    "components": 5,
+    "styles": 18,
+    "status": "PASS"
+  },
+  "jar_private_configuration_excluded": true,
+  "coverage_recomputed": false,
+  "external_acceptance_not_done": [
+    "real WeChat exchange",
+    "native renderer and device",
+    "real payment/refund/cash/SMS",
+    "production deployment",
+    "remote CI run"
+  ],
+  "first_failure_notes": [
+    "Running JAR initially prevented clean on Windows; services stopped and restored",
+    "Concurrent throttle upgrade deadlock fixed without changing expected status",
+    "Analytics SVG/legend overlap fixed",
+    "Dashboard assertion updated for four original metrics; stale product fixture refreshed",
+    "New layout test selectors/waits and fixture assumptions corrected"
+  ]
+}

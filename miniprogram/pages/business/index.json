@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "校园Π",
+  "usingComponents": {
+    "business-surface": "/components/business-surface/index"
+  }
+}

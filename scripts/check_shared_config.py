@@ -2,7 +2,7 @@
 from pathlib import Path
 import json,re,subprocess,sys
 root=Path(__file__).resolve().parents[1]
-names=[name.decode('utf-8') for name in subprocess.check_output(['git','ls-files','-z'],cwd=root).split(b'\0') if name]
+names=sorted({name.decode('utf-8') for name in subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard','-z'],cwd=root).split(b'\0') if name})
 private={'miniprogram/config.js','miniprogram/project.config.json','miniprogram/project.private.config.json'}
 issues=[]
 for name in names:
@@ -21,5 +21,5 @@ if template.get('appid')!='':issues.append({'file':'miniprogram/project.config.e
 source=(root/'miniprogram/config.example.js').read_text(encoding='utf-8')
 for name in ['apiBaseUrl','devtoolsApiBaseUrl']:
  if not re.search(r'\b'+name+r'''\s*:\s*(?:""|'')''',source):issues.append({'file':'miniprogram/config.example.js','rule':'TEMPLATE_API_HOST_NOT_EMPTY'})
-print(json.dumps({'status':'FAIL' if issues else 'PASS','tracked_files_checked':len(names),'issues':issues,'credential_values_printed':False}))
+print(json.dumps({'status':'FAIL' if issues else 'PASS','shared_files_checked':len(names),'includes_untracked_nonignored':True,'issues':issues,'credential_values_printed':False}))
 sys.exit(1 if issues else 0)

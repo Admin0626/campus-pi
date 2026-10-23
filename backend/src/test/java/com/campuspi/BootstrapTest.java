@@ -27,6 +27,19 @@ class BootstrapTest {
     }
 
     @Test
+    void disabledWechatDoesNotRequireOrContactExternalServices() {
+        ResponseEntity<JsonNode> config=rest.getForEntity("/api/v1/auth/wechat/config",JsonNode.class);
+        assertThat(config.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(config.getHeaders().getCacheControl()).isEqualTo("no-store");
+        assertThat(config.getBody().path("data").path("available").asBoolean()).isFalse();
+        ResponseEntity<JsonNode> login=rest.postForEntity("/api/v1/auth/wechat/login",java.util.Map.of("code","synthetic_unused_code"),JsonNode.class);
+        assertThat(login.getStatusCode().value()).isEqualTo(501);
+        assertThat(login.getBody().path("code").asText()).isEqualTo("FEATURE_NOT_ENABLED");
+        ResponseEntity<JsonNode> bind=rest.postForEntity("/api/v1/me/wechat",java.util.Map.of("code","synthetic_unused_code"),JsonNode.class);
+        assertThat(bind.getStatusCode().value()).isEqualTo(401);
+    }
+
+    @Test
     void unknownRouteReturnsReal404AndSafeErrorEnvelope() {
         ResponseEntity<JsonNode> response = rest.getForEntity("/api/v1/__baseline_unknown_route__", JsonNode.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);

@@ -119,7 +119,24 @@ public class AdminNotificationService {
             audit(actor,id,"读取投递记录","按通知查看投递尝试",null,null);return Map.of("items",rows,"total",Long.toString(total),"page",page,"page_size",size);
         });
     }
-    private Object deliveryView(Map<String,Object> row){var result=new LinkedHashMap<String,Object>();for(String key:List.of("delivery_id","notification_id","user_id"))result.put(key,row.get(key).toString());for(String key:List.of("channel","delivery_status","attempt_no","failure_reason"))result.put(key,row.get(key));result.put("sent_at",time(row.get("sent_at")));return result;}
+    private Map<String,Object> deliveryView(Map<String,Object> row){var result=new LinkedHashMap<String,Object>();for(String key:List.of("delivery_id","notification_id","user_id"))result.put(key,row.get(key).toString());for(String key:List.of("channel","delivery_status","attempt_no","failure_reason"))result.put(key,row.get(key));result.put("sent_at",time(row.get("sent_at")));return result;}
+    public Object deliveryHistory(Identity actor,int page,int size,String state,String channel,String keyword,String from,String to){
+        policy.require(actor,"NOTIFICATION_PUBLISH");page(page,size);keyword=AdminQuery.keyword(keyword);
+        if(!state.isEmpty()&&!Set.of("待发送","成功","失败").contains(state))throw new ApiException(400,"投递状态无效");
+        if(!channel.isEmpty()&&!Set.of("站内","短信","邮件").contains(channel))throw new ApiException(400,"渠道无效");
+        String where=" WHERE 1=1";var args=new ArrayList<Object>();
+        if(!state.isEmpty()){where+=" AND d.delivery_status=?";args.add(state);}if(!channel.isEmpty()){where+=" AND d.channel=?";args.add(channel);}
+        if(!keyword.isEmpty()){where+=" AND (LOCATE(?,n.notification_title)>0 OR n.notification_id=?)";args.add(keyword);args.add(keyword);}
+        where+=AdminQuery.dates("d.sent_at",from,to,args);
+        String clause=where;var values=new ArrayList<>(args);
+        return accounts.adminTransaction(actor,()->{
+            String join=" FROM notification_delivery d JOIN system_notifications n ON n.notification_id=d.notification_id";
+            long count=db.queryForObject("SELECT COUNT(*)"+join+clause,Long.class,values.toArray());values.add(size);values.add((page-1)*size);
+            var rows=db.queryForList("SELECT d.*,n.notification_title,n.notification_type,n.publish_status"+join+clause+" ORDER BY d.delivery_id DESC LIMIT ? OFFSET ?",values.toArray()).stream().map(row->{var value=new LinkedHashMap<>(deliveryView(row));for(String key:List.of("notification_title","notification_type","publish_status"))value.put(key,row.get(key));return value;}).toList();
+            audit(actor,"GLOBAL","读取全局投递记录","按状态、渠道、标题及发送日期筛选",null,null);
+            return Map.of("items",rows,"total",Long.toString(count),"page",page,"page_size",size);
+        });
+    }
     public Object withdraw(Identity actor,String id,JsonNode body,String key){
         policy.require(actor,"NOTIFICATION_PUBLISH");identifier(id);fields(body,"reason");String reason=text(body,"reason",1,500,true);
         return accounts.adminMutation(actor,"notification-withdraw:"+id,key,body,()->{
