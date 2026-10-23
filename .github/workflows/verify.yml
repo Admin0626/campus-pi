@@ -70,6 +70,7 @@ jobs:
       - name: Initialize disposable MySQL
         run: |
           python -m pip install -r scripts/requirements-auth-local.txt
+          python scripts/build_local_init_sql.py --check
           python scripts/ci_database.py
       - name: Verify shared frontend and native logic
         run: node --test scripts/check_frontend_whitebox.test.mjs scripts/check_native_whitebox.test.cjs

@@ -1,0 +1,37 @@
+# Copy to .local/local-deploy/application-local.yml. Never put real values here.
+# This template is for database/local/init.sql on a single Windows development PC.
+server:
+  address: 127.0.0.1
+  port: 8080
+spring:
+  datasource:
+    url: "jdbc:mysql://127.0.0.1:3306/campus_pi_local?useUnicode=true&characterEncoding=UTF-8&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&allowPublicKeyRetrieval=true&sslMode=DISABLED"
+    username: campus_pi_app
+    password: "REPLACE_WITH_LOCAL_DB_PASSWORD"
+campus:
+  auth:
+    # Generate your own stable random value of at least 32 characters.
+    idempotency-secret: ""
+    # ONLY the explicitly initialized local admin ID can use its short test password.
+    local-short-password-admin-id: 1
+  admin:
+    duties-json: '{"1":["ROLES","AUDIT","VERIFICATION_REVIEW","ORDERS","REPORTS","NOTIFICATION_PUBLISH"]}'
+  verification:
+    allowed-campuses-json: '["本地测试校区"]'
+  files:
+    # Replace this absolute path if the repository is elsewhere.
+    root: "D:/demo_series/campus-pi/.local/local-deploy/files"
+    public-base-url: "http://127.0.0.1:8080"
+    scanner-provider: DEFENDER
+    # Fill the installed MpCmdRun.exe path in the PRIVATE copy for file uploads.
+    scanner-executable: ""
+  notifications:
+    worker-enabled: true
+  admin-batches:
+    worker-enabled: true
+  tasks:
+    synthetic-cash-enabled: false
+  wechat:
+    enabled: false
+    app-id: ""
+    app-secret: ""
