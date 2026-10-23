@@ -18,6 +18,7 @@ const tab = ref("notices"),
   selected = ref(null),
   deliveryState = ref(""),
   channel = ref("");
+const historyKeyword = ref(''), dateFrom = ref(''), dateTo = ref('');
 const reviewed = ref(false);
 const action = ref(null),
   reason = ref("");
@@ -57,11 +58,6 @@ async function load() {
   loading.value = true;
   error.value = "";
   try {
-    if (tab.value === "deliveries" && !selected.value) {
-      rows.value = [];
-      total.value = "0";
-      return;
-    }
     const query = new URLSearchParams({
       page: String(page.value),
       page_size: "20",
@@ -72,9 +68,10 @@ async function load() {
       if (deliveryState.value)
         query.set("delivery_status", deliveryState.value);
       if (channel.value) query.set("channel", channel.value);
+      if (!selected.value) { if (historyKeyword.value.trim()) query.set('keyword', historyKeyword.value.trim()); if (dateFrom.value) query.set('date_from', dateFrom.value); if (dateTo.value) query.set('date_to', dateTo.value); }
     }
     const value = await api(
-      `/admin/notifications${tab.value === "deliveries" ? `/${selected.value.notification_id}/deliveries` : ""}?${query}`,
+      `${tab.value === 'deliveries' ? (selected.value ? '/admin/notifications/' + selected.value.notification_id + '/deliveries' : '/admin/notification-deliveries') : '/admin/notifications'}?${query}`,
       { signal: controller.signal },
     );
     if (serial === generation) {
@@ -113,6 +110,7 @@ function reset() {
   state.value = "";
   deliveryState.value = "";
   channel.value = "";
+  historyKeyword.value = ''; dateFrom.value = ''; dateTo.value = '';
   search();
 }
 function turn(delta) {
@@ -310,6 +308,7 @@ async function confirmAction() {
       {{ notice }}
     </p>
     <p v-if="error" class="admin-message failure" role="alert">{{ error }}</p>
+    <button v-if="tab === 'deliveries' && selected" @click="selected = null; search()">返回全部发送记录</button>
     <form class="admin-filters" @submit.prevent="search">
       <template v-if="tab === 'notices'"
         ><label
@@ -346,12 +345,13 @@ async function confirmAction() {
       >
       <button
         class="admin-query"
-        :disabled="busy || loading || (tab === 'deliveries' && !selected)"
+        :disabled="busy || loading"
       >
         查询</button
       ><button type="button" :disabled="busy || loading" @click="reset">
         重置
       </button>
+      <template v-if="tab === 'deliveries' && !selected"><label>通知标题或编号<input v-model="historyKeyword" maxlength="100" /></label><label>开始日期<input type="date" v-model="dateFrom" /></label><label>结束日期<input type="date" v-model="dateTo" /></label></template>
     </form>
     <p v-if="loading" class="admin-loading" role="status">正在加载…</p>
     <div class="admin-table-scroll">
@@ -368,6 +368,7 @@ async function confirmAction() {
           </tr>
           <tr v-else>
             <th>尝试ID</th>
+            <th v-if="!selected">通知标题 / 编号</th>
             <th>用户ID</th>
             <th>渠道</th>
             <th>状态</th>
@@ -424,6 +425,7 @@ async function confirmAction() {
           <template v-else
             ><tr v-for="row in rows" :key="row.delivery_id">
               <td>{{ row.delivery_id }}</td>
+              <td v-if="!selected">{{ row.notification_title }}<small>{{ row.notification_id }}</small></td>
               <td>{{ row.user_id }}</td>
               <td>{{ row.channel }}</td>
               <td>{{ row.delivery_status }}</td>
@@ -434,7 +436,7 @@ async function confirmAction() {
                 }}<button
                   v-if="
                     row.delivery_status === '失败' &&
-                    selected?.publish_status !== '已撤回'
+                    (selected?.publish_status || row.publish_status) !== '已撤回'
                   "
                   :disabled="busy"
                   @click="prepare(row, 'retry')"
@@ -445,11 +447,9 @@ async function confirmAction() {
             </tr></template
           >
           <tr v-if="!loading && !rows.length">
-            <td colspan="7" class="admin-empty">
+            <td :colspan="tab === 'deliveries' && !selected ? 8 : 7" class="admin-empty">
               {{
-                tab === "deliveries" && !selected
-                  ? "请在通知列表选择一条通知，查看其发送记录"
-                  : error
+                error
                     ? "未能加载数据，请重试"
                     : "暂无记录"
               }}

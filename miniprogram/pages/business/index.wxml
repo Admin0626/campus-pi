@@ -1,0 +1,1 @@
+<business-surface wx:if="{{module}}" module="{{module}}" />

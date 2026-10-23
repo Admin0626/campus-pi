@@ -1,16 +1,21 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import Icon from "./Icon.vue";
+import MobileTabs from "./member/MobileTabs.vue";
+import FilePreview from "./admin/FilePreview.vue";
+import {api} from "./api.js";
 defineProps({ user: Object });
 const emit = defineEmits(["navigate"]);
 const feedback = ref("");
+const posts=ref([]),products=ref([]),loading=ref(true);
+onMounted(async()=>{const result=await Promise.allSettled([api('/posts?page_size=3'),api('/products?page_size=3')]);if(result[0].status==='fulfilled')posts.value=result[0].value.items;if(result[1].status==='fulfilled')products.value=result[1].value.items;feedback.value=result.filter(r=>r.status==='rejected').map(r=>r.reason.message).join('；');loading.value=false;});
 </script>
 <template>
   <main class="word-mobile-stage">
     <div class="word-mobile-screen word-home-screen">
       <section class="word-home-page">
         <header class="word-home-header">
-          <button class="word-home-search" @click="feedback = '搜索还在开发'">
+          <button class="word-home-search" @click="emit('navigate', '/modules/D')">
             <Icon name="search" />搜索信息、商品或任务..
           </button>
           <div class="word-home-shortcuts">
@@ -48,30 +53,16 @@ const feedback = ref("");
               查看更多
             </button>
           </div>
-          <button
-            class="word-home-pending"
-            @click="emit('navigate', '/modules/' + route)"
-          >
-            还在开发
-          </button>
+          <p v-if="loading">正在加载…</p><p v-else-if="!(route==='D'?posts:products).length">暂无公开内容</p>
+          <div :class="route === 'C' ? 'home-product-grid' : 'home-post-stack'">
+          <article v-for="row in (route==='D'?posts:products).slice(0,2)" :key="row.post_id||row.product_id" class="home-live-item" :class="{ 'home-live-product': route === 'C' }">
+            <FilePreview v-if="route === 'C'" :files="(row.image_urls || []).slice(0,1)" mode="thumbnail" />
+            <span v-else class="home-post-mark">Π</span>
+            <button @click="emit('navigate','/modules/'+route)"><strong>{{row.post_title||row.product_name}}</strong><span>{{route==='D'?row.author_label:'¥'+row.discount_price}}</span></button>
+          </article></div>
         </section>
       </section>
-      <nav class="word-mobile-tabs">
-        <button class="selected"><Icon name="campus" />首页</button
-        ><button @click="emit('navigate', '/modules/D')">
-          <Icon name="eye" />发现</button
-        ><button
-          class="word-tab-publish"
-          aria-label="发布"
-          @click="emit('navigate', '/modules/D')"
-        >
-          ＋</button
-        ><button @click="emit('navigate', '/modules/H')">
-          <Icon name="mail" />私信</button
-        ><button aria-label="我的账号" @click="emit('navigate', '/me')">
-          <Icon name="user" />个人
-        </button>
-      </nav>
+      <MobileTabs active="/home" @navigate="emit('navigate',$event)"/>
       <div v-if="feedback" class="word-auth-feedback" role="status">
         <span>{{ feedback }}</span
         ><button aria-label="关闭提示" @click="feedback = ''">×</button>
@@ -79,3 +70,7 @@ const feedback = ref("");
     </div>
   </main>
 </template>
+
+<style scoped>
+.home-product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.home-post-stack{display:grid;gap:10px}.home-live-item{display:flex;align-items:center;gap:12px;min-width:0;border:1px solid #eee;border-radius:8px;overflow:hidden}.home-live-item>button{display:grid;gap:8px;text-align:left;width:100%;padding:12px;background:white;color:#354057;font:inherit;min-width:0}.home-live-item span{font-size:12px;color:#888}.home-live-item strong{font-size:14px;font-weight:500;overflow-wrap:anywhere}.home-live-product{display:block}.home-live-product>button>span{color:#ed6b64}.home-post-mark{display:grid;place-items:center;width:72px;align-self:stretch;flex:none;background:#8376e9;color:white!important;font-size:30px!important}.home-live-product :deep(.file-preview-thumbnail img){height:90px}
+</style>

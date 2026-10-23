@@ -313,7 +313,7 @@ const check = (value, name) => {
     await memberPage.getByRole("button", { name: "登录", exact: true }).click();
     await memberPage.waitForURL("**/home");
     await memberPage
-      .getByRole("button", { name: "我的账号", exact: true })
+      .getByRole("button", { name: /^(我的账号|个人)$/, exact: true })
       .click();
     await memberPage
       .getByRole("button", { name: "通知中心", exact: true })

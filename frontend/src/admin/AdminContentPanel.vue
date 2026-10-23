@@ -6,6 +6,8 @@ import { api, requestKey } from "../api";
 import FilePreview from "./FilePreview.vue";
 import AdminBatchActions from "./AdminBatchActions.vue";
 import { useAdminSelection } from "./useAdminSelection";
+import AdminTaskPanel from "./AdminTaskPanel.vue";
+import AnalyticsPage from "../analytics/AnalyticsPage.vue";
 const props = defineProps({ module: String, auditContext: Object });
 const emit = defineEmits(["navigate"]);
 const tab = ref("products"),
@@ -38,6 +40,8 @@ const form = reactive({
 const view = computed(() =>
   props.module === "content" ? tab.value : props.module,
 );
+const dashboardMessages = ref([]),
+  dashboardMessageError = ref("");
 const title = computed(
   () =>
     ({
@@ -69,7 +73,8 @@ const id = (row) =>
 const status = (row) =>
   row.audit_status || row.post_status || row.category_level || "";
 const batchView = computed(() => ["products", "posts"].includes(view.value));
-const { selected, available, allSelected, toggle, toggleAll } = useAdminSelection(rows, id, row => status(row) === "待审核", loading);
+const { selected, available, allSelected, toggle, toggleAll } =
+  useAdminSelection(rows, id, (row) => status(row) === "待审核", loading);
 const stateClass = (value) =>
   ["已通过", "已发布", "在售"].includes(value)
     ? "good"
@@ -83,6 +88,11 @@ async function load() {
   loading.value = true;
   error.value = "";
   try {
+    if (view.value === "tasks") {
+      rows.value = [];
+      total.value = "0";
+      return;
+    }
     let url;
     if (view.value === "dashboard") url = "/admin/dashboard";
     else if (view.value === "categories") url = "/categories";
@@ -106,8 +116,18 @@ async function load() {
     }
     const data = await api(url, { signal: controller.signal });
     if (serial !== version) return;
-    if (view.value === "dashboard") summary.value = data;
-    else {
+    if (view.value === "dashboard") {
+      summary.value = data;
+      dashboardMessageError.value = "";
+      try {
+        const value = await api("/me/notifications?page=1&page_size=5", {
+          signal: controller.signal,
+        });
+        if (serial === version) dashboardMessages.value = value.items;
+      } catch (e) {
+        if (serial === version) dashboardMessageError.value = e.message;
+      }
+    } else {
       rows.value = data.items;
       total.value = data.total || String(data.items.length);
     }
@@ -297,8 +317,28 @@ const dashboardCards = computed(() =>
         ["全部用户", summary.value.user_count],
         ["已发布帖子", summary.value.published_post_count],
         ["在售商品", summary.value.onsale_product_count],
-        ["已完成任务", summary.value.completed_task_count],
         ["已完成商品成交额", "¥ " + summary.value.completed_product_amount],
+      ]
+    : [],
+);
+const pendingCards = computed(() =>
+  summary.value
+    ? [
+        [
+          "认证申请",
+          summary.value.pending_verifications,
+          "/admin/modules/verifications",
+        ],
+        ["商品审核", summary.value.pending_products, "/admin/modules/content"],
+        ["帖子审核", summary.value.pending_posts, "/admin/modules/content"],
+        ["任务发布", summary.value.pending_tasks, "/admin/modules/tasks"],
+        [
+          "接取申请",
+          summary.value.pending_applications,
+          "/admin/modules/tasks",
+        ],
+        ["凭证验收", summary.value.pending_proofs, "/admin/modules/tasks"],
+        ["私信举报", summary.value.pending_reports, "/admin/modules/reports"],
       ]
     : [],
 );
@@ -346,7 +386,7 @@ const dashboardCards = computed(() =>
           @click="tab = 'products'"
         >
           商品信息审核</button
-        ><button @click="emit('navigate', '/admin/modules/tasks')">
+        ><button :class="{ active: tab === 'tasks' }" @click="tab = 'tasks'">
           悬赏任务审核</button
         ><button :class="{ active: tab === 'posts' }" @click="tab = 'posts'">
           帖子信息审核
@@ -373,7 +413,8 @@ const dashboardCards = computed(() =>
       {{ error }}
       <button :disabled="busy || loading" @click="load">重新加载</button>
     </p>
-    <template v-if="view === 'dashboard'">
+    <AdminTaskPanel v-if="view === 'tasks'" embedded />
+    <template v-else-if="view === 'dashboard'">
       <div class="admin-real-metrics">
         <article v-for="[label, value] in dashboardCards" :key="label">
           <span>{{ label }}</span
@@ -384,21 +425,48 @@ const dashboardCards = computed(() =>
         数据来自当前数据库同一查询快照 ·
         {{ time(summary.as_of) }}。成交额仅含已完成商品订单，不含任务奖励。
       </p>
+      <p class="admin-source-note">
+        下方趋势与占比沿用JSON模拟数据；上方指标、待办与消息读取实际接口。
+      </p>
+      <AnalyticsPage dashboard />
       <div class="admin-dashboard-links">
         <article>
-          <h3>业务管理</h3>
-          <button @click="emit('navigate', '/admin/modules/content')">
-            内容审核 →</button
-          ><button @click="emit('navigate', '/admin/users')">
-            进入用户管理</button
-          ><button @click="emit('navigate', '/admin/modules/categories')">
-            分类管理 →</button
-          ><button @click="emit('navigate', '/admin/modules/audit')">
-            操作日志 →
-          </button>
+          <h3>待办事项</h3>
+          <div class="admin-pending-grid">
+            <button
+              v-for="[label, value, target] in pendingCards"
+              :key="label"
+              @click="emit('navigate', target)"
+            >
+              {{ label }} <strong>{{ value ?? "—" }}</strong>
+            </button>
+          </div>
+          <div class="admin-quick-links">
+            <button @click="emit('navigate', '/admin/modules/content')">
+              内容审核 →</button
+            ><button @click="emit('navigate', '/admin/users')">
+              进入用户管理</button
+            ><button @click="emit('navigate', '/admin/modules/categories')">
+              分类管理 →</button
+            ><button @click="emit('navigate', '/admin/modules/audit')">
+              操作日志 →
+            </button>
+          </div>
         </article>
         <article>
-          <h3>数据分析</h3>
+          <h3>最新消息</h3>
+          <p v-if="dashboardMessageError" role="alert">
+            {{ dashboardMessageError }}
+          </p>
+          <p v-else-if="!dashboardMessages.length">暂无个人通知</p>
+          <article
+            class="dashboard-message"
+            v-for="message in dashboardMessages"
+            :key="message.notification_id"
+          >
+            <strong>{{ message.notification_title }}</strong
+            ><small>{{ time(message.received_at) }}</small>
+          </article>
           <p>
             现有图表使用 JSON
             模拟数据。活跃度与趋势尚未接入真实统计，不能作为经营数据。
@@ -483,12 +551,28 @@ const dashboardCards = computed(() =>
         <button class="admin-purple" :disabled="loading">筛选</button
         ><button type="button" :disabled="loading" @click="reset">重置</button>
       </form>
-      <AdminBatchActions v-if="batchView" :key="view" :kind="view" :ids="selected" :disabled="loading || busy" @completed="load" />
+      <AdminBatchActions
+        v-if="batchView"
+        :key="view"
+        :kind="view"
+        :ids="selected"
+        :disabled="loading || busy"
+        @completed="load"
+      />
       <div class="admin-table-scroll" data-admin-records>
         <table>
           <thead>
             <tr>
-              <th v-if="batchView"><input type="checkbox" aria-label="全选当前页待审核记录" :checked="allSelected" :indeterminate="selected.length > 0 && !allSelected" :disabled="loading || !available.length" @change="toggleAll" /></th>
+              <th v-if="batchView">
+                <input
+                  type="checkbox"
+                  aria-label="全选当前页待审核记录"
+                  :checked="allSelected"
+                  :indeterminate="selected.length > 0 && !allSelected"
+                  :disabled="loading || !available.length"
+                  @change="toggleAll"
+                />
+              </th>
               <th>编号</th>
               <template v-if="view === 'audit'"
                 ><th>对象</th>
@@ -508,7 +592,15 @@ const dashboardCards = computed(() =>
           </thead>
           <tbody>
             <tr v-for="row in rows" :key="id(row)" :data-row-id="id(row)">
-              <td v-if="batchView"><input type="checkbox" :aria-label="'选择记录' + id(row)" :checked="selected.includes(String(id(row)))" :disabled="loading || status(row) !== '待审核'" @change="toggle(row)" /></td>
+              <td v-if="batchView">
+                <input
+                  type="checkbox"
+                  :aria-label="'选择记录' + id(row)"
+                  :checked="selected.includes(String(id(row)))"
+                  :disabled="loading || status(row) !== '待审核'"
+                  @change="toggle(row)"
+                />
+              </td>
               <td>{{ id(row) }}</td>
               <template v-if="view === 'audit'"
                 ><td>{{ row.object_type }} / {{ row.object_id }}</td>
@@ -570,7 +662,10 @@ const dashboardCards = computed(() =>
               >
             </tr>
             <tr v-if="!rows.length">
-              <td :colspan="batchView ? (view === 'products' ? 8 : 7) : 6" class="admin-empty">
+              <td
+                :colspan="batchView ? (view === 'products' ? 8 : 7) : 6"
+                class="admin-empty"
+              >
                 {{
                   loading
                     ? "正在加载…"

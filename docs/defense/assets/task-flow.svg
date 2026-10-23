@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10" fill="#566579"/></marker></defs>
+<rect width="100%" height="100%" fill="white"/>
+<rect x="70" y="60" width="320" height="120" rx="12" fill="#edf2f7" stroke="#718198" stroke-width="2"/>
+<text x="230.0" y="97.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="31" fill="#152234">发布并冻结</text>
+<text x="230.0" y="142.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="31" fill="#152234">待审核</text>
+<rect x="640" y="60" width="320" height="120" rx="12" fill="#edf2f7" stroke="#718198" stroke-width="2"/>
+<text x="800.0" y="97.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="31" fill="#152234">审核通过</text>
+<text x="800.0" y="142.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="31" fill="#152234">待接取</text>
+<rect x="1210" y="60" width="320" height="120" rx="12" fill="#edf2f7" stroke="#718198" stroke-width="2"/>
+<text x="1370.0" y="97.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="31" fill="#152234">分配接取者</text>
+<text x="1370.0" y="142.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="31" fill="#152234">进行中</text>
+<polyline points="390,120 640,120" fill="none" stroke="#566579" stroke-width="3" marker-end="url(#arrow)"/>
+<polyline points="960,120 1210,120" fill="none" stroke="#566579" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1085" y="83.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="23" fill="#152234">申请待审再分配</text>
+<rect x="1210" y="390" width="320" height="120" rx="12" fill="#edf2f7" stroke="#718198" stroke-width="2"/>
+<text x="1370.0" y="427.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="31" fill="#152234">提交最新凭证</text>
+<text x="1370.0" y="472.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="31" fill="#152234">待验收</text>
+<polyline points="1370,180 1370,390" fill="none" stroke="#566579" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="640" y="390" width="320" height="120" rx="12" fill="#edf2f7" stroke="#718198" stroke-width="2"/>
+<text x="800.0" y="429.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="29" fill="#152234">验收通过</text>
+<text x="800.0" y="471.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="29" fill="#152234">已完成并唯一结算</text>
+<polyline points="1210,450 960,450" fill="none" stroke="#566579" stroke-width="3" marker-end="url(#arrow)"/>
+<polyline points="1530,450 1570,450 1570,235 1450,235 1450,180" fill="none" stroke="#566579" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1507" y="278.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="23" fill="#152234">补证</text>
+<rect x="70" y="390" width="320" height="120" rx="12" fill="#edf2f7" stroke="#718198" stroke-width="2"/>
+<text x="230.0" y="429.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="29" fill="#152234">审核驳回</text>
+<text x="230.0" y="471.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="29" fill="#152234">已驳回并释放冻结</text>
+<polyline points="230,180 230,390" fill="none" stroke="#566579" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="305" y="280.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="23" fill="#152234">驳回</text>
+<rect x="640" y="690" width="320" height="120" rx="12" fill="#edf2f7" stroke="#718198" stroke-width="2"/>
+<text x="800.0" y="729.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="28" fill="#152234">允许关闭时管理关闭</text>
+<text x="800.0" y="770.5" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="28" fill="#152234">已取消并释放冻结</text>
+<polyline points="800,180 800,270 515,270 515,750 640,750" fill="none" stroke="#566579" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="580" y="610.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="23" fill="#152234">符合关闭条件</text>
+<rect x="1210" y="690" width="320" height="120" rx="12" fill="#edf2f7" stroke="#718198" stroke-width="2"/>
+<text x="1370.0" y="729.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="29" fill="#152234">凭证未通过</text>
+<text x="1370.0" y="771.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="29" fill="#152234">未完成且继续冻结</text>
+<polyline points="1370,510 1370,690" fill="none" stroke="#566579" stroke-width="3" marker-end="url(#arrow)"/>
+<polyline points="1210,750 960,750" fill="none" stroke="#566579" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="800" y="862.0" text-anchor="middle" dominant-baseline="central" font-family="Microsoft YaHei,sans-serif" font-size="25" fill="#152234">进行中与待验收不能直接管理关闭   申请不等于已经接取</text>
+</svg>

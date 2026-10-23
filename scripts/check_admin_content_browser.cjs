@@ -54,8 +54,8 @@ fs.writeFileSync(
     await page.waitForURL("**/admin");
     await page.locator(".admin-real-metrics article").first().waitFor();
     check(
-      (await page.locator(".admin-real-metrics article").count()) === 5,
-      "Dashboard displays five real contract metrics",
+      (await page.locator(".admin-real-metrics article").count()) === 4,
+      "Dashboard displays the four original-report metrics from real data",
     );
     await page.screenshot({
       path: path.join(out, "01-dashboard.png"),

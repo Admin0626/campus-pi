@@ -17,6 +17,7 @@ import static com.campuspi.account.AccountService.*;
 @Service
 public class AftersaleService {
     private final JdbcTemplate db;
+    private final com.campuspi.notification.ReviewNotifications notifications;
     private final AccountService accounts;
     private final AdminPolicy policy;
     private final BusinessNumbers numbers;
@@ -24,8 +25,8 @@ public class AftersaleService {
     private final ObjectMapper json;
 
     public AftersaleService(JdbcTemplate db, AccountService accounts, AdminPolicy policy,
-            BusinessNumbers numbers, BusinessFileService files, ObjectMapper json) {
-        this.db=db; this.accounts=accounts; this.policy=policy; this.numbers=numbers; this.files=files; this.json=json;
+            BusinessNumbers numbers, BusinessFileService files, ObjectMapper json, com.campuspi.notification.ReviewNotifications notifications) {
+        this.notifications=notifications; this.db=db; this.accounts=accounts; this.policy=policy; this.numbers=numbers; this.files=files; this.json=json;
     }
     private Map<String,Object> one(String sql,Object... args) {
         var rows=db.queryForList(sql,args); return rows.isEmpty()?null:rows.get(0);
@@ -139,6 +140,7 @@ public class AftersaleService {
             String next="通过".equals(decision)?"已完成":"已驳回";
             db.update("UPDATE order_aftersales SET aftersale_status=?,approve_amount=?,reviewer_id=?,audit_reason=?,audit_time=UTC_TIMESTAMP(3),complete_time=IF(?='已完成',UTC_TIMESTAMP(3),NULL) WHERE aftersale_id=?",next,approved,actor.id(),reason,next,id);
             db.update("INSERT INTO admin_audit_log(operator_id,object_type,object_id,action_name,reason) VALUES(?,'售后',?,'审核任务争议',?)",actor.id(),id,reason);
+            notifications.send(actor.id(),number(row,"user_id"),"任务争议",id,next,reason);
             // No user_orders, RewardTasks, reward account, stock or payment mutation is permitted here.
             return view(find(id));
         });

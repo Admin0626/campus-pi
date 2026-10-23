@@ -7,6 +7,8 @@ const fs = require("node:fs"),
 const root = path.resolve(__dirname, ".."),
   checks = [];
 let lastNavigation = "";
+let nativePages = [];
+global.getCurrentPages = () => nativePages;
 const app = {
   globalData: { apiBaseUrl: "http://127.0.0.1:8080", token: "", user: null },
 };
@@ -35,12 +37,20 @@ global.wx = {
   },
   reLaunch(options) {
     lastNavigation = options.url;
+    options.success?.({ errMsg: "reLaunch:ok" });
   },
   navigateTo(options) {
     lastNavigation = options.url;
+    options.success?.({ errMsg: "navigateTo:ok" });
   },
-  navigateBack() {
+  switchTab(options) {
+    lastNavigation = options.url;
+    options.success?.({ errMsg: "switchTab:ok" });
+  },
+  navigateBack(options = {}) {
     lastNavigation = "back";
+    nativePages = nativePages.slice(0, -(options.delta || 1));
+    options.success?.({ errMsg: "navigateBack:ok" });
   },
   showToast() {},
 };
@@ -107,6 +117,20 @@ function check(v, name) {
   );
   check(app.globalData.token === "", "native registration does not auto login");
   const login = page("login");
+  const { returnToLogin } = require(path.join(root, "miniprogram/utils/navigation"));
+  login.route = "pages/login/index";
+  login.setData({ password: "DiscardedSyntheticPassword" });
+  nativePages = [login, { route: "pages/register/index" }];
+  await returnToLogin(username);
+  check(lastNavigation === "back" && nativePages.length === 1, "registration reuses the existing login page");
+  check(login.data.account === username && login.data.password === "", "return to login prefills account and clears previous password");
+  const originalBack = wx.navigateBack;
+  wx.navigateBack = options => options.fail({ errMsg: "synthetic navigation failure" });
+  nativePages = [login, { route: "pages/register/index" }];
+  await assert.rejects(returnToLogin(username), /返回登录页失败/);
+  check(true, "failed native return is rejected instead of reported as success");
+  wx.navigateBack = originalBack;
+  nativePages = [];
   login.setData({ account: username, password: "WrongPassword2026!" });
   await login.submit();
   check(
@@ -133,11 +157,18 @@ function check(v, name) {
       me.data.user.email === username + "@example.invalid",
     "native me reads persisted backend profile",
   );
+  const binding = page("wechat-binding");
+  await binding.onShow();
+  check(!binding.data.loading && !binding.data.available && !binding.data.error,
+    "binding page reads real backend configuration without pretending enabled");
   await me.logout();
   check(
     app.globalData.token === "" && lastNavigation === "/pages/login/index",
     "native logout revokes real token and clears identity",
   );
+  await login.wechatLogin();
+  check(login.data.error.includes("尚未配置") && app.globalData.token === "",
+    "unconfigured real backend prevents wx.login and does not create a session");
   app.globalData.apiBaseUrl = "";
   login.setData({ password });
   await login.submit();

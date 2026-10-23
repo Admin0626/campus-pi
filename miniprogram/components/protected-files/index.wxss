@@ -1,0 +1,9 @@
+.protected-image {
+  width: 100%;
+  max-height: 600rpx;
+  margin: 12rpx 0;
+}
+.file-error {
+  color: #ad3548;
+  font-size: 24rpx;
+}

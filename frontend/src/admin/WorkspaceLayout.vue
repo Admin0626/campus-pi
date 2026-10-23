@@ -88,6 +88,7 @@ const initials = (value) => value?.username?.slice(0, 1).toUpperCase() || "Π";
               :class="{
                 selected:
                   path === item[1] ||
+                  (item[1] === '/admin/modules/products' && path === '/admin/modules/categories') ||
                   (item[1] === '/admin/users' &&
                     path.startsWith('/admin/users/')),
               }"

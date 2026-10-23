@@ -111,7 +111,7 @@ const local = JSON.parse(
           ? " functional page reachable"
           : code === "analytics"
             ? " mock page reachable"
-            : " placeholder reachable"),
+            : " functional business page reachable"),
     );
   }
   await page.getByRole("button", { name: "用户端", exact: true }).click();
@@ -127,11 +127,11 @@ const local = JSON.parse(
   ];
   for (const [button, name, code, viaMe] of userNavigation) {
     if (viaMe)
-      await page.getByRole("button", { name: "我的账号", exact: true }).click();
+      await page.getByRole("button", { name: /^(我的账号|个人)$/, exact: true }).click();
     await page.getByRole("button", { name: button, exact: true }).click();
     await page
       .getByRole("heading", {
-        name: code === "I" ? "通知" : name + "还在开发",
+        name: ({C:"校园二手",D:"校园发现",E:"悬赏任务",F:"任务记录与奖励",G:"我的订单",H:"校园私信",I:"通知"})[code],
         exact: true,
       })
       .waitFor();
@@ -141,21 +141,15 @@ const local = JSON.parse(
         name +
         (code === "I"
           ? " functional inbox reachable"
-          : " placeholder reachable"),
+          : " functional business page reachable"),
     );
     if (code === "I") {
-      await page
-        .getByRole("button", { name: "返回个人页", exact: true })
-        .click();
-      await page.waitForURL("**/me");
-      await page.getByRole("button", { name: "首页", exact: true }).click();
-    } else {
-      await page
-        .getByRole("button", { name: "返回校园生活", exact: false })
-        .click();
+      await page.getByRole("button",{name:"返回个人页",exact:true}).click();
     }
+    await page.getByRole("button",{name:"首页",exact:true}).click();
+
   }
-  await page.getByRole("button", { name: "我的账号", exact: true }).click();
+  await page.getByRole("button", { name: /^(我的账号|个人)$/, exact: true }).click();
   await page.getByRole("button", { name: "退出登录", exact: true }).click();
   await page.waitForURL("**/login");
   await page.getByRole("button", { name: "实名认证", exact: true }).click();

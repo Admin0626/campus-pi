@@ -47,7 +47,7 @@ fs.writeFileSync(
   async function findRow(id) {
     const row = page.locator("tbody tr").filter({
       has: page
-        .locator("td:first-child")
+        .locator("td")
         .filter({ hasText: new RegExp("^" + id + "$") }),
     });
     for (let i = 0; i < 100; i++) {
@@ -162,7 +162,7 @@ fs.writeFileSync(
       (await page
         .locator("tbody tr")
         .filter({
-          has: page.locator("td:first-child").filter({
+          has: page.locator("td").filter({
             hasText: new RegExp("^" + fixture.verification_id + "$"),
           }),
         })

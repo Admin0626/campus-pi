@@ -1,0 +1,5 @@
+<view class="state-panel" role="status">
+  <view class="state-title">{{title}}</view>
+  <view wx:if="{{message}}" class="state-message">{{message}}</view>
+  <button wx:if="{{action}}" bindtap="retry" disabled="{{busy}}" loading="{{busy}}">{{action}}</button>
+</view>

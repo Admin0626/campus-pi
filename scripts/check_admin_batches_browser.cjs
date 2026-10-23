@@ -24,6 +24,8 @@ let finished = false;
       const text = document.querySelector(".admin-batch summary")?.textContent || "";
       return text.includes("已完成") && text.includes(`成功 ${success}`) && text.includes(`失败 ${failure}`);
     }, { success, failure });
+    const details=batch().locator('details');
+    if(!(await details.evaluate(el=>el.open)))await details.locator('summary').click();
   };
   const submit = async (button, choice) => {
     await batch().getByRole("button", { name: button, exact: true }).click();

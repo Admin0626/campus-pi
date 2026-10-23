@@ -1,14 +1,8 @@
-function length(value) {
-  return Array.from(value).length;
-}
-function passwordValid(value) {
-  return length(value) >= 12 && length(value) <= 64;
-}
+const { goLogin } = require("./navigation");
+function passwordValid(value) { const size = Array.from(value).length; return size >= 12 && size <= 64; }
 function guard() {
-  if (!getApp().globalData.token) {
-    wx.reLaunch({ url: "/pages/login/index" });
-    return false;
-  }
-  return true;
+  if (getApp().globalData.token) return true;
+  goLogin().catch(error => wx.showToast({ title: error.message, icon: "none" }));
+  return false;
 }
 module.exports = { passwordValid, guard };

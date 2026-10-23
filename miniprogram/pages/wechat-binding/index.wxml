@@ -1,0 +1,9 @@
+<view class="page">
+  <view class="heading">微信账号绑定</view>
+  <view class="card"><view class="card-title">当前校园账号：{{username}}</view><view class="description">点击绑定，将当前微信关联到这个已有校园账号，之后可在登录页使用微信登录。绑定不会创建新账号。</view></view>
+  <state-panel wx:if="{{loading}}" title="正在读取绑定状态"/>
+  <state-panel wx:elif="{{error}}" title="操作未完成" message="{{error}}" action="重新查询" bind:action="onShow"/>
+  <state-panel wx:elif="{{!available}}" title="微信登录尚未配置" message="服务端配置完成后可在这里绑定。账号密码登录仍可使用。"/>
+  <state-panel wx:elif="{{bound}}" title="已绑定微信" message="下次登录可使用当前微信。修改绑定关系的功能尚未开放。"/>
+  <button wx:else class="primary" bindtap="bind" disabled="{{busy}}" loading="{{busy}}">绑定当前微信到此账号</button>
+</view>

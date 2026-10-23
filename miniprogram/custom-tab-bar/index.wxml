@@ -1,0 +1,5 @@
+<view class="word-mobile-tabs">
+  <button wx:for="{{tabs}}" wx:key="path" class="{{item.path === selected ? 'selected' : ''}} {{item.publish ? 'word-tab-publish' : ''}}" data-route="{{item.path}}" bindtap="select" aria-label="{{item.text}}" aria-current="{{item.path === selected ? 'page' : 'false'}}">
+    <text class="{{item.publish ? '' : 'word-native-icon'}}">{{item.icon}}</text><text wx:if="{{!item.publish}}">{{item.text}}</text>
+  </button>
+</view>

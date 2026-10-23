@@ -1,0 +1,1 @@
+<view class="publish"><view>发布信息</view><button data-module="C" bindtap="open">二手商品</button><button data-module="D" bindtap="open">校园帖子</button><button data-module="E" bindtap="open">悬赏任务</button></view>

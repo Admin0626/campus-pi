@@ -1,0 +1,4 @@
+{
+  "component": true,
+  "usingComponents": { "protected-files": "/components/protected-files/index" }
+}

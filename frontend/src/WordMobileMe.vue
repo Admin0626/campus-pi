@@ -1,9 +1,12 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import Icon from "./Icon.vue";
+import MobileTabs from "./member/MobileTabs.vue";
+import {api} from "./api.js";
 defineProps({ user: Object, error: String });
 const emit = defineEmits(["navigate", "unavailable", "logout", "dismiss"]);
-const feedback = ref("");
+const feedback = ref("");const counts=ref(['—','—','—']);
+onMounted(async()=>{const results=await Promise.allSettled(['/me/products','/me/posts','/me/tasks'].map(p=>api(p+'?page_size=1')));counts.value=results.map(r=>r.status==='fulfilled'?r.value.total:'—');});
 </script>
 <template>
   <main class="word-mobile-stage word-personal-stage">
@@ -27,7 +30,7 @@ const feedback = ref("");
         </div>
         <header class="word-me-header">
           <div class="word-me-identity">
-            <div class="word-me-avatar"><Icon name="users" :size="32" /></div>
+            <div class="word-me-avatar"><img v-if="user.avatar_url" :src="user.avatar_url" alt="我的头像" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/><Icon v-else name="users" :size="32" /></div>
             <div>
               <h1>{{ user.username }}</h1>
               <p title="本人接口未提供学号">学号：—</p>
@@ -47,11 +50,11 @@ const feedback = ref("");
           </div>
           <div class="word-me-statistics">
             <button
-              v-for="(label, index) in ['发布商品', '发布帖子', '发布商品']"
+              v-for="(label, index) in ['发布商品', '发布帖子', '发布任务']"
               :key="index"
-              @click="feedback = '发布统计还在开发，接口未提供统计值。'"
+              @click="emit('navigate', ['/modules/C','/modules/D','/modules/E'][index])"
             >
-              <strong>—</strong><span>{{ label }}</span>
+              <strong>{{counts[index]}}</strong><span>{{ label }}</span>
             </button>
           </div>
         </header>
@@ -67,6 +70,7 @@ const feedback = ref("");
         </section>
         <section class="word-me-card word-me-settings">
           <h2>设置</h2>
+          <button @click="emit('navigate','/modules/B')">实名与校园认证<Icon name="chevron"/></button>
           <button @click="emit('navigate', '/me/profile')">
             账号设置<Icon name="chevron" /></button
           ><button @click="emit('navigate', '/modules/I')">
@@ -77,21 +81,7 @@ const feedback = ref("");
         </section>
         <button class="word-me-logout" @click="emit('logout')">退出登录</button>
       </section>
-      <nav class="word-mobile-tabs">
-        <button @click="emit('navigate', '/home')">
-          <Icon name="campus" />首页</button
-        ><button @click="emit('navigate', '/modules/D')">
-          <Icon name="eye" />发现</button
-        ><button
-          class="word-tab-publish"
-          aria-label="发布"
-          @click="emit('navigate', '/modules/D')"
-        >
-          ＋</button
-        ><button @click="emit('navigate', '/modules/H')">
-          <Icon name="mail" />私信</button
-        ><button class="selected"><Icon name="user" />个人</button>
-      </nav>
+      <MobileTabs active="/me" @navigate="emit('navigate',$event)"/>
     </div>
   </main>
 </template>

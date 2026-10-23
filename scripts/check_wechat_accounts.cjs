@@ -18,6 +18,7 @@ const output = path.join(
 );
 const report = {
   checked_at: new Date().toISOString(),
+  status: "RUNNING",
   scope:
     "Real DevTools app service, native page methods and real wx.request; no visual or device acceptance",
   checks: [],
@@ -25,7 +26,13 @@ const report = {
   page_method_flow_verified: false,
   visual_verified: false,
   device_run: false,
+  source_hashes: Object.fromEntries([
+    "app.json", "utils/navigation.js", "utils/request.js", "custom-tab-bar/index.js",
+    "pages/login/index.js", "pages/register/index.js", "pages/me/index.js",
+  ].map(name => [name, crypto.createHash("sha256").update(fs.readFileSync(path.join(root, "miniprogram", name))).digest("hex")])),
 };
+fs.mkdirSync(path.dirname(output), { recursive: true });
+fs.writeFileSync(output, JSON.stringify(report, null, 2));
 function check(value, name) {
   assert.ok(value, name);
   report.checks.push({ name, status: "PASS" });
@@ -56,13 +63,31 @@ async function wait(mp, predicate) {
     "Native page state did not reach expected result within 20 seconds",
   );
 }
+async function rendered(mp, route) {
+  const page = await mp.currentPage();
+  assert.equal(page.path, route, "Expected native route before checking its rendered view");
+  let timer;
+  try {
+    await Promise.race([
+      (async () => {
+        await page.data();
+        await page.waitFor("button");
+        // The view can exist before the native page-transition animation has finished.
+        await page.waitFor(1000);
+      })(),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error("Native view not ready: " + route)), 20000);
+      }),
+    ]);
+  } finally { clearTimeout(timer); }
+}
 (async () => {
   let mp;
   const watchdog = setTimeout(() => {
     report.status = "INCOMPLETE";
     fs.writeFileSync(output, JSON.stringify(report, null, 2));
     process.exit(2);
-  }, 100000);
+  }, 200000);
   try {
     mp = await automator.connect({
       wsEndpoint:
@@ -71,7 +96,9 @@ async function wait(mp, predicate) {
     const environment = await mp.evaluate(() => ({
       platform: wx.getDeviceInfo().platform,
       base: getApp().globalData.apiBaseUrl,
+      SDKVersion: wx.getAppBaseInfo().SDKVersion,
     }));
+    report.environment = environment;
     check(
       environment.platform === "devtools" &&
         environment.base === "http://127.0.0.1:8080",
@@ -132,7 +159,11 @@ async function wait(mp, predicate) {
       check(network[name], "Real wx.request account network flow: " + name);
     }
     report.network_flow_verified = true;
-    await mp.reLaunch("/pages/login/index");
+    // Do not destroy an already-open login view before exercising its real navigation.
+    if ((await mp.currentPage()).path !== "pages/login/index") {
+      await mp.reLaunch("/pages/login/index");
+    }
+    await rendered(mp, "pages/login/index");
     await mp.evaluate(() => {
       const p = getCurrentPages().slice(-1)[0];
       p.submit();
@@ -145,6 +176,7 @@ async function wait(mp, predicate) {
     );
     await mp.evaluate(() => getCurrentPages().slice(-1)[0].register());
     await wait(mp, (s) => s.route === "pages/register/index");
+    await rendered(mp, "pages/register/index");
     await mp.evaluate(() => getCurrentPages().slice(-1)[0].submit());
     check(
       (await wait(mp, (s) => !s.busy && !!s.error)).error.includes("用户名"),
@@ -172,6 +204,7 @@ async function wait(mp, predicate) {
       registered.route === "pages/login/index" && !registered.hasToken,
       "Real wx.request registration returns to login without auto-login",
     );
+    await rendered(mp, "pages/login/index");
     await mp.evaluate((value) => {
       const p = getCurrentPages().slice(-1)[0];
       p.setData({
@@ -200,6 +233,11 @@ async function wait(mp, predicate) {
       signedIn.route === "pages/home/index" && signedIn.hasToken,
       "Native login reaches home with real backend token",
     );
+    await rendered(mp, "pages/home/index");
+    check(await mp.evaluate(() => {
+      const page = getCurrentPages().slice(-1)[0], bar = page.getTabBar && page.getTabBar();
+      return !!bar && bar.data.selected === "/pages/home/index";
+    }), "Native home uses shared custom tab component");
     await mp.evaluate(() => getCurrentPages().slice(-1)[0].me());
     const profile = await wait(
       mp,
@@ -209,6 +247,11 @@ async function wait(mp, predicate) {
       profile.username === account.username && !profile.error,
       "Native me loads real authenticated user",
     );
+    await rendered(mp, "pages/me/index");
+    check(await mp.evaluate(() => {
+      const page = getCurrentPages().slice(-1)[0], bar = page.getTabBar && page.getTabBar();
+      return !!bar && bar.data.selected === "/pages/me/index";
+    }), "Native profile synchronizes shared tab selection");
     await mp.evaluate(() => getCurrentPages().slice(-1)[0].logout());
     const signedOut = await wait(
       mp,
@@ -218,6 +261,7 @@ async function wait(mp, predicate) {
       signedOut.route === "pages/login/index" && !signedOut.hasToken,
       "Native logout revokes session and returns to login",
     );
+    await rendered(mp, "pages/login/index");
     report.status = "PASS";
     report.page_method_flow_verified = true;
     console.log(

@@ -33,6 +33,10 @@ server:
     include-exception: false
 
 campus:
+  wechat:
+    enabled: ${WECHAT_LOGIN_ENABLED:false}
+    app-id: ${WECHAT_APP_ID:}
+    app-secret: ${WECHAT_APP_SECRET:}
   admin-batches:
     worker-enabled: ${ADMIN_BATCH_WORKER_ENABLED:false}
     poll-interval-ms: ${ADMIN_BATCH_POLL_INTERVAL_MS:1000}

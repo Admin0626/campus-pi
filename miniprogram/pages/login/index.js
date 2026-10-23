@@ -1,4 +1,7 @@
-const { request } = require("../../utils/request");
+const accounts = require("../../services/account");
+const wechat = require("../../services/wechat");
+const session = require("../../utils/session");
+const { switchMain, openPage, openPending } = require("../../utils/navigation");
 const { passwordValid } = require("../../utils/account");
 Page({
   data: {
@@ -10,18 +13,20 @@ Page({
     statusHeight: 0,
   },
   onLoad(options) {
+    this._unloaded = false;
     this.setData({
       statusHeight: wx.getWindowInfo ? wx.getWindowInfo().statusBarHeight : 0,
     });
     if (options.account)
       this.setData({ account: decodeURIComponent(options.account) });
   },
+  onUnload() { this._unloaded = true; },
   togglePassword() {
     this.setData({ revealed: !this.data.revealed });
   },
   unavailable(event) {
     wx.showToast({
-      title: (event.currentTarget.dataset.name || "此功能") + "还在开发",
+      title: ((event.detail && event.detail.name) || event.currentTarget.dataset.name || "此功能") + "还在开发",
       icon: "none",
     });
   },
@@ -32,7 +37,7 @@ Page({
     wx.navigateBack();
   },
   input(event) {
-    this.setData({ [event.currentTarget.dataset.field]: event.detail.value });
+    this.setData({ [event.detail.field || event.currentTarget.dataset.field]: event.detail.value });
   },
   async submit() {
     if (this.data.busy) return;
@@ -44,27 +49,40 @@ Page({
     }
     this.setData({ busy: true, error: "" });
     try {
-      const result = await request("/auth/login", {
-        method: "POST",
-        body: { account, password },
-      });
-      const app = getApp();
-      app.globalData.token = result.access_token;
-      app.globalData.user = result.user;
+      const result = await accounts.login({ account, password });
+      if (this._unloaded) return;
+      session.set(result);
       this.setData({ password: "" });
-      wx.reLaunch({ url: "/pages/home/index" });
+      await switchMain("/pages/home/index");
     } catch (error) {
-      this.setData({ error: error.message });
+      if (!this._unloaded) this.setData({ error: error.message });
     } finally {
-      this.setData({ busy: false });
+      if (!this._unloaded) this.setData({ busy: false });
+    }
+  },
+  async wechatLogin() {
+    if (this.data.busy) return;
+    this.setData({ busy: true, error: "" });
+    try {
+      const result = await wechat.login();
+      if (this._unloaded) return;
+      session.set(result);
+      this.setData({ password: "" });
+      await switchMain("/pages/home/index");
+    } catch (error) {
+      if (!this._unloaded) this.setData({ error: error.message });
+    } finally {
+      if (!this._unloaded) this.setData({ busy: false });
     }
   },
   register() {
-    wx.navigateTo({ url: "/pages/register/index" });
+    return openPage("/pages/register/index").catch(error => {
+      if (!this._unloaded) this.setData({ error: error.message });
+    });
   },
   forgot() {
-    wx.navigateTo({
-      url: "/pages/pending/index?name=" + encodeURIComponent("密码找回"),
+    return openPending("密码找回").catch(error => {
+      if (!this._unloaded) this.setData({ error: error.message });
     });
   },
 });

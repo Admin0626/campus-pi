@@ -5,6 +5,7 @@ import ReportGlyph from "./ReportGlyph.vue";
 import TrendChart from "./TrendChart.vue";
 import CategoryChart from "./CategoryChart.vue";
 import BarChart from "./BarChart.vue";
+defineProps({ dashboard: Boolean });
 import {
   loadAnalytics,
   periodView,
@@ -144,6 +145,7 @@ onBeforeUnmount(() => {
 <template>
   <section
     class="analytics-page"
+    :class="{ 'is-dashboard': dashboard }"
     aria-label="数据分析页面"
     :aria-busy="loading"
   >

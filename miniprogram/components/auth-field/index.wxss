@@ -1,0 +1,4 @@
+@import "../../styles/auth-controls.wxss";
+view,input,button{box-sizing:border-box}
+button{margin:0;padding:0;border:0;background:transparent;line-height:1.4;border-radius:0}
+button::after{border:0}

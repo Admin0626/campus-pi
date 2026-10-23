@@ -74,7 +74,7 @@ onUnmounted(() => { generation++; clearPoll(); });
       </label>
     </div>
     <p v-if="error && !form" class="admin-message failure" role="alert">{{ error }}</p>
-    <details v-if="job" class="admin-batch-results" open>
+    <details v-if="job" class="admin-batch-results">
       <summary>批次{{ stateLabel(job.status) }}：成功 {{ job.succeeded }}，失败 {{ job.failed }}，待执行 {{ job.pending }}</summary>
       <p class="admin-batch-id">批次编号：{{ job.batch_id }}</p>
       <div class="admin-inline-actions">

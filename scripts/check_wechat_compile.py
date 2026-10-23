@@ -19,7 +19,11 @@ source = ROOT / 'miniprogram'
 out = ROOT / '.local/auth-dev/wechat-compile'
 out.mkdir(parents=True, exist_ok=True)
 pages = json.loads((source / 'app.json').read_text(encoding='utf-8'))['pages']
-templates = [page + '.wxml' for page in pages]
+components = [str(p.with_suffix('').relative_to(source)).replace('\\','/')
+              for p in source.rglob('*.json')
+              if p.name not in {'project.config.json','project.private.config.json'}
+              and json.loads(p.read_text(encoding='utf-8')).get('component') is True]
+templates = sorted({item + '.wxml' for item in [*pages,*components]})
 styles = sorted(str(p.relative_to(source)).replace('\\','/') for p in source.rglob('*.wxss'))
 checks = []
 for name in ['wcc.exe', 'wcsc.exe']:
@@ -43,6 +47,7 @@ report = {
     'status': 'PASS',
     'scope': 'Installed official DevTools standalone WXML/WXSS compiler only',
     'pages': len(pages),
+    'components': len(components),
     'checks': checks,
     'source_hashes': {name: hashlib.sha256((source / name).read_bytes()).hexdigest() for name in [*templates, *styles]},
     'AppID_configured': bool(re.fullmatch(r'wx[0-9a-f]{16}', configured_appid)),
@@ -51,4 +56,4 @@ report = {
     'device_run': False,
 }
 (out / 'compile-acceptance.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
-print(json.dumps({'status': 'PASS', 'WXML_pages': len(pages), 'WXSS_files': len(styles), 'device_run': False}))
+print(json.dumps({'status': 'PASS', 'WXML_pages': len(pages), 'WXML_components': len(components), 'WXSS_files': len(styles), 'device_run': False}))

@@ -1,0 +1,15 @@
+<view wx:for="{{entries}}" wx:key="index"
+  ><text wx:if="{{item.error}}" class="file-error">{{item.error}}</text
+  ><button
+    wx:elif="{{item.mime==='application/pdf'}}"
+    data-index="{{index}}"
+    bindtap="open"
+  >
+    查看 PDF 材料</button
+  ><image
+    wx:else
+    src="{{item.url}}"
+    mode="widthFix"
+    class="protected-image"
+  /><button wx:if="{{item.error}}" bindtap="load">重新获取文件</button></view
+>

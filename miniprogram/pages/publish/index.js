@@ -1,0 +1,1 @@
+const {guard}=require("../../utils/account");const {syncTab,openPage}=require("../../utils/navigation");Page({onShow(){syncTab(this,"/pages/publish/index");guard();},open(e){return openPage("/pages/business/index?module="+e.currentTarget.dataset.module).catch(error=>wx.showToast({title:error.message,icon:"none"}));}});

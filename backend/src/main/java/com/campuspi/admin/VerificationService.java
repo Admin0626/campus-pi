@@ -15,14 +15,15 @@ import static com.campuspi.account.AccountService.*;
 @Service
 public class VerificationService {
     private final JdbcTemplate db;
+    private final com.campuspi.notification.ReviewNotifications notifications;
     private final AccountService accounts;
     private final AdminPolicy policy;
     private final BusinessFileService files;
     private final ObjectMapper json;
     private final Set<String> campuses=new HashSet<>();
-    public VerificationService(JdbcTemplate db,AccountService accounts,AdminPolicy policy,BusinessFileService files,ObjectMapper json,
+    public VerificationService(JdbcTemplate db,AccountService accounts,AdminPolicy policy,BusinessFileService files,ObjectMapper json,com.campuspi.notification.ReviewNotifications notifications,
             @Value("${campus.verification.allowed-campuses-json:}") String campusConfig) {
-        this.db=db;this.accounts=accounts;this.policy=policy;this.files=files;this.json=json;
+        this.notifications=notifications;this.db=db;this.accounts=accounts;this.policy=policy;this.files=files;this.json=json;
         if(!campusConfig.isBlank())try {
             var values=json.readTree(campusConfig);if(!values.isArray())throw new IllegalArgumentException();
             for(var value:values){if(!value.isTextual()||value.asText().isBlank()||value.asText().length()>50)throw new IllegalArgumentException();campuses.add(value.asText());}
@@ -117,6 +118,7 @@ public class VerificationService {
                 db.update("UPDATE users SET identity_verification=?,real_name=? WHERE user_id=?",next,pass?row.get("real_name"):user.get("real_name"),owner);
             }
             db.update("UPDATE user_verification SET audit_status=?,reviewer_id=?,audit_reason=?,reviewed_at=UTC_TIMESTAMP(3) WHERE verification_id=?",next,actor.id(),reason,id);
+            notifications.send(actor.id(),owner,campus?"校园认证":"实名认证",Long.toString(id),next,reason);
             audit(actor,id,"审核",reason);return view(record(id,false),false);
         });
     }

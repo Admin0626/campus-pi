@@ -1,0 +1,52 @@
+.word-mobile-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #fff;
+  border-top: 1.92rpx solid #e9e9e9;
+  height: 148.08rpx;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 13.46rpx 0 34.62rpx;
+}
+
+.word-mobile-tabs > button {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 7.69rpx;
+  color: #a4a4a4;
+  font-size: 19.23rpx;
+  padding: 0;
+  width: 18%;
+}
+
+.word-mobile-tabs svg {
+  width: 34.62rpx;
+  height: 34.62rpx;
+}
+
+.word-mobile-tabs .selected {
+  color: #5189ff;
+}
+
+.word-mobile-tabs .word-tab-publish {
+  height: 94.23rpx;
+  width: 94.23rpx;
+  border-radius: 50%;
+  font-size: 57.69rpx;
+  font-weight: 200;
+  line-height: 88.46rpx;
+  background: linear-gradient(120deg, #41d3e0, #4a8bff);
+  color: white;
+  margin-top: -23.08rpx;
+}
+
+.word-native-icon {
+  font-size: 34rpx;
+}
+view,button{box-sizing:border-box}
+button{margin:0;border:0;background:transparent;line-height:1.4;font-weight:400;border-radius:0}button::after{border:0}
+@import "../styles/tab-layout.wxss";

@@ -1,5 +1,7 @@
-const { request, requestKey } = require("../../utils/request");
+const { requestKey } = require("../../utils/request");
+const accounts = require("../../services/account");
 const { passwordValid } = require("../../utils/account");
+const { returnToLogin } = require("../../utils/navigation");
 Page({
   data: {
     username: "",
@@ -24,15 +26,19 @@ Page({
     this.setData({ error: "" });
   },
   back() {
-    wx.navigateBack();
+    return returnToLogin().catch((error) => this.setData({ error: error.message }));
   },
   input(event) {
-    this.setData({ [event.currentTarget.dataset.field]: event.detail.value });
+    this.setData({ [event.detail.field || event.currentTarget.dataset.field]: event.detail.value });
   },
   onLoad() {
+    this._unloaded = false;
     this.setData({
       statusHeight: wx.getWindowInfo ? wx.getWindowInfo().statusBarHeight : 0,
     });
+  },
+  onUnload() {
+    this._unloaded = true;
   },
   async submit() {
     if (this.data.busy) return;
@@ -63,30 +69,24 @@ Page({
       ...(email ? { email } : {}),
       ...(phone ? { phone } : {}),
     };
+    let created = false;
     try {
       const serialized = JSON.stringify(body);
       if (this._body !== serialized) {
         this._key = await requestKey();
         this._body = serialized;
       }
-      await request("/auth/register", { method: "POST", body, key: this._key });
+      await accounts.register(body, this._key);
+      created = true;
+      if (this._unloaded) return;
       this._body = "";
       this.setData({ password: "" });
-      wx.reLaunch({
-        url: "/pages/login/index?account=" + encodeURIComponent(value.username),
-        success() {
-          wx.showToast({ title: "注册成功，请登录", icon: "none" });
-        },
-        fail: () => {
-          this.setData({
-            error: "注册已成功，返回登录页失败，请重新打开登录页",
-          });
-        },
-      });
+      await returnToLogin(value.username);
+      wx.showToast({ title: "注册成功，请登录", icon: "none" });
     } catch (error) {
-      this.setData({ error: error.message });
+      if (!this._unloaded) this.setData({ error: created ? "注册已成功，" + error.message : error.message });
     } finally {
-      this.setData({ busy: false });
+      if (!this._unloaded) this.setData({ busy: false });
     }
   },
 });

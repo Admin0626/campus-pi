@@ -1,0 +1,89 @@
+name: Campus Pi verification
+
+on:
+  push:
+    branches: [main, wlky]
+  pull_request:
+    branches: [main, wlky]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ci-root-fixture-only
+          MYSQL_ROOT_HOST: '%'
+          MYSQL_DATABASE: campus_pi_ci
+          MYSQL_USER: campus_ci
+          MYSQL_PASSWORD: ci-app-fixture-only
+          TZ: UTC
+        ports: ['33320:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h127.0.0.1 -uroot -pci-root-fixture-only"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=12
+    env:
+      # Ephemeral service fixtures only. No real project, payment or WeChat credentials.
+      CAMPUS_CI_ROOT_PASSWORD: ci-root-fixture-only
+      CAMPUS_TEST_DB_USER: campus_ci
+      CAMPUS_TEST_DB_PASSWORD: ci-app-fixture-only
+      CAMPUS_WECHAT_INTEGRATION: 'true'
+      CAMPUS_MEMBER_INTEGRATION: 'true'
+      PYTHONIOENCODING: utf-8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3 # v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: backend/pom.xml
+      - uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4
+        with:
+          python-version: '3.12'
+      - name: Check baseline and shared configuration
+        run: |
+          python scripts/check_baseline.py
+          python scripts/check_shared_config.py
+          node scripts/check_analytics_data.test.mjs
+          node scripts/check_miniprogram_components.cjs
+      - name: Build Vue frontend
+        working-directory: frontend
+        run: npm ci && npm run build
+      - name: Initialize disposable MySQL
+        run: |
+          python -m pip install -r scripts/requirements-auth-local.txt
+          python scripts/ci_database.py
+      - name: Verify shared frontend and native logic
+        run: node --test scripts/check_frontend_whitebox.test.mjs scripts/check_native_whitebox.test.cjs
+      - name: Verify Java 17 and business transactions
+        working-directory: backend
+        run: mvn -B -Pcoverage clean verify
+      - name: Verify packaged frontend
+        run: python scripts/check_frontend_package.py
+      - name: Retain test diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: java-test-reports
+          path: |
+            backend/target/surefire-reports/
+            backend/target/site/jacoco/
+          retention-days: 7
