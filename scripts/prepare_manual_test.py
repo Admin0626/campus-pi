@@ -24,8 +24,8 @@ def main():
         else:
             cur.execute('SELECT COUNT(*) FROM users')
             if cur.fetchone()[0]:raise SystemExit('Refusing populated manual database. Existing data and files preserved.')
-            cur.execute("SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA=%s AND TABLE_NAME IN ('account_wechat_bindings','admin_batch_items','aftersale_order_context','business_files','notification_outbox')",(SCHEMA,))
-            if cur.fetchone()[0]!=5:raise SystemExit('Incomplete existing schema; inspect migration diagnostics without resetting data')
+            cur.execute("SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=%s AND TABLE_NAME='user_orders' AND COLUMN_NAME='trade_channel'",(SCHEMA,))
+            if cur.fetchone()[0]!=1:raise SystemExit('Apply all V001-V009 migrations first; existing data is preserved')
         for sql in statements((ROOT/'database/manual/校园Π全功能人工测试.sql').read_text(encoding='utf-8')):
             cur.execute(sql)
             while cur.nextset():pass

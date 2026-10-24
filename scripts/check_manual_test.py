@@ -37,7 +37,7 @@ def main():
             matrix=json.loads((ROOT/'database/manual/接口人工测试矩阵.json').read_text(encoding='utf-8'))
             actual=sql('SELECT case_id,path FROM manual_test_cases ORDER BY case_id')
             check(actual==tuple((r['case_id'],r['path']) for r in matrix),'All 117 case IDs and paths match generated matrix')
-            check(sql("SELECT COUNT(*) FROM manual_test_cases WHERE case_id LIKE 'API%'")[0][0]==112,'112 baseline cases present')
+            check(sql("SELECT COUNT(*) FROM manual_test_cases WHERE case_id LIKE 'API%'")[0][0]==111,'111 active baseline cases present; API052 retired')
             check(sql("SELECT available_amount,frozen_amount FROM reward_accounts WHERE user_id=900003 AND reward_type='积分'")[0]==(840,140),'Publisher fixture point balance and freeze')
             check(sql("SELECT a.frozen_amount=SUM(t.reward_amount) FROM reward_accounts a JOIN RewardTasks t ON t.publisher_id=a.user_id AND t.reward_type=a.reward_type AND t.task_status IN ('待审核','待接取','进行中','待验收','未完成') WHERE a.user_id=900003 AND a.reward_type='积分' GROUP BY a.frozen_amount")[0][0]==1,'Point freeze matches active tasks')
             check(sql('SELECT COUNT(*) FROM task_settlement WHERE reward_task_id=900005')[0][0]==1,'One historical settlement')

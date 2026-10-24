@@ -37,6 +37,7 @@ const states = computed(
   () =>
     ({
       orders: [
+        "待线下交易",
         "待支付",
         "已支付",
         "已发货",
@@ -288,11 +289,12 @@ const fields = computed(() => {
         ["单价", r.unit_price],
         ["订单金额", r.total_amount],
         ["运费", r.shipping_fee],
-        ["实付或已结算金额", r.actual_amount],
+        ["交易渠道", r.trade_channel === "OFFLINE" ? "线下交易（校园自提）" : r.order_type === "任务" ? "内部奖励账户" : "历史订单"],
+        ...(r.trade_channel === "OFFLINE" ? [] : [["历史实付或已结算奖励", r.actual_amount]]),
         ["状态", r.order_status],
         ["交付地址", r.shipping_address || "—"],
         ["创建时间", time(r.order_time)],
-        ["支付时间", time(r.payment_time)],
+        ...(r.trade_channel === "OFFLINE" ? [] : [["历史结算时间", time(r.payment_time)]]),
         ["交付时间", time(r.shipping_time)],
         ["完成时间", time(r.completion_time)],
       ]
@@ -324,8 +326,8 @@ const fields = computed(() => {
       <button
         v-for="[value, label] in [
           ['', '全部订单'],
-          ['待支付', '待支付'],
-          ['已支付', '已支付'],
+          ['待线下交易', '待线下交易'],
+          ['待确认收货', '待确认收货'],
           ['已完成', '已完成'],
           ['已取消', '已取消'],
           ['售后中', '售后中'],
@@ -370,7 +372,7 @@ const fields = computed(() => {
       列表隐藏交付地址；查看详情需要订单处理权限。
     </p>
     <p v-else-if="view === 'aftersales'" class="admin-source-note">
-      任务零金额争议可审核结案，不改变任务或奖励；商品退款暂未启用。
+      任务零金额争议可审核结案，不改变任务或奖励；商品采用线下交易，退换及款项问题由双方线下协商。
     </p>
     <p v-else class="admin-source-note">
       仅处理举报案件关联的消息；判定成立不会自动停用账号。
@@ -428,7 +430,7 @@ const fields = computed(() => {
                   查看</button
                 ><button
                   v-if="
-                    row.order_type === '商品' && row.order_status === '待支付'
+                    row.trade_channel === 'OFFLINE' && row.order_status === '待线下交易'
                   "
                   class="danger"
                   :disabled="busy || loading"
@@ -611,7 +613,7 @@ const fields = computed(() => {
               {{
                 taskDispute
                   ? "任务零金额争议，仅记录审核结论，不退款或变更任务。"
-                  : "商品退款暂未启用；异常任务工单需核对原始记录。"
+                  : "商品退换及款项问题由双方线下协商；历史工单仅供核对。"
               }}
             </p>
             <div

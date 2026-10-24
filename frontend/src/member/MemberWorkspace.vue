@@ -56,6 +56,7 @@ const names = {
         /><OrderBoard
           v-else-if="path === '/modules/G'"
           :user="user"
+          @navigate="emit('navigate', $event)"
         /><ChatBoard v-else-if="path === '/modules/H'" :user="user" />
       </section>
       <MobileTabs :active="path" @navigate="emit('navigate', $event)" />

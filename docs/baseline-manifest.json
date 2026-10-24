@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.1.0",
   "assets": [
     {
       "path": "docs/design/校园Π软件工程设计报告修订版.docx",
@@ -197,19 +197,19 @@
       "path": "docs/api/校园Π接口开发规范.md",
       "origin": "校园Π接口开发规范.md",
       "mode": "utf8-lf",
-      "sha256": "33a9da9fb00b6c1791e70cdb964eee2cecd09321d7e26d46b267b7274d51ae18"
+      "sha256": "d0e9ec8dffce4edf7f3703ea3d3beb357af4adab9d01d9c32fdfe9457e18dba4"
     },
     {
       "path": "docs/api/campus-pi-openapi.json",
       "origin": "campus-pi-openapi.json",
       "mode": "utf8-lf",
-      "sha256": "f7fefa00420ada6bb2d38391d6de880970f39be397a1e612535cf9c5a6eaf13c"
+      "sha256": "c7a74dd0da8f1785cdc09a7c8fb40d72130eccb32b0fa29102b04660219dcad0"
     },
     {
       "path": "docs/api/接口设计决定与落地清单.md",
       "origin": "接口设计决定与落地清单.md",
       "mode": "utf8-lf",
-      "sha256": "45960511cc95b380c04d8694fb3e95a789461776cb5ae940ed7eaf0322349e8d"
+      "sha256": "f35a4ed63bb0067ee8f87ba297f4a8f124c758ae6c856c6725c73cda95d716c8"
     },
     {
       "path": "database/schema/01_数据库结构.sql",
@@ -297,6 +297,27 @@
           "path": "docs/api/接口设计决定与落地清单.md",
           "previous_sha256": "60696a9106edf1017ebe33b00951a6c93b698eec1358cb8ddf078692319df30e",
           "sha256": "45960511cc95b380c04d8694fb3e95a789461776cb5ae940ed7eaf0322349e8d"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "reason": "User explicitly requested removal of online payment and addition of offline trading. Retired API052; API050/051 become P0 offline fulfilment. Original Word design and initial SQL retained as history.",
+      "assets": [
+        {
+          "path": "docs/api/校园Π接口开发规范.md",
+          "previous_sha256": "33a9da9fb00b6c1791e70cdb964eee2cecd09321d7e26d46b267b7274d51ae18",
+          "sha256": "d0e9ec8dffce4edf7f3703ea3d3beb357af4adab9d01d9c32fdfe9457e18dba4"
+        },
+        {
+          "path": "docs/api/campus-pi-openapi.json",
+          "previous_sha256": "f7fefa00420ada6bb2d38391d6de880970f39be397a1e612535cf9c5a6eaf13c",
+          "sha256": "c7a74dd0da8f1785cdc09a7c8fb40d72130eccb32b0fa29102b04660219dcad0"
+        },
+        {
+          "path": "docs/api/接口设计决定与落地清单.md",
+          "previous_sha256": "45960511cc95b380c04d8694fb3e95a789461776cb5ae940ed7eaf0322349e8d",
+          "sha256": "f35a4ed63bb0067ee8f87ba297f4a8f124c758ae6c856c6725c73cda95d716c8"
         }
       ]
     }

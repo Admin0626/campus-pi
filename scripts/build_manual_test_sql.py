@@ -95,7 +95,10 @@ def orders_and_chat():
         original={900003:'进行中',900005:'已完成',900004:'待验收',900006:'未完成'}[task]
         insert('order_aftersales',aftersale_id=aid,order_id=oid,user_id=900003,aftersale_status=state,apply_amount='0.00',approve_amount='0.00' if state=='已完成' else None,apply_reason='合成任务零金额争议-'+state,evidence_urls=[ref],reviewer_id=900001 if state in ('已完成','已驳回') else None,audit_reason='合成处理历史' if state in ('已完成','已驳回') else None,apply_time=T,audit_time=T if state in ('已完成','已驳回') else None,complete_time=T if state=='已完成' else None)
         insert('aftersale_order_context',aftersale_id=aid,order_id=oid,order_type='任务',original_order_status=original,captured_at=T)
-    # Read-only product refund fixture: the actual refund action must still fail closed (501).
+    # New OFFLINE states, distinct from preserved historical payment snapshots above.
+    for i,state in [(9,'待线下交易'),(10,'待确认收货'),(11,'已完成'),(12,'已取消')]:
+        insert('user_orders',order_id='ORDER260101'+str(90000000+i),order_type='商品',user_id=900004,seller_id=900003,product_id=900001,item_name='人工测试线下订单-'+state,quantity=1,unit_price='20.00',total_amount='20.00',actual_amount='0.00',order_status=state,trade_channel='OFFLINE',shipping_address='合成线下交接点B',order_time=T,shipping_time=T if state in ('待确认收货','已完成') else None,completion_time=T if state=='已完成' else None)
+    # Preserved historical product case is read-only; the platform never executes refunds.
     insert('order_aftersales',aftersale_id='AFTER26010190000005',order_id='ORDER26010190000007',user_id=900004,aftersale_status='待审核',apply_amount='20.00',apply_reason='合成商品退款待接入边界',evidence_urls=[],apply_time=T)
     insert('aftersale_order_context',aftersale_id='AFTER26010190000005',order_id='ORDER26010190000007',order_type='商品',original_order_status='已完成',captured_at=T)
     insert('t_chat_session',session_id=900001,sender_id=900003,receiver_id=900004,created_at=T)
@@ -130,7 +133,7 @@ def cases():
     spec=json.loads((ROOT/'docs/api/campus-pi-openapi.json').read_text(encoding='utf-8'))
     allocation=json.loads((ROOT/'docs/allocation/接口归属.json').read_text(encoding='utf-8'))
     owners={id:p['code'] for p in allocation['packages'] for id in p['ids']}
-    blocked={'API004','API005','API050','API051','API052'}
+    blocked={'API004','API005'}
     parameters={'user_id':'900012','file_id':str(uuid.uuid5(uuid.NAMESPACE_URL,'campus-pi-manual-v1/product-900001')),'product_id':'900001','post_id':'MANUAL_POST_1','reward_task_id':'900003','application_id':'900001','proof_id':'900001','order_id':'ORDER26010190000001','aftersale_id':'AFTER26010190000001','session_id':'900001','msg_id':'900001','notification_id':'MANUAL_NOTICE_SENT','verification_id':'900001','category_id':'900099','report_id':'900001','delivery_id':'900002'}
     result=[]
     for route,entry in spec['paths'].items():
@@ -138,6 +141,8 @@ def cases():
             if not isinstance(op,dict) or not op.get('operationId'):continue
             oid=op['operationId'];example=route
             override={}
+            if oid in ('API049','API050','API097'):override['order_id']='ORDER26010190000009'
+            if oid=='API051':override['order_id']='ORDER26010190000010'
             if oid=='API080':override['product_id']='900002'
             if oid=='API086':override['post_id']='MANUAL_POST_2'
             if oid in ('API089','API094','API037','API038'):override['reward_task_id']='900002' if oid!='API089' else '900001'
@@ -145,7 +150,7 @@ def cases():
             if oid in ('API066','API067','API068','API069'):override['notification_id']='MANUAL_NOTICE_SENT'
             for key,val in {**parameters,**override}.items():example=example.replace('{'+key+'}',val)
             state='EXTERNAL_NOT_IMPLEMENTED' if oid in blocked else ('PARTIAL_TASK_ONLY' if oid in ('API053','API099') else 'MANUAL_CASE_READY')
-            expected='501，且无副作用' if oid in blocked else ('任务0.00分支可用，商品退款501' if oid in ('API053','API099') else '/'.join(k for k in op['responses'] if k.startswith('2')))
+            expected='501，且无副作用' if oid in blocked else ('任务0.00分支可用；商品线下协商，平台拒绝退款' if oid in ('API053','API099') else '/'.join(k for k in op['responses'] if k.startswith('2')))
             actor='admin（900001）' if '/admin/' in route else '按所属对象选择manual_seller/manual_buyer'
             note='使用对应合成对象，成功流程后检查数据库状态。权限负例用manual_peer或manual_admin_limited。修改类操作按手册填写请求体及新幂等键。'
             if method.lower()=='post' and 'files' in route:note='必须从页面实际上传新文件，预置扫描字段不代替真实扫描验收。'
@@ -156,13 +161,14 @@ def cases():
             insert('manual_test_cases',**row);result.append(row)
     for id,path,purpose in [('EXT-REVIEWS','/admin/task-audit-logs','全局任务审核记录筛选与权限'),('EXT-DELIVERIES','/admin/notification-deliveries','全局通知投递查询与职责'),('EXT-BATCH','/admin/batch-operations','四类批量逐条成功/失败结果及重试'),('EXT-WECHAT','/auth/wechat/config','微信能力边界，实际换码需私有配置'),('EXT-PROFILE','/me','已授权原生PUT资料兼容、头像权限和隐私')]:
         row={'case_id':id,'module':'EXT','method':'PUT' if id=='EXT-PROFILE' else 'GET','path':'/api/v1'+path,'purpose':purpose,'actor':'见人工测试手册','expected':'见手册，真实微信不预置成功','readiness':'MANUAL_CASE_READY' if id!='EXT-WECHAT' else 'EXTERNAL_DEPENDENCY','steps':'使用实际界面/接口，检查权限和持久状态。'};insert('manual_test_cases',**row);result.append(row)
+    row={'case_id':'EXT-REMOVED-PAYMENT','module':'G','method':'POST','path':'/api/v1/orders/ORDER26010190000009/payment-intents','purpose':'已删除的支付接口不可访问','actor':'manual_buyer','expected':'404，无状态或账本变更','readiness':'REMOVED_ROUTE_NEGATIVE','steps':'携带有效登录令牌调用旧地址；不能出现支付凭证。'};insert('manual_test_cases',**row);result.append(row)
     return sorted(result,key=lambda x:x['case_id'])
 
 def build():
     OUT.mkdir(exist_ok=True)
     users();content();tasks();orders_and_chat();notifications_and_batches();matrix=cases()
     header='''-- 校园Π全功能人工测试数据 v1
--- MySQL 8.0.16+；仅用于专用campus_pi_manual_test库，先执行原结构、事务及V001-V008迁移。
+-- MySQL 8.0.16+；仅用于专用campus_pi_manual_test库，先执行原结构、事务及V001-V009迁移。
 -- 推荐运行 scripts/prepare_manual_test.py 安装空库、导入本文件并还原图片。
 -- 账号admin/123456仅在生成的私有测试配置中显式允许；其他账号统一CampusPi!2026。
 -- 历史付款/退款、积分初始额、文件TEST_FIXTURE均是合成快照，不代表支付或杀毒验收。
@@ -192,7 +198,7 @@ BEGIN
  IF acquired<>1 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Another manual seed is running'; END IF;
  IF DATABASE()<>'campus_pi_manual_test' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Dedicated manual schema required'; END IF;
  IF (SELECT COUNT(*) FROM campus_pi_manual_test.users)<>0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Refusing populated manual database - no overwrite'; END IF;
- IF (SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA='campus_pi_manual_test' AND TABLE_NAME IN ('account_wechat_bindings','admin_batch_items','aftersale_order_context','notification_outbox','business_files'))<>5 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Apply all V001-V008 migrations first'; END IF;
+ IF (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='campus_pi_manual_test' AND TABLE_NAME='user_orders' AND COLUMN_NAME='trade_channel')<>1 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Apply all V001-V009 migrations first'; END IF;
  START TRANSACTION;
 '''
     footer='''
@@ -207,7 +213,7 @@ SELECT 'POINT_FROZEN_MATCHES_ACTIVE_TASKS' AS invariant,
  FROM campus_pi_manual_test.reward_accounts a WHERE a.user_id=900003 AND a.reward_type='积分';
 SELECT 'OPT_OUT_HAS_NO_RECEIPTS' AS invariant,COUNT(*)=0 AS passed FROM campus_pi_manual_test.notification_receipts WHERE user_id=900008;
 SELECT 'TASK_900005_SINGLE_SETTLEMENT' AS invariant,COUNT(*)=1 AS passed FROM campus_pi_manual_test.task_settlement WHERE reward_task_id=900005;
-SELECT '112_BASELINE_CASES_PRESENT' AS invariant,COUNT(*)=112 AS passed FROM campus_pi_manual_test.manual_test_cases WHERE case_id LIKE 'API%';
+SELECT '111_ACTIVE_CASES_PRESENT' AS invariant,COUNT(*)=111 AS passed FROM campus_pi_manual_test.manual_test_cases WHERE case_id LIKE 'API%';
 '''
     (OUT/'校园Π全功能人工测试.sql').write_text(header+'\n'.join(SQL)+footer,encoding='utf-8')
     (OUT/'接口人工测试矩阵.json').write_text(json.dumps(matrix,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')

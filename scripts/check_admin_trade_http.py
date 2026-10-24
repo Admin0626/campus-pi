@@ -59,12 +59,12 @@ def identifier(prefix):
   if sql('SELECT COUNT(*) FROM '+table+' WHERE '+column+'=%s',(value,))==0:return value
 def product(label,stock=2):return str(sql("INSERT INTO product_info(user_id,category_id,product_name,product_desc,campus,original_price,discount_price,stock_quantity,audit_status,shelf_status) VALUES(%s,%s,%s,'合成库存测试','测试校区',15.00,12.50,%s,'已通过','在售')",(seller,category,label+'_'+tag,stock)))
 def order(product_id,quantity=2):
- # Explicit fixture for the unimplemented buyer-side order creation API; no fake payment request.
+ # Synthetic OFFLINE reservation fixture for administrator cancellation checks.
  db.begin()
  try:
   stock,price=sql('SELECT stock_quantity,discount_price FROM product_info WHERE product_id=%s FOR UPDATE',(product_id,),True)[0];assert stock>=quantity
   id=identifier('ORDER')
-  sql("INSERT INTO user_orders(order_id,order_type,user_id,seller_id,product_id,item_name,quantity,unit_price,total_amount,shipping_address,order_status) VALUES(%s,'商品',%s,%s,%s,%s,%s,%s,%s,%s,'待支付')",(id,buyer,seller,product_id,'合成订单_'+tag,quantity,price,price*quantity,'合成敏感地址_'+tag))
+  sql("INSERT INTO user_orders(order_id,order_type,user_id,seller_id,product_id,item_name,quantity,unit_price,total_amount,shipping_address,order_status,trade_channel) VALUES(%s,'商品',%s,%s,%s,%s,%s,%s,%s,%s,'待线下交易','OFFLINE')",(id,buyer,seller,product_id,'合成订单_'+tag,quantity,price,price*quantity,'合成敏感地址_'+tag))
   sql("UPDATE product_info SET stock_quantity=stock_quantity-%s,shelf_status=IF(stock_quantity=0,'已售出',shelf_status) WHERE product_id=%s",(quantity,product_id));db.commit();return id
  except:db.rollback();raise
 def cancel(id,key=None,token=None,reason='合成取消原因'):
@@ -141,19 +141,20 @@ try:
  with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:results=list(pool.map(lambda _:cancel(o,key),range(3)))
  check(all(s==200 for s,_ in results) and sql('SELECT stock_quantity FROM product_info WHERE product_id=%s',(p,))==2,'Concurrent same-key cancellations replay one result')
  p=product('下架商品');o=order(p);sql("UPDATE product_info SET shelf_status='已下架' WHERE product_id=%s",(p,));check(cancel(o)[0]==200 and sql('SELECT shelf_status FROM product_info WHERE product_id=%s',(p,))=='已下架','Cancel does not relist an explicitly off-shelf product')
- p=product('已付合成商品');paid=order(p);sql("UPDATE user_orders SET order_status='已支付',actual_amount=total_amount,payment_time=UTC_TIMESTAMP(3) WHERE order_id=%s",(paid,))
- check(cancel(paid)[0]==409 and sql('SELECT stock_quantity FROM product_info WHERE product_id=%s',(p,))==0,'A synthetic paid-state fixture cannot be canceled through unpaid flow')
- p=product('状态不一致商品');o=order(p);sql('UPDATE user_orders SET actual_amount=1 WHERE order_id=%s',(o,))
- try:check(cancel(o)[0]==409 and sql('SELECT order_status FROM user_orders WHERE order_id=%s',(o,))=='待支付','Inconsistent paid amount is rejected without inventory change')
- finally:sql('UPDATE user_orders SET actual_amount=0 WHERE order_id=%s',(o,))
+ p=product('已付合成历史');paid=order(p);sql("UPDATE user_orders SET trade_channel=NULL,order_status='已支付',actual_amount=total_amount,payment_time=UTC_TIMESTAMP(3) WHERE order_id=%s",(paid,))
+ check(cancel(paid)[0]==409 and sql('SELECT stock_quantity FROM product_info WHERE product_id=%s',(p,))==0,'A preserved paid-history fixture cannot enter the offline cancellation flow')
+ p=product('线下账本约束');o=order(p)
+ try:sql('UPDATE user_orders SET actual_amount=1 WHERE order_id=%s',(o,))
+ except pymysql.MySQLError as e:check(e.args[0]==3819,'Database rejects a forged platform payment on an offline order')
+ else:raise AssertionError('Offline payment constraint was bypassed')
  p=product('库存上限商品');o=order(p);sql('UPDATE product_info SET stock_quantity=2147483647 WHERE product_id=%s',(p,))
- try:check(cancel(o)[0]==409 and sql('SELECT order_status FROM user_orders WHERE order_id=%s',(o,))=='待支付','Inventory restoration overflow is rejected transactionally')
+ try:check(cancel(o)[0]==409 and sql('SELECT order_status FROM user_orders WHERE order_id=%s',(o,))=='待线下交易','Inventory restoration overflow is rejected transactionally')
  finally:sql('UPDATE product_info SET stock_quantity=0 WHERE product_id=%s',(p,))
  p=product('回滚商品');o=order(p);key=secrets.token_hex(16);abort='trade_abort_'+tag;trigger='trade_order_abort_'+tag
  try:
   sql("CREATE TRIGGER `"+trigger+"` BEFORE INSERT ON admin_audit_log FOR EACH ROW BEGIN IF NEW.reason='"+abort+"' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='synthetic order audit failure'; END IF; END")
   check(cancel(o,key,reason=abort)[0]==503,'Audit dependency failure rejects cancellation')
-  check(sql('SELECT order_status FROM user_orders WHERE order_id=%s',(o,))=='待支付' and sql('SELECT stock_quantity FROM product_info WHERE product_id=%s',(p,))==0 and sql('SELECT COUNT(*) FROM auth_idempotency WHERE request_key=%s',(key,))==0,'Failed cancellation rolls back order, inventory and replay record')
+  check(sql('SELECT order_status FROM user_orders WHERE order_id=%s',(o,))=='待线下交易' and sql('SELECT stock_quantity FROM product_info WHERE product_id=%s',(p,))==0 and sql('SELECT COUNT(*) FROM auth_idempotency WHERE request_key=%s',(key,))==0,'Failed cancellation rolls back order, inventory and replay record')
  finally:sql('DROP TRIGGER IF EXISTS `'+trigger+'`')
  check(cancel(o,key,reason=abort)[0]==200,'Same failed key succeeds after audit dependency recovery')
  task_o,task_id=task_order();check(cancel(task_o)[0]==409,'Task order cannot use product inventory cancellation')
@@ -210,7 +211,7 @@ try:
  browser_product=product('浏览器订单');browser_order=order(browser_product)
  browser_text=report(message('<script>not executed</script> 浏览器举报证据_'+tag));browser_image=report(message('',upload(buyer,'CHAT_IMAGE')))
  (out/'fixtures.json').write_text(json.dumps({'tag':tag,'order_id':browser_order,'product_id':browser_product,'task_order':task_o,'task_id':task_id,'aftersale_id':after,'text_report':browser_text,'image_report':browser_image,'address':address},ensure_ascii=False),encoding='utf-8')
- finished=True;print(json.dumps({'status':'PASS','checks':len(checks),'scope':'real HTTP + isolated MySQL + scanned private evidence; P1 remains disabled'}))
+ finished=True;print(json.dumps({'status':'PASS','checks':len(checks),'scope':'real HTTP + isolated MySQL + scanned evidence; offline orders and legacy refusal'}))
 finally:
  try:
   if ungranted_id is not None:

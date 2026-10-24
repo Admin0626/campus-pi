@@ -44,9 +44,11 @@ def check():
             require(oid not in operations, "Duplicate API ID: " + oid)
             operations[oid] = (method.upper(), path)
             phases[operation["x-phase"]] += 1
-            require(operation["x-implementation-status"] == "NOT_IMPLEMENTED", "Update implementation evidence before changing status: " + oid)
-    require(set(operations) == {f"API{i:03d}" for i in range(1, 113)}, "Expected all 112 API IDs")
-    require(phases == {"P0": 104, "P1": 8}, "P0/P1 allocation changed")
+            expected_status = "IMPLEMENTED" if oid in {"API046", "API049", "API050", "API051", "API053", "API097", "API099"} else "NOT_IMPLEMENTED"
+            require(operation["x-implementation-status"] == expected_status, "Update implementation evidence before changing status: " + oid)
+    require(set(operations) == {f"API{i:03d}" for i in range(1, 113)} - {"API052"}, "Expected 111 active API IDs, API052 retired")
+    require(spec.get("x-retired-operation-ids") == ["API052"], "Payment API retirement must remain explicit")
+    require(phases == {"P0": 106, "P1": 5}, "P0/P1 allocation changed")
 
     def references(value):
         if isinstance(value, dict):
@@ -67,7 +69,7 @@ def check():
     packages = allocation["packages"]
     require({p["code"] for p in packages} == set("ABCDEFGHI") and len(packages) == 9, "Expected 9 options")
     assigned = [oid for package in packages for oid in package["ids"]]
-    require(len(assigned) == len(set(assigned)) == 112 and set(assigned) == set(operations), "Missing or duplicate ownership")
+    require(len(assigned) == len(set(assigned)) == 111 and set(assigned) == set(operations), "Missing or duplicate ownership")
     for package in packages:
         require(package["delivery_mode"] == "FULL_STACK", "Each option must be full stack")
         require(package["count"] == len(package["ids"]), "Option count mismatch")

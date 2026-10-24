@@ -47,7 +47,7 @@ fs.writeFileSync(path.join(out, "browser-acceptance.json"), JSON.stringify({ sta
   await page.waitForURL("**/admin");
   await page.locator(".side-menu").getByRole("button", { name: "订单管理", exact: true }).click();
   await page.getByRole("button", { name: "售后工单", exact: true }).click(); await ready();
-  check(await page.getByText("任务零金额争议可审核结案，不改变任务或奖励；商品退款暂未启用。", { exact: true }).isVisible(), "Queue distinguishes task decisions from unavailable product refunds");
+  check(await page.getByText("任务零金额争议可审核结案，不改变任务或奖励；商品采用线下交易，退换及款项问题由双方线下协商。", { exact: true }).isVisible(), "Queue distinguishes task decisions from unavailable product refunds");
   const before = await snapshots();
   for (const [id,decision,expected] of [[f.approve,"通过","已完成"],[f.reject,"驳回","已驳回"]]) {
    await page.getByRole("button", { name: "重置", exact: true }).click();
@@ -73,7 +73,7 @@ fs.writeFileSync(path.join(out, "browser-acceptance.json"), JSON.stringify({ sta
   await page.getByRole("button", { name: "重置", exact: true }).click();
   const product = await findRow(productFixture.aftersale_id); await product.getByRole("button", { name: "查看工单", exact: true }).click();
   const dialog = page.getByRole("dialog");
-  await dialog.getByText("商品退款暂未启用；异常任务工单需核对原始记录。", { exact: true }).waitFor();
+  await dialog.getByText("商品退换及款项问题由双方线下协商；历史工单仅供核对。", { exact: true }).waitFor();
   check((await dialog.getByRole("button", { name: /通过争议|驳回争议/ }).count())===0, "Product refund has no enabled task-only approval controls");
   check(errors.length===0, "No script execution, unexpected dialog or page error");
   complete=true; console.log(JSON.stringify({ status:"PASS", checks:checks.length, scope:"real Chromium task dispute reviews" }));

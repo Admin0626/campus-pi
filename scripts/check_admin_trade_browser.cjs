@@ -180,7 +180,7 @@ fs.writeFileSync(
     );
     await row.getByRole("button", { name: "查看工单", exact: true }).click();
     dialog = page.getByRole("dialog");
-    await dialog.getByText("商品退款暂未启用；异常任务工单需核对原始记录。", { exact: true }).waitFor();
+    await dialog.getByText("商品退换及款项问题由双方线下协商；历史工单仅供核对。", { exact: true }).waitFor();
     await page.waitForFunction(() => {
       const image = document.querySelector('[aria-label="文件材料预览"] img');
       return image?.complete && image.naturalWidth > 0;

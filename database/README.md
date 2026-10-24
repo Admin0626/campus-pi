@@ -27,3 +27,7 @@ python database/verification/04_自动验收.py --mysql-exe <mysql客户端路�
 该程序要求users为空，写入合成数据，输出当前运行的验证记录、SQL步骤和生成的种子到verification目录；这些运行产物已被忽略。原始可审阅种子在seeds中，不被程序覆盖。不要并行对同一个测试库重复运行。
 
 本次仓库准备不创建数据库、不执行任何SQL。历史100项通过的原始证据在docs/verification/database，不能代替后续应用接口或生产验收。测试库的创建、权限和最终清理由使用者核对目标后管理。
+
+## V009线下商品订单
+
+线上支付接口已删除。已有库执行[migrations/V009__offline_product_trade.sql](migrations/V009__offline_product_trade.sql)一次，执行前备份并停止本项目服务；新安装local/init.sql已包含。保留历史付款字段与订单，不重置库存。详见[线下交易变更](../docs/api/线下交易接口变更.md)。基线01/02仅供历史验证，完整应用必须继续执行V001–V009。

@@ -2,8 +2,8 @@
   "openapi": "3.0.3",
   "info": {
     "title": "校园Π HTTP接口规范",
-    "version": "1.0.1",
-    "description": "接口开发契约，P0/P1为实施阶段，不代表全部功能已完成。初版为2026-10-17设计；1.0.1按负责人2026-10-21答复修订通知偏好：关闭不接收、免打扰后投递、安全同样遵守。x-implementation-status保留初版设计元数据，实际进度及运行证据见管理后台实施清单。"
+    "version": "1.1.0",
+    "description": "接口开发契约。2026-10-24按负责人要求删除API052线上支付接口，API050/051改为线下交付和收货。111个有效操作，API编号不重新编号。其余初版实现状态元数据请结合实际验证记录阅读。"
   },
   "servers": [
     {
@@ -6834,8 +6834,8 @@
         "tags": [
           "订单与售后"
         ],
-        "summary": "创建商品订单",
-        "description": "权限：同校区已认证买方。阶段：P0。服务端读取价格与商品名快照、生成订单号，原子预占库存；本人不能买本人商品。客户端不得提交金额、卖方、订单号或支付状态。P0仅校园自提且shipping_fee=0；快递待运费规则补齐后开放。 数据对象：user_orders, product_info。事务映射：sp_product_order。",
+        "summary": "创建线下商品订单",
+        "description": "同校区已认证买方。仅校园自提；服务端读取价格快照，原子预占库存，trade_channel固定OFFLINE，状态待线下交易。shipping_address为线下交接地点。禁止本人购买本人商品，禁止客户端传金额或渠道。actual_amount保持0.00，不创建支付记录。",
         "parameters": [
           {
             "name": "Idempotency-Key",
@@ -6876,8 +6876,10 @@
                     "total_amount": "20.00",
                     "shipping_fee": "0.00",
                     "actual_amount": "0.00",
-                    "order_status": "待支付",
-                    "order_time": "2026-10-17T02:00:00.000Z"
+                    "order_status": "待线下交易",
+                    "order_time": "2026-10-17T02:00:00.000Z",
+                    "trade_channel": "OFFLINE",
+                    "payment_time": null
                   },
                   "request_id": "req_example"
                 }
@@ -6966,7 +6968,7 @@
           }
         },
         "x-phase": "P0",
-        "x-implementation-status": "NOT_IMPLEMENTED",
+        "x-implementation-status": "IMPLEMENTED",
         "x-source-tables": [
           "user_orders",
           "product_info"
@@ -6982,7 +6984,7 @@
               "example": {
                 "product_id": "1001",
                 "quantity": 1,
-                "shipping_address": "东校区图书馆自提点"
+                "shipping_address": "校内约定的当面交接点"
               }
             }
           }
@@ -7062,6 +7064,7 @@
             "schema": {
               "type": "string",
               "enum": [
+                "待线下交易",
                 "待支付",
                 "已支付",
                 "已发货",
@@ -7075,7 +7078,7 @@
                 "未完成"
               ],
               "description": "",
-              "example": "待支付"
+              "example": "待线下交易"
             },
             "description": ""
           }
@@ -7238,8 +7241,10 @@
                     "total_amount": "20.00",
                     "shipping_fee": "0.00",
                     "actual_amount": "0.00",
-                    "order_status": "待支付",
-                    "order_time": "2026-10-17T02:00:00.000Z"
+                    "order_status": "待线下交易",
+                    "order_time": "2026-10-17T02:00:00.000Z",
+                    "trade_channel": "OFFLINE",
+                    "payment_time": null
                   },
                   "request_id": "req_example"
                 }
@@ -7341,8 +7346,8 @@
         "tags": [
           "订单与售后"
         ],
-        "summary": "取消待支付商品订单",
-        "description": "权限：买方。阶段：P0。仅商品待支付；释放预占库存一次。相同幂等键重复返回原结果；不同键再次取消已取消订单返回STATE_CONFLICT，不能重复加库存。 数据对象：user_orders, product_info, admin_audit_log。事务映射：sp_product_cancel。",
+        "summary": "取消待线下交易订单",
+        "description": "仅买方，且商品订单trade_channel=OFFLINE、状态待线下交易、尚未确认交付。原子取消并且只释放一次库存。相同幂等键返回原结果，不同键重复取消409。",
         "parameters": [
           {
             "name": "order_id",
@@ -7397,7 +7402,9 @@
                     "shipping_fee": "0.00",
                     "actual_amount": "0.00",
                     "order_status": "已取消",
-                    "order_time": "2026-10-17T02:00:00.000Z"
+                    "order_time": "2026-10-17T02:00:00.000Z",
+                    "trade_channel": "OFFLINE",
+                    "payment_time": null
                   },
                   "request_id": "req_example"
                 }
@@ -7486,7 +7493,7 @@
           }
         },
         "x-phase": "P0",
-        "x-implementation-status": "NOT_IMPLEMENTED",
+        "x-implementation-status": "IMPLEMENTED",
         "x-source-tables": [
           "user_orders",
           "product_info",
@@ -7501,8 +7508,8 @@
         "tags": [
           "订单与售后"
         ],
-        "summary": "确认商品交付或发货",
-        "description": "权限：卖方。阶段：P1。仅商品已支付；校园自提表示已交付，写shipping_time后进入待确认收货。快递配送先进入已发货；物流单号须补模型后开放，当前不接收该字段。支付未接入前本接口501。 数据对象：user_orders。",
+        "summary": "卖方确认线下交付",
+        "description": "仅订单卖方。仅OFFLINE商品订单从待线下交易进入待确认收货，写shipping_time。无请求体，须Idempotency-Key。仅记录卖方声明，不记录或验证支付。重复新键409、同键重放原结果。",
         "parameters": [
           {
             "name": "order_id",
@@ -7555,9 +7562,11 @@
                     "unit_price": "20.00",
                     "total_amount": "20.00",
                     "shipping_fee": "0.00",
-                    "actual_amount": "20.00",
+                    "actual_amount": "0.00",
                     "order_status": "待确认收货",
-                    "order_time": "2026-10-17T02:00:00.000Z"
+                    "order_time": "2026-10-17T02:00:00.000Z",
+                    "trade_channel": "OFFLINE",
+                    "payment_time": null
                   },
                   "request_id": "req_example"
                 }
@@ -7634,16 +7643,6 @@
               }
             }
           },
-          "501": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
           "503": {
             "description": "详见统一错误码，错误码必须与HTTP状态对应",
             "content": {
@@ -7655,8 +7654,8 @@
             }
           }
         },
-        "x-phase": "P1",
-        "x-implementation-status": "NOT_IMPLEMENTED",
+        "x-phase": "P0",
+        "x-implementation-status": "IMPLEMENTED",
         "x-source-tables": [
           "user_orders"
         ],
@@ -7669,8 +7668,8 @@
         "tags": [
           "订单与售后"
         ],
-        "summary": "买方确认收货",
-        "description": "权限：买方。阶段：P1。仅商品已发货或待确认收货；锁订单，写completion_time并进入已完成。任务完成必须走凭证验收，不能调用本接口。 数据对象：user_orders。",
+        "summary": "买方确认线下收货",
+        "description": "仅订单买方。仅OFFLINE商品订单从待确认收货进入已完成，写completion_time。无请求体，须Idempotency-Key。线下自行验货与结算，actual_amount仍为0.00且payment_time为空，不代表平台收付款。",
         "parameters": [
           {
             "name": "order_id",
@@ -7723,9 +7722,11 @@
                     "unit_price": "20.00",
                     "total_amount": "20.00",
                     "shipping_fee": "0.00",
-                    "actual_amount": "20.00",
+                    "actual_amount": "0.00",
                     "order_status": "已完成",
-                    "order_time": "2026-10-17T02:00:00.000Z"
+                    "order_time": "2026-10-17T02:00:00.000Z",
+                    "trade_channel": "OFFLINE",
+                    "payment_time": null
                   },
                   "request_id": "req_example"
                 }
@@ -7802,16 +7803,6 @@
               }
             }
           },
-          "501": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
           "503": {
             "description": "详见统一错误码，错误码必须与HTTP状态对应",
             "content": {
@@ -7823,185 +7814,12 @@
             }
           }
         },
-        "x-phase": "P1",
-        "x-implementation-status": "NOT_IMPLEMENTED",
+        "x-phase": "P0",
+        "x-implementation-status": "IMPLEMENTED",
         "x-source-tables": [
           "user_orders"
         ],
         "x-existing-procedure": null
-      }
-    },
-    "/orders/{order_id}/payment-intents": {
-      "post": {
-        "operationId": "API052",
-        "tags": [
-          "订单与售后"
-        ],
-        "summary": "申请商品支付",
-        "description": "权限：买方。阶段：P1。仅商品待支付；金额由订单快照读取，禁止客户端传金额或成功标记。供应商、回调验签和支付请求存储尚需补齐；当前统一501，不生成可用支付凭证。 数据对象：user_orders。",
-        "parameters": [
-          {
-            "name": "order_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "ORDER 加 yyMMdd 加8位序列，由服务器生成",
-              "maxLength": 19,
-              "example": "ORDER26101700000001",
-              "pattern": "^ORDER[0-9]{14}$"
-            },
-            "description": "资源编号；仍需校验当前会话的对象访问权限"
-          },
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "description": "8至64字符；按操作者、方法与路径隔离",
-              "maxLength": 64,
-              "example": "example-key-0001",
-              "minLength": 8,
-              "pattern": "^[A-Za-z0-9_-]{8,64}$"
-            },
-            "description": "24小时内同键同体复用原业务结果；处理中409"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "成功；仅契约示例，接口尚未实现",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/API052Response"
-                },
-                "example": {
-                  "code": "OK",
-                  "message": "成功",
-                  "data": {
-                    "order_id": "ORDER26101700000001",
-                    "payment_id": "pay_example",
-                    "amount": "20.00",
-                    "currency": "CNY",
-                    "expires_at": "2026-10-17T02:00:00.000Z",
-                    "client_payload": {}
-                  },
-                  "request_id": "req_example"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "501": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "详见统一错误码，错误码必须与HTTP状态对应",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        },
-        "x-phase": "P1",
-        "x-implementation-status": "NOT_IMPLEMENTED",
-        "x-source-tables": [
-          "user_orders"
-        ],
-        "x-existing-procedure": null,
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PaymentRequest"
-              },
-              "example": {
-                "channel": "待选定渠道"
-              }
-            }
-          }
-        }
       }
     },
     "/aftersales": {
@@ -8010,8 +7828,8 @@
         "tags": [
           "订单与售后"
         ],
-        "summary": "申请订单售后",
-        "description": "权限：订单付款方。阶段：P1。商品仅已支付、已发货、待确认收货、已完成可申请；锁订单且每单最多1个待审核/退款中工单，申请额>0且不超过实付减已完成退款。进入售后中前保存原状态。任务仅受理apply_amount=0的争议工单，不改任务或任务订单状态、不触发退款；终止任务仍走管理员关闭接口。需补工单原状态和支付退款模型后开放。 数据对象：order_aftersales, user_orders。",
+        "summary": "申请任务订单争议",
+        "description": "仅任务订单发布者，apply_amount只能为0.00；保存申请时上下文，不改变任务或积分状态。商品线下退换及款项问题由双方线下协商，不开放平台退款。",
         "parameters": [
           {
             "name": "Idempotency-Key",
@@ -8146,7 +7964,7 @@
           }
         },
         "x-phase": "P1",
-        "x-implementation-status": "NOT_IMPLEMENTED",
+        "x-implementation-status": "IMPLEMENTED",
         "x-source-tables": [
           "order_aftersales",
           "user_orders"
@@ -14804,6 +14622,7 @@
             "schema": {
               "type": "string",
               "enum": [
+                "待线下交易",
                 "待支付",
                 "已支付",
                 "已发货",
@@ -14817,7 +14636,7 @@
                 "未完成"
               ],
               "description": "",
-              "example": "待支付"
+              "example": "待线下交易"
             },
             "description": ""
           },
@@ -14993,8 +14812,10 @@
                     "total_amount": "20.00",
                     "shipping_fee": "0.00",
                     "actual_amount": "0.00",
-                    "order_status": "待支付",
-                    "order_time": "2026-10-17T02:00:00.000Z"
+                    "order_status": "待线下交易",
+                    "order_time": "2026-10-17T02:00:00.000Z",
+                    "trade_channel": "OFFLINE",
+                    "payment_time": null
                   },
                   "request_id": "req_example"
                 }
@@ -15097,8 +14918,8 @@
         "tags": [
           "管理端订单售后"
         ],
-        "summary": "管理取消待支付商品订单",
-        "description": "权限：ADMIN。阶段：P0。仅待支付商品订单；同样调用受控库存释放事务，额外保存管理员提交的reason。任务不得走商品取消入口。 数据对象：user_orders, product_info, admin_audit_log。事务映射：sp_product_cancel。",
+        "summary": "管理取消待线下交易订单",
+        "description": "管理员取消尚未交付的OFFLINE商品订单，记录reason并原子释放一次库存；交付后409。不可替买卖双方确认交付或收货。",
         "parameters": [
           {
             "name": "order_id",
@@ -15153,7 +14974,9 @@
                     "shipping_fee": "0.00",
                     "actual_amount": "0.00",
                     "order_status": "已取消",
-                    "order_time": "2026-10-17T02:00:00.000Z"
+                    "order_time": "2026-10-17T02:00:00.000Z",
+                    "trade_channel": "OFFLINE",
+                    "payment_time": null
                   },
                   "request_id": "req_example"
                 }
@@ -15242,7 +15065,7 @@
           }
         },
         "x-phase": "P0",
-        "x-implementation-status": "NOT_IMPLEMENTED",
+        "x-implementation-status": "IMPLEMENTED",
         "x-source-tables": [
           "user_orders",
           "product_info",
@@ -15435,8 +15258,8 @@
         "tags": [
           "管理端订单售后"
         ],
-        "summary": "审核售后申请",
-        "description": "权限：订单处理ADMIN。阶段：P1。锁订单再锁工单。驳回恢复商品原状态；通过时再次校验批准金额不超过申请及剩余可退金额。商品进入退款中，只有可信渠道确认才完成；任务争议仅金额0通过后工单已完成，不改任务状态。新退款模型与原状态存储未补齐前501。 数据对象：order_aftersales, user_orders, admin_audit_log。",
+        "summary": "审核任务订单争议",
+        "description": "有ORDERS职责的管理员；仅任务零金额争议，锁订单和工单，记录结论及通知，不触发退款或改变任务奖励。历史商品工单仅可读取，不执行退款。",
         "parameters": [
           {
             "name": "aftersale_id",
@@ -15584,7 +15407,7 @@
           }
         },
         "x-phase": "P1",
-        "x-implementation-status": "NOT_IMPLEMENTED",
+        "x-implementation-status": "IMPLEMENTED",
         "x-source-tables": [
           "order_aftersales",
           "user_orders",
@@ -19743,7 +19566,7 @@
           },
           "actual_amount": {
             "type": "string",
-            "description": "金额字符串，最多10位整数及固定2位小数，禁止浮点传输",
+            "description": "平台账本记录金额；线下商品固定0.00，不表示双方线下结算额。任务保留内部奖励已结算额。",
             "maxLength": 13,
             "example": "0.00",
             "pattern": "^(0|[1-9][0-9]{0,9})\\.[0-9]{2}$"
@@ -19751,6 +19574,7 @@
           "order_status": {
             "type": "string",
             "enum": [
+              "待线下交易",
               "待支付",
               "已支付",
               "已发货",
@@ -19764,7 +19588,7 @@
               "未完成"
             ],
             "description": "",
-            "example": "待支付"
+            "example": "待线下交易"
           },
           "shipping_address": {
             "type": "string",
@@ -19775,7 +19599,7 @@
           },
           "payment_time": {
             "type": "string",
-            "description": "RFC3339，服务端按 UTC 保存与输出，界面按 Asia/Shanghai 展示",
+            "description": "历史或内部奖励账本字段，OFFLINE商品始终为null。",
             "maxLength": 40,
             "example": "2026-10-17T02:00:00.000Z",
             "format": "date-time",
@@ -19783,7 +19607,7 @@
           },
           "shipping_time": {
             "type": "string",
-            "description": "RFC3339，服务端按 UTC 保存与输出，界面按 Asia/Shanghai 展示",
+            "description": "OFFLINE订单中为卖方确认线下交付的时间。",
             "maxLength": 40,
             "example": "2026-10-17T02:00:00.000Z",
             "format": "date-time",
@@ -19803,6 +19627,16 @@
             "maxLength": 40,
             "example": "2026-10-17T02:00:00.000Z",
             "format": "date-time"
+          },
+          "trade_channel": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "OFFLINE",
+              null
+            ],
+            "description": "OFFLINE表示线下校园自提；null表示任务订单或原始历史订单。",
+            "example": "OFFLINE"
           }
         },
         "required": [
@@ -19819,7 +19653,8 @@
           "shipping_fee",
           "actual_amount",
           "order_status",
-          "order_time"
+          "order_time",
+          "trade_channel"
         ]
       },
       "AftersaleWrite": {
@@ -21060,79 +20895,6 @@
           "completed_task_count",
           "completed_product_amount",
           "as_of"
-        ]
-      },
-      "PaymentRequest": {
-        "type": "object",
-        "description": "",
-        "additionalProperties": false,
-        "properties": {
-          "channel": {
-            "type": "string",
-            "enum": [
-              "待选定渠道"
-            ],
-            "description": "供应商未选定；此接口为后续阶段保留",
-            "example": "待选定渠道"
-          }
-        },
-        "required": [
-          "channel"
-        ]
-      },
-      "PaymentIntent": {
-        "type": "object",
-        "description": "",
-        "additionalProperties": false,
-        "properties": {
-          "order_id": {
-            "type": "string",
-            "description": "ORDER 加 yyMMdd 加8位序列，由服务器生成",
-            "maxLength": 19,
-            "example": "ORDER26101700000001",
-            "pattern": "^ORDER[0-9]{14}$"
-          },
-          "payment_id": {
-            "type": "string",
-            "description": "新增支付请求表编号",
-            "maxLength": 64,
-            "example": "pay_example"
-          },
-          "amount": {
-            "type": "string",
-            "description": "金额字符串，最多10位整数及固定2位小数，禁止浮点传输",
-            "maxLength": 13,
-            "example": "20.00",
-            "pattern": "^(0|[1-9][0-9]{0,9})\\.[0-9]{2}$"
-          },
-          "currency": {
-            "type": "string",
-            "enum": [
-              "CNY"
-            ],
-            "description": "",
-            "example": "CNY"
-          },
-          "expires_at": {
-            "type": "string",
-            "description": "RFC3339，服务端按 UTC 保存与输出，界面按 Asia/Shanghai 展示",
-            "maxLength": 40,
-            "example": "2026-10-17T02:00:00.000Z",
-            "format": "date-time"
-          },
-          "client_payload": {
-            "type": "object",
-            "additionalProperties": true,
-            "description": "具体结构需在选择支付供应商后版本化定义，当前不可用于联调"
-          }
-        },
-        "required": [
-          "order_id",
-          "payment_id",
-          "amount",
-          "currency",
-          "expires_at",
-          "client_payload"
         ]
       },
       "UserPage": {
@@ -24078,42 +23840,6 @@
           "request_id"
         ]
       },
-      "API052Response": {
-        "type": "object",
-        "description": "",
-        "additionalProperties": false,
-        "properties": {
-          "code": {
-            "type": "string",
-            "enum": [
-              "OK"
-            ],
-            "description": "",
-            "example": "OK"
-          },
-          "message": {
-            "type": "string",
-            "description": "中文成功消息",
-            "maxLength": 100,
-            "example": "成功"
-          },
-          "data": {
-            "$ref": "#/components/schemas/PaymentIntent"
-          },
-          "request_id": {
-            "type": "string",
-            "description": "追踪编号",
-            "maxLength": 64,
-            "example": "req_example"
-          }
-        },
-        "required": [
-          "code",
-          "message",
-          "data",
-          "request_id"
-        ]
-      },
       "API053Response": {
         "type": "object",
         "description": "",
@@ -26288,5 +26014,8 @@
       "bearerAuth": []
     }
   ],
-  "x-implementation-status": "DESIGN_ONLY"
+  "x-implementation-status": "DESIGN_ONLY",
+  "x-retired-operation-ids": [
+    "API052"
+  ]
 }
