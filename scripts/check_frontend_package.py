@@ -12,6 +12,9 @@ with ZipFile(root / "backend/target/campus-pi-server-0.0.1-SNAPSHOT.jar") as jar
     actual = {n[len(prefix):]: jar.read(n) for n in jar.namelist() if n.startswith(prefix) and not n.endswith("/")}
     assert actual.keys() == expected.keys(), "Packaged static file set differs from frontend/dist (missing or stale files)"
     assert actual == expected, "Packaged static contents differ from frontend/dist"
-    private = [n for n in jar.namelist() if "/.local/" in n or n.endswith("/private.json") or "project.private.config" in n]
+    private = [n for n in jar.namelist() if "/.local/" in n or n.endswith("/private.json") or "project.private.config" in n
+               or n == "BOOT-INF/classes/application.yml" or n.startswith("BOOT-INF/classes/application-local.")]
     assert not private, "Private configuration must not be packaged"
+    template = root / "backend/src/main/resources/application.example.yml"
+    assert jar.read("BOOT-INF/classes/application.example.yml") == template.read_bytes(), "Packaged template differs from source"
 print(json.dumps({"status": "PASS", "exact_static_file_set": True, "static_files": len(actual), "private_config_entries": len(private)}))

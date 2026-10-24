@@ -55,9 +55,9 @@ try {
             # Maven uses JAVA_HOME independently from PATH. Keep both on this verified JDK.
             $env:JAVA_HOME = Split-Path -Parent (Split-Path -Parent $java)
             if ($Mode -eq 'backend' -or -not $SkipBuild) { $maven = Find-Tool 'mvn.cmd' }
-            if (-not $Config) { $Config = Join-Path $repoRoot '.local/local-deploy/application-local.yml' }
+            if (-not $Config) { $Config = Join-Path $repoRoot 'backend/src/main/resources/application.yml' }
             if (-not (Test-Path -LiteralPath $Config -PathType Leaf)) {
-                throw 'Private backend config not found. Follow README.md to copy and fill the template.'
+                throw 'Copy backend/src/main/resources/application.example.yml to application.yml and fill your database settings.'
             }
             # A file URI keeps spaces encoded through Maven's additional argument parsing.
             $configUri = [System.Uri]::new((Resolve-Path -LiteralPath $Config).Path).AbsoluteUri

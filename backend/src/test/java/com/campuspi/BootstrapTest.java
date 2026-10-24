@@ -9,11 +9,28 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.core.env.ConfigurableEnvironment;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = {"campus.notifications.worker-enabled=false", "campus.admin-batches.worker-enabled=false", "campus.wechat.enabled=false"})
 class BootstrapTest {
     @Autowired
     private TestRestTemplate rest;
+
+    @Autowired
+    private ConfigurableEnvironment environment;
+
+    @Test
+    void standardClasspathApplicationYamlLoadsWithoutExtraLocationArguments() {
+        boolean loaded = false;
+        for (var source : environment.getPropertySources()) {
+            if (source.getName().contains("class path resource [application.yml]")
+                    && source.getProperty("spring.datasource.url") != null) {
+                loaded = true;
+            }
+        }
+        assertThat(loaded).as("standard application.yml is loaded from the runtime classpath").isTrue();
+    }
 
     @Test
     void frontendEntriesDoNotReuseAnOldAssetManifest() {

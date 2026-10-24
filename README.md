@@ -56,15 +56,23 @@ EXIT;
 
 ## 3. 填写后端配置
 
-首次复制模板，脚本会拒绝覆盖已有私有配置：
+后端配置统一放在 `backend/src/main/resources/`：
+
+|文件|用途|
+|---|---|
+|`application.example.yml`|配置模板，供复制使用|
+|`application.yml`|实际使用的本机配置，只修改这一份；Git 忽略，不放进 JAR|
+
+新电脑首次复制模板；已有 `application.yml` 时直接编辑原文件：
 
 ```powershell
-New-Item -ItemType Directory -Force .local/local-deploy | Out-Null
-if (Test-Path .local/local-deploy/application-local.yml) { throw '配置已存在，请直接编辑原文件' }
-Copy-Item config/local/application-local.example.yml .local/local-deploy/application-local.yml
+if (Test-Path backend/src/main/resources/application.yml) { throw '配置已存在，请直接编辑原文件' }
+Copy-Item backend/src/main/resources/application.example.yml backend/src/main/resources/application.yml
 ```
 
-按[后端配置说明](config/后端配置说明.md)填写数据库密码、稳定随机密钥、文件目录与扫描器路径。真实密码、密钥、微信 AppID/AppSecret 只放在本机被 Git 忽略的配置中。
+直接在 `application.yml` 的 `spring.datasource.username`、`spring.datasource.password` 中填写 MySQL 账号和密码，再按[后端配置说明](config/后端配置说明.md)填写稳定随机密钥、文件目录和扫描器路径。无需配置 `DB_USER`、`DB_PASSWORD` 环境变量。
+
+使用 IDEA 时，选择 JDK 17，直接运行 `CampusPiApplication.main()`。如果之前添加过 `spring.config.additional-location` 程序参数，删除旧参数；正常运行无需额外指定配置文件。首次复制后或修改配置后，重新构建并重启后端。
 
 ## 4. 启动 Web
 
@@ -106,7 +114,7 @@ powershell -ExecutionPolicy Bypass -File scripts/start.ps1 -Mode frontend
 powershell -ExecutionPolicy Bypass -File scripts/start.ps1 -Check
 ```
 
-使用其他私有配置时可加 `-Config '配置文件绝对路径'`；`-Check` 不校验配置值、数据库连接或端口占用。
+脚本默认读取上述 `application.yml`；打包运行时也从这个路径读取，不会将实际配置放进 JAR。`-Check` 不校验配置值、数据库连接或端口占用。
 
 ## 5. 启动微信小程序
 

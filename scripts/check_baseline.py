@@ -21,7 +21,7 @@ def load(name):
 
 def check():
     deployment_files = ["README.md", "config/后端配置说明.md", "scripts/start.ps1",
-                        "config/local/application-local.example.yml", "database/init.sql"]
+                        "backend/src/main/resources/application.example.yml", "database/init.sql"]
     for name in deployment_files:
         require((ROOT / name).is_file(), "Missing deployment file: " + name)
 
