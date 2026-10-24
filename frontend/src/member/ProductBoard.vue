@@ -52,7 +52,7 @@ const fields = computed(() => [
     key: "trade_mode",
     label: "交易方式",
     options: ["校园自提"],
-    hint: "快递运费和物流规则待确认，当前开放校园自提。",
+    hint: "线下交易，校园自提；平台不代收款。",
   },
   {
     key: "original_price",
@@ -256,7 +256,7 @@ async function contact() {
           :disabled="state.busy || detail.shelf_status !== '在售'"
           @click="ordering = true"
         >
-          购买
+          预约线下交易
         </button></template
       >
     </div>
@@ -275,10 +275,10 @@ async function contact() {
         { key: 'shipping_address', label: '自提交接地点', max: 500 },
       ]"
       :busy="state.busy"
-      submit-label="确认创建待支付订单"
+      submit-label="确认创建线下订单"
       @submit="buy"
       @cancel="ordering = false"
-    />
+    ><template #before><p>平台将预留商品库存。请与卖家约定自提时间，当面验货后自行线下结算。</p></template></MemberForm>
   </article>
   <template v-else
     ><p v-if="!loading && !items.length && !error">暂无商品</p>

@@ -285,7 +285,7 @@ Component({
             : [
                 ["favorite", d.is_favorited ? "取消收藏" : "收藏"],
                 ["contact", "联系卖家"],
-                ...(d.shelf_status === "在售" ? [["buy", "购买"]] : []),
+                ...(d.shelf_status === "在售" ? [["buy", "预约线下交易"]] : []),
               ];
       }
       if (m === "D") {
@@ -336,15 +336,24 @@ Component({
           ["状态", d.order_status],
           ["数量", d.quantity],
           ["总额", d.total_amount],
-          ["实付", d.actual_amount],
+          ["交易渠道", d.trade_channel === "OFFLINE" ? "线下交易（校园自提）" : d.order_type === "任务" ? "内部奖励账户" : "历史订单"],
           ["交接地点", d.shipping_address],
+          ["卖家确认交付", d.shipping_time ? b.date(d.shipping_time) : "—"],
+          ["完成时间", d.completion_time ? b.date(d.completion_time) : "—"],
         ];
         if (
           d.buyer_id === u &&
           d.order_type === "商品" &&
-          d.order_status === "待支付"
+          d.trade_channel === "OFFLINE" &&
+          d.order_status === "待线下交易"
         )
           actions.push(["cancel-order", "取消订单"]);
+        if (d.trade_channel === "OFFLINE" && d.order_status === "待线下交易" && d.seller_id === u)
+          actions.push(["offline-handover", "确认已线下交付"]);
+        if (d.trade_channel === "OFFLINE" && d.order_status === "待确认收货" && d.buyer_id === u)
+          actions.push(["offline-receipt", "确认已线下收货"]);
+        if (d.trade_channel === "OFFLINE" && (d.buyer_id === u || d.seller_id === u))
+          actions.push(["contact-order", d.buyer_id === u ? "联系卖家" : "联系买家"]);
         if (d.order_type === "任务" && d.buyer_id === u)
           actions.push(["apply-aftersale", "申请任务争议"]);
         if (d.aftersale_id) {
@@ -509,12 +518,18 @@ Component({
           [
             "delete-post",
             "cancel-order",
+            "offline-handover",
+            "offline-receipt",
             "delete-notice",
             "apply",
             "cancel-aftersale",
           ].includes(action) &&
           !(await confirm(
-            action === "apply"
+            action === "offline-handover"
+              ? "确认已将商品线下交付给买家？确认后不能直接取消订单，款项由双方自行结算。"
+              : action === "offline-receipt"
+                ? "确认已当面验货、收货并完成线下结算？确认后订单完成，平台不会收款或退款。"
+              : action === "apply"
               ? "同一任务只能申请一次，取消后也不能重新申请。确认申请？"
               : "确认此操作？",
           ))
@@ -551,6 +566,8 @@ Component({
           this.safe({
             detail: await this._mutation("/orders/" + d.order_id + "/cancel"),
           });
+        if (action === "offline-handover" || action === "offline-receipt")
+          this.safe({ detail: await this._mutation("/orders/" + d.order_id + (action === "offline-receipt" ? "/receipt" : "/shipping")) });
         if (action === "cancel-aftersale")
           this.safe({
             detail: await this._mutation(
@@ -559,10 +576,11 @@ Component({
           });
         if (action === "apply")
           await this._mutation("/tasks/" + d.reward_task_id + "/applications");
-        if (action === "contact") {
+        if (action === "contact" || action === "contact-order") {
+          const peer = action === "contact-order" ? (d.buyer_id === this.data.user.user_id ? d.seller_id : d.buyer_id) : d.seller.user_id;
           const chat = await request("/chat-sessions", {
             method: "POST",
-            body: { peer_user_id: d.seller.user_id },
+            body: { peer_user_id: peer },
           });
           getApp().globalData.pendingChat = chat.session_id;
           await openPage("/pages/business/index?module=H");

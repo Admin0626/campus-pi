@@ -37,7 +37,7 @@ public class MemberContentService {
             if(target==null)id=m.insert("INSERT INTO product_info(user_id,category_id,product_name,product_desc,campus,location_label,trade_mode,original_price,discount_price,stock_quantity) VALUES(?,?,?,?,?,?,?,?,?,?)",actor.id(),category,name,desc,campus,location,mode,original,discount,stock);
             else {
                 id=target;var prior=m.require("product_info","product_id",id,true);if(number(prior,"user_id")!=actor.id())throw new ApiException(404,"商品不存在");
-                if(m.db.queryForObject("SELECT COUNT(*) FROM user_orders WHERE product_id=? AND order_status IN ('待支付','已支付','已发货','待确认收货','售后中')",Integer.class,id)>0)throw new ApiException(409,"商品存在未完结订单，不能编辑");
+                if(m.db.queryForObject("SELECT COUNT(*) FROM user_orders WHERE product_id=? AND order_status IN ('待线下交易','待支付','已支付','已发货','待确认收货','售后中')",Integer.class,id)>0)throw new ApiException(409,"商品存在未完结订单，不能编辑");
                 m.db.update("UPDATE product_info SET category_id=?,product_name=?,product_desc=?,campus=?,location_label=?,trade_mode=?,original_price=?,discount_price=?,stock_quantity=?,audit_status='待审核',shelf_status='已下架',reviewer_id=NULL,audit_reason=NULL,audited_at=NULL WHERE product_id=?",category,name,desc,campus,location,mode,original,discount,stock,id);
                 m.db.update("DELETE FROM product_media WHERE product_id=?",id);
             }

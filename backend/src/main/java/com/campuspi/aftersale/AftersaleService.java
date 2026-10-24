@@ -69,7 +69,7 @@ public class AftersaleService {
         return row;
     }
     private void taskContext(Map<String,Object> row,Map<String,Object> order) {
-        if(!"任务".equals(order.get("order_type")))throw new ApiException(501,"商品退款原状态、余额预占及可信支付通道尚未接入");
+        if(!"任务".equals(order.get("order_type")))throw new ApiException(501,"商品采用线下交易，退换或款项问题请双方线下协商");
         if(((BigDecimal)row.get("apply_amount")).signum()!=0)throw new ApiException(409,"任务争议申请金额异常，需要核对");
         var context=one("SELECT order_id,order_type FROM aftersale_order_context WHERE aftersale_id=? FOR UPDATE",row.get("aftersale_id"));
         if(context==null||!Objects.equals(context.get("order_id"),order.get("order_id"))||!"任务".equals(context.get("order_type")))
@@ -85,7 +85,7 @@ public class AftersaleService {
         return accounts.memberMutation(actor,"aftersale-create:"+id,key,body,()->{
             var order=order(id,true);
             if(actor.id()!=number(order,"user_id"))throw new ApiException(404,"订单不存在或无权申请");
-            if(!"任务".equals(order.get("order_type")))throw new ApiException(501,"商品售后须待真实支付退款模型接入");
+            if(!"任务".equals(order.get("order_type")))throw new ApiException(501,"商品采用线下交易，退换或款项问题请双方线下协商");
             if(amount.signum()!=0)throw new ApiException(400,"任务争议金额只能为0.00","apply_amount");
             if(!Set.of("进行中","待验收","已完成","未完成","已取消").contains(order.get("order_status")))throw new ApiException(409,"任务订单状态异常，需要核对");
             if(db.queryForObject("SELECT COUNT(*) FROM order_aftersales WHERE order_id=? AND aftersale_status IN ('待审核','退款中')",Long.class,id)>0)

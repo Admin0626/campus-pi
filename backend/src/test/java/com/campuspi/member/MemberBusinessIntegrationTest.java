@@ -73,7 +73,65 @@ class MemberBusinessIntegrationTest {
         ok(call("POST","/admin/products/"+id+"/review",Map.of("decision","通过","reason","验收通过"),admin));assertThat(ok(call("GET","/products/"+id,null,null)).path("seller").path("user_id").asText()).isEqualTo(Long.toString(seller.id()));ok(call("PUT","/products/"+id+"/favorite",null,outsider));ok(call("PUT","/products/"+id+"/favorite",null,outsider));assertThat(ok(call("GET","/me/product-favorites",null,outsider)).path("items").size()).isEqualTo(1);ok(call("POST","/products/"+id+"/shelf",Map.of("shelf_status","已下架","reason","本人暂时下架"),seller));assertThat(ok(call("GET","/me/product-favorites",null,outsider)).path("items").size()).isZero();error(call("GET","/products/"+id,null,null),404);
     }
     @Test void ordersReserveAndReleaseExactlyOnceAndProtectPrivateAddresses()throws Exception{
-        var seller=register(true);var buyer=register(true);var outsider=register(false);String product=product(seller,1),key=UUID.randomUUID().toString();var body=Map.of("product_id",product,"quantity",1,"shipping_address","合成自提地点");var order=ok(call("POST","/orders/product",body,buyer,key));String id=order.path("order_id").asText();assertThat(order.path("total_amount").asText()).isEqualTo("10.00");assertThat(order.path("shipping_fee").asText()).isEqualTo("0.00");assertThat(ok(call("POST","/orders/product",body,buyer,key)).path("order_id").asText()).isEqualTo(id);assertThat(db.queryForObject("SELECT stock_quantity FROM product_info WHERE product_id=?",Integer.class,product)).isZero();error(call("GET","/orders/"+id,null,outsider),404);error(call("PUT","/products/"+product,productBody(upload(seller,"PRODUCT_IMAGE"),9),seller),409);String cancel=UUID.randomUUID().toString();ok(call("POST","/orders/"+id+"/cancel",null,buyer,cancel));ok(call("POST","/orders/"+id+"/cancel",null,buyer,cancel));error(call("POST","/orders/"+id+"/cancel",null,buyer),409);assertThat(db.queryForObject("SELECT stock_quantity FROM product_info WHERE product_id=?",Integer.class,product)).isEqualTo(1);error(call("POST","/orders/"+id+"/payment-intents",Map.of("channel","微信"),buyer),501);
+        var seller=register(true);var buyer=register(true);var outsider=register(false);String product=product(seller,1),key=UUID.randomUUID().toString();var body=Map.of("product_id",product,"quantity",1,"shipping_address","合成自提地点");var order=ok(call("POST","/orders/product",body,buyer,key));String id=order.path("order_id").asText();assertThat(order.path("total_amount").asText()).isEqualTo("10.00");assertThat(order.path("shipping_fee").asText()).isEqualTo("0.00");assertThat(ok(call("POST","/orders/product",body,buyer,key)).path("order_id").asText()).isEqualTo(id);assertThat(db.queryForObject("SELECT stock_quantity FROM product_info WHERE product_id=?",Integer.class,product)).isZero();error(call("GET","/orders/"+id,null,outsider),404);error(call("PUT","/products/"+product,productBody(upload(seller,"PRODUCT_IMAGE"),9),seller),409);String cancel=UUID.randomUUID().toString();ok(call("POST","/orders/"+id+"/cancel",null,buyer,cancel));ok(call("POST","/orders/"+id+"/cancel",null,buyer,cancel));error(call("POST","/orders/"+id+"/cancel",null,buyer),409);assertThat(db.queryForObject("SELECT stock_quantity FROM product_info WHERE product_id=?",Integer.class,product)).isEqualTo(1);error(call("POST","/orders/"+id+"/payment-intents",Map.of("channel","微信"),buyer),404);
+    }
+    @Test void offlineOrderRequiresBothRolesAndNeverRecordsPlatformPayment()throws Exception {
+        var seller=register(true);var buyer=register(true);var outsider=register(true);
+        String product=product(seller,1);
+        var order=ok(call("POST","/orders/product",Map.of("product_id",product,"quantity",1,"shipping_address","线下当面验货点"),buyer));
+        String id=order.path("order_id").asText();
+        assertThat(order.path("trade_channel").asText()).isEqualTo("OFFLINE");
+        assertThat(order.path("order_status").asText()).isEqualTo("待线下交易");
+        error(call("POST","/orders/"+id+"/shipping",null,null),401);
+        error(call("POST","/orders/"+id+"/shipping",null,outsider),404);
+        error(call("POST","/orders/"+id+"/shipping",null,buyer),403);
+        error(call("POST","/orders/"+id+"/receipt",null,seller),403);
+        error(call("POST","/orders/"+id+"/receipt",null,buyer),409);
+        error(call("POST","/orders/"+id+"/shipping",Map.of("paid",true),seller),400);
+        error(call("POST","/orders/"+id+"/cancel",null,seller),403);
+        String handoverKey=UUID.randomUUID().toString();
+        var handed=ok(call("POST","/orders/"+id+"/shipping",null,seller,handoverKey));
+        assertThat(handed.path("order_status").asText()).isEqualTo("待确认收货");
+        assertThat(handed.path("shipping_time").isTextual()).isTrue();
+        assertThat(ok(call("POST","/orders/"+id+"/shipping",null,seller,handoverKey))).isEqualTo(handed);
+        error(call("POST","/orders/"+id+"/shipping",null,seller),409);
+        error(call("POST","/orders/"+id+"/cancel",null,buyer),409);
+        error(call("POST","/admin/orders/"+id+"/cancel",Map.of("reason","交付后不得释放库存"),admin),409);
+        String receiptKey=UUID.randomUUID().toString();
+        var completed=ok(call("POST","/orders/"+id+"/receipt",null,buyer,receiptKey));
+        assertThat(completed.path("order_status").asText()).isEqualTo("已完成");
+        assertThat(completed.path("actual_amount").asText()).isEqualTo("0.00");
+        assertThat(completed.path("completion_time").isTextual()).isTrue();
+        assertThat(ok(call("POST","/orders/"+id+"/receipt",null,buyer,receiptKey))).isEqualTo(completed);
+        error(call("POST","/orders/"+id+"/receipt",null,buyer),409);
+        assertThat(db.queryForMap("SELECT actual_amount,payment_method,payment_time,payment_transaction_no FROM user_orders WHERE order_id=?",id))
+            .containsEntry("actual_amount",new java.math.BigDecimal("0.00"))
+            .containsEntry("payment_method",null).containsEntry("payment_time",null).containsEntry("payment_transaction_no",null);
+        assertThat(db.queryForObject("SELECT stock_quantity FROM product_info WHERE product_id=?",Integer.class,product)).isZero();
+        assertThat(db.queryForObject("SELECT COUNT(*) FROM admin_audit_log WHERE object_id=? AND action_name IN ('卖方确认线下交付','买方确认线下收货')",Integer.class,id)).isEqualTo(2);
+        error(call("POST","/aftersales",Map.of("order_id",id,"apply_amount","0.00","apply_reason","商品线下协商","evidence_refs",List.of()),buyer),501);
+        assertThat(db.queryForObject("SELECT COUNT(*) FROM order_aftersales WHERE order_id=?",Integer.class,id)).isZero();
+    }
+    @Test void offlineCancellationCannotRaceIntoHandoverAndRestoreSoldStock()throws Exception {
+        var seller=register(true);var buyer=register(true);String product=product(seller,1);
+        String id=ok(call("POST","/orders/product",Map.of("product_id",product,"quantity",1,"shipping_address","线下交接点"),buyer)).path("order_id").asText();
+        var pool=Executors.newFixedThreadPool(2);
+        try {
+            var start=new CountDownLatch(1);
+            var a=pool.submit(()->{start.await();return call("POST","/orders/"+id+"/cancel",null,buyer).getStatusCode().value();});
+            var b=pool.submit(()->{start.await();return call("POST","/orders/"+id+"/shipping",null,seller).getStatusCode().value();});
+            start.countDown();assertThat(List.of(a.get(20,TimeUnit.SECONDS),b.get(20,TimeUnit.SECONDS))).containsExactlyInAnyOrder(200,409);
+            String state=ok(call("GET","/orders/"+id,null,buyer)).path("order_status").asText();
+            assertThat(state).isIn("已取消","待确认收货");
+            assertThat(db.queryForObject("SELECT stock_quantity FROM product_info WHERE product_id=?",Integer.class,product)).isEqualTo(state.equals("已取消")?1:0);
+        } finally {pool.shutdownNow();}
+    }
+    @Test void offlineChannelCannotBeChosenOrPaymentForgedByClient()throws Exception {
+        var seller=register(true);var buyer=register(true);String product=product(seller,1);
+        var body=new LinkedHashMap<String,Object>(Map.of("product_id",product,"quantity",1,"shipping_address","合成自提地点"));
+        body.put("trade_channel","ONLINE");error(call("POST","/orders/product",body,buyer),400);
+        body.remove("trade_channel");body.put("actual_amount","10.00");error(call("POST","/orders/product",body,buyer),400);
+        assertThat(db.queryForObject("SELECT stock_quantity FROM product_info WHERE product_id=?",Integer.class,product)).isEqualTo(1);
     }
     @Test void competingOrdersCannotOversell()throws Exception{
         var seller=register(true);var one=register(true);var two=register(true);String id=product(seller,1);var body=Map.of("product_id",id,"quantity",1,"shipping_address","合成自提地点");var pool=Executors.newFixedThreadPool(2);try{var start=new CountDownLatch(1);var a=pool.submit(()->{start.await();return call("POST","/orders/product",body,one).getStatusCode().value();});var b=pool.submit(()->{start.await();return call("POST","/orders/product",body,two).getStatusCode().value();});start.countDown();assertThat(List.of(a.get(20,TimeUnit.SECONDS),b.get(20,TimeUnit.SECONDS))).containsExactlyInAnyOrder(201,409);assertThat(db.queryForObject("SELECT stock_quantity FROM product_info WHERE product_id=?",Integer.class,id)).isZero();}finally{pool.shutdownNow();}

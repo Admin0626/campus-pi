@@ -1,6 +1,7 @@
 package com.campuspi.admin;
 
 import com.campuspi.account.*;
+import com.campuspi.core.OfflineTrade;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -13,8 +14,8 @@ import static com.campuspi.account.AccountService.*;
 
 @Service
 public class AdminOrderService {
-    private static final Set<String> ORDER_STATES=Set.of("待支付","已支付","已发货","待确认收货","已完成","已取消","售后中","已退款","进行中","待验收","未完成");
-    private static final String ORDER_FIELDS="order_id,order_type,user_id,seller_id,product_id,reward_task_id,item_name,quantity,unit_price,total_amount,shipping_fee,actual_amount,order_status,order_time,payment_time,shipping_time,completion_time";
+    private static final Set<String> ORDER_STATES=Set.of("待线下交易","待支付","已支付","已发货","待确认收货","已完成","已取消","售后中","已退款","进行中","待验收","未完成");
+    private static final String ORDER_FIELDS="order_id,order_type,user_id,seller_id,product_id,reward_task_id,item_name,trade_channel,payment_method,quantity,unit_price,total_amount,shipping_fee,actual_amount,order_status,order_time,payment_time,shipping_time,completion_time";
     private final JdbcTemplate db;
     private final AccountService accounts;
     private final AdminPolicy policy;
@@ -34,7 +35,7 @@ public class AdminOrderService {
     }
     private Object orderView(Map<String,Object> row,boolean address){
         var result=new LinkedHashMap<String,Object>();
-        for(String key:List.of("order_id","order_type","item_name","quantity","order_status"))result.put(key,row.get(key));
+        for(String key:List.of("order_id","order_type","item_name","quantity","order_status","trade_channel"))result.put(key,row.get(key));
         result.put("buyer_id",string(row.get("user_id")));result.put("seller_id",string(row.get("seller_id")));
         result.put("product_id",string(row.get("product_id")));result.put("reward_task_id",string(row.get("reward_task_id")));
         for(String key:List.of("unit_price","total_amount","shipping_fee","actual_amount"))result.put(key,money(row.get(key)));
@@ -59,8 +60,7 @@ public class AdminOrderService {
         orderId(id);fields(body,"reason");String reason=text(body,"reason",1,500,true);
         return accounts.adminMutation(actor,"order-cancel:"+id,key,body,()->{
             var order=one("SELECT "+ORDER_FIELDS+",payment_transaction_no FROM user_orders WHERE order_id=? FOR UPDATE",id);if(order==null)throw new ApiException(404,"订单不存在");
-            if(!"商品".equals(order.get("order_type"))||!"待支付".equals(order.get("order_status")))throw new ApiException(409,"仅待支付商品订单可取消，任务请使用任务管理");
-            if(((BigDecimal)order.get("actual_amount")).signum()!=0||order.get("payment_time")!=null||order.get("payment_transaction_no")!=null)throw new ApiException(409,"订单支付记录与待支付状态不一致，需要核对");
+            OfflineTrade.requirePending(order);
             var product=one("SELECT product_id,user_id,stock_quantity,shelf_status,audit_status FROM product_info WHERE product_id=? FOR UPDATE",order.get("product_id"));
             if(product==null||!Objects.equals(product.get("user_id"),order.get("seller_id")))throw new ApiException(409,"订单商品归属不一致，需要核对");
             long stock=((Number)product.get("stock_quantity")).longValue()+((Number)order.get("quantity")).longValue();if(stock>Integer.MAX_VALUE)throw new ApiException(409,"恢复库存超过上限");
