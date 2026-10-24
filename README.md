@@ -175,4 +175,4 @@ module.exports = {
 
 精简数据库仅提供少量合成积分，没有现金资金；商品采用线下自提，平台不代收款。分析图表目前使用 JSON 模拟数据。短信找回、真实微信换码和完整真机流程仍需相应外部配置与验收。
 
-如需人工测试数据，可在专用测试环境运行 `python -m pip install -r scripts/requirements-auth-local.txt`，再运行 `python scripts/build_manual_test_sql.py`。生成的 SQL、用例和图片位于被忽略的 `.local/manual-test/generated/`；只用于独立 `campus_pi_manual_test` 库，不能导入上述日常库。普通首次部署无需 Python、无需这批数据。
+`scripts/` 仅保留启动脚本 `start.ps1`；数据库直接导入 `database/init.sql`，无需安装 Python 或生成额外测试数据。
