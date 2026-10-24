@@ -1,2 +1,0 @@
-pymysql[rsa]==1.2.3
-argon2-cffi==25.1.0
