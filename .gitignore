@@ -8,6 +8,7 @@
 venv/
 
 # Local configuration and credentials
+/backend/src/main/resources/application.yml
 .env
 .env.*
 !.env.example

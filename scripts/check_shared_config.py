@@ -3,7 +3,7 @@ from pathlib import Path
 import json,re,subprocess,sys
 root=Path(__file__).resolve().parents[1]
 names=sorted({name.decode('utf-8') for name in subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard','-z'],cwd=root).split(b'\0') if name})
-private={'miniprogram/config.js','miniprogram/project.config.json','miniprogram/project.private.config.json'}
+private={'backend/src/main/resources/application.yml','miniprogram/config.js','miniprogram/project.config.json','miniprogram/project.private.config.json'}
 issues=[]
 for name in names:
  if name in private or name.startswith('.local/'):
@@ -21,5 +21,10 @@ if template.get('appid')!='':issues.append({'file':'miniprogram/project.config.e
 source=(root/'miniprogram/config.example.js').read_text(encoding='utf-8')
 for name in ['apiBaseUrl','devtoolsApiBaseUrl']:
  if not re.search(r'\b'+name+r'''\s*:\s*(?:""|'')''',source):issues.append({'file':'miniprogram/config.example.js','rule':'TEMPLATE_API_HOST_NOT_EMPTY'})
+backend_template='backend/src/main/resources/application.example.yml'
+backend_source=(root/backend_template).read_text(encoding='utf-8')
+for field in ['password','idempotency-secret','app-id','app-secret']:
+ if not re.search(r'(?m)^\s*'+re.escape(field)+r''':\s*(?:""|'')\s*$''',backend_source):
+  issues.append({'file':backend_template,'rule':'BACKEND_TEMPLATE_SECRET_NOT_EMPTY','field':field})
 print(json.dumps({'status':'FAIL' if issues else 'PASS','shared_files_checked':len(names),'includes_untracked_nonignored':True,'issues':issues,'credential_values_printed':False}))
 sys.exit(1 if issues else 0)

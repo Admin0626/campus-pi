@@ -1,0 +1,62 @@
+# 配置模板：复制为同目录 application.yml，然后只修改 application.yml。
+# application.yml 由 Git 忽略；模板中保留空密码、空密钥。
+spring:
+  application:
+    name: campus-pi-server
+  datasource:
+    url: "jdbc:mysql://127.0.0.1:3306/campus_pi_local?useUnicode=true&characterEncoding=UTF-8&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&allowPublicKeyRetrieval=true&sslMode=DISABLED"
+    username: "campus_pi_app"
+    password: ""
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 5000
+      initialization-fail-timeout: -1
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 11MB
+      resolve-lazily: true
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+server:
+  address: 127.0.0.1
+  port: 8080
+  error:
+    include-message: never
+    include-binding-errors: never
+    include-stacktrace: never
+    include-exception: false
+
+campus:
+  auth:
+    # 首次填写至少32字符的随机密钥，保存后保持不变。
+    idempotency-secret: ""
+    # database/init.sql 创建的本地管理员ID，仅该账号可用短测试密码。
+    local-short-password-admin-id: 1
+  admin:
+    duties-json: '{"1":["ROLES","AUDIT","VERIFICATION_REVIEW","ORDERS","REPORTS","NOTIFICATION_PUBLISH"]}'
+  verification:
+    allowed-campuses-json: '["本地测试校区"]'
+  files:
+    # 改为本机实际可写的绝对目录。
+    root: "D:/demo_series/campus-pi/.local/files"
+    public-base-url: "http://127.0.0.1:8080"
+    scanner-provider: DEFENDER
+    # 图片/认证材料上传需要实际存在的 Defender MpCmdRun.exe 路径。
+    scanner-executable: ""
+  notifications:
+    worker-enabled: true
+    poll-interval-ms: 2000
+  admin-batches:
+    worker-enabled: true
+    poll-interval-ms: 1000
+  tasks:
+    synthetic-cash-enabled: false
+  wechat:
+    enabled: false
+    app-id: ""
+    app-secret: ""
