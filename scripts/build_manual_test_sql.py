@@ -130,8 +130,8 @@ def notifications_and_batches():
     insert('business_number_sequences',number_type='ORDER:260101',counter_value=91000100)
 
 def cases():
-    spec=json.loads((ROOT/'docs/api/campus-pi-openapi.json').read_text(encoding='utf-8'))
-    allocation=json.loads((ROOT/'docs/allocation/接口归属.json').read_text(encoding='utf-8'))
+    spec=json.loads((ROOT/'tests/contracts/campus-pi-openapi.json').read_text(encoding='utf-8'))
+    allocation=json.loads((ROOT/'tests/contracts/module-allocation.json').read_text(encoding='utf-8'))
     owners={id:p['code'] for p in allocation['packages'] for id in p['ids']}
     blocked={'API004','API005'}
     parameters={'user_id':'900012','file_id':str(uuid.uuid5(uuid.NAMESPACE_URL,'campus-pi-manual-v1/product-900001')),'product_id':'900001','post_id':'MANUAL_POST_1','reward_task_id':'900003','application_id':'900001','proof_id':'900001','order_id':'ORDER26010190000001','aftersale_id':'AFTER26010190000001','session_id':'900001','msg_id':'900001','notification_id':'MANUAL_NOTICE_SENT','verification_id':'900001','category_id':'900099','report_id':'900001','delivery_id':'900002'}

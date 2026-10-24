@@ -1,100 +1,154 @@
-# 校园Π campus-pi
+# 校园Π启动步骤
 
-商品现采用[线下交易流程](docs/api/线下交易接口变更.md)：预约下单 → 卖方交付 → 买方收货。线上支付接口已删除；已有数据库先执行V009，新安装SQL已包含。
+更新日期：2026-10-24。先导入数据库、填写后端配置，再启动服务。
 
-校园二手商品、悬赏任务、校园帖子、私信和站内通知项目。九位成员按业务模块全栈开发，每人负责本人模块的用户端页面、管理端页面、后端、数据库增量变更及联调测试。
+|目录 / 文件|用途|
+|---|---|
+|`backend/`|Spring Boot 后端，Java 17，默认端口 8080|
+|`frontend/`|Vue 前端，包含用户端和管理后台；开发端口 5173|
+|`miniprogram/`|微信原生小程序，导入微信开发者工具运行|
+|[database/init.sql](database/init.sql)|首次安装的完整数据库导入脚本|
+|`database/migrations/`|已有数据库的增量升级 SQL|
+|[scripts/start.ps1](scripts/start.ps1)|Windows PowerShell 启动脚本|
+|[后端配置说明](config/后端配置说明.md)|数据库、文件、通知、权限及微信配置|
 
-2026-10-23 已补齐用户端商品/帖子发布与收藏、任务申请/凭证/积分结算、商品订单库存、私信举报、认证表单及审核结果自动通知，并接入可复用 Web 与原生业务组件。Web 用户页面已跑过真实浏览器和本机接口；小程序官方编译与组件方法联调通过，完整开发者工具跳转和真机仍未通过。详见[剩余功能实施与验收](docs/development/剩余功能实施与验收.md)。
+## 1. 准备环境
 
-管理后台既有 41 项管理接口中，40 项已接入；API099 完成任务零金额争议，商品退换及款项问题由双方线下协商，不能计作全项目完成。商品改为线下交易，平台不代收款；现金奖励、找回验证码、微信真实换码、正式职责/校区和部署仍有外部依赖。负责人已允许 PUT /me 兼容，原生资料与头像保存现已接入，原 PATCH 保留。
+安装 Git、JDK **17**、Maven **3.6.3+**、Node.js **22.12+** 和 MySQL **8.0.16+**。以下命令在 Windows PowerShell 执行；路径按本机安装位置修改。
 
-[111 项有效契约](docs/api/campus-pi-openapi.json)、40 份当前基线资产及历史数据库测试是设计基线。分析页继续使用明确标注的 JSON 假数据；帮助、设置、反馈和报告 §4.3 扩展菜单不能计作已实现功能。实际完成范围及证据以最新实施记录为准。
-
-2026-10-23 后续黑盒/白盒测试修复了任务订单快照校验、会话上下文清理、分页错误总数及异步卸载轮询4类问题。Java71项、Node22项及HTTP边界20项通过；后端聚合行覆盖98.16%、分支75.47%。真实小程序运行仍阻塞，详见[测试与修复报告](docs/verification/2026-10-23黑白盒测试报告.md)。
-
-再后续补齐了公共布局、原生资料保存、全局任务审核/通知发送记录、用户日期与ID筛选和真实控制台待办，并修复微信尝试计数的并发锁冲突。最新 Java85项通过；上段覆盖率为此前快照，本轮未重新计算。人工验收提供[全模块 SQL 与账号手册](docs/verification/人工测试数据手册.md)，包含13个合成账号、117条用例和真实图片文件；服务与遗留项见[本轮交付记录](docs/development/2026-10-23缺项补齐与人工测试.md)。
-
-## 先读这些材料
-
-- [首次本地部署说明](docs/deployment/本地部署说明.md)：后端、Vue前端与微信小程序分别是什么，数据库初始化、私有配置和启动步骤；[单文件初始化SQL](database/init.sql) / [后端配置模板](config/local/application-local.example.yml)。
-- [答辩设计报告 Word版](docs/defense/校园Π软件工程设计报告答辩版.docx) / [可维护正文](docs/defense/校园Π软件工程设计报告答辩版.md)：架构、数据、核心业务、安全、移动端、测试、演示及问答；[本次集成验证](docs/verification/2026-10-23集成发布验证.md)。
-- [页面测试使用手册：进入页面、操作步骤与预期结果](docs/verification/校园Π页面测试使用手册.md)
-- [九人全栈分工与接口索引](docs/allocation/校园Π九人全栈分工说明.md)
-- [页面归属与组件交接](docs/allocation/页面归属与联调验收.md)
-- [协作边界及统一验收](docs/allocation/协作边界与统一验收.md)
-- [接口规范](docs/api/校园Π接口开发规范.md) / [Word版](docs/api/校园Π接口开发规范.docx) / [OpenAPI](docs/api/campus-pi-openapi.json)
-- [设计报告修订版](docs/design/校园Π软件工程设计报告修订版.docx)
-- [开发与合并规范](CONTRIBUTING.md) / [本地环境与启动](docs/development/本地开发指南.md)
-- [数据库初始化与验证](database/README.md)
-
-## 技术栈与环境
-
-已确认Spring Boot + Vue。基础工程固定Spring Boot 3.5.16、Java 17、Vue 3.5.44、Vite 8.3.4；前端依赖版本由package-lock.json锁定。使用JDK 17、Maven 3.6.3以上、Node.js 22.12以上（本机验证使用24.13.0）。数据库使用MySQL，现有结构要求8.0.16以上；Python 3.10以上用于静态基线检查及独立数据库验收。
-
-服务不自动执行DDL。账号功能需先显式配置数据库、安装原结构与A迁移、提供稳定密钥；本机可使用独立开发库工具。敏感职责与其余业务模块仍按九人任务书接入。
-
-## 快速启动
-
-首次在新电脑运行，请先按[本地部署说明](docs/deployment/本地部署说明.md)安装完整数据库并加载私有配置。以下为开发命令概览，不能只运行命令而省略数据库和密钥配置；推荐初次演示先采用文档中的JAR模式。
-
-先确认`java -version`和`mvn -version`实际使用JDK 17。先按账号功能启动说明初始化独立开发库并加载外部配置；Web开发时分别运行：
-
-```text
-cd backend
-mvn spring-boot:run
+```powershell
+Set-Location D:\demo_series\campus-pi
+$env:JAVA_HOME = 'D:\Java\jdk-17.0.12'
+$env:Path = "$env:JAVA_HOME\bin;$env:Path"
+java -version
+mvn -version
+node -v
+mysql --version
 ```
 
-```text
-cd frontend
-npm ci
-npm run dev
+Java 和 Maven 都应显示 Java 17。MySQL 服务需事先启动；项目不会自动安装 MySQL 或修改 root 密码。
+
+## 2. 导入数据库
+
+**首次安装只导入 `database/init.sql`。** 它已包含基础结构和 V001–V009，导入后有 40 张应用表。
+
+```powershell
+cmd /d /c "mysql --default-character-set=utf8mb4 -h127.0.0.1 -P3306 -uroot -p < database\init.sql"
 ```
 
-浏览器开发入口`http://localhost:5173`，`/api`代理到后端；完整打包后可直接访问`http://127.0.0.1:8080/login`和`/admin`。独立开发库工具生成本机专用管理员，随机密码只保存在被忽略的`.local/auth-dev/管理员登录.txt`，不提供共享默认管理员密码。核心业务已接入；未定义的扩展菜单显示明确限制，未知 API 仍返回404。
+提示输入的是自己的 MySQL root 密码。也可用支持 `DELIMITER` 的 Navicat 执行整个文件，开启遇错停止。脚本创建 `campus_pi_local`；同名库已存在会报错，**不要删库重试、不要使用 `--force`**。已有库只执行确认尚未应用的增量迁移；V009 将商品订单切换为线下交易，先备份、停后端，再执行一次，不能重跑初始化脚本。
 
-## 本地检查
+初始化只创建本地管理员 `admin / 123456`、五条基础分类及零余额账户；商品、任务、订单为空是正常结果。该短密码只适用于初始化账号与本地配置，普通账号密码仍要求 12–64 位。
 
-```text
-python scripts/check_baseline.py
+为应用创建专用数据库账号，先进入 MySQL：
+
+```powershell
+mysql -h127.0.0.1 -P3306 -uroot -p
 ```
 
-后端在backend目录运行`mvn test`，前端在frontend目录运行`npm run build`。数据库验收单独在新测试空库中进行，见database/README.md。
+然后执行下面的 SQL，将密码替换为自己设置的数据库应用密码：
 
-## 九人职责
-
-|选项|模块|接口数|负责人|
-|---|---|---:|---|
-|A|账号登录与用户权限；公共请求与鉴权|13|待认领|
-|B|认证审核、文件与审计|8|待认领|
-|C|商品、收藏、分类和审核|16|待认领|
-|D|帖子与管理概览；公共布局导航|13|待认领|
-|E|任务发布、接取与分配|12|待认领|
-|F|任务凭证、验收、奖励结算|8|待认领|
-|G|商品订单、线下交易与任务争议；迁移顺序汇总|15|待认领|
-|H|私信会话与举报|11|待认领|
-|I|通知、偏好与投递|15|待认领|
-
-P0共106项；P1共5项。API052已删除，G的交付和收货改为线下流程；任务零金额争议已有实现证据，其他P1按实际依赖验收。
-
-## 目录
-
-```text
-frontend/       Vue基础工程及模块接入说明
-miniprogram/    微信小程序原生接入；本机私有AppID/工具地址；业务组件已接入，原生/真机验收待完成
-backend/        Spring Boot基础工程及模块接入说明
-database/       结构、事务、合成数据、增量迁移、独立验收
-docs/design/    设计报告及可编辑SVG图源
-docs/api/       唯一接口契约
-docs/allocation/九人任务、页面归属和接口责任索引
-docs/development/开发环境及技术决定
-docs/verification/历史验证证据与本次仓库检查边界
-scripts/        静态检查、独立数据库工具与HTTP/浏览器验证
+```sql
+CREATE USER 'campus_pi_app'@'127.0.0.1' IDENTIFIED BY '请替换成自己的数据库应用密码';
+GRANT SELECT, INSERT, UPDATE, DELETE ON campus_pi_local.* TO 'campus_pi_app'@'127.0.0.1';
+EXIT;
 ```
 
-历史Git命令参考和测试文件保留；多人开发流程以CONTRIBUTING.md为准。先在功能分支开发并提出PR，审核后合并main。仓库内的规则文本不代表GitHub分支保护已配置。
+## 3. 填写后端配置
 
-当前账号界面以用户最后提供的原Word图为视觉基准，含 `/admin/login` 独立后台登录。对应页、原图资产校验与未完成控件见 [Word界面对照](docs/verification/Word界面对照.md)。
+首次复制模板，脚本会拒绝覆盖已有私有配置：
 
-数据可视化现提供 [JSON模拟页面](docs/development/数据可视化页面.md)，管理员侧栏“数据分析”可进入。模拟图表不代表真实统计接口已实现。
+```powershell
+New-Item -ItemType Directory -Force .local/local-deploy | Out-Null
+if (Test-Path .local/local-deploy/application-local.yml) { throw '配置已存在，请直接编辑原文件' }
+Copy-Item config/local/application-local.example.yml .local/local-deploy/application-local.yml
+```
 
-数据库文件现已精简：首次安装只看[database/init.sql](database/init.sql)，人工验收材料[按需生成](docs/verification/人工测试数据手册.md)，不用逐份导入所有SQL。
+按[后端配置说明](config/后端配置说明.md)填写数据库密码、稳定随机密钥、文件目录与扫描器路径。真实密码、密钥、微信 AppID/AppSecret 只放在本机被 Git 忽略的配置中。
+
+## 4. 启动 Web
+
+### 方式 A：统一启动，适合演示
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/start.ps1
+```
+
+脚本依次安装锁定的前端依赖、构建 Vue、打包 Java，然后在当前终端运行后端。Maven 打包会跳过测试，不代表测试通过。首次构建需联网下载依赖。保持终端开启，访问：
+
+|地址|用途|
+|---|---|
+|http://127.0.0.1:8080/login|用户登录|
+|http://127.0.0.1:8080/register|普通账号注册|
+|http://127.0.0.1:8080/admin/login|管理员登录，本地 `admin / 123456`|
+
+前端会打入 JAR，此模式无需另开 5173。仅复用上一次构建结果时加 `-SkipBuild`；修改代码后应重新完整构建。重打包前先在原终端按 Ctrl+C 停止旧 JAR，避免 Windows 文件占用。
+
+### 方式 B：前后端分开启动，适合改页面
+
+在仓库根目录打开两个 PowerShell 终端：
+
+```powershell
+# 终端一：后端
+powershell -ExecutionPolicy Bypass -File scripts/start.ps1 -Mode backend
+```
+
+```powershell
+# 终端二：Vue，首次会安装依赖
+powershell -ExecutionPolicy Bypass -File scripts/start.ps1 -Mode frontend
+```
+
+此模式访问 `http://127.0.0.1:5173/login` 或 `/admin/login`，Vue 将 `/api` 和 `/file-content` 代理到后端 8080。两种方式选一种，避免重复占用同一端口。每个服务在所在终端按 Ctrl+C 停止；MySQL 独立运行。
+
+只检查本机命令和配置文件是否具备、不构建或启动服务：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/start.ps1 -Check
+```
+
+使用其他私有配置时可加 `-Config '配置文件绝对路径'`；`-Check` 不校验配置值、数据库连接或端口占用。
+
+## 5. 启动微信小程序
+
+1. 先启动上述 Spring Boot 后端。
+2. 首次复制本机配置；已有文件直接编辑，避免覆盖。
+
+```powershell
+if (Test-Path miniprogram/project.config.json) { throw '小程序项目配置已存在，请直接编辑' }
+Copy-Item miniprogram/project.config.example.json miniprogram/project.config.json
+if (Test-Path miniprogram/config.js) { throw '小程序接口配置已存在，请直接编辑' }
+Copy-Item miniprogram/config.example.js miniprogram/config.js
+```
+
+3. 在本机 `project.config.json` 填自己的 AppID；AppSecret 只放后端私有配置。
+4. 将本机 `miniprogram/config.js` 设置为开发者工具联调地址：
+
+```javascript
+module.exports = {
+  apiBaseUrl: "",
+  devtoolsApiBaseUrl: "http://127.0.0.1:8080"
+};
+```
+
+5. 微信开发者工具导入 **`miniprogram/`** 目录，核对 AppID 后编译。仅本机 HTTP 调试时，在工具的本地设置中勾选“不校验合法域名、web-view 域名、TLS 版本及 HTTPS 证书”。小程序无需运行 Vue，也不连接 MySQL。
+6. 使用校园Π账号密码登录；真实微信换码需另配后端。采用先密码登录、再主动绑定微信的流程。
+
+`apiBaseUrl` 供真机使用，留空会显示“服务地址尚未配置”。手机上的 `127.0.0.1` 指向手机自身。真机需可访问的 HTTPS 后端、微信合法域名及相应监听/文件地址配置，具体见[后端配置说明](config/后端配置说明.md)。当前本机启动步骤不代表真机或正式部署已验收。
+
+## 6. 常见启动问题
+
+|现象|检查方法|
+|---|---|
+|Java 版本错误|设置 `JAVA_HOME` 为 JDK 17，再打开终端运行脚本|
+|找不到 mysql、mvn、node|将相应程序的 bin 目录加入 PATH|
+|数据库连接失败|检查 MySQL 服务、端口、库名、应用账号密码及私有配置路径|
+|账号服务未完成本地配置|填写至少 32 字符的稳定 `idempotency-secret`|
+|admin 登录失败|确认使用本文新建库及 `local-short-password-admin-id: 1`|
+|文件上传失败|检查私有文件目录和实际 Defender 扫描器路径|
+|通知或批量任务不执行|确认对应 worker 已启用|
+|5173 接口失败|确认后端运行；修改端口时同时修改 `frontend/.env.local` 的 `CAMPUS_API_TARGET`|
+|端口占用或 JAR 被占用|停止原终端中本项目的旧进程，不结束其他 Java 项目|
+
+首次数据库没有测试资金；商品采用线下自提，平台不代收款。分析图表目前使用 JSON 模拟数据。短信找回、真实微信换码和完整真机流程仍需相应外部配置与验收。
+
+如需人工测试数据，可在专用测试环境运行 `python -m pip install -r scripts/requirements-auth-local.txt`，再运行 `python scripts/build_manual_test_sql.py`。生成的 SQL、用例和图片位于被忽略的 `.local/manual-test/generated/`；只用于独立 `campus_pi_manual_test` 库，不能导入上述日常库。普通首次部署无需 Python、无需这批数据。

@@ -53,5 +53,5 @@ campus:
     # 注册请求摘要需要稳定的本地密钥，不能设置成示例密钥。
     idempotency-secret: ${AUTH_IDEMPOTENCY_SECRET:}
 
-# Datasource is configured but schema initialization stays manual (see database/README.md).
-# Account sessions use transactional JDBC; other business mappers/channels remain pending.
+# Database initialization and migrations are manual (see root README.md).
+# Private runtime settings are described in config/后端配置说明.md.
