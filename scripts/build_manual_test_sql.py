@@ -5,7 +5,7 @@ from pathlib import Path
 import hashlib, json, struct, uuid, zlib
 from argon2.low_level import hash_secret, Type
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/'database/manual'
+OUT=ROOT/'.local/manual-test/generated'
 DB='campus_pi_manual_test'
 SQL=[]
 class Raw(str): pass
@@ -165,7 +165,8 @@ def cases():
     return sorted(result,key=lambda x:x['case_id'])
 
 def build():
-    OUT.mkdir(exist_ok=True)
+    OUT.mkdir(parents=True,exist_ok=True)
+    SQL.clear()
     users();content();tasks();orders_and_chat();notifications_and_batches();matrix=cases()
     header='''-- 校园Π全功能人工测试数据 v1
 -- MySQL 8.0.16+；仅用于专用campus_pi_manual_test库，先执行原结构、事务及V001-V009迁移。
@@ -217,6 +218,10 @@ SELECT '111_ACTIVE_CASES_PRESENT' AS invariant,COUNT(*)=111 AS passed FROM campu
 '''
     (OUT/'校园Π全功能人工测试.sql').write_text(header+'\n'.join(SQL)+footer,encoding='utf-8')
     (OUT/'接口人工测试矩阵.json').write_text(json.dumps(matrix,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    print(json.dumps({'sql':'database/manual/校园Π全功能人工测试.sql','baseline_api_cases':sum(x['case_id'].startswith('API') for x in matrix),'extension_cases':sum(x['case_id'].startswith('EXT') for x in matrix),'insert_statements':sum(s.startswith('INSERT') for s in SQL)}))
+    samples=OUT/'上传样例'
+    samples.mkdir(exist_ok=True)
+    for name,color in [('测试商品',(88,140,195)),('测试头像',(112,103,222)),('测试凭证',(80,160,120)),('测试认证材料',(130,150,180))]:
+        (samples/(name+'.png')).write_bytes(png(color))
+    print(json.dumps({'sql':(OUT/'校园Π全功能人工测试.sql').relative_to(ROOT).as_posix(),'baseline_api_cases':sum(x['case_id'].startswith('API') for x in matrix),'extension_cases':sum(x['case_id'].startswith('EXT') for x in matrix),'insert_statements':sum(s.startswith('INSERT') for s in SQL),'upload_samples':4,'git_tracked_output':False}))
 
 if __name__=='__main__':build()

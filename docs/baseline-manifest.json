@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "assets": [
     {
       "path": "docs/design/校园Π软件工程设计报告修订版.docx",
@@ -197,7 +197,7 @@
       "path": "docs/api/校园Π接口开发规范.md",
       "origin": "校园Π接口开发规范.md",
       "mode": "utf8-lf",
-      "sha256": "d0e9ec8dffce4edf7f3703ea3d3beb357af4adab9d01d9c32fdfe9457e18dba4"
+      "sha256": "abeeb45d2f2245d3dd928efbe581d9b567b4e843a56ec40ce1e9a406dcfb23b0"
     },
     {
       "path": "docs/api/campus-pi-openapi.json",
@@ -210,42 +210,6 @@
       "origin": "接口设计决定与落地清单.md",
       "mode": "utf8-lf",
       "sha256": "f35a4ed63bb0067ee8f87ba297f4a8f124c758ae6c856c6725c73cda95d716c8"
-    },
-    {
-      "path": "database/schema/01_数据库结构.sql",
-      "origin": "01_数据库结构.sql",
-      "mode": "utf8-lf",
-      "sha256": "c8d940351bf491f613a1bd82d9ec9ae2d0f0ca4b015a76c73bc9fe4be0392c7f"
-    },
-    {
-      "path": "database/transactions/02_核心业务事务.sql",
-      "origin": "02_核心业务事务.sql",
-      "mode": "utf8-lf",
-      "sha256": "e89fa3e1807956ecfd3c53f996f0b95ec05f8379c698fc83c714a2c3c2169017"
-    },
-    {
-      "path": "database/seeds/03_合成测试数据.sql",
-      "origin": "03_合成测试数据.sql",
-      "mode": "utf8-lf",
-      "sha256": "e8125dcf4b0359fc63dc66fba74672cf81e12f9228fc1b5bac8690a9bfdc06eb"
-    },
-    {
-      "path": "database/verification/04_自动验收.py",
-      "origin": "04_自动验收.py",
-      "mode": "utf8-lf",
-      "sha256": "dd438b8e4c617f6e906904c34e603012116fe16e97352153a425cdbf77914a24"
-    },
-    {
-      "path": "database/verification/mysql_driver.py",
-      "origin": "mysql_driver.py",
-      "mode": "utf8-lf",
-      "sha256": "797096f25e0d0aada115ebfdf760041b124595f55c88ddb3c2f5c7e1b54589fa"
-    },
-    {
-      "path": "database/verification/requirements.txt",
-      "origin": "requirements.txt",
-      "mode": "utf8-lf",
-      "sha256": "c67e46e02fbf360e3b2717a25e623bac2ad99d14d9b8def50b9e767ec39e6446"
     },
     {
       "path": "docs/verification/database/校园Π问题修复过程与验证记录.docx",
@@ -270,6 +234,12 @@
       "origin": "验证记录.txt",
       "mode": "utf8-lf",
       "sha256": "354bf42d21e0541ffd104204a7b2478c6521ec44aae277387ff43998b546f35f"
+    },
+    {
+      "path": "database/schema.sql",
+      "origin": "combined 01 schema and 02 transactions, SQL statements unchanged",
+      "mode": "utf8-lf",
+      "sha256": "7d479e542569fad3ef3b6a950417d3e26d8b7a7bceb1c0c5a7d0008c078c27f3"
     }
   ],
   "notes": "导入原始设计/API/SQL及历史证据；文本按UTF-8和LF校验，DOCX按原始字节。更新基线需复核并显式更新清单。",
@@ -318,6 +288,60 @@
           "path": "docs/api/接口设计决定与落地清单.md",
           "previous_sha256": "45960511cc95b380c04d8694fb3e95a789461776cb5ae940ed7eaf0322349e8d",
           "sha256": "f35a4ed63bb0067ee8f87ba297f4a8f124c758ae6c856c6725c73cda95d716c8"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-24",
+      "reason": "User explicitly requested fewer GitHub database files. Combined the base SQL unchanged; generated manual SQL, matrix and images become local-only. Legacy independent tools and seed recoverable from Git history; live databases untouched.",
+      "archive_commit": "3af293d61b9723d6f4773f110cfa030340c74342",
+      "retired_assets": [
+        {
+          "path": "database/schema/01_数据库结构.sql",
+          "origin": "01_数据库结构.sql",
+          "mode": "utf8-lf",
+          "sha256": "c8d940351bf491f613a1bd82d9ec9ae2d0f0ca4b015a76c73bc9fe4be0392c7f"
+        },
+        {
+          "path": "database/transactions/02_核心业务事务.sql",
+          "origin": "02_核心业务事务.sql",
+          "mode": "utf8-lf",
+          "sha256": "e89fa3e1807956ecfd3c53f996f0b95ec05f8379c698fc83c714a2c3c2169017"
+        },
+        {
+          "path": "database/seeds/03_合成测试数据.sql",
+          "origin": "03_合成测试数据.sql",
+          "mode": "utf8-lf",
+          "sha256": "e8125dcf4b0359fc63dc66fba74672cf81e12f9228fc1b5bac8690a9bfdc06eb"
+        },
+        {
+          "path": "database/verification/04_自动验收.py",
+          "origin": "04_自动验收.py",
+          "mode": "utf8-lf",
+          "sha256": "dd438b8e4c617f6e906904c34e603012116fe16e97352153a425cdbf77914a24"
+        },
+        {
+          "path": "database/verification/mysql_driver.py",
+          "origin": "mysql_driver.py",
+          "mode": "utf8-lf",
+          "sha256": "797096f25e0d0aada115ebfdf760041b124595f55c88ddb3c2f5c7e1b54589fa"
+        },
+        {
+          "path": "database/verification/requirements.txt",
+          "origin": "requirements.txt",
+          "mode": "utf8-lf",
+          "sha256": "c67e46e02fbf360e3b2717a25e623bac2ad99d14d9b8def50b9e767ec39e6446"
+        }
+      ],
+      "assets": [
+        {
+          "path": "database/schema.sql",
+          "sha256": "7d479e542569fad3ef3b6a950417d3e26d8b7a7bceb1c0c5a7d0008c078c27f3"
+        },
+        {
+          "path": "docs/api/校园Π接口开发规范.md",
+          "previous_sha256": "d0e9ec8dffce4edf7f3703ea3d3beb357af4adab9d01d9c32fdfe9457e18dba4",
+          "sha256": "abeeb45d2f2245d3dd928efbe581d9b567b4e843a56ec40ce1e9a406dcfb23b0"
         }
       ]
     }

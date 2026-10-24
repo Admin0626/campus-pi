@@ -42,7 +42,9 @@ async function openOrder(page, name) {
     const buyerToken = await token(fixtures.buyer.name, fixtures.buyer.password);sessions.push(buyerToken);
     const adminToken = await token(config.admin_username, config.admin_password);sessions.push(adminToken);
     const form = new FormData();form.append("purpose", "PRODUCT_IMAGE");
-    form.append("file", new Blob([fs.readFileSync(path.join(root, "database/manual/上传样例/测试商品.png"))], { type: "image/png" }), "offline-synthetic.png");
+    const sample = path.join(root, ".local/manual-test/generated/上传样例/测试商品.png");
+    assert.ok(fs.existsSync(sample), "Run python scripts/build_manual_test_sql.py to generate local test materials first");
+    form.append("file", new Blob([fs.readFileSync(sample)], { type: "image/png" }), "offline-synthetic.png");
     const file = await call("/files", "POST", form, sellerToken, 201);
     const productName = "线下验收_" + crypto.randomBytes(4).toString("hex");
     const product = await call("/products", "POST", { category_id: Number(fixtures.category), product_name: productName, product_desc: "浏览器线下交易合成测试", campus: "测试校区", trade_mode: "校园自提", original_price: "12.00", discount_price: "10.00", stock_quantity: 4, image_refs: [file.file_ref] }, sellerToken, 201);

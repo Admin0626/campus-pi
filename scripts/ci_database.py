@@ -27,7 +27,7 @@ def initialize(cursor):
     cursor.execute('SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA=%s',(schema,))
     assert cursor.fetchone()[0]==0, 'Refusing to overwrite an existing schema'
     cursor.execute("SET time_zone='+00:00'")
-    sources=[ROOT/'database/schema/01_数据库结构.sql',ROOT/'database/transactions/02_核心业务事务.sql',*sorted((ROOT/'database/migrations').glob('V*.sql'))]
+    sources=[ROOT/'database/schema.sql',*sorted((ROOT/'database/migrations').glob('V*.sql'))]
     for source in sources:
         for statement in statements(source.read_text(encoding='utf-8')):cursor.execute(statement)
     cursor.execute('SELECT COUNT(*) FROM information_schema.TABLES WHERE TABLE_SCHEMA=%s',(schema,))

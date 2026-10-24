@@ -5,6 +5,7 @@ Initial-state checks deliberately fail after the tester has consumed the fixture
 from pathlib import Path
 import argparse, hashlib, json, urllib.request, urllib.error, urllib.parse
 import pymysql
+from build_manual_test_sql import OUT, build
 
 ROOT=Path(__file__).resolve().parents[1]
 SCHEMA='campus_pi_manual_test'
@@ -13,6 +14,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--config',type=Path,required=True);args=p.parse_args()
     c=json.loads(args.config.read_text(encoding='utf-8'))
     if c.get('host') not in ('127.0.0.1','localhost') or c.get('database')!=SCHEMA:raise SystemExit('Dedicated loopback manual schema only')
+    build()
     checks=[]
     def check(value,name):
         checks.append({'name':name,'passed':bool(value)})
@@ -34,7 +36,7 @@ def main():
                 q.execute(s,a);return q.fetchall()
             check(sql('SELECT DATABASE()')[0][0]==SCHEMA,'Dedicated schema selected')
             check(sql('SELECT COUNT(*) FROM users')[0][0]==13,'13 synthetic accounts')
-            matrix=json.loads((ROOT/'database/manual/接口人工测试矩阵.json').read_text(encoding='utf-8'))
+            matrix=json.loads((OUT/'接口人工测试矩阵.json').read_text(encoding='utf-8'))
             actual=sql('SELECT case_id,path FROM manual_test_cases ORDER BY case_id')
             check(actual==tuple((r['case_id'],r['path']) for r in matrix),'All 117 case IDs and paths match generated matrix')
             check(sql("SELECT COUNT(*) FROM manual_test_cases WHERE case_id LIKE 'API%'")[0][0]==111,'111 active baseline cases present; API052 retired')
