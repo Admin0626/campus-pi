@@ -82,8 +82,8 @@ def check():
     for item in allocation["interfaces"]:
         require(operations[item["id"]] == (item["method"], item["path"]), "Ownership contract mismatch: " + item["id"])
 
-    schema = (ROOT / "database/schema/01_数据库结构.sql").read_text(encoding="utf-8")
-    transaction = (ROOT / "database/transactions/02_核心业务事务.sql").read_text(encoding="utf-8")
+    schema = (ROOT / "database/schema.sql").read_text(encoding="utf-8")
+    transaction = schema
     counts = dict(tables=len(re.findall(r"^CREATE TABLE\b", schema, re.M | re.I)),
                   procedures=len(re.findall(r"^CREATE PROCEDURE\b", transaction, re.M | re.I)),
                   triggers=len(re.findall(r"^CREATE TRIGGER\b", transaction, re.M | re.I)))

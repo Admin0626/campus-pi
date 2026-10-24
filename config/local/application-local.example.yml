@@ -1,5 +1,5 @@
 # Copy to .local/local-deploy/application-local.yml. Never put real values here.
-# This template is for database/local/init.sql on a single Windows development PC.
+# This template is for database/init.sql on a single Windows development PC.
 server:
   address: 127.0.0.1
   port: 8080

@@ -37,8 +37,6 @@ miniprogram/config.js
 .DS_Store
 Thumbs.db
 
-# Independent SQL verifier generates these next to its own script
-database/verification/03_合成测试数据.sql
-database/verification/验证记录.json
-database/verification/验证记录.txt
-database/verification/test-statements.sql
+# Reproducible manual SQL, matrices and sample images live under ignored .local/.
+# Ignore remnants produced by the retired standalone verifier in older checkouts.
+database/verification/

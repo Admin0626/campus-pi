@@ -61,8 +61,9 @@ with conn, conn.cursor() as cursor:
     cursor.execute('USE `'+config['database']+'`')
     cursor.execute("SET time_zone='+00:00'")
     if fresh:
-        for statement in (ROOT/'database/schema/01_数据库结构.sql').read_text(encoding='utf-8').split(';'):
-            if statement.strip(): cursor.execute(statement)
+        from ci_database import statements
+        for statement in statements((ROOT/'database/schema.sql').read_text(encoding='utf-8')):
+            cursor.execute(statement)
     cursor.execute("SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=%s AND TABLE_NAME='users' AND COLUMN_NAME='auth_version'", (config['database'],))
     migrated=cursor.fetchone() is not None
     if not migrated:

@@ -6,6 +6,7 @@ from pathlib import Path
 import argparse, hashlib, json, os, secrets, uuid
 import pymysql
 from ci_database import initialize, statements
+from build_manual_test_sql import OUT, build
 
 ROOT=Path(__file__).resolve().parents[1]
 SCHEMA='campus_pi_manual_test'
@@ -15,6 +16,7 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--config',type=Path,required=True);args=parser.parse_args()
     c=json.loads(args.config.read_text(encoding='utf-8'))
     if c.get('host') not in ('127.0.0.1','localhost') or c.get('database')!=SCHEMA:raise SystemExit('Only the fixed dedicated loopback manual schema is allowed')
+    build()
     LOCAL.mkdir(parents=True,exist_ok=True)
     with pymysql.connect(host=c['host'],port=int(c.get('port',3306)),user=c['user'],password=c['password'],charset='utf8mb4',autocommit=True) as db,db.cursor() as cur:
         cur.execute('SELECT @@port,@@datadir');server_port,directory=cur.fetchone()
@@ -26,7 +28,7 @@ def main():
             if cur.fetchone()[0]:raise SystemExit('Refusing populated manual database. Existing data and files preserved.')
             cur.execute("SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=%s AND TABLE_NAME='user_orders' AND COLUMN_NAME='trade_channel'",(SCHEMA,))
             if cur.fetchone()[0]!=1:raise SystemExit('Apply all V001-V009 migrations first; existing data is preserved')
-        for sql in statements((ROOT/'database/manual/校园Π全功能人工测试.sql').read_text(encoding='utf-8')):
+        for sql in statements((OUT/'校园Π全功能人工测试.sql').read_text(encoding='utf-8')):
             cur.execute(sql)
             while cur.nextset():pass
         cur.execute('SELECT file_id,content,sha256 FROM manual_test_assets');assets=cur.fetchall()
