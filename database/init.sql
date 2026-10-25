@@ -2,6 +2,9 @@
 -- Run from mysql batch stdin WITHOUT --force. Stop on the first error.
 -- CREATE DATABASE deliberately has no IF NOT EXISTS: an existing database is refused.
 -- Never use this installer to upgrade a database. It does not DROP or reset databases.
+-- This imports application tables/demo records, not MySQL server login accounts.
+-- Local backend config should reuse the MySQL account/password that imported this file over TCP.
+-- No CREATE USER / GRANT / ALTER USER is performed; existing MySQL users/passwords are unchanged.
 -- Small LOCAL demo: 4 users, 3 products, 2 posts, 2 tasks, 2 offline orders, 1 notice.
 -- Admin: admin / 123456. Other demo accounts: student01, student02, visitor01 / CampusPi!2026.
 -- Demo identities, point balances and histories are synthetic. All cash balances are zero.
