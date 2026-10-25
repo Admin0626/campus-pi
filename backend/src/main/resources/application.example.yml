@@ -5,7 +5,10 @@ spring:
     name: campus-pi-server
   datasource:
     url: "jdbc:mysql://127.0.0.1:3306/campus_pi_local?useUnicode=true&characterEncoding=UTF-8&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true&allowPublicKeyRetrieval=true&sslMode=DISABLED"
-    username: "campus_pi_app"
+    # 本地演示复用导入 init.sql 时已能通过 TCP 登录的 MySQL 账号，不要求另建用户。
+    # 若导入时使用的不是 root，改成实际账号；专用账号配置见 config/后端配置说明.md。
+    username: "root"
+    # 填写该 MySQL 账号的实际密码，与网页 admin / 123456 无关。
     password: ""
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:

@@ -1,6 +1,6 @@
 # 校园Π启动步骤
 
-更新日期：2026-10-24。先导入数据库、填写后端配置，再启动服务。
+更新日期：2026-10-25。先导入数据库、填写后端配置，再启动服务。
 
 |目录 / 文件|用途|
 |---|---|
@@ -56,19 +56,15 @@ cmd /d /c "mysql --default-character-set=utf8mb4 -h127.0.0.1 -P3306 -uroot -p < 
 
 认证信息、积分和业务记录均是合成演示样例；没有证件图片、微信绑定或真实付款。两名认证用户各有 100 初始演示积分，其中 `student01` 的 25 积分已为两个任务冻结；所有现金余额为 0。管理员短密码仅适用于本地配置，普通账号密码仍要求 12–64 位。
 
-为应用创建专用数据库账号，先进入 MySQL：
+**本地演示不需要额外创建 MySQL 用户。** 后端模板默认 `root`，填写上面导入 SQL 时实际使用的 MySQL 密码即可；若导入时用的是其他有该库读写权限的账号，就填写那个账号。网页的 `admin / 123456` 是业务登录账号，不是 MySQL 连接账号。
+
+先用与后端相同的主机、端口、账号和密码确认连接；下面仍以 `root` 为例：
 
 ```powershell
-mysql -h127.0.0.1 -P3306 -uroot -p
+mysql --protocol=TCP -h127.0.0.1 -P3306 -uroot -p campus_pi_local -e "SELECT DATABASE(), CURRENT_USER(); SELECT user_id, username FROM users WHERE user_id=1;"
 ```
 
-然后执行下面的 SQL，将密码替换为自己设置的数据库应用密码：
-
-```sql
-CREATE USER 'campus_pi_app'@'127.0.0.1' IDENTIFIED BY '请替换成自己的数据库应用密码';
-GRANT SELECT, INSERT, UPDATE, DELETE ON campus_pi_local.* TO 'campus_pi_app'@'127.0.0.1';
-EXIT;
-```
+成功后应显示 `campus_pi_local`、实际匹配的 MySQL 账号以及业务用户 `1 / admin`。此命令失败时先修复数据库连接，不要反复重新导入 SQL。选择专用数据库账号的部署方式见[后端配置说明](config/后端配置说明.md#可选使用专用数据库账号)。
 
 ## 3. 填写后端配置
 
@@ -86,7 +82,9 @@ if (Test-Path backend/src/main/resources/application.yml) { throw '配置已存�
 Copy-Item backend/src/main/resources/application.example.yml backend/src/main/resources/application.yml
 ```
 
-直接在 `application.yml` 的 `spring.datasource.username`、`spring.datasource.password` 中填写 MySQL 账号和密码，再按[后端配置说明](config/后端配置说明.md)填写稳定随机密钥、文件目录和扫描器路径。无需配置 `DB_USER`、`DB_PASSWORD` 环境变量。
+直接在 `application.yml` 的 `spring.datasource.username`、`spring.datasource.password` 中填写刚刚验证成功的 MySQL 账号和密码，再按[后端配置说明](config/后端配置说明.md)填写稳定随机密钥、文件目录和扫描器路径。主机、端口和库名也须一致。无需配置 `DB_USER`、`DB_PASSWORD` 环境变量。
+
+**已经复制过旧模板的同学：** Git 更新不会覆盖被忽略的 `application.yml`。如果里面仍写着 `campus_pi_app` 而你没有创建该 MySQL 用户，请改为上面已验证可用的账号及其密码，重启后端；不需要重新建库或导入 SQL。
 
 使用 IDEA 时，选择 JDK 17，直接运行 `CampusPiApplication.main()`。如果之前添加过 `spring.config.additional-location` 程序参数，删除旧参数；正常运行无需额外指定配置文件。首次复制后或修改配置后，重新构建并重启后端。
 
@@ -166,6 +164,8 @@ module.exports = {
 |Java 版本错误|设置 `JAVA_HOME` 为 JDK 17，再打开终端运行脚本|
 |找不到 mysql、mvn、node|将相应程序的 bin 目录加入 PATH|
 |数据库连接失败|检查 MySQL 服务、端口、库名、应用账号密码及私有配置路径|
+|登录接口503，日志出现Access denied|后端配置的MySQL账号不存在、密码不匹配或Host授权不匹配；先运行第2节的TCP验证，再修改实际application.yml，不要把网页admin账号当作数据库账号|
+|127.0.0.1可用、localhost失败或相反|先统一JDBC与命令的主机地址，并检查CURRENT_USER()及MySQL的User/Host匹配；专用账号的两种本地主机授权见后端配置说明|
 |账号服务未完成本地配置|填写至少 32 字符的稳定 `idempotency-secret`|
 |admin 登录失败|确认使用本文新建库及 `local-short-password-admin-id: 1`|
 |文件上传失败|检查私有文件目录和实际 Defender 扫描器路径|
